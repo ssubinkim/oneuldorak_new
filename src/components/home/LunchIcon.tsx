@@ -1,3 +1,4 @@
+// 도시락 이미지가 들어갈 자리에서 쓰는 기본 도시락 아이콘입니다.
 export function LunchIcon() {
   return (
     <svg className="lunch-icon" viewBox="0 0 32 32" aria-hidden="true">
