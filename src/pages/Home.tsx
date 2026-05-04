@@ -1,4 +1,5 @@
 import BottomNav from '../components/common/BottomNav'
+import Header from '../components/common/Header'
 import '../styles/Tailwind.css'
 
 const sosItems = ['10분 요리', '밀프랩', '간단재료', '다이어트']
@@ -11,26 +12,6 @@ const posts = [
   '자취생 추천! 가성비 반찬 레시피 모음',
   '자취생 추천! 가성비 반찬 레시피 모음',
 ]
-
-function BellIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M18 16.3H6c1.2-1.3 1.7-3.3 1.7-6a4.3 4.3 0 0 1 8.6 0c0 2.7.5 4.7 1.7 6Z" />
-      <path d="M10.1 18.5a2.1 2.1 0 0 0 3.8 0" />
-    </svg>
-  )
-}
-
-function ShareIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="18" cy="5.6" r="2.5" />
-      <circle cx="6" cy="12" r="2.5" />
-      <circle cx="18" cy="18.4" r="2.5" />
-      <path d="m8.3 10.9 7.4-4.1M8.3 13.1l7.4 4.1" />
-    </svg>
-  )
-}
 
 function ChevronIcon() {
   return (
@@ -111,24 +92,6 @@ function FridgeIllustration() {
   )
 }
 
-function StatusBar() {
-  return (
-    <div className="status-bar" aria-hidden="true">
-      <span>9:41</span>
-      <div className="status-bar__icons">
-        <span className="signal-icon">
-          <i />
-          <i />
-          <i />
-          <i />
-        </span>
-        <span className="wifi-icon" />
-        <span className="battery-icon">80</span>
-      </div>
-    </div>
-  )
-}
-
 function VisualPlaceholder({ large = false }: { large?: boolean }) {
   return (
     <div className={large ? 'visual-placeholder visual-placeholder--large' : 'visual-placeholder'}>
@@ -141,19 +104,10 @@ function Home() {
   return (
     <div className="home-shell">
       <div className="home-screen">
+        <Header showActions />
+
         <div className="home-scroll">
-          <StatusBar />
-
           <header className="home-header">
-            <div className="home-actions" aria-label="홈 빠른 메뉴">
-              <button type="button" aria-label="알림">
-                <BellIcon />
-              </button>
-              <button type="button" aria-label="공유">
-                <ShareIcon />
-              </button>
-            </div>
-
             <p className="home-greeting">안녕하세요, 세아님</p>
             <h1>
               오늘, 세아님에게
@@ -200,11 +154,6 @@ function Home() {
                   <ChevronIcon />
                 </a>
               </div>
-
-              <button className="chatbot-bubble" type="button">
-                <span>나의</span>
-                챗봇
-              </button>
 
               <div className="recommend-grid">
                 {recommendedItems.map((item) => (
@@ -276,6 +225,10 @@ function Home() {
           </main>
         </div>
 
+        <button className="chatbot-bubble" type="button">
+          <span>나의</span>
+          챗봇
+        </button>
         <BottomNav />
       </div>
     </div>
