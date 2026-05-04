@@ -171,21 +171,13 @@ button {
   letter-spacing: 0;
 }
 
-.visual-placeholder {
+.today-lunchbox {
   display: grid;
   place-items: center;
-  width: 68px;
-  height: 54px;
-  flex: 0 0 auto;
-  background: #fff;
-  border: 1px solid #e8e8e8;
-  border-radius: 4px;
-}
-
-.visual-placeholder--large {
   width: 100%;
   height: 112px;
   margin-top: 6px;
+  background: #fff;
   border: 0;
   border-radius: 8px;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.16);
@@ -201,7 +193,7 @@ button {
   stroke-linejoin: round;
 }
 
-.visual-placeholder--large .lunch-icon {
+.today-lunchbox .lunch-icon {
   width: 31px;
   height: 31px;
 }
@@ -213,13 +205,13 @@ button {
   font-weight: 800;
 }
 
-.sos-grid {
+.quick-menu-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
 }
 
-.sos-card {
+.quick-menu-card {
   display: grid;
   place-items: center;
   gap: 3px;
@@ -232,7 +224,7 @@ button {
   box-sizing: border-box;
 }
 
-.sos-card span {
+.quick-menu-card span {
   overflow-wrap: anywhere;
   font-size: 13px;
   font-weight: 400;
@@ -308,13 +300,22 @@ button {
 }
 
 .recommend-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
   gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 2px;
   margin-top: 15px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.recommend-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .recommend-card {
+  flex: 0 0 156px;
+  scroll-snap-align: start;
   overflow: hidden;
   background: #fff;
   border: 1px solid #ededed;
@@ -348,7 +349,7 @@ button {
   background: #e8e8e8;
 }
 
-.recommend-card:nth-child(2) .recommend-card__body {
+.recommend-card:not(.recommend-card--muted) .recommend-card__body {
   background: #fff;
 }
 
@@ -439,16 +440,56 @@ button {
 .popular-tabs button {
   height: 32px;
   padding: 0 11px;
-  color: #5f5f5f;
-  background: #e2e2e2;
-  border: 0;
+  color: #9f151d;
+  background: #fff;
+  border: 1px solid #b81d25;
   border-radius: 999px;
   font-size: 14px;
   font-weight: 500;
 }
 
+.popular-tabs button[aria-selected='true'] {
+  color: #fff;
+  background: #b5141f;
+  font-weight: 800;
+}
+
 .post-list {
   border-top: 1px solid #efefef;
+}
+
+.recipe-preview-list {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 0 0 2px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.recipe-preview-list::-webkit-scrollbar {
+  display: none;
+}
+
+.recipe-preview-card {
+  flex: 0 0 90px;
+  scroll-snap-align: start;
+}
+
+.recipe-preview-card__image {
+  width: 90px;
+  height: 90px;
+  background: #e3e3e3;
+}
+
+.recipe-preview-card p {
+  overflow: hidden;
+  margin: 5px 0 0;
+  color: #555;
+  font-size: 8px;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .post-item {
@@ -458,6 +499,26 @@ button {
   align-items: center;
   min-height: 64px;
   border-bottom: 1px solid #efefef;
+}
+
+.post-item__thumbnail {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 54px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+}
+
+.post-item__thumbnail svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: #8f8f8f;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .post-item:last-child {

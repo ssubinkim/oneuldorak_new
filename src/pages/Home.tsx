@@ -1,25 +1,37 @@
+import { useState } from 'react'
 import BottomNav from '../components/common/BottomNav'
 import Header from '../components/common/Header'
 import { ChevronIcon } from '../components/home/ChevronIcon'
 import { CostChart } from '../components/home/CostChart'
 import { FridgeIllustration } from '../components/home/FridgeIllustration'
-import { LunchIcon } from '../components/home/LunchIcon'
-import { SosCard } from '../components/home/SosCard'
-import { VisualPlaceholder } from '../components/home/VisualPlaceholder'
+import { PopularPostItem } from '../components/home/PopularPostItem'
+import { QuickMenuCard } from '../components/home/QuickMenuCard'
+import { RecommendedLunchCard } from '../components/home/RecommendedLunchCard'
+import { RecipePreviewCard } from '../components/home/RecipePreviewCard'
+import { TodayLunchbox } from '../components/home/TodayLunchbox'
 import '../styles/Tailwind.css'
+
+type PopularTab = 'board' | 'recipe'
 
 const sosItems = ['10분 요리', '밀프랩', '간단재료', '다이어트']
 const recommendedItems = [
   { title: '우렁된장쌈밥', meta: '10분 · 든든식', badge: 'BEST' },
   { title: '버터갈릭 새우 덮밥', meta: '10분 · 든든식' },
+  { title: '닭가슴살 샐러드', meta: '15분 · 가벼운식', badge: 'NEW' },
+  { title: '참치마요 주먹밥', meta: '8분 · 간편식' },
+  { title: '두부 유부초밥', meta: '12분 · 균형식' },
+  { title: '계란말이 김밥', meta: '10분 · 든든식' },
 ]
 const posts = [
   '자취생 추천! 가성비 반찬 레시...',
   '자취생 추천! 가성비 반찬 레시피 모음',
   '자취생 추천! 가성비 반찬 레시피 모음',
 ]
+const recipes = ['후랑멘트입니다', '후랑멘트입니다', '후랑멘트입니다', '후랑멘트', '후랑멘트']
 
 function Home() {
+  const [popularTab, setPopularTab] = useState<PopularTab>('board')
+
   return (
     <div className="home-shell">
       <div className="home-screen">
@@ -52,12 +64,12 @@ function Home() {
 
             <section className="today-lunch" aria-labelledby="todayLunchTitle">
               <h2 id="todayLunchTitle">오늘의 도시락</h2>
-              <VisualPlaceholder large />
+              <TodayLunchbox />
 
               <h3>도시락 SOS</h3>
-              <div className="sos-grid">
+              <div className="quick-menu-grid">
                 {sosItems.map((item) => (
-                  <SosCard label={item} key={item} />
+                  <QuickMenuCard label={item} key={item} />
                 ))}
               </div>
             </section>
@@ -72,17 +84,14 @@ function Home() {
               </div>
 
               <div className="recommend-grid">
-                {recommendedItems.map((item) => (
-                  <article className="recommend-card" key={item.title}>
-                    <div className="recommend-card__image">
-                      {item.badge && <span>{item.badge}</span>}
-                      <LunchIcon />
-                    </div>
-                    <div className="recommend-card__body">
-                      <h3>{item.title}</h3>
-                      <p>⏱ {item.meta}</p>
-                    </div>
-                  </article>
+                {recommendedItems.map((item, index) => (
+                  <RecommendedLunchCard
+                    title={item.title}
+                    meta={item.meta}
+                    badge={item.badge}
+                    muted={index === 0}
+                    key={item.title}
+                  />
                 ))}
               </div>
             </section>
@@ -111,32 +120,36 @@ function Home() {
                 </a>
               </div>
               <div className="popular-tabs" role="tablist" aria-label="인기글 카테고리">
-                <button type="button" role="tab" aria-selected="true">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={popularTab === 'board'}
+                  onClick={() => setPopularTab('board')}
+                >
                   자유게시판
                 </button>
-                <button type="button" role="tab" aria-selected="false">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={popularTab === 'recipe'}
+                  onClick={() => setPopularTab('recipe')}
+                >
                   레시피
                 </button>
               </div>
-              <div className="post-list">
-                {posts.map((post, index) => (
-                  <article className="post-item" key={`${post}-${index}`}>
-                    <VisualPlaceholder />
-                    <div>
-                      <h3>
-                        {index === 0 && <span>HOT</span>}
-                        {post}
-                      </h3>
-                      <p>
-                        <span className="post-item__heart" aria-hidden="true">
-                          ♥
-                        </span>
-                        96 · ▤ 23
-                      </p>
-                    </div>
-                  </article>
-                ))}
-              </div>
+              {popularTab === 'board' ? (
+                <div className="post-list">
+                  {posts.map((post, index) => (
+                    <PopularPostItem title={post} hot={index === 0} key={`${post}-${index}`} />
+                  ))}
+                </div>
+              ) : (
+                <div className="recipe-preview-list">
+                  {recipes.map((recipe, index) => (
+                    <RecipePreviewCard title={recipe} key={`${recipe}-${index}`} />
+                  ))}
+                </div>
+              )}
             </section>
           </main>
         </div>

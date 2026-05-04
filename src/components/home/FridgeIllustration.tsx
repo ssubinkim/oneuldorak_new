@@ -1,3 +1,4 @@
+// 내 재료로 메뉴 찾기 배너에 들어가는 냉장고 일러스트입니다.
 export function FridgeIllustration() {
   return (
     <svg className="fridge-illustration" viewBox="0 0 92 92" aria-hidden="true">

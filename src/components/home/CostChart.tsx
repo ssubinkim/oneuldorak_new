@@ -1,3 +1,4 @@
+// 이번주 예상 식비 카드에 표시되는 간단한 절약 추이 그래프입니다.
 export function CostChart() {
   return (
     <svg className="cost-chart" viewBox="0 0 160 82" aria-label="이번주 예상 식비 그래프">
