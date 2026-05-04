@@ -1,5 +1,11 @@
 import BottomNav from '../components/common/BottomNav'
 import Header from '../components/common/Header'
+import { ChevronIcon } from '../components/home/ChevronIcon'
+import { CostChart } from '../components/home/CostChart'
+import { FridgeIllustration } from '../components/home/FridgeIllustration'
+import { LunchIcon } from '../components/home/LunchIcon'
+import { SosCard } from '../components/home/SosCard'
+import { VisualPlaceholder } from '../components/home/VisualPlaceholder'
 import '../styles/Tailwind.css'
 
 const sosItems = ['10분 요리', '밀프랩', '간단재료', '다이어트']
@@ -12,93 +18,6 @@ const posts = [
   '자취생 추천! 가성비 반찬 레시피 모음',
   '자취생 추천! 가성비 반찬 레시피 모음',
 ]
-
-function ChevronIcon() {
-  return (
-    <svg viewBox="0 0 16 16" aria-hidden="true">
-      <path d="m6 3.5 4 4.5-4 4.5" />
-    </svg>
-  )
-}
-
-function LunchIcon() {
-  return (
-    <svg className="lunch-icon" viewBox="0 0 32 32" aria-hidden="true">
-      <rect x="6.5" y="5.5" width="19" height="21" rx="7" />
-      <path d="M15.7 6.2c-.8 3.1-.9 6.6-.2 10.6.7 4.1.8 7.2.2 9.4" />
-      <path d="M7.2 15.4c3.1-.7 6.3-.7 9.7 0 3 .6 5.7.6 8-.1" />
-    </svg>
-  )
-}
-
-function BurgerIcon() {
-  return (
-    <svg className="burger-icon" viewBox="0 0 34 34" aria-hidden="true">
-      <path d="M7.4 16c.5-5.1 4.3-8 9.6-8s9.1 2.9 9.6 8H7.4Z" />
-      <path d="M6.6 20.6h20.8" />
-      <path d="M8.1 24.6h17.8" />
-      <path d="M9.4 16.1c.5 1.2 1.4 1.2 2.1 0 .7-1.2 1.6-1.2 2.3 0 .7 1.2 1.6 1.2 2.3 0 .7-1.2 1.6-1.2 2.3 0 .7 1.2 1.6 1.2 2.3 0 .7-1.2 1.6-1.2 2.1 0" />
-      <path d="M10.7 11.8h.1M14.8 10.3h.1M19.5 10.9h.1M23 12.6h.1" />
-    </svg>
-  )
-}
-
-function CostChart() {
-  return (
-    <svg className="cost-chart" viewBox="0 0 160 82" aria-label="이번주 예상 식비 그래프">
-      <path d="M14 63h133M14 47h133M14 31h133M14 15h133" />
-      <path
-        d="M17 45 43 15 69 30 95 65 121 37 147 36 147 70 17 70Z"
-        className="cost-chart__fill"
-      />
-      <path d="M17 45 43 15 69 30 95 65 121 37 147 36" className="cost-chart__line" />
-      <g>
-        <circle cx="17" cy="45" r="2.3" />
-        <circle cx="43" cy="15" r="2.3" />
-        <circle cx="69" cy="30" r="2.3" />
-        <circle cx="95" cy="65" r="2.3" />
-        <circle cx="121" cy="37" r="2.3" />
-        <circle cx="147" cy="36" r="2.3" />
-      </g>
-      <text x="10" y="78">Mon</text>
-      <text x="36" y="78">Tue</text>
-      <text x="63" y="78">Wed</text>
-      <text x="90" y="78">Thu</text>
-      <text x="116" y="78">Fri</text>
-      <text x="141" y="78">Sun</text>
-    </svg>
-  )
-}
-
-function FridgeIllustration() {
-  return (
-    <svg className="fridge-illustration" viewBox="0 0 92 92" aria-hidden="true">
-      <defs>
-        <linearGradient id="fridgeBody" x1="18" x2="74" y1="8" y2="84">
-          <stop stopColor="#fbfbff" />
-          <stop offset="1" stopColor="#cdd5e4" />
-        </linearGradient>
-      </defs>
-      <path d="M18 12 67 5l7 76-49 7-7-76Z" fill="url(#fridgeBody)" />
-      <path d="M22 16 64 10l2.3 26.5-41.8 6L22 16ZM25 47l42-6 3 34-42 6-3-34Z" fill="#f7f8ff" />
-      <path d="M37 27h5M39 58h5" stroke="#b3bdca" strokeLinecap="round" strokeWidth="3" />
-      <rect x="43" y="50" width="11" height="7" rx="3.5" fill="#f55774" />
-      <rect x="56" y="49" width="11" height="8" rx="4" fill="#8ac857" />
-      <rect x="39" y="63" width="11" height="7" rx="3.5" fill="#f4d442" />
-      <rect x="52" y="63" width="14" height="8" rx="4" fill="#6d8bf4" />
-      <rect x="48" y="25" width="10" height="7" rx="3.5" fill="#d74ad8" />
-      <rect x="58" y="23" width="8" height="7" rx="3.5" fill="#ea3d3d" />
-    </svg>
-  )
-}
-
-function VisualPlaceholder({ large = false }: { large?: boolean }) {
-  return (
-    <div className={large ? 'visual-placeholder visual-placeholder--large' : 'visual-placeholder'}>
-      <LunchIcon />
-    </div>
-  )
-}
 
 function Home() {
   return (
@@ -138,10 +57,7 @@ function Home() {
               <h3>도시락 SOS</h3>
               <div className="sos-grid">
                 {sosItems.map((item) => (
-                  <button type="button" className="sos-card" key={item}>
-                    <BurgerIcon />
-                    <span>{item}</span>
-                  </button>
+                  <SosCard label={item} key={item} />
                 ))}
               </div>
             </section>
