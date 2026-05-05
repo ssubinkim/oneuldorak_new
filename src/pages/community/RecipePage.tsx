@@ -1,7 +1,6 @@
-import type { MouseEventHandler } from 'react'
+import NavLink from '../../components/community/NavLink'
+import type { CommunityTabRoute } from './CommunityTabRoute'
 import './RecipePage.css'
-
-export type CommunityTabRoute = 'recipe' | 'free' | 'vote'
 
 type RecipeItem = {
   id: string
@@ -93,10 +92,6 @@ function RecipeActionIcon({ kind }: { kind: 'heart' | 'comment' | 'bookmark' }) 
 }
 
 function RecipePage({ onBack, onSelectTab, onOpenDetail }: RecipePageProps) {
-  const handleTabClick = (tab: CommunityTabRoute): MouseEventHandler<HTMLButtonElement> => () => {
-    onSelectTab(tab)
-  }
-
   return (
     <main className="page-scroll recipe-page">
       <section className="recipe-page__title-bar">
@@ -110,15 +105,12 @@ function RecipePage({ onBack, onSelectTab, onOpenDetail }: RecipePageProps) {
 
       <div className="recipe-page__tabs" role="tablist" aria-label="커뮤니티 카테고리">
         {tabs.map((tab) => (
-          <button
+          <NavLink
             key={tab.id}
-            type="button"
-            role="tab"
-            aria-selected={tab.id === 'recipe'}
-            onClick={handleTabClick(tab.id)}
-          >
-            {tab.label}
-          </button>
+            label={tab.label}
+            isActive={tab.id === 'recipe'}
+            onClick={() => onSelectTab(tab.id)}
+          />
         ))}
       </div>
 

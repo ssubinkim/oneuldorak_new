@@ -1,5 +1,6 @@
+import NavLink from '../../components/community/NavLink'
+import type { CommunityTabRoute } from './CommunityTabRoute'
 import './VotePage.css'
-import type { CommunityTabRoute } from './RecipePage'
 
 type VotePageProps = {
   onBack: () => void
@@ -97,15 +98,12 @@ function VotePage({ onBack, onSelectTab }: VotePageProps) {
 
       <div className="vote-page-tabs" role="tablist" aria-label="커뮤니티 카테고리">
         {tabs.map((tab) => (
-          <button
+          <NavLink
             key={tab.id}
-            type="button"
-            role="tab"
-            aria-selected={tab.id === 'vote'}
+            label={tab.label}
+            isActive={tab.id === 'vote'}
             onClick={() => onSelectTab(tab.id)}
-          >
-            {tab.label}
-          </button>
+          />
         ))}
       </div>
 
