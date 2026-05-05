@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import type { MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from 'react'
 import BottomNav from '../../components/common/BottomNav'
 import Header from '../../components/common/Header'
 import { ChevronIcon } from '../../components/home/ChevronIcon'
@@ -10,6 +11,7 @@ import { RecommendedLunchCard } from '../../components/home/RecommendedLunchCard
 import { RecipePreviewCard } from '../../components/home/RecipePreviewCard'
 import { TodayLunchbox } from '../../components/home/TodayLunchbox'
 import '../../styles/Tailwind.css'
+import './Home.css'
 
 type PopularTab = 'board' | 'recipe'
 
@@ -31,10 +33,86 @@ const recipes = ['후랑멘트입니다', '후랑멘트입니다', '후랑멘트
 
 function Home() {
   const [popularTab, setPopularTab] = useState<PopularTab>('board')
+  const dragStateRef = useRef({
+    element: null as HTMLDivElement | null,
+    pointerId: null as number | null,
+    startX: 0,
+    startScrollLeft: 0,
+    didDrag: false,
+    blockClick: false,
+  })
+
+  const handleDragStart = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== 'mouse') {
+      return
+    }
+
+    const element = event.currentTarget
+    if (element.scrollWidth <= element.clientWidth) {
+      return
+    }
+
+    dragStateRef.current.element = element
+    dragStateRef.current.pointerId = event.pointerId
+    dragStateRef.current.startX = event.clientX
+    dragStateRef.current.startScrollLeft = element.scrollLeft
+    dragStateRef.current.didDrag = false
+
+    element.classList.add('is-dragging')
+    element.setPointerCapture(event.pointerId)
+  }
+
+  const handleDragMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const dragState = dragStateRef.current
+    if (!dragState.element || dragState.pointerId !== event.pointerId) {
+      return
+    }
+
+    const deltaX = event.clientX - dragState.startX
+    if (Math.abs(deltaX) > 3) {
+      dragState.didDrag = true
+    }
+
+    dragState.element.scrollLeft = dragState.startScrollLeft - deltaX
+    event.preventDefault()
+  }
+
+  const handleDragEnd = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const dragState = dragStateRef.current
+    if (!dragState.element || dragState.pointerId !== event.pointerId) {
+      return
+    }
+
+    if (dragState.element.hasPointerCapture(event.pointerId)) {
+      dragState.element.releasePointerCapture(event.pointerId)
+    }
+
+    dragState.element.classList.remove('is-dragging')
+    dragState.blockClick = dragState.didDrag
+    dragState.element = null
+    dragState.pointerId = null
+    dragState.startX = 0
+    dragState.startScrollLeft = 0
+    dragState.didDrag = false
+  }
+
+  const handleDragClickCapture = (event: ReactMouseEvent<HTMLDivElement>) => {
+    if (!dragStateRef.current.blockClick) {
+      return
+    }
+
+    dragStateRef.current.blockClick = false
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
+  const handleSosCardClick = () => {
+    window.location.hash = '#/store'
+  }
 
   return (
-    <div className="home-shell">
-      <div className="home-screen">
+    <div className="app-shell">
+      <div className="app-screen">
         <Header showActions />
 
         <div className="home-scroll">
@@ -67,9 +145,16 @@ function Home() {
               <TodayLunchbox />
 
               <h3>도시락 SOS</h3>
-              <div className="quick-menu-grid">
+              <div
+                className="quick-menu-grid card-drag-scroll"
+                onPointerDown={handleDragStart}
+                onPointerMove={handleDragMove}
+                onPointerUp={handleDragEnd}
+                onPointerCancel={handleDragEnd}
+                onClickCapture={handleDragClickCapture}
+              >
                 {sosItems.map((item) => (
-                  <QuickMenuCard label={item} key={item} />
+                  <QuickMenuCard label={item} key={item} onClick={handleSosCardClick} />
                 ))}
               </div>
             </section>
@@ -83,7 +168,14 @@ function Home() {
                 </a>
               </div>
 
-              <div className="recommend-grid">
+              <div
+                className="recommend-grid card-drag-scroll"
+                onPointerDown={handleDragStart}
+                onPointerMove={handleDragMove}
+                onPointerUp={handleDragEnd}
+                onPointerCancel={handleDragEnd}
+                onClickCapture={handleDragClickCapture}
+              >
                 {recommendedItems.map((item, index) => (
                   <RecommendedLunchCard
                     title={item.title}
@@ -144,7 +236,14 @@ function Home() {
                   ))}
                 </div>
               ) : (
-                <div className="recipe-preview-list">
+                <div
+                  className="recipe-preview-list card-drag-scroll"
+                  onPointerDown={handleDragStart}
+                  onPointerMove={handleDragMove}
+                  onPointerUp={handleDragEnd}
+                  onPointerCancel={handleDragEnd}
+                  onClickCapture={handleDragClickCapture}
+                >
                   {recipes.map((recipe, index) => (
                     <RecipePreviewCard title={recipe} key={`${recipe}-${index}`} />
                   ))}

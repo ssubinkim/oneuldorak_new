@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import '../../styles/BottomNav.css'
+import './BottomNav.css'
 
 export type BottomNavRoute = 'home' | 'meal' | 'community' | 'store' | 'mypage'
 

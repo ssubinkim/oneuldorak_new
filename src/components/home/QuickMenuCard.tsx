@@ -11,10 +11,15 @@ function MealOptionIcon() {
   )
 }
 
+type QuickMenuCardProps = {
+  label: string
+  onClick?: () => void
+}
+
 // 도시락 SOS 영역의 아이콘, 텍스트, 배경을 하나로 묶은 빠른 메뉴 카드입니다.
-export function QuickMenuCard({ label }: { label: string }) {
+export function QuickMenuCard({ label, onClick }: QuickMenuCardProps) {
   return (
-    <button type="button" className="quick-menu-card">
+    <button type="button" className="quick-menu-card" onClick={onClick}>
       <MealOptionIcon />
       <span>{label}</span>
     </button>

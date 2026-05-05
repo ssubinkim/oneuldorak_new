@@ -36,8 +36,8 @@ function Meal() {
   const [fabOpen, setFabOpen] = useState(false)
 
   return (
-    <div className="home-shell">
-      <div className="home-screen">
+    <div className="app-shell">
+      <div className="app-screen">
         <Header />
 
         <div className="page-scroll">
