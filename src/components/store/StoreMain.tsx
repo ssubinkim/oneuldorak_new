@@ -3,7 +3,7 @@ import ProductSection from './ProductSection'
 import RankingSection from './RankingSection'
 import { type Product } from './ProductCard'
 
-const CATEGORY_TABS = ['추천', '베스트', '가성비', '밀키트', '밀프']
+const CATEGORY_TABS = ['추천', '베스트', '가성비', '밀키트', '밀프랩']
 const STORES = ['스토어1', '스토어2', '스토어3', '스토어4', '스토어5']
 
 const MOCK_PRODUCTS: Product[] = [
