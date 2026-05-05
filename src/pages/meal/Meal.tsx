@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import BottomNav from '../components/common/BottomNav'
-import Header from '../components/common/Header'
-import '../styles/Tailwind.css'
+import BottomNav from '../../components/common/BottomNav'
+import Header from '../../components/common/Header'
+import '../../styles/Tailwind.css'
 
 const todayMenus = [
   {
@@ -40,7 +40,7 @@ function Meal() {
       <div className="home-screen">
         <Header />
 
-        <div style={{ position: 'absolute', top: 92, bottom: 64, left: 0, right: 0, overflowY: 'auto' }}>
+        <div className="page-scroll">
           {/* 상단 탭 */}
           <div style={{ display: 'flex', borderBottom: '1px solid #e8e8e8', padding: '0 16px' }}>
             {(['week', 'storage'] as const).map((tab, i) => (

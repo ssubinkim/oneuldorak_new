@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import BottomNav from '../components/common/BottomNav'
-import Header from '../components/common/Header'
-import '../styles/Tailwind.css'
+import BottomNav from '../../components/common/BottomNav'
+import Header from '../../components/common/Header'
+import '../../styles/Tailwind.css'
 
 const ATTENDANCE = [
   { filled: true }, { filled: true }, { filled: false },
@@ -111,7 +111,7 @@ function MyPage() {
         <Header />
 
         {/* 스크롤 콘텐츠 */}
-        <div style={{ position: 'absolute', top: 92, bottom: 64, left: 0, right: 0, overflowY: 'auto' }}>
+        <div className="page-scroll">
 
           {/* 유저 정보 */}
           <div style={{ padding: '20px 24px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

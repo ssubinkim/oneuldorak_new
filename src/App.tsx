@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import type { BottomNavRoute } from './components/common/BottomNav'
-import Community from './pages/Community'
-import Home from './pages/Home'
-import Meal from './pages/Meal'
-import MyPage from './pages/MyPage'
-import Store from './pages/Store'
+import Community from './pages/community/Community'
+import Home from './pages/home/Home'
+import Meal from './pages/meal/Meal'
+import MyPage from './pages/mypage/MyPage'
+import Store from './pages/store/Store'
 
 const pages = {
   home: Home,

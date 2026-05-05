@@ -34,13 +34,28 @@ button {
 
 .home-scroll {
   height: 100%;
-  padding-top: 92px;
+  padding-top: 44px;
   box-sizing: border-box;
   overflow: hidden auto;
   scrollbar-width: none;
 }
 
 .home-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.page-scroll {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  bottom: 64px;
+  left: 0;
+  overflow: hidden auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.page-scroll::-webkit-scrollbar {
   display: none;
 }
 
@@ -561,7 +576,7 @@ button {
   display: grid;
   place-content: center;
   height: 100%;
-  padding: 92px 30px 64px;
+  padding: 44px 30px 64px;
   box-sizing: border-box;
   text-align: center;
 }
