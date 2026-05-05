@@ -1,0 +1,311 @@
+.community-page {
+  background: #f2f2f3;
+  color: #222;
+}
+
+.community-top {
+  padding: 16px 16px 14px;
+  background: #fff;
+}
+
+.community-top h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+}
+
+.community-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  margin-top: 14px;
+  padding: 0 12px;
+  background: #f0f1f4;
+  border: 1px solid #e9eaf0;
+  border-radius: 10px;
+}
+
+.community-search svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: #a6acb6;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.community-search input {
+  flex: 1;
+  color: #2f3440;
+  background: transparent;
+  border: 0;
+  font-size: 14px;
+  outline: none;
+}
+
+.community-search input::placeholder {
+  color: #a4aab4;
+}
+
+.community-tabs {
+  display: flex;
+  gap: 14px;
+  height: 52px;
+  padding: 0 16px;
+  background: #fff;
+  border-top: 1px solid #ececf1;
+  border-bottom: 1px solid #ececf1;
+}
+
+.community-tabs button {
+  height: 100%;
+  padding: 0;
+  color: #7f8590;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.community-tabs button[aria-selected='true'] {
+  color: #20242c;
+  border-bottom-color: #20242c;
+}
+
+.community-tabs .community-tab--recipe,
+.community-tabs .community-tab--recipe[aria-selected='true'] {
+  color: #7f8590;
+  border-bottom-color: transparent;
+}
+
+.community-content {
+  padding: 16px 16px 28px;
+}
+
+.community-card {
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e8e9ef;
+  border-radius: 12px;
+}
+
+.community-card + .community-card,
+.community-card + .community-rank-banner,
+.community-recipe-row + .community-card {
+  margin-top: 14px;
+}
+
+.community-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.community-card__header h2 {
+  margin: 0;
+  color: #1f232d;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.community-card__header button {
+  padding: 0;
+  color: #ff6a00;
+  background: transparent;
+  border: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.community-hot-list {
+  display: grid;
+  gap: 12px;
+}
+
+.community-hot-item {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.community-hot-item__thumb {
+  width: 48px;
+  height: 48px;
+  background: #e0e2e7;
+  border-radius: 6px;
+}
+
+.community-hot-item h3 {
+  margin: 0;
+  color: #252a33;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.community-hot-item p {
+  margin: 4px 0 0;
+  color: #757b86;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.community-recipe-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.community-recipe-row::-webkit-scrollbar {
+  display: none;
+}
+
+.community-recipe-card {
+  flex: 0 0 110px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e8e9ef;
+  border-radius: 0;
+}
+
+.community-recipe-card__image {
+  height: 86px;
+  background: #c7c7ca;
+}
+
+.community-recipe-card__body {
+  padding: 8px 6px;
+}
+
+.community-recipe-card h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.community-recipe-card p {
+  margin: 4px 0 8px;
+  color: #8f94a2;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.community-recipe-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #9196a1;
+  font-size: 9px;
+}
+
+.community-recipe-card__avatar {
+  width: 10px;
+  height: 10px;
+  background: #a9a9ac;
+  border-radius: 50%;
+}
+
+.community-recipe-card small {
+  display: block;
+  margin-top: 5px;
+  color: #a6acb5;
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.community-card-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  text-align: left;
+}
+
+.community-saved-card h2,
+.community-vote-card h2,
+.community-rank-banner h2 {
+  margin: 0;
+  color: #1f232d;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.community-saved-card p,
+.community-vote-item p,
+.community-rank-banner p {
+  margin: 8px 0 0;
+  color: #767d88;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.community-saved-card span {
+  color: #646b78;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.community-vote-card .community-card__header {
+  margin-bottom: 10px;
+}
+
+.community-vote-card .community-card__header button {
+  color: #7d8290;
+  font-size: 13px;
+}
+
+.community-vote-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 10px;
+  background: #f6f7fb;
+  border: 1px solid #edf0f5;
+  border-radius: 10px;
+}
+
+.community-vote-item h3 {
+  margin: 0;
+  color: #232833;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.community-vote-item span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 24px;
+  padding: 0 8px;
+  color: #fff;
+  background: #ff7d10;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.community-rank-banner {
+  padding: 16px;
+  background: #f5eada;
+  border: 1px solid #f0d7b8;
+  border-radius: 12px;
+}
+
+.community-rank-banner span {
+  color: #686f7c;
+  font-size: 20px;
+  font-weight: 500;
+}

@@ -106,8 +106,8 @@ function MyPage() {
   const [pointTab, setPointTab] = useState<'guide' | 'history'>('guide')
 
   return (
-    <div className="home-shell">
-      <div className="home-screen">
+    <div className="app-shell">
+      <div className="app-screen">
         <Header />
 
         {/* 스크롤 콘텐츠 */}

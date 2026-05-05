@@ -1,0 +1,238 @@
+.recipe-page {
+  min-height: 100%;
+  background: #f2f2f4;
+  color: #1f2430;
+}
+
+.recipe-page__title-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 56px;
+  padding: 0 16px;
+  background: #fff;
+  border-bottom: 1px solid #eceff3;
+  box-sizing: border-box;
+}
+
+.recipe-page__title-bar button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: #1f2430;
+  background: transparent;
+  border: 0;
+}
+
+.recipe-page__title-bar button svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.recipe-page__title-bar h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.recipe-page__tabs {
+  display: flex;
+  gap: 12px;
+  height: 56px;
+  padding: 0 16px;
+  background: #fff;
+  border-bottom: 1px solid #eceff3;
+}
+
+.recipe-page__tabs button {
+  height: 100%;
+  padding: 0;
+  color: #7f8793;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.recipe-page__tabs button[aria-selected='true'] {
+  color: #1f2430;
+  border-bottom-color: #1f2430;
+}
+
+.recipe-page__filters {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.recipe-page__filters::-webkit-scrollbar {
+  display: none;
+}
+
+.recipe-page__filters button {
+  flex: 0 0 auto;
+  height: 34px;
+  padding: 0 14px;
+  color: #5f6775;
+  background: #f5f5f7;
+  border: 1px solid #d8dbe0;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.recipe-page__filters button.is-active {
+  color: #fff;
+  background: #000;
+  border-color: #000;
+}
+
+.recipe-page__list {
+  display: grid;
+  gap: 12px;
+  padding: 0 16px 110px;
+}
+
+.recipe-share-card {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 12px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #e5e6ea;
+  border-radius: 10px;
+}
+
+.recipe-share-card__thumb {
+  display: grid;
+  place-items: center;
+  height: 96px;
+  color: #9aa1ad;
+  background: #d8dbe1;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.recipe-share-card__title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.recipe-share-card__title-row h2 {
+  margin: 0;
+  color: #1f2430;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.24;
+}
+
+.recipe-share-card__title-row span {
+  color: #ff6f1a;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.recipe-share-card__subtitle {
+  margin: 4px 0 0;
+  color: #6d7480;
+  font-size: 13px;
+}
+
+.recipe-share-card__badges {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.recipe-share-card__badges span {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  color: #656f7f;
+  background: #f1f3f7;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.recipe-share-card__badges .is-price {
+  color: #ff6c14;
+  background: #fff0e7;
+}
+
+.recipe-share-card__meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.recipe-share-card__meta-row small {
+  color: #7f8692;
+  font-size: 12px;
+}
+
+.recipe-share-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #666f7f;
+  font-size: 11px;
+}
+
+.recipe-share-card__actions div {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.recipe-share-card__actions svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.recipe-page__fab {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  color: #fff;
+  background: #000;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+}
+
+.recipe-page__fab svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

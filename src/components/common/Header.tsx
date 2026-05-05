@@ -1,4 +1,4 @@
-import '../../styles/Header.css'
+import './Header.css'
 import batteryIcon from '../../assets/images/bar_battery.png'
 import signalIcon from '../../assets/images/siginal.png'
 import wifiIcon from '../../assets/images/wifi.png'

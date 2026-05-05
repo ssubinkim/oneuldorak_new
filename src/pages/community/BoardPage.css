@@ -1,0 +1,237 @@
+.free-detail-page {
+  position: relative;
+  min-height: 100%;
+  background: #f2f2f4;
+  color: #1f2430;
+}
+
+.free-detail-topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 56px;
+  padding: 0 16px;
+  background: #fff;
+  border-bottom: 1px solid #eceef2;
+  box-sizing: border-box;
+}
+
+.free-detail-topbar button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: #586072;
+  background: transparent;
+  border: 0;
+}
+
+.free-detail-topbar svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.free-detail-topbar h1 {
+  margin: 0;
+  color: #1f2430;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.free-detail-tabs {
+  display: flex;
+  gap: 18px;
+  height: 54px;
+  padding: 0 16px;
+  background: #fff;
+  border-bottom: 1px solid #eceef2;
+}
+
+.free-detail-tabs button {
+  height: 100%;
+  padding: 0;
+  color: #7e8694;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.free-detail-tabs button[aria-selected='true'] {
+  color: #1f2430;
+  border-bottom-color: #1f2430;
+  font-weight: 700;
+}
+
+.free-detail-chips {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.free-detail-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.free-detail-chips button {
+  flex: 0 0 auto;
+  height: 34px;
+  padding: 0 14px;
+  color: #5f6775;
+  background: #f4f5f8;
+  border: 1px solid #d8dce3;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.free-detail-chips button.is-active {
+  color: #fff;
+  background: #000;
+  border-color: #000;
+}
+
+.free-detail-list {
+  display: grid;
+  gap: 10px;
+  padding: 0 16px 98px;
+}
+
+.free-post-card {
+  padding: 14px 14px 12px;
+  background: #fff;
+  border: 1px solid #e5e7ec;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.free-post-card:focus-visible {
+  outline: 2px solid #c5d4ff;
+  outline-offset: 2px;
+}
+
+.free-post-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.free-post-card__category {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  color: #6c7484;
+  background: #f2f3f7;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.free-post-card__top-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.free-post-card__trend {
+  color: #ff6c17;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.free-post-card__top-icons button {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  color: #8790a0;
+  background: transparent;
+  border: 0;
+}
+
+.free-post-card__top-icons svg,
+.free-post-card__stats svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.free-post-card h2 {
+  margin: 10px 0 0;
+  color: #202630;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.free-post-card__body {
+  margin: 8px 0 0;
+  color: #687182;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.free-post-card__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.free-post-card__meta {
+  color: #6e7788;
+  font-size: 12px;
+}
+
+.free-post-card__stats {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #5f6879;
+  font-size: 12px;
+}
+
+.free-post-card__stats span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.free-detail-fab {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  color: #fff;
+  background: #000;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+}
+
+.free-detail-fab svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
