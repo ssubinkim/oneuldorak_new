@@ -1,6 +1,6 @@
-import BottomNav from '../components/common/BottomNav'
-import Header from '../components/common/Header'
-import '../styles/Tailwind.css'
+import BottomNav from '../../components/common/BottomNav'
+import Header from '../../components/common/Header'
+import '../../styles/Tailwind.css'
 
 function Community() {
   return (

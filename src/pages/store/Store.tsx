@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import Header from '../components/common/Header'
-import BottomNav from '../components/common/BottomNav'
-import StoreMain from '../components/store/StoreMain'
-import StoreDetail from '../components/store/StoreDetail'
-import '../styles/Tailwind.css'
+import Header from '../../components/common/Header'
+import BottomNav from '../../components/common/BottomNav'
+import StoreMain from '../../components/store/StoreMain'
+import StoreDetail from '../../components/store/StoreDetail'
+import '../../styles/Tailwind.css'
 
 type View = 'home' | 'detail'
 
@@ -25,10 +25,7 @@ function Store() {
       <div className="home-screen">
         <Header />
 
-        <div style={{
-          position: 'absolute', top: 92, bottom: 64,
-          left: 0, right: 0, overflowY: 'auto',
-        }}>
+        <div className="page-scroll">
           {view === 'home'
             ? <StoreMain onSelect={handleSelect} />
             : <StoreDetail productId={selectedId} onBack={handleBack} onSelectProduct={handleSelect} />

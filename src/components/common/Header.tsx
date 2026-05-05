@@ -1,36 +1,14 @@
 import '../../styles/Header.css'
-
-function BellIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M18 16.3H6c1.2-1.3 1.7-3.3 1.7-6a4.3 4.3 0 0 1 8.6 0c0 2.7.5 4.7 1.7 6Z" />
-      <path d="M10.1 18.5a2.1 2.1 0 0 0 3.8 0" />
-    </svg>
-  )
-}
-
-function ShareIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="18" cy="5.6" r="2.5" />
-      <circle cx="6" cy="12" r="2.5" />
-      <circle cx="18" cy="18.4" r="2.5" />
-      <path d="m8.3 10.9 7.4-4.1M8.3 13.1l7.4 4.1" />
-    </svg>
-  )
-}
+import batteryIcon from '../../assets/images/bar_battery.png'
+import signalIcon from '../../assets/images/siginal.png'
+import wifiIcon from '../../assets/images/wifi.png'
 
 function StatusIcons() {
   return (
     <div className="app-header__status-icons">
-      <span className="app-header__signal">
-        <i />
-        <i />
-        <i />
-        <i />
-      </span>
-      <span className="app-header__wifi" />
-      <span className="app-header__battery">80</span>
+      <img className="app-header__status-icon app-header__status-icon--signal" src={signalIcon} alt="" aria-hidden="true" />
+      <img className="app-header__status-icon app-header__status-icon--wifi" src={wifiIcon} alt="" aria-hidden="true" />
+      <img className="app-header__status-icon app-header__status-icon--battery" src={batteryIcon} alt="" aria-hidden="true" />
     </div>
   )
 }
@@ -39,24 +17,13 @@ type HeaderProps = {
   showActions?: boolean
 }
 
-function Header({ showActions = false }: HeaderProps) {
+function Header(_props: HeaderProps) {
   return (
     <header className="app-header">
       <div className="app-header__status" aria-hidden="true">
-        <span>9:41</span>
+        <span className="app-header__time">9:41</span>
         <StatusIcons />
       </div>
-
-      {showActions && (
-        <div className="app-header__actions" aria-label="상단 빠른 메뉴">
-          <button type="button" aria-label="알림">
-            <BellIcon />
-          </button>
-          <button type="button" aria-label="공유">
-            <ShareIcon />
-          </button>
-        </div>
-      )}
     </header>
   )
 }
