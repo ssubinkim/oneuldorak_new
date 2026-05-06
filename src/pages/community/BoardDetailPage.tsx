@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import BoardContent, { type BoardDetailPost } from '../../components/community/boarddetailpage/BoardContent'
 import type { BoardComment } from '../../components/community/boarddetailpage/CommentItem'
 import CommentSection from '../../components/community/boarddetailpage/CommentSection'
@@ -8,6 +8,7 @@ import './BoardDetailPage.css'
 type BoardDetailPageProps = {
   postId: string | null
   onBack: () => void
+  onOpenPost: (postId: string) => void
 }
 
 const boardPosts: BoardDetailPost[] = [
@@ -105,12 +106,6 @@ const initialComments: BoardComment[] = [
   { user: '절약왕', timeAgo: '2시간 전', text: '저도 비슷하게 하는데 진짜 효과 좋아요!' },
 ]
 
-const relatedPosts = [
-  { title: '냉장고에 양배추만 남았는데 뭐 해먹을까요?', comments: 32 },
-  { title: '매일 도시락 싸는 게 힘들어요', comments: 41 },
-  { title: '도시락 용기 추천 부탁드려요', comments: 15 },
-]
-
 function BoardDetailIcon({ kind }: { kind: 'share' | 'bookmark' }) {
   if (kind === 'share') {
     return (
@@ -130,9 +125,23 @@ function BoardDetailIcon({ kind }: { kind: 'share' | 'bookmark' }) {
   )
 }
 
-function BoardDetailPage({ postId, onBack }: BoardDetailPageProps) {
-  const post = boardPosts.find((item) => item.id === postId) ?? boardPosts[1]
-  const [commentList, setCommentList] = useState(initialComments)
+function BoardDetailPage({ postId, onBack, onOpenPost }: BoardDetailPageProps) {
+  const pageRef = useRef<HTMLElement | null>(null)
+  const currentPostId = postId ?? boardPosts[1].id
+  const post = boardPosts.find((item) => item.id === currentPostId) ?? boardPosts[1]
+  const [commentsByPostId, setCommentsByPostId] = useState<Record<string, BoardComment[]>>({})
+  const commentList = commentsByPostId[currentPostId] ?? initialComments
+  const relatedPosts = boardPosts
+    .filter((item) => item.id !== post.id)
+    .map((item) => ({
+      id: item.id,
+      title: item.title,
+      comments: item.comments,
+    }))
+
+  useEffect(() => {
+    pageRef.current?.scrollTo({ top: 0, behavior: 'auto' })
+  }, [currentPostId])
 
   const handleAddComment = (text: string) => {
     const trimmedText = text.trim()
@@ -141,14 +150,21 @@ function BoardDetailPage({ postId, onBack }: BoardDetailPageProps) {
       return
     }
 
-    setCommentList((prevComments) => [
-      { user: '나', timeAgo: '방금 전', text: trimmedText },
-      ...prevComments,
-    ])
+    setCommentsByPostId((prevCommentsByPostId) => ({
+      ...prevCommentsByPostId,
+      [currentPostId]: [
+        { user: '나', timeAgo: '방금 전', text: trimmedText },
+        ...(prevCommentsByPostId[currentPostId] ?? initialComments),
+      ],
+    }))
+  }
+
+  const handleOpenRelatedBoard = (nextPostId: string) => {
+    onOpenPost(nextPostId)
   }
 
   return (
-    <main className="page-scroll board-detail-page">
+    <main className="page-scroll board-detail-page" ref={pageRef}>
       <section className="board-detail-topbar">
         <button type="button" aria-label="자유게시판 목록으로 돌아가기" onClick={onBack}>
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -170,7 +186,10 @@ function BoardDetailPage({ postId, onBack }: BoardDetailPageProps) {
 
         <CommentSection comments={commentList} onAddComment={handleAddComment} />
 
-        <RelatedBoards items={relatedPosts} />
+        <RelatedBoards
+          items={relatedPosts}
+          onSelectBoard={handleOpenRelatedBoard}
+        />
       </section>
     </main>
   )

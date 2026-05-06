@@ -1,6 +1,11 @@
 import RelatedBoardItem, { type RelatedBoard } from './RelatedBoardItem'
 
-function RelatedBoards({ items }: { items: RelatedBoard[] }) {
+type RelatedBoardsProps = {
+  items: RelatedBoard[]
+  onSelectBoard: (postId: string) => void
+}
+
+function RelatedBoards({ items, onSelectBoard }: RelatedBoardsProps) {
   return (
     <section className="board-detail-related">
       <h2>관련 글</h2>
@@ -9,6 +14,7 @@ function RelatedBoards({ items }: { items: RelatedBoard[] }) {
           <RelatedBoardItem
             key={item.title}
             item={item}
+            onSelectBoard={onSelectBoard}
           />
         ))}
       </div>
