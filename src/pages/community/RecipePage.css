@@ -213,26 +213,6 @@
 .recipe-page__fab {
   position: absolute;
   right: 16px;
-  bottom: 16px;
-  z-index: 5;
-  display: grid;
-  place-items: center;
-  width: 56px;
-  height: 56px;
-  padding: 0;
-  color: #fff;
-  background: #000;
-  border: 0;
-  border-radius: 50%;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
-}
-
-.recipe-page__fab svg {
-  width: 23px;
-  height: 23px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  bottom: 80px;
+  z-index: 35;
 }

@@ -1,0 +1,33 @@
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  margin-top: 14px;
+  padding: 0 12px;
+  background: #f0f1f4;
+  border: 1px solid #e9eaf0;
+  border-radius: 10px;
+}
+
+.search-bar svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: #a6acb6;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.search-bar input {
+  flex: 1;
+  color: #2f3440;
+  background: transparent;
+  border: 0;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-bar input::placeholder {
+  color: #a4aab4;
+}
