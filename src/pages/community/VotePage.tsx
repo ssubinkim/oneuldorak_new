@@ -1,4 +1,4 @@
-import CommunityTabs from '../../components/community/CommunityTabs'
+import CommunityTabs from '../../components/community/common/CommunityTabs'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './VotePage.css'
 

@@ -1,4 +1,4 @@
-import type { CommunityTabRoute } from '../../pages/community/CommunityTabRoute'
+import type { CommunityTabRoute } from '../../../pages/community/CommunityTabRoute'
 import NavLink from './NavLink'
 
 type CommunityTabsProps = {

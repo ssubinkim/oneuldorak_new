@@ -1,5 +1,5 @@
-import CommunityWriteButton from '../../components/community/CommunityWriteButton'
-import CommunityTabs from '../../components/community/CommunityTabs'
+import CommunityWriteButton from '../../components/community/common/CommunityWriteButton'
+import CommunityTabs from '../../components/community/common/CommunityTabs'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './BoardPage.css'
 
