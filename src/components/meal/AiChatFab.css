@@ -1,0 +1,35 @@
+.fab-chips {
+  position: absolute;
+  bottom: 90px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+  z-index: 99;
+}
+
+.fab-chip {
+  background: #1a1a2e;
+  color: #fff;
+  font-size: 12px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.fab-btn {
+  position: absolute;
+  bottom: 80px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #1a1a2e;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  font-size: 26px;
+  z-index: 100;
+}

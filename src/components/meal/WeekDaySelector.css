@@ -1,0 +1,81 @@
+.week-day-selector {
+  padding: 16px 16px 0;
+}
+
+.month-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.month-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.cal-toggle {
+  font-size: 12px;
+  color: #555;
+}
+
+.calendar-dropdown {
+  background: #f2f2f2;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 12px;
+}
+
+.calendar-title {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.calendar-placeholder {
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+}
+
+.day-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 12px;
+  gap: 4px;
+}
+
+.day-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.day-name {
+  font-size: 11px;
+  color: #aaa;
+}
+
+.day-date {
+  font-size: 15px;
+  font-weight: 500;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #333;
+}
+
+.day-date.active {
+  font-weight: 700;
+  background: #111;
+  color: #fff;
+}
