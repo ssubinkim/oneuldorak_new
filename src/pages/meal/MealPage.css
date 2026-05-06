@@ -1,12 +1,13 @@
-.storage-page {
-  padding: 16px;
+/* ===== 메인: 내 재료 보관함 ===== */
+.storage-main {
+  padding-bottom: 16px;
 }
 
 .storage-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  padding: 16px 16px 12px;
 }
 
 .storage-title {
@@ -16,42 +17,116 @@
 }
 
 .storage-add-btn {
-  background: #f0f0f0;
+  background: #eeeeee;
   border: none;
   border-radius: 20px;
-  padding: 8px 14px;
+  padding: 7px 14px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
+  color: #333;
+}
+
+/* 캐러셀 */
+.storage-carousel-wrapper {
+  margin: 0 16px 16px;
+  overflow: hidden;
+}
+
+.storage-carousel-track {
+  display: flex;
+  transition: transform 0.35s ease;
+  cursor: grab;
+  user-select: none;
+}
+
+.storage-carousel-track:active {
+  cursor: grabbing;
+}
+
+.storage-carousel-card {
+  flex-shrink: 0;
+  width: 100%;
+  height: 170px;
+  background: #b0b0b0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+}
+
+.storage-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.storage-carousel-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ccc;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.storage-carousel-dot.active {
+  background: #555;
+}
+
+.storage-recipe-desc {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.storage-recipe-name {
+  font-size: 14px;
+  font-weight: 500;
+  text-align: right;
+  margin: 0;
+}
+
+/* 재료 미리보기 */
+.storage-ingredients-section {
+  padding: 0 16px;
 }
 
 .storage-date {
   font-size: 13px;
   color: #888;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-.storage-grid {
+.storage-preview-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 16px 8px;
+  gap: 12px 8px;
+  margin-bottom: 14px;
 }
 
 .storage-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 
 .storage-item-emoji {
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  font-size: 26px;
   border: 2.5px solid transparent;
 }
 
@@ -66,4 +141,247 @@
 .storage-item-name {
   font-size: 12px;
   color: #333;
+}
+
+.storage-see-all-btn {
+  width: 100%;
+  background: #dedad4;
+  border: none;
+  border-radius: 24px;
+  padding: 13px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #333;
+}
+
+/* ===== 하단 캐러셀 섹션 ===== */
+.storage-bottom-section {
+  background: #f0ebe3;
+  margin-top: 16px;
+  padding: 14px 0 14px;
+  overflow: hidden;
+}
+
+.storage-bottom-track {
+  display: flex;
+  align-items: stretch;
+  transition: transform 0.35s ease;
+  cursor: grab;
+  user-select: none;
+}
+
+.storage-bottom-track:active {
+  cursor: grabbing;
+}
+
+.storage-bottom-panel {
+  flex-shrink: 0;
+  width: 100%;
+  padding: 0 14px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.storage-bottom-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+/* 장보기 체크리스트 */
+.storage-checklist-card {
+  flex: 1;
+  background: white;
+  border-radius: 14px;
+  padding: 12px 10px;
+}
+
+.storage-checklist-title {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 0 3px;
+}
+
+.storage-checklist-date {
+  font-size: 10px;
+  color: #888;
+  margin: 0 0 8px;
+}
+
+.storage-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.storage-checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #333;
+  cursor: pointer;
+}
+
+.storage-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #aaa;
+  border-radius: 3px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storage-checkbox.is-checked {
+  background: #555;
+  border-color: #555;
+  position: relative;
+}
+
+.storage-checkbox.is-checked::after {
+  content: '';
+  width: 4px;
+  height: 8px;
+  border: 2px solid white;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+  position: absolute;
+  top: 1px;
+  left: 4px;
+}
+
+.storage-checklist-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 가능한 요리 목록 */
+.storage-recipes-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.storage-recipe-row {
+  background: white;
+  border-radius: 12px;
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.storage-recipe-img-placeholder {
+  width: 54px;
+  height: 54px;
+  border-radius: 8px;
+  background: #b0b0b0;
+  flex-shrink: 0;
+}
+
+.storage-recipe-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.storage-recipe-row-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+
+.storage-recipe-row-type {
+  font-size: 10px;
+  color: #888;
+  margin: 0 0 2px;
+}
+
+.storage-recipe-row-tags {
+  font-size: 10px;
+  color: #aaa;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 오늘의 추천 재료 */
+.storage-recommend-card {
+  flex: 1;
+  background: white;
+  border-radius: 14px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.storage-recommend-title {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+.storage-recommend-img-placeholder {
+  width: 100%;
+  height: 130px;
+  background: #b0b0b0;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.storage-recommend-name {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  text-align: center;
+}
+
+.storage-recommend-desc {
+  font-size: 10px;
+  color: #555;
+  text-align: center;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ===== 전체 재료 보기 페이지 ===== */
+.storage-page {
+  padding: 16px;
+}
+
+.storage-all-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.storage-back-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #555;
+  padding: 0;
+}
+
+.storage-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px 8px;
 }
