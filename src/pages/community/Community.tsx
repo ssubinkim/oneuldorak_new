@@ -151,6 +151,7 @@ function Community() {
           <BoardDetailPage
             postId={selectedBoardId}
             onBack={() => setView('free')}
+            onOpenPost={handleOpenBoardDetail}
           />
         )}
 
