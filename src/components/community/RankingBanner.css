@@ -1,0 +1,39 @@
+.ranking-banner {
+  margin-top: 14px;
+  padding: 16px;
+  background: #f5eada;
+  border: 1px solid #f0d7b8;
+  border-radius: 12px;
+}
+
+.ranking-banner__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  text-align: left;
+}
+
+.ranking-banner h2 {
+  margin: 0;
+  color: #1f232d;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.ranking-banner p {
+  margin: 8px 0 0;
+  color: #767d88;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.ranking-banner span {
+  color: #686f7c;
+  font-size: 20px;
+  font-weight: 500;
+}

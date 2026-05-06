@@ -1,3 +1,4 @@
+import CommunityWriteButton from '../../components/community/CommunityWriteButton'
 import NavLink from '../../components/community/NavLink'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './RecipePage.css'
@@ -93,95 +94,92 @@ function RecipeActionIcon({ kind }: { kind: 'heart' | 'comment' | 'bookmark' }) 
 
 function RecipePage({ onBack, onSelectTab, onOpenDetail }: RecipePageProps) {
   return (
-    <main className="page-scroll recipe-page">
-      <section className="recipe-page__title-bar">
-        <button type="button" aria-label="커뮤니티로 돌아가기" onClick={onBack}>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m14.7 5.6-6.2 6.2 6.2 6.2" />
-          </svg>
-        </button>
-        <h1>레시피 공유</h1>
-      </section>
-
-      <div className="recipe-page__tabs" role="tablist" aria-label="커뮤니티 카테고리">
-        {tabs.map((tab) => (
-          <NavLink
-            key={tab.id}
-            label={tab.label}
-            isActive={tab.id === 'recipe'}
-            onClick={() => onSelectTab(tab.id)}
-          />
-        ))}
-      </div>
-
-      <div className="recipe-page__filters">
-        {filters.map((filter, index) => (
-          <button type="button" key={filter} className={index === 0 ? 'is-active' : undefined}>
-            {filter}
+    <>
+      <main className="page-scroll recipe-page">
+        <section className="recipe-page__title-bar">
+          <button type="button" aria-label="커뮤니티로 돌아가기" onClick={onBack}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m14.7 5.6-6.2 6.2 6.2 6.2" />
+            </svg>
           </button>
-        ))}
-      </div>
+          <h1>레시피 공유</h1>
+        </section>
 
-      <section className="recipe-page__list" aria-label="레시피 목록">
-        {recipeItems.map((item) => (
-          <article
-            className="recipe-share-card"
-            key={item.id}
-            role="button"
-            tabIndex={0}
-            onClick={() => onOpenDetail(item.id)}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault()
-                onOpenDetail(item.id)
-              }
-            }}
-          >
-            <div className="recipe-share-card__thumb" aria-hidden="true">
-              썸네일
-            </div>
+        <div className="recipe-page__tabs" role="tablist" aria-label="커뮤니티 카테고리">
+          {tabs.map((tab) => (
+            <NavLink
+              key={tab.id}
+              label={tab.label}
+              isActive={tab.id === 'recipe'}
+              onClick={() => onSelectTab(tab.id)}
+            />
+          ))}
+        </div>
 
-            <div className="recipe-share-card__content">
-              <div className="recipe-share-card__title-row">
-                <h2>{item.title}</h2>
-                {item.highlight && <span>↗</span>}
+        <div className="recipe-page__filters">
+          {filters.map((filter, index) => (
+            <button type="button" key={filter} className={index === 0 ? 'is-active' : undefined}>
+              {filter}
+            </button>
+          ))}
+        </div>
+
+        <section className="recipe-page__list" aria-label="레시피 목록">
+          {recipeItems.map((item) => (
+            <article
+              className="recipe-share-card"
+              key={item.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => onOpenDetail(item.id)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  onOpenDetail(item.id)
+                }
+              }}
+            >
+              <div className="recipe-share-card__thumb" aria-hidden="true">
+                썸네일
               </div>
-              <p className="recipe-share-card__subtitle">{item.subtitle}</p>
 
-              <div className="recipe-share-card__badges">
-                <span className="is-price">{item.price}</span>
-                <span>{item.time}</span>
-                <span>{item.level}</span>
-              </div>
+              <div className="recipe-share-card__content">
+                <div className="recipe-share-card__title-row">
+                  <h2>{item.title}</h2>
+                  {item.highlight && <span>↗</span>}
+                </div>
+                <p className="recipe-share-card__subtitle">{item.subtitle}</p>
 
-              <div className="recipe-share-card__meta-row">
-                <small>{item.tag}</small>
-                <div className="recipe-share-card__actions" aria-label="반응 통계">
-                  <div>
-                    <RecipeActionIcon kind="heart" />
-                    {item.likes}
-                  </div>
-                  <div>
-                    <RecipeActionIcon kind="comment" />
-                    {item.comments}
-                  </div>
-                  <div>
-                    <RecipeActionIcon kind="bookmark" />
+                <div className="recipe-share-card__badges">
+                  <span className="is-price">{item.price}</span>
+                  <span>{item.time}</span>
+                  <span>{item.level}</span>
+                </div>
+
+                <div className="recipe-share-card__meta-row">
+                  <small>{item.tag}</small>
+                  <div className="recipe-share-card__actions" aria-label="반응 통계">
+                    <div>
+                      <RecipeActionIcon kind="heart" />
+                      {item.likes}
+                    </div>
+                    <div>
+                      <RecipeActionIcon kind="comment" />
+                      {item.comments}
+                    </div>
+                    <div>
+                      <RecipeActionIcon kind="bookmark" />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </article>
-        ))}
-      </section>
+            </article>
+          ))}
+        </section>
+      </main>
 
-      <button className="recipe-page__fab" type="button" aria-label="글쓰기">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.5 19.5h4.2L19 9.1l-4.2-4.2L4.5 15.3v4.2Z" />
-          <path d="M12.8 6.9 17 11.1" />
-        </svg>
-      </button>
-    </main>
+      <CommunityWriteButton className="recipe-page__fab" aria-label="글쓰기" />
+    </>
   )
 }
 

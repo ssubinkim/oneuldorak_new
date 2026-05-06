@@ -1,0 +1,33 @@
+.community-write-button {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  color: #fff;
+  background: #050505;
+  border: 0;
+  border-radius: 50%;
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.32),
+    0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.community-write-button svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.community-write-button:active {
+  transform: translateY(1px);
+}
+
+.community-write-button:focus-visible {
+  outline: 2px solid #c5d4ff;
+  outline-offset: 3px;
+}
