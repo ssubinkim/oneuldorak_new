@@ -1,21 +1,13 @@
+import { useState } from 'react'
+import BoardContent, { type BoardDetailPost } from '../../components/community/boarddetailpage/BoardContent'
+import type { BoardComment } from '../../components/community/boarddetailpage/CommentItem'
+import CommentSection from '../../components/community/boarddetailpage/CommentSection'
+import RelatedBoards from '../../components/community/boarddetailpage/RelatedBoards'
 import './BoardDetailPage.css'
 
 type BoardDetailPageProps = {
   postId: string | null
   onBack: () => void
-}
-
-type BoardDetailPost = {
-  id: string
-  category: string
-  reward: string
-  title: string
-  author: string
-  timeAgo: string
-  likes: number
-  comments: number
-  paragraphs: string[]
-  methods: string[]
 }
 
 const boardPosts: BoardDetailPost[] = [
@@ -105,7 +97,7 @@ const boardPosts: BoardDetailPost[] = [
   },
 ]
 
-const comments = [
+const initialComments: BoardComment[] = [
   { user: '절약고수', timeAgo: '5분 전', text: '대단하시네요! 저도 따라해볼게요' },
   { user: '도시락러버', timeAgo: '30분 전', text: '꿀팁 감사합니다. 장보기 전에 계획 세우는 게 중요하더라고요' },
   { user: '요리초보', timeAgo: '1시간 전', text: '식비 20만원이면 정말 적게 쓰시네요' },
@@ -119,7 +111,7 @@ const relatedPosts = [
   { title: '도시락 용기 추천 부탁드려요', comments: 15 },
 ]
 
-function BoardDetailIcon({ kind }: { kind: 'share' | 'bookmark' | 'heart' | 'comment' }) {
+function BoardDetailIcon({ kind }: { kind: 'share' | 'bookmark' }) {
   if (kind === 'share') {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -131,31 +123,29 @@ function BoardDetailIcon({ kind }: { kind: 'share' | 'bookmark' | 'heart' | 'com
     )
   }
 
-  if (kind === 'bookmark') {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M7.1 4.8h9.8a1.4 1.4 0 0 1 1.4 1.4v13.9l-6.3-3.4-6.3 3.4V6.2a1.4 1.4 0 0 1 1.4-1.4Z" />
-      </svg>
-    )
-  }
-
-  if (kind === 'heart') {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M20.8 5.6a5 5 0 0 0-7 0L12 7.4l-1.7-1.8a5 5 0 0 0-7.1 7l1.8 1.8L12 21l7.1-6.6 1.7-1.8a5 5 0 0 0 0-7Z" />
-      </svg>
-    )
-  }
-
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M4.5 6.2h15a1.7 1.7 0 0 1 1.7 1.7v8.4a1.7 1.7 0 0 1-1.7 1.7H9.8L5.4 21V7.9a1.7 1.7 0 0 1 1.7-1.7Z" />
+      <path d="M7.1 4.8h9.8a1.4 1.4 0 0 1 1.4 1.4v13.9l-6.3-3.4-6.3 3.4V6.2a1.4 1.4 0 0 1 1.4-1.4Z" />
     </svg>
   )
 }
 
 function BoardDetailPage({ postId, onBack }: BoardDetailPageProps) {
   const post = boardPosts.find((item) => item.id === postId) ?? boardPosts[1]
+  const [commentList, setCommentList] = useState(initialComments)
+
+  const handleAddComment = (text: string) => {
+    const trimmedText = text.trim()
+
+    if (!trimmedText) {
+      return
+    }
+
+    setCommentList((prevComments) => [
+      { user: '나', timeAgo: '방금 전', text: trimmedText },
+      ...prevComments,
+    ])
+  }
 
   return (
     <main className="page-scroll board-detail-page">
@@ -176,79 +166,11 @@ function BoardDetailPage({ postId, onBack }: BoardDetailPageProps) {
       </section>
 
       <section className="board-detail-content">
-        <div className="board-detail-badges">
-          <span className="board-detail-badge board-detail-badge--category">{post.category}</span>
-          <span className="board-detail-badge board-detail-badge--trend">↗</span>
-          <span className="board-detail-badge board-detail-badge--reward">{post.reward}</span>
-        </div>
+        <BoardContent post={post} />
 
-        <h1>{post.title}</h1>
-        <p className="board-detail-meta">{post.author} · {post.timeAgo}</p>
+        <CommentSection comments={commentList} onAddComment={handleAddComment} />
 
-        <div className="board-detail-stats">
-          <span>
-            <BoardDetailIcon kind="heart" />
-            {post.likes}
-          </span>
-          <span>
-            <BoardDetailIcon kind="comment" />
-            {post.comments}
-          </span>
-        </div>
-
-        <div className="board-detail-body">
-          {post.paragraphs.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-
-          <section className="board-detail-method-box">
-            <h2>실천 방법</h2>
-            <ol>
-              {post.methods.map((method) => (
-                <li key={method}>{method}</li>
-              ))}
-            </ol>
-          </section>
-
-          <p>가장 중요한 건 계획을 세우는 거예요. 즉흥적으로 장을 보면 불필요한 게 많이 담기더라고요.</p>
-          <p>궁금한 점 있으시면 댓글 남겨주세요!</p>
-        </div>
-
-        <section className="board-detail-comments">
-          <div className="board-detail-comments__header">
-            <h2>댓글 5</h2>
-            <span>댓글 작성 시 1P 적립</span>
-          </div>
-
-          <div className="board-detail-comments__list">
-            {comments.map((comment) => (
-              <article key={`${comment.user}-${comment.timeAgo}`}>
-                <h3>
-                  {comment.user}
-                  <span>{comment.timeAgo}</span>
-                </h3>
-                <p>{comment.text}</p>
-              </article>
-            ))}
-          </div>
-
-          <div className="board-detail-comments__input">
-            <input type="text" placeholder="댓글을 입력하세요" />
-            <button type="button">작성</button>
-          </div>
-        </section>
-
-        <section className="board-detail-related">
-          <h2>관련 글</h2>
-          <div className="board-detail-related__list">
-            {relatedPosts.map((item) => (
-              <article key={item.title}>
-                <p>{item.title}</p>
-                <span>댓글 {item.comments}</span>
-              </article>
-            ))}
-          </div>
-        </section>
+        <RelatedBoards items={relatedPosts} />
       </section>
     </main>
   )
