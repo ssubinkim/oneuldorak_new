@@ -1,5 +1,5 @@
 import CommunityWriteButton from '../../components/community/CommunityWriteButton'
-import NavLink from '../../components/community/NavLink'
+import CommunityTabs from '../../components/community/CommunityTabs'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './RecipePage.css'
 
@@ -21,12 +21,6 @@ type RecipePageProps = {
   onSelectTab: (tab: CommunityTabRoute) => void
   onOpenDetail: (recipeId: string) => void
 }
-
-const tabs: { id: CommunityTabRoute; label: string }[] = [
-  { id: 'recipe', label: '레시피 공유' },
-  { id: 'free', label: '자유게시판' },
-  { id: 'vote', label: '투표' },
-]
 
 const filters = ['최신순', '인기순', '저예산', '10분 요리', '냉동 활용']
 
@@ -105,16 +99,11 @@ function RecipePage({ onBack, onSelectTab, onOpenDetail }: RecipePageProps) {
           <h1>레시피 공유</h1>
         </section>
 
-        <div className="recipe-page__tabs" role="tablist" aria-label="커뮤니티 카테고리">
-          {tabs.map((tab) => (
-            <NavLink
-              key={tab.id}
-              label={tab.label}
-              isActive={tab.id === 'recipe'}
-              onClick={() => onSelectTab(tab.id)}
-            />
-          ))}
-        </div>
+        <CommunityTabs
+          activeTab="recipe"
+          className="recipe-page__tabs"
+          onSelectTab={onSelectTab}
+        />
 
         <div className="recipe-page__filters">
           {filters.map((filter, index) => (
