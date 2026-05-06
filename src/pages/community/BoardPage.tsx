@@ -1,5 +1,5 @@
 import CommunityWriteButton from '../../components/community/CommunityWriteButton'
-import NavLink from '../../components/community/NavLink'
+import CommunityTabs from '../../components/community/CommunityTabs'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './BoardPage.css'
 
@@ -20,12 +20,6 @@ type BoardPageProps = {
   onSelectTab: (tab: CommunityTabRoute) => void
   onOpenDetail: (postId: string) => void
 }
-
-const tabs: { id: CommunityTabRoute; label: string }[] = [
-  { id: 'recipe', label: '레시피 공유' },
-  { id: 'free', label: '자유게시판' },
-  { id: 'vote', label: '투표' },
-]
 
 const chips = ['전체', '질문', '고민', '꿀팁', '냉장고 SO']
 
@@ -110,16 +104,11 @@ function BoardPage({ onBack, onSelectTab, onOpenDetail }: BoardPageProps) {
           <h1>자유게시판</h1>
         </section>
 
-        <div className="free-detail-tabs" role="tablist" aria-label="커뮤니티 카테고리">
-          {tabs.map((tab) => (
-            <NavLink
-              key={tab.id}
-              label={tab.label}
-              isActive={tab.id === 'free'}
-              onClick={() => onSelectTab(tab.id)}
-            />
-          ))}
-        </div>
+        <CommunityTabs
+          activeTab="free"
+          className="free-detail-tabs"
+          onSelectTab={onSelectTab}
+        />
 
         <div className="free-detail-chips">
           {chips.map((chip, index) => (

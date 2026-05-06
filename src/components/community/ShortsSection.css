@@ -2,16 +2,9 @@
   margin-top: 14px;
 }
 
-.shorts-section h2 {
-  margin: 0 0 10px;
-  color: #1f232d;
-  font-size: 15px;
-  font-weight: 800;
-}
-
 .shorts-section__scroll {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -21,70 +14,69 @@
 }
 
 .shorts-card {
-  width: 110px;
+  width: 120px;
   overflow: hidden;
   background: #fff;
-  border: 1px solid #e8e9ef;
-  border-radius: 8px;
+  border: 1px solid #e9e9e9;
+  border-radius: 0;
 }
 
 .shorts-card__thumbnail {
   position: relative;
-  height: 86px;
-  background: linear-gradient(135deg, #cfd3da, #9fa7b3);
+  height: 112px;
+  background: #b9b9b9;
 }
 
-.shorts-card__play {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  color: #fff;
-  background: rgba(31, 35, 45, 0.72);
-  border: 0;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.shorts-card__play svg {
-  width: 18px;
-  height: 18px;
-  fill: currentColor;
-}
-
-.shorts-card__duration {
+.shorts-card__overlay {
   position: absolute;
   right: 6px;
-  bottom: 6px;
-  padding: 2px 5px;
+  bottom: 9px;
+  left: 6px;
   color: #fff;
-  background: rgba(31, 35, 45, 0.78);
-  border-radius: 4px;
+}
+
+.shorts-card__overlay h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.shorts-card__overlay p {
+  margin: 5px 0 0;
   font-size: 9px;
   font-weight: 700;
+  line-height: 1.2;
 }
 
 .shorts-card__body {
-  padding: 8px 7px;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 6px;
+  align-items: center;
+  min-height: 48px;
+  padding: 6px 5px;
 }
 
-.shorts-card__body h3 {
-  min-height: 28px;
-  margin: 0;
-  color: #252a33;
-  font-size: 11px;
+.shorts-card__avatar {
+  width: 28px;
+  height: 28px;
+  background: #9f9f9f;
+  border-radius: 50%;
+}
+
+.shorts-card__body strong {
+  display: block;
+  color: #7c7c7c;
+  font-size: 9px;
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .shorts-card__body p {
-  margin: 5px 0 0;
-  color: #8f94a2;
-  font-size: 10px;
+  margin: 4px 0 0;
+  color: #777;
+  font-size: 7px;
   font-weight: 600;
+  line-height: 1.2;
 }

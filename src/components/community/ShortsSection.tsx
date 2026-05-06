@@ -3,28 +3,31 @@ import './ShortsSection.css'
 type ShortsItem = {
   id: string
   title: string
-  duration: string
+  hash: string
+  author: string
   views: string
+  timeAgo: string
 }
 
 type ShortsSectionProps = {
   shorts: ShortsItem[]
 }
 
-function ShortsCard({ title, duration, views }: ShortsItem) {
+function ShortsCard({ title, hash, author, views, timeAgo }: ShortsItem) {
   return (
     <article className="shorts-card">
       <div className="shorts-card__thumbnail">
-        <button type="button" className="shorts-card__play" aria-label={`${title} 재생`}>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M9 7.5v9l7-4.5-7-4.5Z" />
-          </svg>
-        </button>
-        <span className="shorts-card__duration">{duration}</span>
+        <div className="shorts-card__overlay">
+          <h3>{title}</h3>
+          <p>{hash}</p>
+        </div>
       </div>
       <div className="shorts-card__body">
-        <h3>{title}</h3>
-        <p>{views}</p>
+        <span className="shorts-card__avatar" aria-hidden="true" />
+        <div>
+          <strong>{author}</strong>
+          <p>{views} · {timeAgo}</p>
+        </div>
       </div>
     </article>
   )
@@ -32,16 +35,17 @@ function ShortsCard({ title, duration, views }: ShortsItem) {
 
 function ShortsSection({ shorts }: ShortsSectionProps) {
   return (
-    <section className="shorts-section" aria-labelledby="shorts-section-title">
-      <h2 id="shorts-section-title">쇼츠</h2>
+    <section className="shorts-section" aria-label="쇼츠 영상">
       <div className="shorts-section__scroll" role="list" aria-label="쇼츠 영상 목록">
         {shorts.map((item) => (
           <div role="listitem" key={item.id}>
             <ShortsCard
               id={item.id}
               title={item.title}
-              duration={item.duration}
+              hash={item.hash}
+              author={item.author}
               views={item.views}
+              timeAgo={item.timeAgo}
             />
           </div>
         ))}

@@ -1,4 +1,4 @@
-import NavLink from '../../components/community/NavLink'
+import CommunityTabs from '../../components/community/CommunityTabs'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './VotePage.css'
 
@@ -23,12 +23,6 @@ type VoteCard = {
   remaining: string
   options: string[]
 }
-
-const tabs: { id: CommunityTabRoute; label: string }[] = [
-  { id: 'recipe', label: '레시피 공유' },
-  { id: 'free', label: '자유게시판' },
-  { id: 'vote', label: '투표' },
-]
 
 const seasonalVoteOptions: VoteOption[] = [
   { label: '비빔밥', percent: 34.7 },
@@ -96,16 +90,11 @@ function VotePage({ onBack, onSelectTab }: VotePageProps) {
         <h1>투표</h1>
       </section>
 
-      <div className="vote-page-tabs" role="tablist" aria-label="커뮤니티 카테고리">
-        {tabs.map((tab) => (
-          <NavLink
-            key={tab.id}
-            label={tab.label}
-            isActive={tab.id === 'vote'}
-            onClick={() => onSelectTab(tab.id)}
-          />
-        ))}
-      </div>
+      <CommunityTabs
+        activeTab="vote"
+        className="vote-page-tabs"
+        onSelectTab={onSelectTab}
+      />
 
       <div className="vote-page-filters">
         <button type="button" className="is-active">진행 중</button>

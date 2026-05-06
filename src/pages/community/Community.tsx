@@ -3,6 +3,7 @@ import BottomNav from '../../components/common/BottomNav'
 import BoardDetailPage from './BoardDetailPage'
 import BoardPage from './BoardPage'
 import type { CommunityTabRoute } from './CommunityTabRoute'
+import CommunityTabs from '../../components/community/CommunityTabs'
 import Header from '../../components/common/Header'
 import PopularPosts from '../../components/community/PopularPosts'
 import RankingBanner from '../../components/community/RankingBanner'
@@ -18,12 +19,6 @@ import './Community.css'
 
 type CommunityTab = CommunityTabRoute
 
-const communityTabs: { id: CommunityTab; label: string }[] = [
-  { id: 'recipe', label: '레시피 공유' },
-  { id: 'free', label: '자유게시판' },
-  { id: 'vote', label: '투표' },
-]
-
 const hotPosts = [
   { title: '3000원으로 만드는 도시락', likes: 100, comments: 35 },
   { title: '냉동실 파먹기 레시피', likes: 80, comments: 25 },
@@ -31,9 +26,30 @@ const hotPosts = [
 ]
 
 const shortsItems = [
-  { id: 'shorts-1', title: '초간단 주먹밥', duration: '0:45', views: '조회수 57만회' },
-  { id: 'shorts-2', title: '냉털 도시락 싸기', duration: '1:08', views: '조회수 23만회' },
-  { id: 'shorts-3', title: '5분 볶음밥 루틴', duration: '0:52', views: '조회수 18만회' },
+  {
+    id: 'shorts-1',
+    title: '초간단 주먹밥',
+    hash: '#직장인 #10분 컷',
+    author: '도시락킹',
+    views: '조회수 57만회',
+    timeAgo: '2년전',
+  },
+  {
+    id: 'shorts-2',
+    title: '냉털 도시락 싸기',
+    hash: '#냉장고 #알뜰식단',
+    author: '알뜰이',
+    views: '조회수 23만회',
+    timeAgo: '1년전',
+  },
+  {
+    id: 'shorts-3',
+    title: '5분 볶음밥 루틴',
+    hash: '#간단요리 #점심',
+    author: '요리초보',
+    views: '조회수 18만회',
+    timeAgo: '8개월전',
+  },
 ]
 
 function Community() {
@@ -87,20 +103,12 @@ function Community() {
               <SearchBar id="community-search-input" placeholder="검색" />
             </section>
 
-            <div className="community-tabs" role="tablist" aria-label="커뮤니티 카테고리">
-              {communityTabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  role="tab"
-                  className={tab.id === 'recipe' ? 'community-tab--recipe' : undefined}
-                  aria-selected={activeTab === tab.id}
-                  onClick={() => handleTabClick(tab.id)}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
+            <CommunityTabs
+              activeTab={activeTab}
+              className="community-tabs"
+              mutedRecipe
+              onSelectTab={handleTabClick}
+            />
 
             <div className="community-content">
               <PopularPosts posts={hotPosts} />
