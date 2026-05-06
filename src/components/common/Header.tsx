@@ -1,7 +1,7 @@
 import './Header.css'
-import batteryIcon from '../../assets/images/bar_battery.png'
-import signalIcon from '../../assets/images/siginal.png'
-import wifiIcon from '../../assets/images/wifi.png'
+import batteryIcon from '../../assets/images/Battery.png'
+import signalIcon from '../../assets/images/CellularConnection.png'
+import wifiIcon from '../../assets/images/Wifi.png'
 
 function StatusIcons() {
   return (
@@ -13,11 +13,7 @@ function StatusIcons() {
   )
 }
 
-type HeaderProps = {
-  showActions?: boolean
-}
-
-function Header(_props: HeaderProps) {
+function Header() {
   return (
     <header className="app-header">
       <div className="app-header__status" aria-hidden="true">
