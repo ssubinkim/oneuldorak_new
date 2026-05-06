@@ -1,0 +1,26 @@
+.menu-tab-switch {
+  display: flex;
+  margin: 16px 16px 0;
+  background: #f4f4f4;
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.menu-tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 8px;
+  color: #888;
+  background: transparent;
+}
+
+.menu-tab-item.active {
+  font-weight: 700;
+  color: #111;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
