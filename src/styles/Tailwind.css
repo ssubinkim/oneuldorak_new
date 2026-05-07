@@ -1,6 +1,87 @@
+:root {
+  --color-bg: #ffffff;
+  --color-bg-sub: #fffde7;
+  --color-text-main: #1a1a1a;
+  --color-text-sub: #313131;
+  --color-disabled: #9a9a9a;
+
+  --color-primary: #ffd515;
+  --color-primary-rgb: 255 213 21;
+  --color-primary-100: rgb(var(--color-primary-rgb) / 100%);
+  --color-primary-90: rgb(var(--color-primary-rgb) / 90%);
+  --color-primary-80: rgb(var(--color-primary-rgb) / 80%);
+  --color-primary-70: rgb(var(--color-primary-rgb) / 70%);
+  --color-primary-60: rgb(var(--color-primary-rgb) / 60%);
+  --color-primary-50: rgb(var(--color-primary-rgb) / 50%);
+  --color-primary-40: rgb(var(--color-primary-rgb) / 40%);
+  --color-primary-30: rgb(var(--color-primary-rgb) / 30%);
+  --color-primary-20: rgb(var(--color-primary-rgb) / 20%);
+  --color-primary-10: rgb(var(--color-primary-rgb) / 10%);
+
+  --color-secondary: #ffdb78;
+  --color-secondary-rgb: 255 219 120;
+  --color-secondary-100: rgb(var(--color-secondary-rgb) / 100%);
+  --color-secondary-90: rgb(var(--color-secondary-rgb) / 90%);
+  --color-secondary-80: rgb(var(--color-secondary-rgb) / 80%);
+  --color-secondary-70: rgb(var(--color-secondary-rgb) / 70%);
+  --color-secondary-60: rgb(var(--color-secondary-rgb) / 60%);
+  --color-secondary-50: rgb(var(--color-secondary-rgb) / 50%);
+  --color-secondary-40: rgb(var(--color-secondary-rgb) / 40%);
+  --color-secondary-30: rgb(var(--color-secondary-rgb) / 30%);
+  --color-secondary-20: rgb(var(--color-secondary-rgb) / 20%);
+  --color-secondary-10: rgb(var(--color-secondary-rgb) / 10%);
+
+  --color-tertiary: #fffbea;
+  --color-tertiary-rgb: 255 251 234;
+  --color-tertiary-100: rgb(var(--color-tertiary-rgb) / 100%);
+  --color-tertiary-90: rgb(var(--color-tertiary-rgb) / 90%);
+  --color-tertiary-80: rgb(var(--color-tertiary-rgb) / 80%);
+  --color-tertiary-70: rgb(var(--color-tertiary-rgb) / 70%);
+  --color-tertiary-60: rgb(var(--color-tertiary-rgb) / 60%);
+  --color-tertiary-50: rgb(var(--color-tertiary-rgb) / 50%);
+  --color-tertiary-40: rgb(var(--color-tertiary-rgb) / 40%);
+  --color-tertiary-30: rgb(var(--color-tertiary-rgb) / 30%);
+  --color-tertiary-20: rgb(var(--color-tertiary-rgb) / 20%);
+  --color-tertiary-10: rgb(var(--color-tertiary-rgb) / 10%);
+
+  --color-status-emphasis: #ef5246;
+  --color-status-emphasis-rgb: 239 82 70;
+  --color-status-emphasis-100: rgb(var(--color-status-emphasis-rgb) / 100%);
+  --color-status-emphasis-90: rgb(var(--color-status-emphasis-rgb) / 90%);
+  --color-status-emphasis-80: rgb(var(--color-status-emphasis-rgb) / 80%);
+  --color-status-emphasis-70: rgb(var(--color-status-emphasis-rgb) / 70%);
+  --color-status-emphasis-60: rgb(var(--color-status-emphasis-rgb) / 60%);
+  --color-status-emphasis-50: rgb(var(--color-status-emphasis-rgb) / 50%);
+  --color-status-emphasis-40: rgb(var(--color-status-emphasis-rgb) / 40%);
+  --color-status-emphasis-30: rgb(var(--color-status-emphasis-rgb) / 30%);
+  --color-status-emphasis-20: rgb(var(--color-status-emphasis-rgb) / 20%);
+  --color-status-emphasis-10: rgb(var(--color-status-emphasis-rgb) / 10%);
+
+  --color-status-success: #0248ff;
+  --color-status-success-rgb: 2 72 255;
+  --color-status-success-100: rgb(var(--color-status-success-rgb) / 100%);
+  --color-status-success-90: rgb(var(--color-status-success-rgb) / 90%);
+  --color-status-success-80: rgb(var(--color-status-success-rgb) / 80%);
+  --color-status-success-70: rgb(var(--color-status-success-rgb) / 70%);
+  --color-status-success-60: rgb(var(--color-status-success-rgb) / 60%);
+  --color-status-success-50: rgb(var(--color-status-success-rgb) / 50%);
+  --color-status-success-40: rgb(var(--color-status-success-rgb) / 40%);
+  --color-status-success-30: rgb(var(--color-status-success-rgb) / 30%);
+  --color-status-success-20: rgb(var(--color-status-success-rgb) / 20%);
+  --color-status-success-10: rgb(var(--color-status-success-rgb) / 10%);
+}
+
+html,
+body,
+#root {
+  min-width: 320px;
+  min-height: 100%;
+}
+
 body {
   margin: 0;
-  background: #f2f2f2;
+  overflow-x: hidden;
+  background: var(--color-bg);
 }
 
 button,
@@ -13,30 +94,34 @@ button {
 }
 
 .app-shell {
-  --screen-width: 390px;
-  --screen-height: 844px;
+  --screen-min-width: 320px;
+  --screen-max-width: 768px;
+  --header-height: 44px;
+  --bottom-nav-height: 64px;
 
   display: flex;
   justify-content: center;
+  width: 100%;
   min-height: 100svh;
-  color: #555;
-  background: #f2f2f2;
+  color: var(--color-text-main);
+  background: var(--color-bg);
   font-family: 'NanumSquareNeo', 'Pretendard', sans-serif;
 }
 
 .app-screen {
   position: relative;
-  width: var(--screen-width);
-  height: var(--screen-height);
+  width: min(100vw, var(--screen-max-width));
+  min-width: var(--screen-min-width);
+  height: 100svh;
   overflow: hidden;
   background: #fff;
 }
 
 .page-scroll {
   position: absolute;
-  top: 44px;
+  top: var(--header-height);
   right: 0;
-  bottom: 64px;
+  bottom: var(--bottom-nav-height);
   left: 0;
   overflow: hidden auto;
   scrollbar-width: none;
@@ -47,15 +132,16 @@ button {
   display: none;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .app-shell {
     align-items: flex-start;
-    padding: 24px 0;
+    padding: 24px;
     box-sizing: border-box;
   }
 
   .app-screen {
-    border-radius: 28px;
+    width: min(calc(100vw - 48px), var(--screen-max-width));
+    height: calc(100svh - 48px);
     box-shadow: 0 22px 70px rgba(0, 0, 0, 0.16);
   }
 }
