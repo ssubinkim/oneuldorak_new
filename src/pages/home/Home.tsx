@@ -113,7 +113,7 @@ function Home() {
   return (
     <div className="app-shell">
       <div className="app-screen">
-        <Header showActions />
+        <Header />
 
         <div className="home-scroll">
           <header className="home-header">
