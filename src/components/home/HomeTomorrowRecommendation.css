@@ -1,0 +1,135 @@
+.home-section {
+  margin-top: 64px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.section-title h2 {
+  margin: 0;
+  color: var(--color-text-main);
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.section-title a {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #9a9a9a;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.section-title a svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.recommend-stack {
+  position: relative;
+  height: 360px;
+}
+
+.recommend-stack::before,
+.recommend-stack::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: calc(100% - 48px);
+  height: 100%;
+  background: #fff;
+  border: 2px solid var(--color-primary-100);
+  border-radius: 20px;
+  box-shadow: 0 7px 12px rgba(0, 0, 0, 0.09);
+}
+
+.recommend-stack::before {
+  right: 24px;
+}
+
+.recommend-stack::after {
+  right: 0;
+}
+
+.recommend-card-main {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  width: calc(100% - 48px);
+  height: 100%;
+  padding: 24px 18px 26px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 2px solid var(--color-primary-100);
+  border-radius: 20px;
+}
+
+.recommend-card-main__badge {
+  justify-self: start;
+  padding: 7px 16px;
+  color: #fff;
+  background: var(--color-status-emphasis);
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.recommend-card-main__bookmark {
+  position: absolute;
+  top: 21px;
+  right: 18px;
+  width: 23px;
+  height: 29px;
+  color: var(--color-primary-100);
+}
+
+.recommend-card-main__bookmark svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.3;
+  stroke-linejoin: round;
+}
+
+.recommend-card-main__image {
+  width: min(232px, 78%);
+  height: 174px;
+  margin-top: 22px;
+  background: #f4f4f4;
+  border: 1px solid #eeeeee;
+  border-radius: 16px;
+}
+
+.recommend-card-main h3 {
+  margin: 20px 0 8px;
+  color: var(--color-text-sub);
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.recommend-card-main p {
+  margin: 0;
+  color: #6f6f6f;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+@media (max-width: 360px) {
+  .section-title h2 {
+    font-size: 23px;
+  }
+}

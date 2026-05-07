@@ -1,0 +1,50 @@
+.quick-section {
+  margin-top: 28px;
+}
+
+.quick-section h2 {
+  margin: 0 0 12px;
+  color: var(--color-text-sub);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.quick-card {
+  display: grid;
+  place-items: center;
+  gap: 6px;
+  min-height: 72px;
+  padding: 9px 4px;
+  color: var(--color-text-main);
+  background: var(--color-tertiary-100);
+  border: 0;
+  border-radius: 9px;
+  box-shadow: 0 5px 11px rgba(0, 0, 0, 0.13);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.quick-card__icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  font-size: 25px;
+  line-height: 1;
+}
+
+@media (max-width: 360px) {
+  .quick-grid {
+    gap: 7px;
+  }
+
+  .quick-card {
+    font-size: 12px;
+  }
+}
