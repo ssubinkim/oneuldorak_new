@@ -1,0 +1,11 @@
+.store-page {
+  background: var(--color-bg);
+}
+
+.store-page__screen {
+  background: #fff;
+}
+
+.store-page__scroll {
+  background: #fff;
+}

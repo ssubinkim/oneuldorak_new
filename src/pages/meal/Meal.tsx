@@ -6,7 +6,7 @@ import WeekDaySelector from '../../components/meal/WeekDaySelector'
 import MenuTabSwitch from '../../components/meal/MenuTabSwitch'
 import TodayMenuList from '../../components/meal/TodayMenuList'
 import WeeklyMenuList from '../../components/meal/WeeklyMenuList'
-import AiChatFab from '../../components/meal/common/AiChatFab'
+import ChatBotbtn from '../chatbot/ChatBotbtn'
 import MealPage from './MealPage'
 import '../../styles/Tailwind.css'
 import './Meal.css'
@@ -16,7 +16,6 @@ function Meal() {
   const [menuTab, setMenuTab] = useState<'today' | 'weekly'>('today')
   const [selectedDay, setSelectedDay] = useState(7)
   const [calOpen, setCalOpen] = useState(false)
-  const [fabOpen, setFabOpen] = useState(false)
 
   return (
     <div className="app-shell">
@@ -44,7 +43,7 @@ function Meal() {
           )}
         </div>
 
-        <AiChatFab fabOpen={fabOpen} setFabOpen={setFabOpen} />
+        <ChatBotbtn />
         <BottomNav />
       </div>
     </div>

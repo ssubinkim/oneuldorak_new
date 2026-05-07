@@ -1,0 +1,127 @@
+.today-card {
+  position: relative;
+  min-height: 285px;
+  margin-top: 30px;
+  padding: 58px 18px 18px;
+  overflow: visible;
+  background: #fff;
+  border: 2px solid var(--color-primary-100);
+  border-radius: 22px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.today-card__ribbon {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 168px;
+  height: 61px;
+  color: #fff;
+  background: var(--color-primary-100);
+  clip-path: polygon(0 16%, 100% 0, 91% 50%, 100% 100%, 0 84%, 9% 50%);
+  transform: translateX(-50%);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.today-card__eyebrow {
+  margin: 0 0 2px;
+  color: #707070;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.today-card h2 {
+  margin: 0;
+  color: var(--color-text-main);
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+.today-card__tags {
+  display: flex;
+  gap: 5px;
+  margin-top: 7px;
+}
+
+.today-card__tags span {
+  padding: 3px 7px;
+  color: #927426;
+  background: var(--color-secondary-40);
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.today-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: 42px;
+  color: var(--color-status-emphasis);
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.today-card__price span {
+  color: var(--color-text-main);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.today-card__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 37px;
+  margin-top: 22px;
+  padding: 0 22px;
+  color: var(--color-text-main);
+  background: var(--color-primary-100);
+  border: 0;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.today-card__button svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.today-card__image {
+  position: absolute;
+  right: 16px;
+  bottom: 20px;
+  width: min(178px, 50%);
+  aspect-ratio: 1 / 1;
+  height: auto;
+  background: #f4f4f4;
+  border: 1px solid #eeeeee;
+  border-radius: 16px;
+}
+
+@media (max-width: 360px) {
+  .today-card {
+    min-height: 270px;
+  }
+
+  .today-card h2 {
+    font-size: 23px;
+  }
+
+  .today-card__image {
+    right: 12px;
+    bottom: 18px;
+    width: 150px;
+  }
+}

@@ -1,0 +1,18 @@
+.fridge-banner {
+  width: 100%;
+  max-width: 350px;
+  margin-top: 72px;
+  margin-right: auto;
+  margin-left: auto;
+  overflow: hidden;
+  border-radius: 13px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+}
+
+.fridge-banner img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 350 / 154;
+  height: auto;
+  object-fit: cover;
+}
