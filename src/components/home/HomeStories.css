@@ -1,70 +1,40 @@
-.stories-card {
-  margin-top: 86px;
-  padding: 22px 22px 18px;
-  background: #ededed;
-  border-radius: 10px;
-  box-shadow: 0 5px 7px rgba(0, 0, 0, 0.18);
+.stories-section {
+  padding: 62px 17px 0;
+  background: #fff;
 }
 
-.stories-card__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 22px;
+.stories-section__title {
+  padding: 0;
+  margin-bottom: 20px;
 }
 
-.stories-card h2 {
-  margin: 0;
-  color: var(--color-text-main);
-  font-size: 26px;
-  font-weight: 900;
-}
-
-.stories-card p {
-  margin: 5px 0 0;
-  color: #797979;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.stories-card__more {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  color: #9a9a9a;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.stories-card__more svg {
-  width: 14px;
-  height: 14px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.stories-section__title p {
+  margin: 8px 0 0;
+  color: #8e8e8e;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 120%;
 }
 
 .story-list {
   display: grid;
   gap: 0;
   margin: 0;
-  padding: 0;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 7px;
   list-style: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .story-item {
   display: grid;
-  grid-template-columns: 26px minmax(0, 1fr) auto;
+  grid-template-columns: 20px 36px minmax(0, 1fr);
   align-items: center;
-  gap: 10px;
-  min-height: 45px;
-  border-bottom: 1px solid #dedede;
-  color: #5c5c5c;
-  font-size: 14px;
-  font-weight: 700;
+  gap: 12px;
+  min-height: 54px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .story-item:last-child {
@@ -72,16 +42,33 @@
 }
 
 .story-item__rank {
-  color: #4f4f4f;
-  font-size: 18px;
-  font-weight: 900;
+  color: #6a6a6a;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .story-item:first-child .story-item__rank {
   color: #ff1f34;
 }
 
+.story-item__thumb {
+  width: 36px;
+  height: 36px;
+  background: #d9d9d9;
+  border-radius: 9px;
+}
+
+.story-item__body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
 .story-item__title {
+  color: #555;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 120%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -89,8 +76,9 @@
 
 .story-item__stats {
   color: #8a8a8a;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 120%;
 }
 
 .story-item__stats .heart {

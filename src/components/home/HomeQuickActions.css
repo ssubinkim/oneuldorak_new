@@ -1,50 +1,53 @@
 .quick-section {
-  margin-top: 28px;
+  padding: 26px 17px 0;
+  background: #fff;
 }
 
 .quick-section h2 {
-  margin: 0 0 12px;
-  color: var(--color-text-sub);
+  margin: 0 0 16px;
+  color: #333;
   font-size: 18px;
-  font-weight: 900;
+  font-weight: 800;
+  line-height: 120%;
 }
 
 .quick-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 9px;
+  gap: 8px;
 }
 
 .quick-card {
   display: grid;
   place-items: center;
-  gap: 6px;
-  min-height: 72px;
-  padding: 9px 4px;
-  color: var(--color-text-main);
-  background: var(--color-tertiary-100);
+  gap: 8px;
+  min-width: 0;
+  padding: 0;
+  color: #4d4d4d;
+  background: transparent;
   border: 0;
-  border-radius: 9px;
-  box-shadow: 0 5px 11px rgba(0, 0, 0, 0.13);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
+  line-height: 120%;
 }
 
 .quick-card__icon {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  font-size: 25px;
-  line-height: 1;
+  width: 100%;
+  max-width: 70px;
+  aspect-ratio: 1 / 0.78;
+  background: #f1f1f1;
+  border-radius: 7px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
 }
 
 @media (max-width: 360px) {
   .quick-grid {
-    gap: 7px;
+    gap: 6px;
   }
 
   .quick-card {
-    font-size: 12px;
+    font-size: 11px;
   }
 }

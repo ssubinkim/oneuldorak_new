@@ -1,4 +1,3 @@
-import { ChevronIcon } from './ChevronIcon'
 import './HomeStories.css'
 
 const stories = [
@@ -11,25 +10,25 @@ const stories = [
 
 function HomeStories() {
   return (
-    <section className="stories-card" aria-labelledby="storiesTitle">
-      <div className="stories-card__header">
+    <section className="stories-section" aria-labelledby="storiesTitle">
+      <div className="home-section-title stories-section__title">
         <div>
           <h2 id="storiesTitle">도락이들의 이야기</h2>
           <p>이번주 인기를 TOP5</p>
         </div>
-        <a className="stories-card__more" href="#more-stories">
-          더보기
-          <ChevronIcon />
-        </a>
+        <a href="#more-stories">더보기 〉</a>
       </div>
       <ol className="story-list">
         {stories.map((story, index) => (
           <li className="story-item" key={story.title}>
             <span className="story-item__rank">{index + 1}</span>
-            <span className="story-item__title">{story.title}</span>
-            <span className="story-item__stats">
-              <span className="heart">♡</span>
-              {story.likes} ·▣{story.comments}
+            <span className="story-item__thumb" aria-hidden="true" />
+            <span className="story-item__body">
+              <span className="story-item__title">{story.title}</span>
+              <span className="story-item__stats">
+                <span className="heart">♡</span>
+                {story.likes} · ◎{story.comments}
+              </span>
             </span>
           </li>
         ))}

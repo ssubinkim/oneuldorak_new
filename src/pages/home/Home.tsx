@@ -15,7 +15,7 @@ import './Home.css'
 function Home() {
   return (
     <div className="app-shell">
-      <div className="app-screen">
+      <div className="app-screen home-screen">
         <Header />
 
         <div className="home-scroll">

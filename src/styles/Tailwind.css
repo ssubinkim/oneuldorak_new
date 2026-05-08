@@ -97,7 +97,7 @@ button {
   --screen-min-width: 320px;
   --screen-max-width: 768px;
   --header-height: 44px;
-  --bottom-nav-height: clamp(74px, 23vw, 96px);
+  --bottom-nav-height: calc(clamp(74px, 20.5128vw, 80px) + env(safe-area-inset-bottom));
 
   display: flex;
   justify-content: center;
