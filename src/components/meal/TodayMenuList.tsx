@@ -70,9 +70,7 @@ function TodayMenuList({ selectedDay }: Props) {
           <div className="today-ingredients-list">
             {menu.ingredients.map(ing => (
               <div key={ing.name} className="today-ingredient">
-                <div className="ingredient-circle">
-                  <img className="ingredient-img" src={ing.image} alt={ing.name} />
-                </div>
+                <img className="ingredient-img" src={ing.image} alt={ing.name} />
                 <span className="ingredient-name">{ing.name}</span>
               </div>
             ))}

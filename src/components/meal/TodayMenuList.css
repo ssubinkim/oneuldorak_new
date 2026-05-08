@@ -141,21 +141,9 @@
   gap: 5px;
 }
 
-.ingredient-circle {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--color-tertiary);
-  border: 1.5px solid var(--color-secondary-30);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
 .ingredient-img {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
   flex-shrink: 0;
 }
