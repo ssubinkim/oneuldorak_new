@@ -8,7 +8,7 @@ const STATUS_LABEL = {
 
 const weekDays = [
   { name: '월', date: 1, status: 'confirmed' as const },
-  { name: '화', date: 2, status: 'thinking' as const },
+  { name: '화', date: 2, status: 'confirmed' as const },
   { name: '수', date: 3, status: 'planned' as const },
   { name: '목', date: 4, status: 'thinking' as const },
   { name: '금', date: 5, status: 'confirmed' as const },

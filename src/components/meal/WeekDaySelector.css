@@ -116,7 +116,7 @@
 }
 
 .day-name {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--color-disabled);
   font-weight: 500;
 }
@@ -141,7 +141,7 @@
 
 /* 상태 레이블 */
 .day-status {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
 }
 

@@ -1,4 +1,5 @@
 import { weeklyMenuData } from './mealData'
+import broThinkImg from '../../pages/meal/images/bro_think.png'
 import './WeeklyMenuList.css'
 
 interface Props {
@@ -19,7 +20,7 @@ function WeeklyMenuList({ selectedDay }: Props) {
       {weeklyMenuData.map(menu => {
         const isSelected = menu.date === selectedDay
         return (
-          <div key={menu.date} className="weekly-card">
+          <div key={menu.date} className={`weekly-card${menu.status === 'thinking' ? ' weekly-card-thinking' : ''}`}>
             <div className={`weekly-day-box day-${isSelected ? 'selected' : menu.status}`}>
               <span className="weekly-day-name">{menu.day}</span>
               <span className="weekly-day-date">{menu.month}/{menu.date}</span>
@@ -33,6 +34,8 @@ function WeeklyMenuList({ selectedDay }: Props) {
                   alt={menu.name}
                   onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
                 />
+              ) : menu.status === 'thinking' ? (
+                <img className="weekly-img" src={broThinkImg} alt="고민중" />
               ) : (
                 <div className="weekly-img-empty" />
               )}

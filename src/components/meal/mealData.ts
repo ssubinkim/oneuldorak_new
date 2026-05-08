@@ -1,4 +1,8 @@
 import todayMenuImg from '../../pages/meal/images/today_menu.png'
+import tuesdayMenuImg from '../../pages/meal/images/tuesday_menu.png'
+import wednesdayMenuImg from '../../pages/meal/images/wednesday_menu.png'
+import fridayMenuImg from '../../pages/meal/images/friday_menu.png'
+import saturdayMenuImg from '../../pages/meal/images/saturday_menu.png'
 import salmonImg from '../../pages/meal/images/salmon.svg'
 import romainImg from '../../pages/meal/images/romain.svg'
 import onionImg from '../../pages/meal/images/onion.svg'
@@ -64,8 +68,8 @@ export const weeklyMenuData: DayMenu[] = [
     ],
   },
   {
-    day: '화', date: 2, month: 5, status: 'thinking',
-    image: '/images/meal/chicken-salad.jpg',
+    day: '화', date: 2, month: 5, status: 'confirmed',
+    image: tuesdayMenuImg,
     name: '닭가슴살 샐러드', time: '15분',
     description: '담백한 닭가슴살과 신선한 채소의 건강한 조합!',
     savedAmount: 3200, difficulty: 2, usage: 40,
@@ -78,7 +82,7 @@ export const weeklyMenuData: DayMenu[] = [
   },
   {
     day: '수', date: 3, month: 5, status: 'planned',
-    image: '/images/meal/tuna-rice-ball.jpg',
+    image: wednesdayMenuImg,
     name: '참치 주먹밥', time: '15분',
     description: '참치와 고소한 참기름이 어우러진 든든한 한끼!',
     savedAmount: 2500, difficulty: 1, usage: 100,
@@ -99,8 +103,8 @@ export const weeklyMenuData: DayMenu[] = [
   },
   {
     day: '금', date: 5, month: 5, status: 'confirmed',
-    image: '/images/meal/egg-rice.jpg',
-    name: '계란밥', time: '5분',
+    image: fridayMenuImg,
+    name: '계란 볶음밥', time: '5분',
     description: '간단하지만 영양 만점! 부드러운 계란의 고소함!',
     savedAmount: 1500, difficulty: 1, usage: null,
     ingredients: [
@@ -112,7 +116,7 @@ export const weeklyMenuData: DayMenu[] = [
   },
   {
     day: '토', date: 6, month: 5, status: 'planned',
-    image: '/images/meal/kimchi-fried-rice.jpg',
+    image: saturdayMenuImg,
     name: '김치볶음밥', time: '20분',
     description: '집에 있는 재료로 뚝딱! 빨간 김치볶음밥의 깊은 맛!',
     savedAmount: 2000, difficulty: 2, usage: 90,
