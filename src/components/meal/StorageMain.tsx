@@ -1,4 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+import {
+  carrotImg, potatoImg, appleImg, onionImg, romainImg,
+  brocollyImg, beansproutsImg,
+} from './mealData'
 
 interface Props {
   onShowAll: () => void
@@ -11,13 +15,13 @@ const recipeCards = [
 ]
 
 const previewIngredients = [
-  { id: 1, emoji: '🥕', name: '당근' },
-  { id: 2, emoji: '🥔', name: '감자' },
-  { id: 3, emoji: '🍎', name: '사과' },
-  { id: 4, emoji: '🧅', name: '양파' },
-  { id: 5, emoji: '🥬', name: '양배추' },
-  { id: 6, emoji: '🍄', name: '버섯' },
-  { id: 7, emoji: '🍅', name: '방울토마토' },
+  { id: 1, image: carrotImg, name: '당근' },
+  { id: 2, image: potatoImg, name: '감자' },
+  { id: 3, image: appleImg, name: '사과' },
+  { id: 4, image: onionImg, name: '양파' },
+  { id: 5, image: romainImg, name: '양상추' },
+  { id: 6, image: brocollyImg, name: '브로콜리' },
+  { id: 7, image: beansproutsImg, name: '콩나물' },
 ]
 
 const initialChecklistItems = [
@@ -146,7 +150,9 @@ function StorageMain({ onShowAll }: Props) {
         <div className="storage-preview-grid">
           {previewIngredients.map(item => (
             <div key={item.id} className="storage-item">
-              <div className="storage-item-emoji">{item.emoji}</div>
+              <div className="storage-item-emoji">
+                <img className="storage-item-img" src={item.image} alt={item.name} />
+              </div>
               <span className="storage-item-name">{item.name}</span>
             </div>
           ))}

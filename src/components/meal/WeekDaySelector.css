@@ -7,20 +7,23 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  margin-bottom: 4px;
 }
 
 .month-title {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-main);
 }
 
-.cal-toggle {
-  font-size: 12px;
-  color: #555;
+.cal-icon {
+  display: flex;
+  align-items: center;
 }
 
+/* 캘린더 드롭다운 */
 .calendar-dropdown {
-  background: #f2f2f2;
+  background: #f5f3ef;
   border-radius: 16px;
   padding: 20px;
   margin-top: 12px;
@@ -30,6 +33,7 @@
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 16px;
+  color: var(--color-text-main);
 }
 
 .calendar-grid {
@@ -76,26 +80,27 @@
 }
 
 .cal-day-clickable:hover {
-  background: #e0e0e0;
+  background: #e5e0d8;
 }
 
 .cal-day-today {
-  color: #555;
+  color: var(--color-text-main);
   font-weight: 700;
-  border: 1.5px solid #888;
+  border: 1.5px solid var(--color-primary);
 }
 
 .cal-day-selected {
-  background: #111;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-text-main);
   font-weight: 700;
 }
 
+/* 요일 버튼 */
 .day-buttons {
   display: flex;
   justify-content: space-between;
-  padding-top: 12px;
-  gap: 4px;
+  padding-top: 10px;
+  gap: 2px;
 }
 
 .day-btn {
@@ -103,7 +108,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   padding: 8px 0;
   background: none;
   border: none;
@@ -112,7 +117,8 @@
 
 .day-name {
   font-size: 11px;
-  color: #aaa;
+  color: var(--color-disabled);
+  font-weight: 500;
 }
 
 .day-date {
@@ -124,11 +130,29 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  color: #333;
+  color: var(--color-text-main);
 }
 
 .day-date.active {
   font-weight: 700;
-  background: #111;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-text-main);
+}
+
+/* 상태 레이블 */
+.day-status {
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.status-confirmed {
+  color: #c49500;
+}
+
+.status-thinking {
+  color: var(--color-status-emphasis);
+}
+
+.status-planned {
+  color: var(--color-disabled);
 }
