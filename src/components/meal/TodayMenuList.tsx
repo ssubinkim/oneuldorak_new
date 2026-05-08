@@ -41,7 +41,7 @@ function TodayMenuList({ selectedDay }: Props) {
           )}
         </div>
         <div className="today-title-section">
-          <h2 className="today-name">{menu.name}</h2>
+          <p className="today-name">{menu.name}</p>
           <p className="today-time">⏱ 약 {menu.time}</p>
           {menu.description && <p className="today-desc">{menu.description}</p>}
         </div>
