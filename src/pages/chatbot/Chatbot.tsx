@@ -1,13 +1,6 @@
 import '../../styles/Tailwind.css'
-import mascotImage from './images/todaydorak-logo.png'
+import ChatbotSuggestions from '../../components/chatbot/ChatbotSuggestions'
 import './Chatbot.css'
-
-const suggestions = [
-  { label: '살까말까', className: 'chatbot-chip--top-left' },
-  { label: '살까말까', className: 'chatbot-chip--top-right' },
-  { label: '요리 알려줘', className: 'chatbot-chip--left' },
-  { label: '요리 알려줘', className: 'chatbot-chip--right' },
-]
 
 function goBack() {
   if (window.history.length > 1) {
@@ -16,6 +9,10 @@ function goBack() {
   }
 
   window.location.hash = '#/home'
+}
+
+function openCameraPage() {
+  window.location.hash = '#/chatbot-camera'
 }
 
 function CameraIcon() {
@@ -53,18 +50,7 @@ function Chatbot() {
             오늘은 무엇을 도와드릴까요?
           </p>
 
-          <section className="chatbot-hero" aria-label="추천 질문">
-            {suggestions.map((suggestion) => (
-              <button
-                className={`chatbot-chip ${suggestion.className}`}
-                type="button"
-                key={`${suggestion.label}-${suggestion.className}`}
-              >
-                {suggestion.label}
-              </button>
-            ))}
-            <img className="chatbot-mascot" src={mascotImage} alt="" aria-hidden="true" />
-          </section>
+          <ChatbotSuggestions />
 
           <form
             className="chatbot-input-bar"
@@ -76,7 +62,7 @@ function Chatbot() {
             <button className="chatbot-submit" type="submit">
               입력
             </button>
-            <button className="chatbot-camera" type="button" aria-label="사진 추가">
+            <button className="chatbot-camera" type="button" aria-label="사진 추가" onClick={openCameraPage}>
               <CameraIcon />
             </button>
           </form>

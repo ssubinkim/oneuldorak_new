@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import BottomNav from '../../components/common/BottomNav'
-import Header from '../../components/common/Header'
+import BottomNav from '../../components/common/layout/BottomNav'
+import Header from '../../components/common/layout/Header'
 import '../../styles/Tailwind.css'
 
 const ATTENDANCE = [

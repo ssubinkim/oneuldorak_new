@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import Header from '../../components/common/Header'
-import BottomNav from '../../components/common/BottomNav'
+import Header from '../../components/common/layout/Header'
+import BottomNav from '../../components/common/layout/BottomNav'
 import StoreMain from '../../components/store/StoreMain'
 import StoreDetailPage from './StoreDetailPage'
 import '../../styles/Tailwind.css'

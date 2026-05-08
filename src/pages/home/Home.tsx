@@ -1,5 +1,5 @@
-import BottomNav from '../../components/common/BottomNav'
-import Header from '../../components/common/Header'
+import BottomNav from '../../components/common/layout/BottomNav'
+import Header from '../../components/common/layout/Header'
 import ChatBotbtn from '../chatbot/ChatBotbtn'
 import HomeBudgetHero from '../../components/home/HomeBudgetHero'
 import HomeFridgeBanner from '../../components/home/HomeFridgeBanner'

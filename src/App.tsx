@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
-import type { BottomNavRoute } from './components/common/BottomNav'
+import type { BottomNavRoute } from './components/common/layout/BottomNav'
 import Community from './pages/community/Community'
 import Chatbot from './pages/chatbot/Chatbot'
+import ChatbotCamera from './pages/chatbot/ChatbotCamera'
 import Home from './pages/home/Home'
 import Meal from './pages/meal/Meal'
 import MyPage from './pages/mypage/MyPage'
 import Store from './pages/store/Store'
 
-type AppRoute = BottomNavRoute | 'chatbot'
+type AppRoute = BottomNavRoute | 'chatbot' | 'chatbot-camera'
 
 const pages = {
   home: Home,
@@ -16,6 +17,7 @@ const pages = {
   store: Store,
   mypage: MyPage,
   chatbot: Chatbot,
+  'chatbot-camera': ChatbotCamera,
 } satisfies Record<AppRoute, () => React.JSX.Element>
 
 function getRouteFromHash(): AppRoute {

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import BottomNav from '../../components/common/BottomNav'
-import Header from '../../components/common/Header'
+import BottomNav from '../../components/common/layout/BottomNav'
+import Header from '../../components/common/layout/Header'
 import TopTabBar from '../../components/meal/common/TopTabBar'
 import WeekDaySelector from '../../components/meal/WeekDaySelector'
 import MenuTabSwitch from '../../components/meal/MenuTabSwitch'
