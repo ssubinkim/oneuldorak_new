@@ -1,7 +1,7 @@
 import './Header.css'
-import batteryIcon from '../../assets/images/Battery.svg'
-import signalIcon from '../../assets/images/Cellular Connection.svg'
-import wifiIcon from '../../assets/images/Wifi.svg'
+import batteryIcon from '../../../assets/images/Battery.svg'
+import signalIcon from '../../../assets/images/Cellular Connection.svg'
+import wifiIcon from '../../../assets/images/Wifi.svg'
 
 function StatusIcons() {
   return (
