@@ -1,0 +1,206 @@
+.today-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+}
+
+/* 헤더: 이미지 + 타이틀 */
+.today-header {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.today-img-wrapper {
+  width: 110px;
+  min-width: 110px;
+  height: 110px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e0e0e0;
+}
+
+.today-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.today-title-section {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.today-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-text-main);
+}
+
+.today-time {
+  font-size: 12px;
+  color: var(--color-disabled);
+  margin: 0;
+}
+
+.today-desc {
+  font-size: 12px;
+  color: var(--color-text-sub);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* 통계 행 */
+.today-stats {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 0;
+  margin-bottom: 18px;
+}
+
+.today-stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.today-stat-divider {
+  width: 1px;
+  height: 30px;
+  background: #f0f0f0;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--color-disabled);
+  margin: 0;
+}
+
+.stat-value {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-text-main);
+}
+
+.stat-blue {
+  color: var(--color-status-success);
+}
+
+/* 별점 */
+.star-rating {
+  display: flex;
+  gap: 1px;
+}
+
+.star {
+  font-size: 14px;
+}
+
+.star-filled {
+  color: var(--color-primary);
+}
+
+.star-empty {
+  color: #ddd;
+}
+
+/* 재료 섹션 */
+.today-ingredients-section {
+  margin-bottom: 18px;
+}
+
+.today-ingredients-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--color-text-main);
+}
+
+.today-ingredients-list {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.today-ingredient {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.ingredient-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-tertiary);
+  border: 1.5px solid var(--color-secondary-30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ingredient-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.ingredient-name {
+  font-size: 11px;
+  color: var(--color-text-sub);
+}
+
+/* 레시피 버튼 */
+.today-recipe-btn {
+  width: 100%;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.today-recipe-btn:active {
+  opacity: 0.85;
+}
+
+/* 고민중 빈 카드 */
+.today-empty-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 48px 16px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+}
+
+.today-empty-text {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--color-text-main);
+}
+
+.today-empty-sub {
+  font-size: 13px;
+  color: var(--color-disabled);
+  margin: 0;
+}

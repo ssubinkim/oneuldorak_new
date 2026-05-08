@@ -1,25 +1,58 @@
-import MenuCard from './MenuCard'
+import { weeklyMenuData } from './mealData'
+import './WeeklyMenuList.css'
 
-const weeklyMenus = [
-  { day: '월', emoji: '🍚', name: '김치볶음밥', ingredients: '김치찌개, 김치찜, 김치전, 김치볶음밥' },
-  { day: '화', emoji: '🍲', name: '된장찌개', ingredients: '김치찌개, 김치찜, 김치전, 김치볶음밥' },
-  { day: '수', emoji: '🫐', name: '블루베리 요거트', ingredients: '김치찌개, 김치찜, 김치전, 김치볶음밥' },
-]
+interface Props {
+  selectedDay: number
+}
 
-function WeeklyMenuList() {
+function usageBadgeClass(usage: number | null): string {
+  if (usage === null) return 'badge-none'
+  if (usage === 100) return 'badge-full'
+  if (usage >= 80) return 'badge-high'
+  if (usage >= 50) return 'badge-mid'
+  return 'badge-low'
+}
+
+function WeeklyMenuList({ selectedDay }: Props) {
   return (
-    <div>
-      {weeklyMenus.map(m => (
-        <MenuCard
-          key={m.day}
-          day={m.day}
-          emoji={m.emoji}
-          name={m.name}
-          ingredients={m.ingredients}
-          subLabel="가능한 요리"
-        />
-      ))}
-      <div className="recipe-link">다른 레시피 보러가기 ›</div>
+    <div className="weekly-menu-list">
+      {weeklyMenuData.map(menu => {
+        const isSelected = menu.date === selectedDay
+        return (
+          <div key={menu.date} className="weekly-card">
+            <div className={`weekly-day-box day-${isSelected ? 'selected' : menu.status}`}>
+              <span className="weekly-day-name">{menu.day}</span>
+              <span className="weekly-day-date">{menu.month}/{menu.date}</span>
+            </div>
+
+            <div className="weekly-img-wrapper">
+              {menu.image ? (
+                <img
+                  className="weekly-img"
+                  src={menu.image}
+                  alt={menu.name}
+                  onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
+                />
+              ) : (
+                <div className="weekly-img-empty" />
+              )}
+            </div>
+
+            <div className="weekly-info">
+              <p className="weekly-name">{menu.name}</p>
+              <p className="weekly-time">
+                <span className="weekly-clock">⏱</span>
+                {menu.time ? ` 약 ${menu.time}` : ' 약   분'}
+              </p>
+              <span className={`usage-badge ${usageBadgeClass(menu.usage)}`}>
+                활용도 {menu.usage !== null ? `${menu.usage}%` : ''}
+              </span>
+            </div>
+
+            <span className="weekly-arrow">›</span>
+          </div>
+        )
+      })}
     </div>
   )
 }

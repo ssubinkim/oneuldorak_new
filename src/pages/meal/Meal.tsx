@@ -14,7 +14,7 @@ import './Meal.css'
 function Meal() {
   const [topTab, setTopTab] = useState<'week' | 'storage'>('week')
   const [menuTab, setMenuTab] = useState<'today' | 'weekly'>('today')
-  const [selectedDay, setSelectedDay] = useState(7)
+  const [selectedDay, setSelectedDay] = useState(1)
   const [calOpen, setCalOpen] = useState(false)
 
   return (
@@ -22,7 +22,7 @@ function Meal() {
       <div className="app-screen">
         <Header />
 
-        <div className="page-scroll">
+        <div className="page-scroll meal-bg">
           <TopTabBar topTab={topTab} setTopTab={setTopTab} />
 
           {topTab === 'week' ? (
@@ -35,7 +35,10 @@ function Meal() {
               />
               <MenuTabSwitch menuTab={menuTab} setMenuTab={setMenuTab} />
               <div className="menu-list-container">
-                {menuTab === 'today' ? <TodayMenuList /> : <WeeklyMenuList />}
+                {menuTab === 'today'
+                  ? <TodayMenuList selectedDay={selectedDay} />
+                  : <WeeklyMenuList selectedDay={selectedDay} />
+                }
               </div>
             </>
           ) : (
