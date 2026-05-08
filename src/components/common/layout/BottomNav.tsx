@@ -41,7 +41,11 @@ function getCurrentRoute(): BottomNavRoute {
 function NavIcon({ item, isActive }: { item: NavItem; isActive: boolean }) {
   const icon = isActive ? item.onIcon : item.offIcon
 
-  return <img className="bottom-nav__icon" src={icon} alt="" aria-hidden="true" />
+  return (
+    <span className="bottom-nav__icon-slot" aria-hidden="true">
+      <img className="bottom-nav__icon" src={icon} alt="" />
+    </span>
+  )
 }
 
 function BottomNav() {

@@ -1,10 +1,10 @@
 import './HomeQuickActions.css'
 
 const quickActions = [
-  { label: '10분 요리', icon: '⏰' },
-  { label: '간단재료', icon: '🥗' },
-  { label: '밀프랩', icon: '🥪' },
-  { label: '다이어트', icon: '🥙' },
+  { label: '10분 요리' },
+  { label: '간단재료' },
+  { label: '밀프랩' },
+  { label: '다이어트' },
 ]
 
 function HomeQuickActions() {
@@ -14,9 +14,7 @@ function HomeQuickActions() {
       <div className="quick-grid">
         {quickActions.map((action) => (
           <button className="quick-card" type="button" key={action.label}>
-            <span className="quick-card__icon" aria-hidden="true">
-              {action.icon}
-            </span>
+            <span className="quick-card__icon" aria-hidden="true" />
             <span>{action.label}</span>
           </button>
         ))}
