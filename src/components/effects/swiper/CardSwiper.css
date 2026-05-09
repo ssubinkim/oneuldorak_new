@@ -1,0 +1,14 @@
+.mySwiper {
+  width: 240px;
+  height: 320px;
+}
+
+.mySwiper .swiper-slide {
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  background: #f59e0b;
+}

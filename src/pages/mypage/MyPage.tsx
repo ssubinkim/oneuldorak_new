@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import Header from '../../components/common/layout/Header'
 import '../../styles/Tailwind.css'
@@ -59,6 +59,16 @@ function MyPage() {
   }
 
   const pct = Math.round((GOAL.current / GOAL.target) * 100)
+  const [goalBarPct, setGoalBarPct] = useState(0)
+
+  useEffect(() => {
+    setGoalBarPct(0)
+    const rafId = requestAnimationFrame(() => {
+      setGoalBarPct(pct)
+    })
+
+    return () => cancelAnimationFrame(rafId)
+  }, [pct])
 
   return (
     <div className="app-shell">
@@ -108,7 +118,7 @@ function MyPage() {
                 <span className="sub-text"> /목표 {GOAL.target.toLocaleString()}원</span>
               </div>
               <div className="mypage-goal-bar-bg">
-                <div className="mypage-goal-bar-fill" style={{ width: `${pct}%` }} />
+                <div className="mypage-goal-bar-fill" style={{ width: `${goalBarPct}%` }} />
               </div>
               <div className="mypage-goal-percent-text">목표금액의 {pct}% 소비 하셨어요!</div>
             </div>
