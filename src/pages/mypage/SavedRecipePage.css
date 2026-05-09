@@ -1,0 +1,41 @@
+.saved-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height, 44px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 20px;
+  background: #fff;
+  z-index: 10;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.saved-header-back {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.saved-header-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.saved-recipe-page {
+  background: var(--color-bg-sub);
+  min-height: 100%;
+  padding: 16px 20px;
+}
+
+.saved-recipe-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

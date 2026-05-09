@@ -1,0 +1,45 @@
+.attendance-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.attendance-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.attendance-day-label {
+  font-size: 16px;
+  color: var(--color-disabled);
+  font-weight: 500;
+}
+
+.attendance-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.attendance-circle.filled {
+  background: var(--color-primary);
+  color: #444;
+}
+
+.attendance-circle.milestone {
+  background: var(--color-secondary-20);
+  color: var(--color-disabled);
+  border: 1.5px solid var(--color-secondary-50);
+}
+
+.attendance-circle.empty {
+  background: var(--color-secondary-20);
+  border: 1.5px solid var(--color-secondary-50);
+}
