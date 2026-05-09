@@ -146,7 +146,7 @@
   height: 100%;
   background: var(--color-primary);
   border-radius: 4px;
-  transition: width 0.4s ease;
+  transition: width 1.2s ease-out;
 }
 
 .mypage-goal-percent-text {

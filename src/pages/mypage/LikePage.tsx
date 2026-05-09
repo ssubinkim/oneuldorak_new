@@ -13,7 +13,7 @@ const LIKED_POSTS: LikePost[] = [
 
 type Props = { onBack?: () => void }
 
-function LikePage({ onBack }: Props) {
+function LikePage({ onBack }: Props = {}) {
   const handleBack = onBack ?? (() => { window.location.hash = '#/mypage' })
 
   return (
