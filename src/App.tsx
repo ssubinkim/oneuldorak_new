@@ -6,9 +6,10 @@ import ChatbotCamera from './pages/chatbot/ChatbotCamera'
 import Home from './pages/home/Home'
 import Meal from './pages/meal/Meal'
 import MyPage from './pages/mypage/MyPage'
+import LikePage from './pages/mypage/LikePage'
 import Store from './pages/store/Store'
 
-type AppRoute = BottomNavRoute | 'chatbot' | 'chatbot-camera'
+type AppRoute = BottomNavRoute | 'chatbot' | 'chatbot-camera' | 'mypage-likes'
 
 const pages = {
   home: Home,
@@ -16,6 +17,7 @@ const pages = {
   community: Community,
   store: Store,
   mypage: MyPage,
+  'mypage-likes': LikePage,
   chatbot: Chatbot,
   'chatbot-camera': ChatbotCamera,
 } satisfies Record<AppRoute, () => React.JSX.Element>

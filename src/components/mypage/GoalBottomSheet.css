@@ -1,0 +1,71 @@
+.goal-sheet {
+  padding: 8px 24px 44px;
+}
+
+.goal-sheet-sub {
+  font-size: 12px;
+  color: var(--color-disabled);
+  margin: 0 0 6px;
+}
+
+.goal-sheet-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-text-main);
+  margin: 0 0 28px;
+}
+
+.goal-sheet-field {
+  margin-bottom: 16px;
+}
+
+.goal-sheet-label {
+  display: block;
+  font-size: 13px;
+  color: var(--color-text-sub);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.goal-sheet-input {
+  width: 100%;
+  padding: 15px 16px;
+  box-sizing: border-box;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--color-text-sub);
+  outline: none;
+}
+
+.goal-sheet-input:focus {
+  background: #f0ede0;
+}
+
+.goal-sheet-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.goal-sheet-btn {
+  flex: 1;
+  padding: 15px 0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+
+.goal-sheet-btn.primary {
+  background: var(--color-primary);
+  color: var(--color-text-main);
+}
+
+.goal-sheet-btn.secondary {
+  background: #fff;
+  border: 1.5px solid #ddd;
+  color: var(--color-text-sub);
+}
