@@ -1,7 +1,77 @@
-.meal-bg {
-  background: var(--color-bg-sub);
+.meal-screen {
+  display: flex;
+  flex-direction: column;
+  background: #f5f3ef;
+}
+
+/* ── Hero 영역 ── */
+.meal-hero {
+  background: #FFDB78;
+  flex-shrink: 0;
+}
+
+.meal-screen .app-header {
+  background: transparent;
+}
+
+.meal-hero-inner {
+  padding: 20px 20px 44px;
+  padding-top: calc(44px + 20px);
+}
+
+.meal-hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.meal-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.meal-brand-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.meal-brand-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.meal-bell-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--color-text-main);
+  display: flex;
+  align-items: center;
+}
+
+.meal-tagline {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── Content 컨테이너 ── */
+.meal-content {
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  margin-top: -24px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .menu-list-container {
-  padding: 12px 16px 24px;
+  padding: 12px 16px 80px;
 }

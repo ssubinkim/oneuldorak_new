@@ -49,6 +49,7 @@ export interface DayMenu {
   savedAmount: number
   difficulty: number
   usage: number | null
+  calories?: number
   ingredients: MenuIngredient[]
 }
 
@@ -58,7 +59,7 @@ export const weeklyMenuData: DayMenu[] = [
     image: todayMenuImg,
     name: '연어 샐러드', time: '15분',
     description: '상큼한 연어와 신선한 채소로 가볍고 든든하게!',
-    savedAmount: 4800, difficulty: 1, usage: 90,
+    savedAmount: 4800, difficulty: 1, usage: 90, calories: 270,
     ingredients: [
       { name: '연어', image: salmonImg },
       { name: '양상추', image: romainImg },

@@ -1,11 +1,5 @@
 import './WeekDaySelector.css'
 
-const STATUS_LABEL = {
-  confirmed: '확정',
-  thinking: '고민중',
-  planned: '예정',
-} as const
-
 const weekDays = [
   { name: '월', date: 1, status: 'confirmed' as const },
   { name: '화', date: 2, status: 'confirmed' as const },
@@ -18,13 +12,21 @@ const weekDays = [
 
 const CAL_HEADERS = ['일', '월', '화', '수', '목', '금', '토']
 
-// 2026년 5월 1일 = 금요일 (일=0 기준, 금=5 → 앞에 5칸 공백)
 function buildMayWeeks(): (number | null)[][] {
   const cells: (number | null)[] = Array(5).fill(null)
   for (let d = 1; d <= 31; d++) cells.push(d)
   const weeks: (number | null)[][] = []
   for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7))
   return weeks
+}
+
+function CheckIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <circle cx="7" cy="7" r="6.5" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M4 7l2 2 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
 }
 
 interface Props {
@@ -90,21 +92,26 @@ function WeekDaySelector({ selectedDay, setSelectedDay, calOpen, setCalOpen }: P
       )}
 
       <div className="day-buttons">
-        {weekDays.map(d => (
-          <button
-            key={d.date}
-            className="day-btn"
-            onClick={() => setSelectedDay(d.date)}
-          >
-            <span className="day-name">{d.name}</span>
-            <span className={`day-date ${selectedDay === d.date ? 'active' : ''}`}>
-              {d.date}
-            </span>
-            <span className={`day-status status-${d.status}`}>
-              {STATUS_LABEL[d.status]}
-            </span>
-          </button>
-        ))}
+        {weekDays.map(d => {
+          const isSelected = selectedDay === d.date
+          return (
+            <button
+              key={d.date}
+              className={`day-btn${isSelected ? ' day-btn-selected' : ''}`}
+              onClick={() => setSelectedDay(d.date)}
+            >
+              <span className="day-name">{d.name}</span>
+              <div className="day-inner-box">
+                <span className={`day-date${isSelected ? ' active' : ''}`}>
+                  {d.date}
+                </span>
+                <span className={`day-status-icon status-icon-${d.status}`}>
+                  {d.status === 'thinking' ? '···' : <CheckIcon />}
+                </span>
+              </div>
+            </button>
+          )
+        })}
       </div>
     </div>
   )
