@@ -1,8 +1,9 @@
 .top-tab-bar {
   display: flex;
   border-bottom: 1px solid #e8e8e8;
-  padding: 0 16px;
+  padding: 0 20px;
   background: #fff;
+  border-radius: 20px 20px 0 0;
 }
 
 .top-tab-item {

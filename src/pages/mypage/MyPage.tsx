@@ -50,14 +50,6 @@ function MyPage() {
   const [showLikes, setShowLikes] = useState(false)
   const [showSavedRecipes, setShowSavedRecipes] = useState(false)
 
-  if (showLikes) {
-    return <LikePage onBack={() => setShowLikes(false)} />
-  }
-
-  if (showSavedRecipes) {
-    return <SavedRecipePage onBack={() => setShowSavedRecipes(false)} />
-  }
-
   const pct = Math.round((GOAL.current / GOAL.target) * 100)
   const [goalBarPct, setGoalBarPct] = useState(0)
 
@@ -69,6 +61,14 @@ function MyPage() {
 
     return () => cancelAnimationFrame(rafId)
   }, [pct])
+
+  if (showLikes) {
+    return <LikePage onBack={() => setShowLikes(false)} />
+  }
+
+  if (showSavedRecipes) {
+    return <SavedRecipePage onBack={() => setShowSavedRecipes(false)} />
+  }
 
   return (
     <div className="app-shell">

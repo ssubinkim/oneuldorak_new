@@ -1,5 +1,5 @@
 .week-day-selector {
-  padding: 16px 16px 0;
+  padding: 20px 20px 0;
 }
 
 .month-header {
@@ -7,11 +7,11 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 .month-title {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--color-text-main);
 }
@@ -47,25 +47,25 @@
 }
 
 .cal-header-row {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .cal-week-row {
   place-items: center;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .cal-header-cell {
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;
   color: #999;
   font-weight: 600;
   padding: 2px 0;
 }
 
 .cal-day {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,17 +90,18 @@
 }
 
 .cal-day-selected {
-  background: var(--color-primary);
+  background: #fff3c0;
   color: var(--color-text-main);
   font-weight: 700;
+  border: 1.5px solid var(--color-primary);
 }
 
 /* 요일 버튼 */
 .day-buttons {
   display: flex;
   justify-content: space-between;
-  padding-top: 10px;
-  gap: 2px;
+  padding-top: 14px;
+  gap: 6px;
 }
 
 .day-btn {
@@ -108,51 +109,78 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  padding: 8px 0;
+  gap: 6px;
+  padding: 4px 2px;
   background: none;
   border: none;
   cursor: pointer;
 }
 
 .day-name {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--color-disabled);
-  font-weight: 500;
+  font-weight: 600;
+}
+
+.day-inner-box {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #fff;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 14px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.day-btn-selected .day-inner-box {
+  background: #fff9e0;
+  border-color: #FFDB78;
+}
+
+.day-btn-selected .day-name {
+  color: #a07000;
 }
 
 .day-date {
-  font-size: 15px;
-  font-weight: 500;
-  width: 32px;
-  height: 32px;
+  font-size: 14px;
+  font-weight: 600;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
   color: var(--color-text-main);
 }
 
 .day-date.active {
   font-weight: 700;
-  background: var(--color-primary);
   color: var(--color-text-main);
 }
 
-/* 상태 레이블 */
-.day-status {
+/* 상태 아이콘 */
+.day-status-icon {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.status-confirmed {
+.status-icon-confirmed {
   color: #c49500;
 }
 
-.status-thinking {
+.status-icon-thinking {
   color: var(--color-status-emphasis);
+  font-size: 14px;
+  letter-spacing: 2px;
 }
 
-.status-planned {
-  color: var(--color-disabled);
+.status-icon-planned {
+  color: #c49500;
 }

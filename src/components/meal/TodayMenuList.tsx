@@ -1,4 +1,5 @@
 import { weeklyMenuData } from './mealData'
+import bookOpenImg from '../../pages/meal/images/book_open.svg'
 import './TodayMenuList.css'
 
 interface Props {
@@ -12,6 +13,15 @@ function StarRating({ value, max = 5 }: { value: number; max?: number }) {
         <span key={i} className={i < value ? 'star star-filled' : 'star star-empty'}>★</span>
       ))}
     </div>
+  )
+}
+
+function ClockIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{ marginRight: 3 }}>
+      <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" strokeWidth="1.2" />
+      <path d="M6.5 3.5v3l2 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    </svg>
   )
 }
 
@@ -42,7 +52,7 @@ function TodayMenuList({ selectedDay }: Props) {
         </div>
         <div className="today-title-section">
           <p className="today-name">{menu.name}</p>
-          <p className="today-time">⏱ 약 {menu.time}</p>
+          {menu.calories && <p className="today-calories">{menu.calories}kcal</p>}
           {menu.description && <p className="today-desc">{menu.description}</p>}
         </div>
       </div>
@@ -59,8 +69,11 @@ function TodayMenuList({ selectedDay }: Props) {
         </div>
         <div className="today-stat-divider" />
         <div className="today-stat">
-          <p className="stat-label">절약금액</p>
-          <p className="stat-value stat-blue">{menu.savedAmount.toLocaleString()}원</p>
+          <p className="stat-label">조리시간</p>
+          <p className="stat-value stat-time">
+            <ClockIcon />
+            약 {menu.time ?? '-'}
+          </p>
         </div>
       </div>
 
@@ -79,7 +92,8 @@ function TodayMenuList({ selectedDay }: Props) {
       )}
 
       <button className="today-recipe-btn">
-        📖 레시피 보러가기
+        <img src={bookOpenImg} alt="" className="today-recipe-btn-icon" />
+        레시피 보러가기
       </button>
     </div>
   )
