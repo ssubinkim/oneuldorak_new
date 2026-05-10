@@ -1,6 +1,7 @@
 .coverflow-swiper {
   width: 100%;
-  padding: 20px 0;
+  padding: 10px 0 14px;
+  overflow: visible;
 }
 
 .coverflow-swiper .swiper-wrapper {
@@ -8,29 +9,75 @@
 }
 
 .coverflow-swiper__slide {
-  position: relative;
-  width: 220px;
-  height: 280px;
-  overflow: hidden;
-  border-radius: 16px;
-  background: #eceef3;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  width: clamp(210px, 70vw, 250px);
+  transition: opacity 0.25s ease;
+  opacity: 0.56;
 }
 
-.coverflow-swiper__slide img {
+.coverflow-swiper .swiper-slide-prev,
+.coverflow-swiper .swiper-slide-next {
+  opacity: 0.78;
+}
+
+.coverflow-swiper .swiper-slide-active {
+  opacity: 1;
+}
+
+.coverflow-swiper__card {
+  overflow: hidden;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  transform: scale(0.9);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.coverflow-swiper .swiper-slide-active .coverflow-swiper__card {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+  transform: scale(1);
+}
+
+.coverflow-swiper__image {
+  display: block;
   width: 100%;
-  height: 100%;
+  height: clamp(160px, 45vw, 205px);
   object-fit: cover;
 }
 
-.coverflow-swiper__slide p {
-  position: absolute;
-  right: 12px;
-  bottom: 10px;
-  left: 12px;
+.coverflow-swiper__body {
+  padding: 12px 12px 14px;
+  background: #efefef;
+}
+
+.coverflow-swiper__body h3 {
   margin: 0;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  color: #4f4f4f;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.coverflow-swiper__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin: 6px 0 0;
+  color: #7c7c7c;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.coverflow-swiper__heart {
+  color: #ff3d4f;
+}
+
+.coverflow-swiper__dot {
+  margin: 0 2px;
+}
+
+.coverflow-swiper__comment-icon {
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
 }

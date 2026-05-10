@@ -47,6 +47,7 @@ const MENU_SECTIONS = [
 function MyPage() {
   const [goalOpen, setGoalOpen] = useState(false)
   const [pointOpen, setPointOpen] = useState(false)
+  const [pointSheetKey, setPointSheetKey] = useState(0)
   const [showLikes, setShowLikes] = useState(false)
   const [showSavedRecipes, setShowSavedRecipes] = useState(false)
 
@@ -54,7 +55,6 @@ function MyPage() {
   const [goalBarPct, setGoalBarPct] = useState(0)
 
   useEffect(() => {
-    setGoalBarPct(0)
     const rafId = requestAnimationFrame(() => {
       setGoalBarPct(pct)
     })
@@ -131,7 +131,13 @@ function MyPage() {
               </div>
               <AttendanceCircles data={ATTENDANCE} />
               <div className="mypage-point-stamp-info">출석도장 3/7</div>
-              <button className="mypage-point-btn" onClick={() => setPointOpen(true)}>
+              <button
+                className="mypage-point-btn"
+                onClick={() => {
+                  setPointSheetKey((prev) => prev + 1)
+                  setPointOpen(true)
+                }}
+              >
                 포인트 내역
                 <svg viewBox="0 0 16 16" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <path d="m6 3.5 4 4.5-4 4.5" />
@@ -171,6 +177,7 @@ function MyPage() {
 
         <GoalBottomSheet open={goalOpen} onClose={() => setGoalOpen(false)} />
         <PointBottomSheet
+          key={pointSheetKey}
           open={pointOpen}
           onClose={() => setPointOpen(false)}
           totalPoints={TOTAL_POINTS}

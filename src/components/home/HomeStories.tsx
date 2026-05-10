@@ -1,11 +1,12 @@
+import SequentialHighlightList from '../effects/stagger/SequentialHighlightList'
 import './HomeStories.css'
 
 const stories = [
-  { title: '자취생 추천! 가성비 반찬...', likes: 100, comments: 88 },
-  { title: '일주일 3만원 식비 도전기', likes: 96, comments: 65 },
-  { title: '요리 초보 탈출한 계기', likes: 65, comments: 52 },
-  { title: '도시락 꿀팁 알려줌', likes: 43, comments: 35 },
-  { title: '맛집 알려줄게 다 들어와~~~', likes: 36, comments: 13 },
+  { id: 1, title: '자취생 추천! 가성비 반찬 레시피 모음', likes: 100, comments: 88 },
+  { id: 2, title: '일주일 3만원 식비 도전기', likes: 96, comments: 65 },
+  { id: 3, title: '요리 초보 탈출한 계기', likes: 65, comments: 52 },
+  { id: 4, title: '도시락 꿀팁 알려줌', likes: 43, comments: 35 },
+  { id: 5, title: '맛집 알려줄게 다 들어와~~~', likes: 36, comments: 13 },
 ]
 
 function HomeStories() {
@@ -18,21 +19,16 @@ function HomeStories() {
         </div>
         <a href="#more-stories">더보기 〉</a>
       </div>
-      <ol className="story-list">
-        {stories.map((story, index) => (
-          <li className="story-item" key={story.title}>
-            <span className="story-item__rank">{index + 1}</span>
-            <span className="story-item__thumb" aria-hidden="true" />
-            <span className="story-item__body">
-              <span className="story-item__title">{story.title}</span>
-              <span className="story-item__stats">
-                <span className="heart">♡</span>
-                {story.likes} · ◎{story.comments}
-              </span>
-            </span>
-          </li>
-        ))}
-      </ol>
+      <div className="story-list">
+        <SequentialHighlightList
+          className="stories-section__stagger"
+          items={stories}
+          intervalMs={1200}
+          startIndex={0}
+          loop
+          autoplay
+        />
+      </div>
     </section>
   )
 }

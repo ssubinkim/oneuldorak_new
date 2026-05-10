@@ -1,0 +1,109 @@
+.sequential-highlight-list {
+  width: 100%;
+}
+
+.sequential-highlight-list__items {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sequential-highlight-list__item {
+  display: grid;
+  grid-template-columns: 16px 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 8px 10px 8px 6px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: #f4f5f6;
+  opacity: 0.55;
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease,
+    background-color 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.sequential-highlight-list__item.is-active {
+  background: #fff;
+  border-color: var(--color-green-30);
+  box-shadow: 0 8px 18px rgba(0, 166, 82, 0.16);
+  opacity: 1;
+  transform: translateY(-1px);
+  animation: sequential-highlight-pop 360ms ease-out;
+}
+
+.sequential-highlight-list__rank {
+  color: #6e6e6e;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.sequential-highlight-list__item.is-active .sequential-highlight-list__rank {
+  color: #e22525;
+}
+
+.sequential-highlight-list__thumbnail {
+  width: 20px;
+  height: 20px;
+  background: #d2d3d5;
+  border-radius: 6px;
+}
+
+.sequential-highlight-list__content {
+  min-width: 0;
+}
+
+.sequential-highlight-list__title {
+  margin: 0;
+  color: #5e5e5e;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sequential-highlight-list__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin: 2px 0 0;
+  color: #9b9b9b;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.sequential-highlight-list__heart {
+  color: #ff4b58;
+}
+
+.sequential-highlight-list__dot {
+  margin: 0 2px;
+}
+
+.sequential-highlight-list__comment-icon {
+  width: 11px;
+  height: 11px;
+  margin-top: 1px;
+}
+
+@keyframes sequential-highlight-pop {
+  0% {
+    transform: scale(0.985);
+    opacity: 0.82;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

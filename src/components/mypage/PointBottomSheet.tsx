@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import AttendanceCircles from './AttendanceCircles'
 import type { DayData } from './AttendanceCircles'
 import BottomSheet from './BottomSheet'
@@ -41,10 +41,6 @@ type Props = {
 
 export default function PointBottomSheet({ open, onClose, totalPoints = 245, monthlyPoints = 133 }: Props) {
   const [tab, setTab] = useState<Tab>('guide')
-
-  useEffect(() => {
-    if (open) setTab('guide')
-  }, [open])
 
   return (
     <BottomSheet open={open} onClose={onClose}>
