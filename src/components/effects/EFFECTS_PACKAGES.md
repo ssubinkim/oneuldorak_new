@@ -44,3 +44,12 @@ npm install swiper
 - `swiper@^12.1.4`
   - 사용 파일: `swiper/CardSwiper.tsx`, `swiper/CoverFlow.tsx`
   - 용도: 스와이프 UI 효과
+
+## 추가 설치 불필요 효과
+- `stagger/SequentialHighlightList` (외부 패키지 추가 설치 없음)
+  - 사용 파일: `stagger/SequentialHighlightList.tsx`, `stagger/SequentialHighlightList.css`
+  - 용도: 항목이 시간차로 하나씩 강조되는 순차(스태거) 하이라이트 리스트
+
+- `cards/FanDeck` (외부 패키지 추가 설치 없음)
+  - 사용 파일: `cards/FanDeck.tsx`, `cards/FanDeck.css`
+  - 용도: 겹쳐진 카드가 중앙 강조되며 순환되는 팬(Deck) 카드 효과

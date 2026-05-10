@@ -1,0 +1,79 @@
+.fan-deck {
+  position: relative;
+  width: min(100%, 350px);
+  height: 308px;
+  margin: 0 auto;
+  perspective: 900px;
+  overflow: visible;
+}
+
+.fan-deck__card {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  display: grid;
+  justify-items: center;
+  width: 240px;
+  min-height: 276px;
+  margin: 0;
+  padding: 22px 16px 18px;
+  box-sizing: border-box;
+  color: #575757;
+  text-align: center;
+  background: #efefef;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+  transform-origin: center bottom;
+  transition:
+    transform 320ms ease,
+    opacity 320ms ease,
+    box-shadow 320ms ease;
+  cursor: pointer;
+}
+
+.fan-deck__card.is-active {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.fan-deck__title {
+  margin: 0;
+  color: #4e4e4e;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.fan-deck__price {
+  margin: 6px 0 0;
+  color: #fa4c4c;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.fan-deck__image {
+  width: 172px;
+  height: 126px;
+  margin-top: 20px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.16);
+}
+
+.fan-deck__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 24px;
+  color: #686868;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.fan-deck__clock-icon {
+  width: 13px;
+  height: 13px;
+  color: #686868;
+}

@@ -44,6 +44,19 @@
   --color-tertiary-20: rgb(var(--color-tertiary-rgb) / 20%);
   --color-tertiary-10: rgb(var(--color-tertiary-rgb) / 10%);
 
+  --color-green: #00a652;
+  --color-green-rgb: 0 166 82;
+  --color-green-100: rgb(var(--color-green-rgb) / 100%);
+  --color-green-90: rgb(var(--color-green-rgb) / 90%);
+  --color-green-80: rgb(var(--color-green-rgb) / 80%);
+  --color-green-70: rgb(var(--color-green-rgb) / 70%);
+  --color-green-60: rgb(var(--color-green-rgb) / 60%);
+  --color-green-50: rgb(var(--color-green-rgb) / 50%);
+  --color-green-40: rgb(var(--color-green-rgb) / 40%);
+  --color-green-30: rgb(var(--color-green-rgb) / 30%);
+  --color-green-20: rgb(var(--color-green-rgb) / 20%);
+  --color-green-10: rgb(var(--color-green-rgb) / 10%);
+
   --color-status-emphasis: #ef5246;
   --color-status-emphasis-rgb: 239 82 70;
   --color-status-emphasis-100: rgb(var(--color-status-emphasis-rgb) / 100%);
