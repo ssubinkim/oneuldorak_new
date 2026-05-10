@@ -121,8 +121,10 @@ button {
   position: absolute;
   top: var(--header-height);
   right: 0;
-  bottom: var(--bottom-nav-height);
+  bottom: 0;
   left: 0;
+  box-sizing: border-box;
+  padding-bottom: var(--bottom-nav-height);
   overflow: hidden auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
