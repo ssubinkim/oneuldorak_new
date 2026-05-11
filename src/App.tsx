@@ -17,7 +17,7 @@ const pages = {
   community: Community,
   store: Store,
   mypage: MyPage,
-  'mypage-likes': LikePage,
+  'mypage-likes': () => <LikePage />,
   chatbot: Chatbot,
   'chatbot-camera': ChatbotCamera,
 } satisfies Record<AppRoute, () => React.JSX.Element>
