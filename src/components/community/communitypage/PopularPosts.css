@@ -1,70 +1,76 @@
-.popular-posts {
-  padding: 16px;
-  background: #fff;
-  border: 1px solid #e8e9ef;
-  border-radius: 12px;
+.hot-posts {
+  margin-top: 20px;
 }
 
-.popular-posts__header {
+.hot-posts__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 12px;
 }
 
-.popular-posts__header h2 {
+.hot-posts__header h2 {
   margin: 0;
   color: #1f232d;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 800;
 }
 
-.popular-posts__list {
-  display: grid;
-  gap: 12px;
+.hot-posts__header button {
+  padding: 0;
+  color: #9097a3;
+  background: transparent;
+  border: 0;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.popular-post-item {
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 12px;
-  align-items: center;
+.hot-posts__card {
+  padding: 0 16px;
+  background: #fff;
+  border-radius: 14px;
 }
 
-.popular-post-item__thumb {
-  width: 48px;
-  height: 48px;
-  background: #e0e2e7;
-  border-radius: 6px;
-}
-
-.popular-post-item__content h3 {
-  margin: 0;
-  color: #252a33;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.popular-post-item__meta {
+.hot-post-item {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 4px;
-  color: #757b86;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+}
+
+.hot-post-item__divider {
+  height: 1px;
+  background: #f0f1f5;
+}
+
+.hot-post-item__rank {
+  min-width: 18px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #444;
+  line-height: 1.4;
+}
+
+.hot-post-item__rank--first {
+  color: #E53935;
+}
+
+.hot-post-item__content {
+  flex: 1;
+}
+
+.hot-post-item__title {
+  margin: 0 0 5px;
+  color: #1f232d;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.hot-post-item__meta {
+  display: flex;
+  gap: 10px;
+  color: #9097a3;
   font-size: 11px;
-  font-weight: 500;
-}
-
-.popular-post-item__meta span {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-}
-
-.popular-post-item__meta svg {
-  width: 12px;
-  height: 12px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }

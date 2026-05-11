@@ -27,6 +27,12 @@
   padding-top: calc(44px + 20px);
 }
 
+@media (max-width: 767px) {
+  .meal-hero-inner {
+    padding-top: 20px;
+  }
+}
+
 .meal-hero-top {
   display: flex;
   justify-content: space-between;
