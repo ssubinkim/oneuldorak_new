@@ -2,11 +2,11 @@
   --bottom-nav-bg-height: clamp(68px, 18.4615vw, 72px);
   --bottom-nav-home-size: clamp(66px, 19.2308vw, 74px);
   --bottom-nav-home-icon-size: clamp(36px, 10.2564vw, 40px);
-  --bottom-nav-icon-size: clamp(22px, 6.1538vw, 24px);
+  --bottom-nav-icon-size: clamp(24px, 6.6667vw, 26px);
   --bottom-nav-label-height: 14.4px;
   --bottom-nav-link-gap: 4px;
   --bottom-nav-link-height: clamp(50px, 13.8462vw, 54px);
-  --bottom-nav-font-size: 12px;
+  --bottom-nav-font-size: 13px;
   --bottom-nav-home-offset: -28px;
   --bottom-nav-notch-radius: clamp(43px, 11.7949vw, 46px);
   --bottom-nav-center-column: clamp(76px, 22.5641vw, 88px);
@@ -82,6 +82,29 @@
   text-decoration: none;
   text-transform: uppercase;
   overflow: visible;
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.bottom-nav__link:not(.bottom-nav__link--home)::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  z-index: 0;
+  width: 46px;
+  height: 5px;
+  border-radius: 999px;
+  background: #ffd515;
+  box-shadow: 0 0 12px rgba(255, 213, 21, 0.55);
+  opacity: 0;
+  transform: translateX(-50%) translateY(4px) scaleX(0.18);
+  transform-origin: center;
+  pointer-events: none;
+  transition:
+    opacity 120ms ease,
+    transform 220ms ease-out;
 }
 
 .bottom-nav__link[href='#/meal'] {
@@ -101,6 +124,8 @@
 }
 
 .bottom-nav__label {
+  position: relative;
+  z-index: 1;
   display: block;
   flex: 0 0 auto;
   min-height: var(--bottom-nav-label-height);
@@ -108,6 +133,9 @@
   overflow: visible;
   text-align: center;
   white-space: nowrap;
+  transition:
+    color 160ms ease,
+    transform 180ms ease-out;
 }
 
 .bottom-nav__link:focus-visible {
@@ -195,6 +223,29 @@
   font-weight: 600;
 }
 
+.bottom-nav__link[aria-current='page']:not(.bottom-nav__link--home) {
+  color: #151515;
+}
+
+.bottom-nav__link[aria-current='page']:not(.bottom-nav__link--home) .bottom-nav__icon-slot {
+  filter: drop-shadow(0 4px 7px rgba(255, 213, 21, 0.24));
+  transform: translateY(-2px) scale(1.06);
+}
+
+.bottom-nav__link[aria-current='page']:not(.bottom-nav__link--home) .bottom-nav__label {
+  color: #151515;
+  transform: translateY(-1px);
+}
+
+.bottom-nav__link[aria-current='page']:not(.bottom-nav__link--home)::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scaleX(1);
+}
+
+.bottom-nav__link:not(.bottom-nav__link--home):active {
+  transform: scale(0.96);
+}
+
 .bottom-nav__icon-slot {
   display: grid;
   flex: 0 0 var(--bottom-nav-icon-size);
@@ -203,6 +254,9 @@
   height: var(--bottom-nav-icon-size);
   position: relative;
   z-index: 1;
+  transition:
+    filter 180ms ease,
+    transform 180ms ease-out;
 }
 
 .bottom-nav__link--home .bottom-nav__icon {

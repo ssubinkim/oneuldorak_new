@@ -5,7 +5,9 @@
   display: grid;
   place-items: center;
   padding: 24px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   box-sizing: border-box;
 }
 

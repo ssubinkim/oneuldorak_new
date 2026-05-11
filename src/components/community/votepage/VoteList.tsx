@@ -96,6 +96,42 @@ const endedVoteCards: VoteCardItem[] = [
       { label: '샐러드', votes: 14 },
     ],
   },
+  {
+    id: 'vote-ended-breakfast',
+    question: '아침 도시락으로 가장 든든했던 메뉴는?',
+    subtitle: '지난 투표에서 많이 선택된 메뉴예요',
+    participants: 68,
+    deadline: '종료',
+    options: [
+      { label: '계란말이 주먹밥', votes: 31, highlighted: true },
+      { label: '참치마요 샌드위치', votes: 22 },
+      { label: '요거트 과일컵', votes: 15 },
+    ],
+  },
+  {
+    id: 'vote-ended-budget',
+    question: '가성비 도시락 재료 1위는?',
+    subtitle: '도락이들이 고른 절약 재료예요',
+    participants: 74,
+    deadline: '종료',
+    options: [
+      { label: '두부', votes: 24 },
+      { label: '계란', votes: 36, highlighted: true },
+      { label: '콩나물', votes: 14 },
+    ],
+  },
+  {
+    id: 'vote-ended-side',
+    question: '냉장고에 있으면 든든한 밑반찬은?',
+    subtitle: '종료된 밑반찬 선호도 결과예요',
+    participants: 61,
+    deadline: '종료',
+    options: [
+      { label: '진미채', votes: 18 },
+      { label: '멸치볶음', votes: 27, highlighted: true },
+      { label: '오이무침', votes: 16 },
+    ],
+  },
 ]
 
 const getTotalVotes = (options: VoteOption[]) => (
