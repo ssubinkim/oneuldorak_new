@@ -1,5 +1,5 @@
 import type { Swiper as SwiperInstance } from 'swiper'
-import { EffectCoverflow } from 'swiper/modules'
+import { Autoplay, EffectCoverflow } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import 'swiper/css'
@@ -12,13 +12,17 @@ export type CoverflowSlideItem = {
   image: string
   title: string
   likes?: number
-  comments?: number
+  views?: number
 }
 
 type CoverflowSwiperProps = {
   items: CoverflowSlideItem[]
   className?: string
   initialSlide?: number
+  effectMode?: 'coverflow' | 'slide'
+  spaceBetween?: number
+  autoplay?: boolean
+  autoplayDelayMs?: number
   onActiveIndexChange?: (index: number) => void
 }
 
@@ -30,24 +34,47 @@ export default function CoverflowSwiper({
   items,
   className,
   initialSlide = 0,
+  effectMode = 'coverflow',
+  spaceBetween = 0,
+  autoplay = false,
+  autoplayDelayMs = 2000,
   onActiveIndexChange,
 }: CoverflowSwiperProps) {
+  const isCoverflow = effectMode === 'coverflow'
+  const modules = [
+    ...(isCoverflow ? [EffectCoverflow] : []),
+    ...(autoplay ? [Autoplay] : []),
+  ]
+
   return (
     <Swiper
-      effect="coverflow"
+      effect={effectMode}
       grabCursor
       centeredSlides
       slidesPerView="auto"
+      spaceBetween={spaceBetween}
       initialSlide={initialSlide}
       loop={items.length > 2}
-      modules={[EffectCoverflow]}
-      coverflowEffect={{
-        rotate: 0,
-        stretch: 56,
-        depth: 220,
-        modifier: 1.25,
-        slideShadows: false,
-      }}
+      modules={modules}
+      autoplay={
+        autoplay
+          ? {
+              delay: autoplayDelayMs,
+              disableOnInteraction: false,
+            }
+          : false
+      }
+      coverflowEffect={
+        isCoverflow
+          ? {
+              rotate: 0,
+              stretch: 56,
+              depth: 220,
+              modifier: 1.25,
+              slideShadows: false,
+            }
+          : undefined
+      }
       onSlideChange={(swiper) => {
         onActiveIndexChange?.(getRealIndex(swiper))
       }}
@@ -62,26 +89,20 @@ export default function CoverflowSwiper({
             <img className="coverflow-swiper__image" src={item.image} alt={item.title} />
             <div className="coverflow-swiper__body">
               <h3>{item.title}</h3>
-              {(typeof item.likes === 'number' || typeof item.comments === 'number') && (
+              {(typeof item.likes === 'number' || typeof item.views === 'number') && (
                 <p className="coverflow-swiper__meta">
-                  <span className="coverflow-swiper__heart">♡</span>
-                  <span>{typeof item.likes === 'number' ? item.likes : 0}</span>
-                  <span className="coverflow-swiper__dot">·</span>
-                  <svg
-                    className="coverflow-swiper__comment-icon"
-                    viewBox="0 0 16 16"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M2.5 2.5h11v7.5h-4.8L5.3 13.2v-3.2H2.5z"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <span>{typeof item.comments === 'number' ? item.comments : 0}</span>
+                  {typeof item.likes === 'number' && (
+                    <>
+                      <span className="coverflow-swiper__heart">♡</span>
+                      <span>{item.likes}</span>
+                    </>
+                  )}
+                  {typeof item.likes === 'number' && typeof item.views === 'number' && (
+                    <span className="coverflow-swiper__dot">·</span>
+                  )}
+                  {typeof item.views === 'number' && (
+                    <span className="coverflow-swiper__views-text">조회수 {item.views}</span>
+                  )}
                 </p>
               )}
             </div>

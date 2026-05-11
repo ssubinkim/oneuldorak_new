@@ -33,6 +33,33 @@
   padding: 0 10px;
 }
 
+.tomorrow-section__deck .fan-deck {
+  width: min(100%, 310px);
+  height: 322px;
+  perspective: 1000px;
+}
+
+.tomorrow-section__deck .fan-deck__card {
+  width: 252px;
+  min-height: 286px;
+  padding: 22px 17px 18px;
+  background: #f4f0e8;
+  border: 1px solid rgba(78, 71, 60, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 10px 22px rgba(41, 36, 28, 0.16);
+}
+
+.tomorrow-section__deck .fan-deck__card.is-active {
+  background: #fff;
+  box-shadow: 0 16px 30px rgba(41, 36, 28, 0.2);
+}
+
+.tomorrow-section__deck .fan-deck__image {
+  width: 184px;
+  height: 132px;
+  border-radius: 14px;
+}
+
 .home-dots {
   display: flex;
   justify-content: center;

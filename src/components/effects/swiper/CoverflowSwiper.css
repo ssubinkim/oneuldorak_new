@@ -76,8 +76,6 @@
   margin: 0 2px;
 }
 
-.coverflow-swiper__comment-icon {
-  width: 14px;
-  height: 14px;
-  margin-top: 1px;
+.coverflow-swiper__views-text {
+  white-space: nowrap;
 }

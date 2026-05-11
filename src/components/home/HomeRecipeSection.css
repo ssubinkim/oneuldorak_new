@@ -22,7 +22,44 @@
 }
 
 .recipe-section__coverflow .coverflow-swiper__slide {
-  width: clamp(222px, 70vw, 304px);
+  width: min(250px, calc(100vw - 48px));
+}
+
+.recipe-section__coverflow .coverflow-swiper__card {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #E1E1E1;
+  border-radius: 6px;
+  box-shadow: none;
+  transform: scale(0.94);
+}
+
+.recipe-section__coverflow .swiper-slide-active .coverflow-swiper__card {
+  box-shadow: none;
+  transform: scale(1.08);
+}
+
+.recipe-section__coverflow .coverflow-swiper__image {
+  height: 181px;
+  object-position: top center;
+}
+
+.recipe-section__coverflow .coverflow-swiper__body {
+  padding: 14px 10px 15px;
+  background: #fff;
+}
+
+.recipe-section__coverflow .coverflow-swiper__body h3 {
+  color: #555;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.recipe-section__coverflow .coverflow-swiper__meta {
+  gap: 4px;
+  margin-top: 13px;
+  color: #777;
+  font-size: 13px;
 }
 
 .recipe-section__dots {
@@ -31,6 +68,6 @@
 
 @media (max-width: 360px) {
   .recipe-section__coverflow .coverflow-swiper__slide {
-    width: clamp(208px, 76vw, 286px);
+    width: min(250px, calc(100vw - 40px));
   }
 }

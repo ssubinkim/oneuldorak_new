@@ -16,6 +16,8 @@ type FanDeckProps = {
   startIndex?: number
   loop?: boolean
   autoplay?: boolean
+  cardOffsetX?: number
+  layout?: 'fan' | 'stack'
   onActiveIndexChange?: (index: number) => void
 }
 
@@ -38,6 +40,12 @@ function getLoopedOffset(index: number, activeIndex: number, itemCount: number):
   return offset
 }
 
+function getStackOffset(index: number, activeIndex: number, itemCount: number): number {
+  if (itemCount <= 1) return 0
+
+  return (index - activeIndex + itemCount) % itemCount
+}
+
 function FanDeck({
   items,
   className = '',
@@ -45,6 +53,8 @@ function FanDeck({
   startIndex = 0,
   loop = true,
   autoplay = true,
+  cardOffsetX = 56,
+  layout = 'fan',
   onActiveIndexChange,
 }: FanDeckProps) {
   const safeItems = useMemo(() => items ?? [], [items])
@@ -85,15 +95,26 @@ function FanDeck({
   return (
     <div className={`fan-deck ${className}`.trim()} role="list" aria-label="카드 스택">
       {safeItems.map((item, index) => {
-        const offset = getLoopedOffset(index, normalizedActiveIndex, safeItems.length)
+        const isStackLayout = layout === 'stack'
+        const offset = isStackLayout
+          ? getStackOffset(index, normalizedActiveIndex, safeItems.length)
+          : getLoopedOffset(index, normalizedActiveIndex, safeItems.length)
         const absoluteOffset = Math.abs(offset)
-        const hidden = absoluteOffset > 2
-        const scale = absoluteOffset === 0 ? 1 : Math.max(0.74, 1 - absoluteOffset * 0.11)
-        const translateX = offset * 56
-        const translateY = absoluteOffset * 8
-        const rotate = offset * 7
-        const opacity = hidden ? 0 : Math.max(0.26, 1 - absoluteOffset * 0.28)
+        const stackDepth = isStackLayout ? Math.min(offset, 2) : absoluteOffset
+        const hidden = isStackLayout ? offset > 2 : absoluteOffset > 2
+        const scale = isStackLayout
+          ? 1 - stackDepth * 0.035
+          : absoluteOffset === 0 ? 1 : Math.max(0.74, 1 - absoluteOffset * 0.11)
+        const translateX = isStackLayout
+          ? stackDepth === 0 ? 0 : stackDepth === 1 ? cardOffsetX : -cardOffsetX * 0.65
+          : offset * cardOffsetX
+        const translateY = isStackLayout ? -stackDepth * 11 : absoluteOffset * 8
+        const rotate = isStackLayout ? (stackDepth === 2 ? -3 : stackDepth * 3) : offset * 7
+        const opacity = hidden
+          ? 0
+          : isStackLayout ? 1 - stackDepth * 0.08 : Math.max(0.26, 1 - absoluteOffset * 0.28)
         const isActive = index === normalizedActiveIndex
+        const nextIndex = normalizedActiveIndex >= safeItems.length - 1 ? 0 : normalizedActiveIndex + 1
 
         return (
           <button
@@ -102,10 +123,18 @@ function FanDeck({
             className={`fan-deck__card${isActive ? ' is-active' : ''}`}
             style={{
               opacity,
-              zIndex: 100 - absoluteOffset * 10,
+              pointerEvents: hidden ? 'none' : 'auto',
+              zIndex: 100 - stackDepth * 10,
               transform: `translateX(calc(-50% + ${translateX}px)) translateY(${translateY}px) rotate(${rotate}deg) scale(${scale})`,
             }}
-            onClick={() => setActiveIndex(index)}
+            onClick={() => {
+              if (isStackLayout && isActive) {
+                setActiveIndex(loop ? nextIndex : Math.min(normalizedActiveIndex + 1, safeItems.length - 1))
+                return
+              }
+
+              setActiveIndex(index)
+            }}
           >
             <h3 className="fan-deck__title">{item.title}</h3>
             <p className="fan-deck__price">{item.priceText}</p>
