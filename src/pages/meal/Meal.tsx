@@ -1,20 +1,17 @@
-import { useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import Header from '../../components/common/layout/Header'
-import TopTabBar from '../../components/meal/common/TopTabBar'
-import WeekDaySelector from '../../components/meal/WeekDaySelector'
-import MenuTabSwitch from '../../components/meal/MenuTabSwitch'
 import TodayMenuList from '../../components/meal/TodayMenuList'
-import WeeklyMenuList from '../../components/meal/WeeklyMenuList'
+import WeeklyPlanSection from '../../components/meal/WeeklyPlanSection'
+import IngredientSection from '../../components/meal/IngredientSection'
+import RecipeCarousel from '../../components/meal/RecipeCarousel'
 import ChatBotbtn from '../chatbot/ChatBotbtn'
-import MealPage from './MealPage'
 import mydorakLogo from './images/mydorak_logo.svg'
 import '../../styles/Tailwind.css'
 import './Meal.css'
 
 function BellIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
       <path d="M13.73 21a2 2 0 0 1-3.46 0" />
     </svg>
@@ -22,14 +19,11 @@ function BellIcon() {
 }
 
 function Meal() {
-  const [topTab, setTopTab] = useState<'week' | 'storage'>('week')
-  const [menuTab, setMenuTab] = useState<'today' | 'weekly'>('today')
-  const [selectedDay, setSelectedDay] = useState(1)
-  const [calOpen, setCalOpen] = useState(false)
-
   return (
     <div className="app-shell">
       <div className="app-screen meal-screen">
+
+        {/* ── 옐로우 히어로 헤더 ── */}
         <div className="meal-hero">
           <Header />
           <div className="meal-hero-inner">
@@ -38,38 +32,33 @@ function Meal() {
                 <img src={mydorakLogo} alt="마이도락 로고" className="meal-brand-logo" />
                 <span className="meal-brand-name">마이도락</span>
               </div>
-              <button className="meal-bell-btn">
+              <button className="meal-bell-btn" aria-label="알림">
                 <BellIcon />
               </button>
             </div>
             <p className="meal-tagline">
-              세아님, 냉장고 재료로<br />이런 메뉴를 만들 수 있어요 !
+              냉장고 재료로<br />맛있는 메뉴를 추천해드려요 !
             </p>
           </div>
         </div>
 
-        <div className="meal-content">
-          <TopTabBar topTab={topTab} setTopTab={setTopTab} />
+        {/* ── 대시보드 스크롤 영역 ── */}
+        <div className="meal-dashboard">
 
-          {topTab === 'week' ? (
-            <>
-              <WeekDaySelector
-                selectedDay={selectedDay}
-                setSelectedDay={setSelectedDay}
-                calOpen={calOpen}
-                setCalOpen={setCalOpen}
-              />
-              <MenuTabSwitch menuTab={menuTab} setMenuTab={setMenuTab} />
-              <div className="menu-list-container">
-                {menuTab === 'today'
-                  ? <TodayMenuList selectedDay={selectedDay} />
-                  : <WeeklyMenuList selectedDay={selectedDay} />
-                }
-              </div>
-            </>
-          ) : (
-            <MealPage />
-          )}
+          {/* 1. 오늘의 메뉴 — 타이틀은 카드 내부에 포함 */}
+          <div className="dash-today-wrap">
+            <TodayMenuList selectedDay={1} />
+          </div>
+
+          {/* 2. 이번주 도시락 계획 */}
+          <WeeklyPlanSection />
+
+          {/* 3. 냉장고 재료 모아보기 */}
+          <IngredientSection />
+
+          {/* 4. 내 재료로 만들 수 있는 메뉴 */}
+          <RecipeCarousel />
+
         </div>
 
         <ChatBotbtn />
