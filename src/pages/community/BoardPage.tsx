@@ -1,29 +1,31 @@
+import { useState } from 'react'
+import BoardCategoryFilters, { type BoardFilter } from '../../components/community/boardpage/BoardCategoryFilters'
 import BoardList from '../../components/community/boardpage/BoardList'
+import BoardPopularPosts, { type BoardPopularPost } from '../../components/community/boardpage/BoardPopularPosts'
 import CommunityWriteButton from '../../components/community/common/CommunityWriteButton'
 import CommunityTabs from '../../components/community/common/CommunityTabs'
+import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './BoardPage.css'
 
 type BoardPageProps = {
-  onBack: () => void
   onSelectTab: (tab: CommunityTabRoute) => void
   onOpenDetail: (postId: string) => void
 }
 
-const chips = ['전체', '질문', '고민', '꿀팁', '냉장고 SO']
+const popularPosts: BoardPopularPost[] = [
+  { rank: 1, title: '다들 도시락 권태기 어떻게 이겨내시나요?', likes: 100, comments: 88 },
+  { rank: 2, title: '일주일 먹어도 안 질리는 레시피 찾음;;', likes: 96, comments: 65 },
+  { rank: 3, title: '식비 월 20만원으로 줄인 후기', likes: 65, comments: 52 },
+]
 
-function BoardPage({ onBack, onSelectTab, onOpenDetail }: BoardPageProps) {
+function BoardPage({ onSelectTab, onOpenDetail }: BoardPageProps) {
+  const [activeFilter, setActiveFilter] = useState<BoardFilter>('인기순')
+
   return (
     <>
       <main className="page-scroll free-detail-page">
-        <section className="free-detail-topbar">
-          <button type="button" aria-label="커뮤니티로 돌아가기" onClick={onBack}>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="m14.7 5.6-6.2 6.2 6.2 6.2" />
-            </svg>
-          </button>
-          <h1>자유게시판</h1>
-        </section>
+        <CommunityBanner />
 
         <CommunityTabs
           activeTab="free"
@@ -31,15 +33,11 @@ function BoardPage({ onBack, onSelectTab, onOpenDetail }: BoardPageProps) {
           onSelectTab={onSelectTab}
         />
 
-        <div className="free-detail-chips">
-          {chips.map((chip, index) => (
-            <button type="button" key={chip} className={index === 0 ? 'is-active' : undefined}>
-              {chip}
-            </button>
-          ))}
+        <div className="free-detail-body">
+          <BoardPopularPosts posts={popularPosts} />
+          <BoardCategoryFilters activeFilter={activeFilter} onChange={setActiveFilter} />
+          <BoardList activeFilter={activeFilter} onOpenDetail={onOpenDetail} />
         </div>
-
-        <BoardList onOpenDetail={onOpenDetail} />
       </main>
 
       <CommunityWriteButton className="free-detail-fab" aria-label="글쓰기" />

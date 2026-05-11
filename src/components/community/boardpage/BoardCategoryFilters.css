@@ -1,0 +1,41 @@
+.board-category-filters {
+  display: flex;
+  gap: 10px;
+  margin: 40px -20px 0;
+  padding: 0 20px 12px;
+  overflow-x: auto;
+  border-bottom: 1px solid #ece7dc;
+  scrollbar-width: none;
+}
+
+.board-category-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.board-category-filters button {
+  flex: 0 0 auto;
+  height: 34px;
+  padding: 0 14px;
+  color: #303030;
+  background: #fff;
+  border: 1px solid #e4e1dc;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.board-category-filters button.is-active {
+  color: #fff;
+  background: #444;
+  border-color: #444;
+}
+
+@media (max-width: 360px) {
+  .board-category-filters {
+    margin-right: -16px;
+    margin-left: -16px;
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}

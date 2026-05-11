@@ -31,11 +31,6 @@ function Community() {
     setView(tabViewMap[tab])
   }
 
-  const handleBackToMain = () => {
-    setActiveTab('all')
-    setView('main')
-  }
-
   const handleOpenRecipeDetail = (recipeId: string) => {
     setSelectedRecipeId(recipeId)
     setView('detail')
@@ -59,7 +54,6 @@ function Community() {
         {view === 'recipe' && (
           /* RecipePage: 레시피 탭 목록 화면 */
           <RecipePage
-            onBack={handleBackToMain}
             onSelectTab={handleTabClick}
             onOpenDetail={handleOpenRecipeDetail}
           />
@@ -68,7 +62,6 @@ function Community() {
         {view === 'free' && (
           /* BoardPage: 자유 게시글 탭 목록 화면 */
           <BoardPage
-            onBack={handleBackToMain}
             onSelectTab={handleTabClick}
             onOpenDetail={handleOpenBoardDetail}
           />
@@ -94,7 +87,6 @@ function Community() {
         {view === 'vote' && (
           /* VotePage: 투표 탭 목록 화면 */
           <VotePage
-            onBack={handleBackToMain}
             onSelectTab={handleTabClick}
           />
         )}

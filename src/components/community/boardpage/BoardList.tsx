@@ -1,4 +1,5 @@
 import './BoardList.css'
+import type { BoardFilter } from './BoardCategoryFilters'
 
 type BoardPost = {
   id: string
@@ -13,50 +14,71 @@ type BoardPost = {
 }
 
 type BoardListProps = {
+  activeFilter: BoardFilter
   onOpenDetail: (postId: string) => void
 }
 
 const posts: BoardPost[] = [
   {
     id: 'free-1',
-    category: '질문',
-    title: '도시락 용기 추천 부탁드려요',
-    body: '보온 잘되고 세척 편한 용기 찾고 있어요. 추천해주세요!',
-    user: '도시락초보',
-    timeAgo: '10분 전',
-    likes: 23,
-    comments: 15,
-  },
-  {
-    id: 'free-2',
     category: '꿀팁',
     title: '식비 월 20만원으로 줄인 후기',
-    body: '3개월 실천한 방법 공유합니다. 생각보다 어렵지 않아요.',
+    body: '3개월 실천한 방법 공유합니다. 생각보다 어렵지 않았어요..!',
     user: '절약왕',
-    timeAgo: '1시간 전',
-    likes: 342,
-    comments: 89,
+    timeAgo: '3일 전',
+    likes: 88,
+    comments: 12,
     highlighted: true,
   },
   {
-    id: 'free-3',
-    category: '냉장고 SOS',
+    id: 'free-2',
+    category: '냉장고SOS',
     title: '냉장고에 양배추만 남았는데 뭐 해먹을까요?',
-    body: '양배추랑 계란, 간장 정도 있어요',
-    user: '요리고민',
-    timeAgo: '2시간 전',
-    likes: 45,
-    comments: 32,
+    body: '양배추랑 계란, 간장 정도 있어요. 찾아보면 더 있을지도?',
+    user: '즐거운요리고민',
+    timeAgo: '3일 전',
+    likes: 88,
+    comments: 12,
+  },
+  {
+    id: 'free-3',
+    category: '질문',
+    title: '도시락 용기 추천 부탁드려요.',
+    body: '보온 잘되고 세척 편한 용기 찾고 있어요. 추천해주세요!',
+    user: '도시락초보',
+    timeAgo: '3일 전',
+    likes: 88,
+    comments: 12,
   },
   {
     id: 'free-4',
     category: '고민',
     title: '매일 도시락 싸는 게 힘들어요',
-    body: '요즘 너무 귀찮아서... 다들 어떻게 하시나요?',
+    body: '요즘 도시락 권태기 왔는데 이겨내는 법 있나요?',
     user: '지친직장인',
-    timeAgo: '3시간 전',
-    likes: 67,
-    comments: 41,
+    timeAgo: '3일 전',
+    likes: 88,
+    comments: 12,
+  },
+  {
+    id: 'free-5',
+    category: '꿀팁',
+    title: '식비 월 20만원으로 줄인 후기',
+    body: '3개월 실천한 방법 공유합니다. 생각보다 어렵지 않았어요..!',
+    user: '절약왕',
+    timeAgo: '3일 전',
+    likes: 88,
+    comments: 12,
+  },
+  {
+    id: 'free-6',
+    category: '꿀팁',
+    title: '식비 월 20만원으로 줄인 후기',
+    body: '3개월 실천한 방법 공유합니다. 생각보다 어렵지 않았어요..!',
+    user: '절약왕',
+    timeAgo: '3일 전',
+    likes: 88,
+    comments: 12,
   },
 ]
 
@@ -109,20 +131,20 @@ function BoardCard({
       }}
     >
       <div className="free-post-card__top">
-        <span className="free-post-card__category">{post.category}</span>
-        <div className="free-post-card__top-icons">
-          {post.highlighted && <span className="free-post-card__trend">↗</span>}
-          <button type="button" aria-label="북마크">
-            <BoardActionIcon kind="bookmark" />
-          </button>
-        </div>
+        <span className={`free-post-card__category free-post-card__category--${post.category}`}>
+          {post.category}
+        </span>
+        <span className="free-post-card__time">{post.timeAgo}</span>
       </div>
 
       <h2>{post.title}</h2>
       <p className="free-post-card__body">{post.body}</p>
 
       <div className="free-post-card__bottom">
-        <span className="free-post-card__meta">{post.user} · {post.timeAgo}</span>
+        <span className="free-post-card__meta">
+          <span aria-hidden="true">🐥</span>
+          {post.user}
+        </span>
         <div className="free-post-card__stats">
           <span>
             <BoardActionIcon kind="heart" />
@@ -138,10 +160,20 @@ function BoardCard({
   )
 }
 
-function BoardList({ onOpenDetail }: BoardListProps) {
+function shouldShowPost(post: BoardPost, activeFilter: BoardFilter) {
+  if (['꿀팁', '냉장고SOS', '질문', '고민'].includes(activeFilter)) {
+    return post.category === activeFilter
+  }
+
+  return true
+}
+
+function BoardList({ activeFilter, onOpenDetail }: BoardListProps) {
+  const visiblePosts = posts.filter((post) => shouldShowPost(post, activeFilter))
+
   return (
     <section className="free-detail-list" aria-label="자유게시판 글 목록">
-      {posts.map((post) => (
+      {visiblePosts.map((post) => (
         <BoardCard
           key={post.id}
           post={post}

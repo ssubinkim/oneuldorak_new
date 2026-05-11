@@ -1,65 +1,119 @@
 .free-detail-list {
   display: grid;
-  gap: 10px;
-  padding: 0 16px 98px;
+  gap: 18px;
+  padding: 30px 0 110px;
 }
 
 .free-post-card {
-  padding: 14px 14px 12px;
+  padding: 15px 12px 14px;
   background: #fff;
-  border: 1px solid #e5e7ec;
-  border-radius: 12px;
+  border: 1px solid #e7e1d8;
+  border-radius: 10px;
+  box-sizing: border-box;
   cursor: pointer;
 }
 
 .free-post-card:focus-visible {
-  outline: 2px solid #c5d4ff;
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
 .free-post-card__top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 12px;
 }
 
 .free-post-card__category {
   display: inline-flex;
   align-items: center;
-  height: 24px;
-  padding: 0 10px;
-  color: #6c7484;
-  background: #f2f3f7;
-  border-radius: 6px;
+  height: 23px;
+  padding: 0 9px;
+  color: #9c7b00;
+  background: #fff4b7;
+  border-radius: 999px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
+  line-height: 1;
 }
 
-.free-post-card__top-icons {
+.free-post-card__category--냉장고SOS {
+  color: #ff6363;
+  background: #ffe5e5;
+}
+
+.free-post-card__category--질문 {
+  color: #3976ff;
+  background: #e6efff;
+}
+
+.free-post-card__category--고민 {
+  color: #229f71;
+  background: #dcf6eb;
+}
+
+.free-post-card__time {
+  color: #777;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.free-post-card h2 {
+  margin: 12px 0 0;
+  color: #171717;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.free-post-card__body {
+  display: -webkit-box;
+  margin: 4px 0 0;
+  overflow: hidden;
+  color: #4f4f4f;
+  font-size: 13px;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.free-post-card__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.free-post-card__meta {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 2px;
+  min-width: 0;
+  color: #555;
+  font-size: 12px;
+  line-height: 1;
 }
 
-.free-post-card__trend {
-  color: #ff6c17;
-  font-size: 15px;
-  font-weight: 700;
+.free-post-card__stats {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #7a7a7a;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.free-post-card__top-icons button {
-  width: 18px;
-  height: 18px;
-  padding: 0;
-  color: #8790a0;
-  background: transparent;
-  border: 0;
+.free-post-card__stats span {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
 }
 
-.free-post-card__top-icons svg,
 .free-post-card__stats svg {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.8;
@@ -67,42 +121,19 @@
   stroke-linejoin: round;
 }
 
-.free-post-card h2 {
-  margin: 10px 0 0;
-  color: #202630;
-  font-size: 14px;
-  font-weight: 700;
+.free-post-card__stats span:first-child svg {
+  color: #ff5a5f;
 }
 
-.free-post-card__body {
-  margin: 8px 0 0;
-  color: #687182;
-  font-size: 12px;
-  line-height: 1.35;
-}
+@media (max-width: 360px) {
+  .free-post-card h2 {
+    font-size: 14px;
+  }
 
-.free-post-card__bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.free-post-card__meta {
-  color: #6e7788;
-  font-size: 12px;
-}
-
-.free-post-card__stats {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  color: #5f6879;
-  font-size: 12px;
-}
-
-.free-post-card__stats span {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  .free-post-card__body,
+  .free-post-card__meta,
+  .free-post-card__stats,
+  .free-post-card__time {
+    font-size: 11px;
+  }
 }

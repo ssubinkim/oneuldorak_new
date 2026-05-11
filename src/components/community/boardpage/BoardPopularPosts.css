@@ -1,0 +1,74 @@
+.board-popular-posts {
+  margin-top: 30px;
+}
+
+.board-popular-posts h2 {
+  margin: 0 0 20px;
+  color: #111;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.board-popular-posts__list {
+  display: grid;
+  margin: 0;
+  padding: 16px 20px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #d7d2ca;
+  border-radius: 8px;
+}
+
+.board-popular-posts__list li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 12px;
+  padding: 11px 0;
+}
+
+.board-popular-posts__list li + li {
+  border-top: 1px solid #eee8de;
+}
+
+.board-popular-posts__list li:first-child {
+  padding-top: 0;
+}
+
+.board-popular-posts__list li:last-child {
+  padding-bottom: 0;
+}
+
+.board-popular-posts__rank {
+  color: #333;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.board-popular-posts__list li.is-top .board-popular-posts__rank {
+  color: #ff1f2a;
+  font-weight: 800;
+}
+
+.board-popular-posts__list strong {
+  display: block;
+  overflow: hidden;
+  color: #343434;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-popular-posts__list p {
+  margin: 4px 0 0;
+  color: #777;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.board-popular-posts__list li.is-top p {
+  color: #666;
+}
