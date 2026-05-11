@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type Dispatch, type SetStateAction } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import {
   chiliImg, sosageImg, meatImg, onionImg,
@@ -124,14 +124,17 @@ function RecipeCard({ recipe }: { recipe: StorageRecipe }) {
 }
 
 /* ── 장보기 탭 ─────────────────────────────────── */
-function ShoppingTab() {
-  const [items, setItems] = useState<ShoppingItem[]>(INITIAL_ITEMS)
+type ShoppingTabProps = {
+  items: ShoppingItem[]
+  setItems: Dispatch<SetStateAction<ShoppingItem[]>>
+}
 
+function ShoppingTab({ items, setItems }: ShoppingTabProps) {
   const toggle = (id: number) =>
     setItems(prev => prev.map(it => it.id === id ? { ...it, checked: !it.checked } : it))
 
   const checkedCount = items.filter(it => it.checked).length
-  const allChecked   = checkedCount === items.length
+  const allChecked   = items.length > 0 && checkedCount === items.length
 
   const toggleAll    = () => setItems(prev => prev.map(it => ({ ...it, checked: !allChecked })))
   const deleteChecked = () => setItems(prev => prev.filter(it => !it.checked))
@@ -227,6 +230,8 @@ function RecommendTab() {
 /* ── 페이지 ────────────────────────────────────── */
 function GroceryPage({ onBack }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>('shopping')
+  const [shoppingItems, setShoppingItems] = useState<ShoppingItem[]>(INITIAL_ITEMS)
+  const checkedShoppingCount = shoppingItems.filter(item => item.checked).length
 
   return (
     <div className="app-shell">
@@ -252,7 +257,7 @@ function GroceryPage({ onBack }: Props) {
                 onClick={() => setActiveTab('shopping')}
               >
                 장보기
-                <span className="gp-tab-badge">{INITIAL_ITEMS.length}</span>
+                <span className="gp-tab-badge">{checkedShoppingCount}</span>
               </button>
               <button
                 className={`gp-tab${activeTab === 'storage' ? ' gp-tab--active' : ''}`}
@@ -268,7 +273,9 @@ function GroceryPage({ onBack }: Props) {
               </button>
             </div>
 
-            {activeTab === 'shopping'  && <ShoppingTab />}
+            {activeTab === 'shopping'  && (
+              <ShoppingTab items={shoppingItems} setItems={setShoppingItems} />
+            )}
             {activeTab === 'storage'   && <StorageTab />}
             {activeTab === 'recommend' && <RecommendTab />}
 
