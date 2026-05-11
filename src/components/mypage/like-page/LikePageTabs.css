@@ -1,0 +1,29 @@
+.like-tabs {
+  position: absolute;
+  top: var(--header-height, 44px);
+  left: 0;
+  right: 0;
+  display: flex;
+  background: #fff;
+  z-index: 10;
+  border-bottom: 1.5px solid #f0f0f0;
+}
+
+.like-tab {
+  flex: 1;
+  padding: 14px 0;
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-disabled, #aaa);
+  cursor: pointer;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -1.5px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.like-tab--active {
+  color: var(--color-text-main, #1a1a1a);
+  border-bottom-color: var(--color-text-main, #1a1a1a);
+}

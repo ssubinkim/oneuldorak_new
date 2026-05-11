@@ -1,15 +1,9 @@
 import BottomNav from '../../components/common/layout/BottomNav'
-import SavedRecipeCard from '../../components/mypage/SavedRecipeCard'
-import type { SavedRecipe } from '../../components/mypage/SavedRecipeCard'
+import SavedRecipeHeader from '../../components/mypage/saved-recipe-page/SavedRecipeHeader'
+import SavedRecipeList from '../../components/mypage/saved-recipe-page/SavedRecipeList'
+import { SAVED_RECIPES } from '../../components/mypage/saved-recipe-page/savedRecipeData'
 import '../../styles/Tailwind.css'
 import './SavedRecipePage.css'
-
-const SAVED_RECIPES: SavedRecipe[] = [
-  { id: 1, showIcon: false, title: '냉동실 파먹기 레시피', savedAt: '5일 전 저장' },
-  { id: 2, showIcon: true,  title: '3000원으로 만드는 도시락', savedAt: '2일 전 저장' },
-  { id: 3, showIcon: false, title: '냉동실 파먹기 레시피', savedAt: '5일 전 저장' },
-  { id: 4, showIcon: false, title: '냉동실 파먹기 레시피', savedAt: '5일 전 저장' },
-]
 
 type Props = { onBack?: () => void }
 
@@ -19,32 +13,13 @@ function SavedRecipePage({ onBack }: Props) {
   return (
     <div className="app-shell">
       <div className="app-screen">
+        {/* SavedRecipeHeader: 뒤로가기 + 저장한 레시피 제목 헤더 영역 */}
+        <SavedRecipeHeader onBack={handleBack} />
 
-        {/* 헤더 */}
-        <header className="saved-header">
-          <button
-            className="saved-header-back"
-            onClick={handleBack}
-            aria-label="뒤로가기"
-          >
-            <svg width="10" height="18" viewBox="0 0 10 18" fill="none">
-              <path d="M9 1L1 9L9 17" stroke="#1a1a1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-          <span className="saved-header-title">저장한 레시피</span>
-        </header>
+        {/* SavedRecipeList: 저장한 레시피 카드 리스트 영역 */}
+        <SavedRecipeList recipes={SAVED_RECIPES} />
 
-        {/* 콘텐츠 */}
-        <div className="page-scroll">
-          <div className="saved-recipe-page">
-            <div className="saved-recipe-list">
-              {SAVED_RECIPES.map((recipe) => (
-                <SavedRecipeCard key={recipe.id} recipe={recipe} />
-              ))}
-            </div>
-          </div>
-        </div>
-
+        {/* BottomNav: 하단 탭바 영역 */}
         <BottomNav />
       </div>
     </div>
