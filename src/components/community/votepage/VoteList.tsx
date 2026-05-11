@@ -11,18 +11,91 @@ type VoteOption = {
 
 type VoteCardItem = {
   id: string
-  title: string
-  subtitle: string
+  heading?: string
+  question: string
+  subtitle?: string
   reward?: string
-  highlighted?: boolean
   participants: number
-  remaining: string
+  deadline: string
   options: VoteOption[]
 }
 
 type VoteListProps = {
   filter: VoteFilter
+  variant?: 'featured' | 'list'
 }
+
+const voteCards: VoteCardItem[] = [
+  {
+    id: 'vote-today',
+    heading: '오늘의 투표',
+    question: '여름철 도시락으로 뭐가 더 좋을까요?',
+    reward: '+1p',
+    participants: 53,
+    deadline: '~ 2026.05.18 18:00',
+    options: [
+      { label: '샐러드 파스타', votes: 18 },
+      { label: '사과 브리치즈 샌드위치', votes: 13 },
+      { label: '오이 참치 주먹밥', votes: 12 },
+      { label: '닭가슴살 샐러드 랩', votes: 10 },
+    ],
+  },
+  {
+    id: 'vote-fail',
+    question: '가장 실패한 도시락은?',
+    subtitle: '실패 경험 공유해요ㅎㅎㅎ',
+    reward: '+1p',
+    participants: 53,
+    deadline: '~ 2026.05.18 18:00',
+    options: [
+      { label: '물기 많은 반찬', votes: 20 },
+      { label: '비린내 나는 생선', votes: 17 },
+      { label: '식어서 굳은 밥', votes: 16 },
+    ],
+  },
+  {
+    id: 'vote-monday',
+    question: '월요일 점심 메뉴는?',
+    subtitle: '한 주 시작에 가장 먹고 싶은 도시락을 골라주세요',
+    reward: '+1p',
+    participants: 53,
+    deadline: '~ 2026.05.18 18:00',
+    options: [
+      { label: '참치마요 덮밥', votes: 19 },
+      { label: '닭가슴살 샐러드', votes: 18 },
+      { label: '소시지 야채볶음', votes: 16 },
+    ],
+  },
+  {
+    id: 'vote-side',
+    question: '도시락 필수 반찬은?',
+    subtitle: '하나만 넣을 수 있다면 무엇을 고를까요?',
+    reward: '+1p',
+    participants: 53,
+    deadline: '~ 2026.05.18 18:00',
+    options: [
+      { label: '계란말이', votes: 21 },
+      { label: '멸치볶음', votes: 15 },
+      { label: '진미채', votes: 17 },
+    ],
+  },
+]
+
+const endedVoteCards: VoteCardItem[] = [
+  {
+    id: 'vote-ended-summer',
+    question: '지난주 가장 인기 있었던 여름 도시락은?',
+    subtitle: '종료된 투표 결과예요',
+    reward: '+1p',
+    participants: 53,
+    deadline: '종료',
+    options: [
+      { label: '비빔밥', votes: 14 },
+      { label: '냉국수', votes: 25, highlighted: true },
+      { label: '샐러드', votes: 14 },
+    ],
+  },
+]
 
 const getTotalVotes = (options: VoteOption[]) => (
   options.reduce((total, option) => total + option.votes, 0)
@@ -36,180 +109,6 @@ const getVotePercent = (votes: number, totalVotes: number) => {
   return (votes / totalVotes) * 100
 }
 
-const voteCards: VoteCardItem[] = [
-  {
-    id: 'vote-1',
-    title: '내일 뭐 싸지?',
-    subtitle: '내일 점심 도시락 메뉴 추천해주세요',
-    reward: '1P',
-    highlighted: true,
-    participants: 742,
-    remaining: '23시간',
-    options: [
-      { label: '김치볶음밥', votes: 218 },
-      { label: '불고기 덮밥', votes: 301 },
-      { label: '계란말이 도시락', votes: 223 },
-    ],
-  },
-  {
-    id: 'vote-2',
-    title: '가장 실패한 도시락은?',
-    subtitle: '실패 경험 공유해요',
-    reward: '1P',
-    participants: 879,
-    remaining: '5시간',
-    options: [
-      { label: '물기 많은 반찬', votes: 354 },
-      { label: '비린내 나는 생선', votes: 285 },
-      { label: '식어서 굳은 밥', votes: 240 },
-    ],
-  },
-  {
-    id: 'vote-3',
-    title: '월요일 점심 메뉴는?',
-    subtitle: '한 주 시작에 가장 먹고 싶은 도시락을 골라주세요',
-    reward: '1P',
-    participants: 516,
-    remaining: '2일',
-    options: [
-      { label: '참치마요 덮밥', votes: 197 },
-      { label: '닭가슴살 샐러드', votes: 129 },
-      { label: '소시지 야채볶음', votes: 190 },
-    ],
-  },
-  {
-    id: 'vote-4',
-    title: '도시락 필수 반찬은?',
-    subtitle: '하나만 넣을 수 있다면 무엇을 고를까요?',
-    participants: 638,
-    remaining: '3일',
-    options: [
-      { label: '계란말이', votes: 267 },
-      { label: '멸치볶음', votes: 143 },
-      { label: '진미채', votes: 228 },
-    ],
-  },
-  {
-    id: 'vote-5',
-    title: '아침 준비 시간은?',
-    subtitle: '도시락 준비에 쓸 수 있는 현실적인 시간을 알려주세요',
-    reward: '2P',
-    participants: 421,
-    remaining: '12시간',
-    options: [
-      { label: '10분 안에 끝내기', votes: 181 },
-      { label: '20분 정도는 가능', votes: 165 },
-      { label: '전날 밤에 미리 준비', votes: 75 },
-    ],
-  },
-]
-
-const endedVoteOptions: VoteOption[] = [
-  { label: '비빔밥', votes: 456 },
-  { label: '냉국수', votes: 623, highlighted: true },
-  { label: '샐러드', votes: 234 },
-]
-
-function VoteMetaIcon({ kind }: { kind: 'people' | 'clock' }) {
-  if (kind === 'people') {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="9" cy="9" r="2.6" />
-        <circle cx="16.3" cy="10" r="2.1" />
-        <path d="M4.7 16.5c.6-2.4 2.7-4 5.3-4s4.8 1.6 5.4 4" />
-        <path d="M14.3 15.4c.5-1.6 1.8-2.6 3.4-2.8 1.3-.2 2.6.2 3.6 1.2" />
-      </svg>
-    )
-  }
-
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="12" r="8.3" />
-      <path d="M12 7.7v4.8l3.4 2" />
-    </svg>
-  )
-}
-
-function EndedVoteCard() {
-  const totalVotes = getTotalVotes(endedVoteOptions)
-
-  return (
-    <article className="vote-card vote-card--result">
-      <h2>여름철 도시락 추천</h2>
-      <p className="vote-card-subtitle">더울 때 먹기 좋은 메뉴는?</p>
-
-      <div className="vote-result-list">
-        {endedVoteOptions.map((option) => {
-          const percent = getVotePercent(option.votes, totalVotes)
-
-          return (
-            <VoteResultItem
-              key={option.label}
-              option={option}
-              percent={percent}
-              isHighlighted={option.highlighted}
-            />
-          )
-        })}
-      </div>
-
-      <div className="vote-card-meta">
-        <span>
-          <VoteMetaIcon kind="people" />
-          {totalVotes}명
-        </span>
-        <span>
-          <VoteMetaIcon kind="clock" />
-          종료
-        </span>
-      </div>
-    </article>
-  )
-}
-
-function VoteResultItem({
-  option,
-  percent,
-  isHighlighted,
-}: {
-  option: VoteOption
-  percent: number
-  isHighlighted?: boolean
-}) {
-  return (
-    <article className={`vote-result-item${isHighlighted ? ' is-highlighted' : ''}`}>
-      <span className="vote-result-item__progress" style={{ width: `${percent}%` }} />
-      <div className="vote-result-item__row">
-        <strong>{option.label}</strong>
-        <span>{percent.toFixed(1)}% · {option.votes}표</span>
-      </div>
-    </article>
-  )
-}
-
-function VoteResultList({
-  options,
-  selectedOption,
-}: {
-  options: VoteOption[]
-  selectedOption?: string
-}) {
-  const totalVotes = getTotalVotes(options)
-
-  return (
-    <div className="vote-result-list">
-      {options.map((option) => (
-        <VoteResultItem
-          key={option.label}
-          option={option}
-          percent={getVotePercent(option.votes, totalVotes)}
-          isHighlighted={option.highlighted || option.label === selectedOption}
-        />
-      ))}
-    </div>
-  )
-}
-
 function getVotedOptions(options: VoteOption[], selectedOption?: string) {
   if (!selectedOption) {
     return options
@@ -221,32 +120,101 @@ function getVotedOptions(options: VoteOption[], selectedOption?: string) {
   }))
 }
 
-function ActiveVoteCard({
+function VoteResultItem({
+  option,
+  percent,
+  isHighlighted,
+  onSelect,
+}: {
+  option: VoteOption
+  percent: number
+  isHighlighted?: boolean
+  onSelect?: (optionLabel: string) => void
+}) {
+  const content = (
+    <>
+      <span className="vote-result-item__progress" style={{ width: `${percent}%` }} />
+      <div className="vote-result-item__row">
+        <strong>{option.label}</strong>
+        <span>{percent.toFixed(1)}% · {option.votes}표</span>
+      </div>
+    </>
+  )
+
+  if (onSelect) {
+    return (
+      <button
+        type="button"
+        className={`vote-result-item${isHighlighted ? ' is-highlighted' : ''}`}
+        onClick={() => onSelect(option.label)}
+      >
+        {content}
+      </button>
+    )
+  }
+
+  return (
+    <article className={`vote-result-item${isHighlighted ? ' is-highlighted' : ''}`}>
+      {content}
+    </article>
+  )
+}
+
+function VoteResultList({
+  options,
+  selectedOption,
+  onSelect,
+}: {
+  options: VoteOption[]
+  selectedOption?: string
+  onSelect?: (optionLabel: string) => void
+}) {
+  const totalVotes = getTotalVotes(options)
+
+  return (
+    <div className="vote-result-list">
+      {options.map((option) => (
+        <VoteResultItem
+          key={option.label}
+          option={option}
+          percent={getVotePercent(option.votes, totalVotes)}
+          isHighlighted={option.highlighted || option.label === selectedOption}
+          onSelect={onSelect}
+        />
+      ))}
+    </div>
+  )
+}
+
+function VoteCard({
   card,
   selectedOption,
   onVote,
+  isEnded,
 }: {
   card: VoteCardItem
   selectedOption?: string
   onVote: (cardId: string, optionLabel: string) => void
+  isEnded?: boolean
 }) {
   const votedOptions = getVotedOptions(card.options, selectedOption)
-  const totalParticipants = getTotalVotes(votedOptions)
 
   return (
-    <article className="vote-card">
-      <div className="vote-card-title-row">
-        <div className="vote-card-title-wrap">
-          <h2>{card.title}</h2>
-          {card.reward && <span className="vote-card-reward">{card.reward}</span>}
-        </div>
-        {card.highlighted && <span className="vote-card-trend">↗</span>}
+    <article className={`vote-card${card.heading ? ' vote-card--featured' : ''}`}>
+      <div className="vote-card-title-wrap">
+        <h2>{card.heading || `Q. ${card.question}`}</h2>
+        {card.reward && <span className="vote-card-reward">{card.reward}</span>}
       </div>
 
-      <p className="vote-card-subtitle">{card.subtitle}</p>
+      {card.heading && <p className="vote-card-question">Q. {card.question}</p>}
+      {card.subtitle && <p className="vote-card-subtitle">{card.subtitle}</p>}
 
-      {selectedOption ? (
-        <VoteResultList options={votedOptions} selectedOption={selectedOption} />
+      {selectedOption || isEnded ? (
+        <VoteResultList
+          options={votedOptions}
+          selectedOption={selectedOption}
+          onSelect={isEnded ? undefined : (optionLabel) => onVote(card.id, optionLabel)}
+        />
       ) : (
         <div className="vote-choice-list">
           {card.options.map((option) => (
@@ -261,23 +229,15 @@ function ActiveVoteCard({
         </div>
       )}
 
-      <div className="vote-card-footer">
-        <div className="vote-card-meta">
-          <span>
-            <VoteMetaIcon kind="people" />
-            {totalParticipants}명
-          </span>
-          <span>
-            <VoteMetaIcon kind="clock" />
-            {card.remaining}
-          </span>
-        </div>
-      </div>
+      <footer className="vote-card-footer">
+        <span>현재 참여자 {card.participants}명</span>
+        <span>{card.deadline}</span>
+      </footer>
     </article>
   )
 }
 
-function VoteList({ filter }: VoteListProps) {
+function VoteList({ filter, variant = 'list' }: VoteListProps) {
   const [selectedVotes, setSelectedVotes] = useState<Record<string, string>>({})
 
   const handleVote = (cardId: string, optionLabel: string) => {
@@ -287,18 +247,32 @@ function VoteList({ filter }: VoteListProps) {
     }))
   }
 
-  return (
-    <section className="vote-page-list" aria-label="투표 목록">
-      {filter === 'ended' && <EndedVoteCard />}
+  const cards = (() => {
+    if (variant === 'featured') {
+      return voteCards.slice(0, 1)
+    }
 
-      {filter === 'active' && voteCards.map((card) => (
-        <ActiveVoteCard
+    if (filter === 'ended') {
+      return endedVoteCards
+    }
+
+    return voteCards.slice(1)
+  })()
+
+  return (
+    <section
+      className={`vote-page-list vote-page-list--${variant}`}
+      aria-label={variant === 'featured' ? '오늘의 투표' : '투표 목록'}
+    >
+      {cards.map((card) => (
+        <VoteCard
           key={card.id}
           card={card}
           selectedOption={selectedVotes[card.id]}
           onVote={handleVote}
+          isEnded={filter === 'ended'}
         />
-        ))}
+      ))}
     </section>
   )
 }

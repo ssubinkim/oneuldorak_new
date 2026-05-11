@@ -1,4 +1,4 @@
-import type { RecipeCard } from './PopularRecipeSection'
+import type { RecipeCard } from '../common/PopularRecipeSection'
 import mayoRiceImage from './images/menu_1.png'
 import bibimbapImage from './images/menu_2.png'
 import kimchiRiceImage from './images/menu_7.png'

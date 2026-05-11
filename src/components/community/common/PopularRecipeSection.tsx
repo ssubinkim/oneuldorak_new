@@ -11,17 +11,20 @@ export type RecipeCard = {
 
 type PopularRecipeSectionProps = {
   recipes: RecipeCard[]
+  showMore?: boolean
 }
 
-function PopularRecipeSection({ recipes }: PopularRecipeSectionProps) {
+function PopularRecipeSection({ recipes, showMore = true }: PopularRecipeSectionProps) {
   return (
     <section className="recipe-section">
       <div className="recipe-section__header">
         <h2>인기 레시피</h2>
-        <button type="button" className="recipe-section__more">
-          더보기
-          <span aria-hidden="true">›</span>
-        </button>
+        {showMore && (
+          <button type="button" className="recipe-section__more">
+            더보기
+            <span aria-hidden="true">›</span>
+          </button>
+        )}
       </div>
 
       <div className="recipe-section__scroll">

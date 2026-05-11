@@ -1,146 +1,93 @@
 .vote-page {
-  background: #f2f2f4;
+  min-height: 100%;
+  background: var(--color-bg-sub);
   color: #1f2430;
-  padding-bottom: 10px;
-}
-
-.vote-page-topbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 56px;
-  padding: 0 16px;
-  background: #fff;
-  border-bottom: 1px solid #e9ecf1;
-  box-sizing: border-box;
-}
-
-.vote-page-topbar button {
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  padding: 0;
-  color: #5e6676;
-  background: transparent;
-  border: 0;
-}
-
-.vote-page-topbar svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.vote-page-topbar h1 {
-  margin: 0;
-  color: #1f2430;
-  font-size: 18px;
-  font-weight: 800;
 }
 
 .vote-page-tabs {
-  display: flex;
-  gap: 20px;
-  height: 54px;
-  padding: 0 16px;
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: flex-end;
+  height: 82px;
+  margin-top: -38px;
+  padding: 34px 20px 0;
+  box-sizing: border-box;
   background: #fff;
-  border-bottom: 1px solid #e9ecf1;
+  border-radius: 22px 22px 0 0;
+  border: 0;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.02);
+  font-family: 'Pretendard', sans-serif;
+}
+
+.vote-page-tabs::before {
+  content: '';
+  position: absolute;
+  right: 20px;
+  bottom: 0;
+  left: 20px;
+  height: 1px;
+  background: #d0d0d0;
 }
 
 .vote-page-tabs button {
-  height: 100%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 48px;
   padding: 0;
-  color: #7e8694;
+  color: #8a8a8a;
   background: transparent;
   border: 0;
-  border-bottom: 2px solid transparent;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.vote-page-tabs button::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: transparent;
 }
 
 .vote-page-tabs button[aria-selected='true'] {
-  color: #1f2430;
-  border-bottom-color: #1f2430;
-  font-weight: 700;
+  color: #202020;
 }
 
-.vote-page-filters {
-  display: flex;
-  gap: 8px;
-  padding: 10px 16px;
+.vote-page-tabs button[aria-selected='true']::after {
+  background: var(--color-primary);
 }
 
-.vote-page-filters button {
-  height: 34px;
-  padding: 0 15px;
-  color: #66707f;
-  background: #f3f4f7;
-  border: 1px solid #d9dde4;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
+.vote-page__body {
+  padding: 30px 20px 42px;
+  background: var(--color-bg-sub);
 }
 
-.vote-page-filters button.is-active {
-  color: #fff;
-  background: #000;
-  border-color: #000;
-}
+@media (max-width: 360px) {
+  .vote-page-tabs {
+    height: 76px;
+    margin-top: -34px;
+    padding: 30px 18px 0;
+    border-radius: 20px 20px 0 0;
+  }
 
-.vote-weekly {
-  margin: 8px 0 0;
-  padding: 16px 16px 12px;
-  background: #fff;
-  border-top: 1px solid #e6eaf0;
-}
+  .vote-page-tabs::before {
+    right: 18px;
+    left: 18px;
+  }
 
-.vote-weekly h2 {
-  margin: 0;
-  color: #1f2430;
-  font-size: 17px;
-  font-weight: 800;
-}
+  .vote-page-tabs button {
+    height: 46px;
+    font-size: 17px;
+  }
 
-.vote-weekly ol {
-  display: grid;
-  gap: 10px;
-  margin: 14px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.vote-weekly li {
-  display: grid;
-  grid-template-columns: 18px 1fr auto;
-  align-items: center;
-  column-gap: 8px;
-}
-
-.vote-weekly-rank {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  color: #1f2430;
-  background: #e5e8ee;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.vote-weekly p {
-  margin: 0;
-  color: #343c4a;
-  font-size: 13px;
-}
-
-.vote-weekly-count {
-  color: #677181;
-  font-size: 13px;
+  .vote-page__body {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
 }

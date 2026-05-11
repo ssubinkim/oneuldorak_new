@@ -1,4 +1,5 @@
 import './RecipeList.css'
+import recipeThumbImage from './images/menu_1 (1).png'
 
 type RecipeItem = {
   id: string
@@ -7,10 +8,11 @@ type RecipeItem = {
   price: string
   time: string
   level: string
-  tag: string
+  author: string
   likes: number
   comments: number
-  highlight?: boolean
+  saves: number
+  image: string
 }
 
 type RecipeListProps = {
@@ -25,33 +27,76 @@ const recipeItems: RecipeItem[] = [
     price: '3,000원',
     time: '15분',
     level: '쉬움',
-    tag: '절약왕',
-    likes: 156,
-    comments: 42,
-    highlight: true,
+    author: '절약왕',
+    likes: 88,
+    comments: 12,
+    saves: 24,
+    image: recipeThumbImage,
   },
   {
     id: 'recipe-2',
-    title: '냉동실 파먹기 레시피',
-    subtitle: '냉동 야채로 만드는 볶음밥',
-    price: '2,500원',
-    time: '10분',
+    title: '3000원으로 만드는 도시락',
+    subtitle: '저렴한 재료로 든든하게',
+    price: '3,000원',
+    time: '15분',
     level: '쉬움',
-    tag: '알뜰이',
-    likes: 89,
-    comments: 23,
+    author: '절약왕',
+    likes: 88,
+    comments: 12,
+    saves: 24,
+    image: recipeThumbImage,
   },
   {
     id: 'recipe-3',
-    title: '5분 완성 간단 볶음밥',
-    subtitle: '간단하고 맛있는 볶음밥',
-    price: '4,000원',
-    time: '5분',
+    title: '3000원으로 만드는 도시락',
+    subtitle: '저렴한 재료로 든든하게',
+    price: '3,000원',
+    time: '15분',
     level: '쉬움',
-    tag: '요리초보',
-    likes: 234,
-    comments: 67,
-    highlight: true,
+    author: '절약왕',
+    likes: 88,
+    comments: 12,
+    saves: 24,
+    image: recipeThumbImage,
+  },
+  {
+    id: 'recipe-4',
+    title: '3000원으로 만드는 도시락',
+    subtitle: '저렴한 재료로 든든하게',
+    price: '3,000원',
+    time: '15분',
+    level: '쉬움',
+    author: '절약왕',
+    likes: 88,
+    comments: 12,
+    saves: 24,
+    image: recipeThumbImage,
+  },
+  {
+    id: 'recipe-5',
+    title: '3000원으로 만드는 도시락',
+    subtitle: '저렴한 재료로 든든하게',
+    price: '3,000원',
+    time: '15분',
+    level: '쉬움',
+    author: '절약왕',
+    likes: 88,
+    comments: 12,
+    saves: 24,
+    image: recipeThumbImage,
+  },
+  {
+    id: 'recipe-6',
+    title: '3000원으로 만드는 도시락',
+    subtitle: '저렴한 재료로 든든하게',
+    price: '3,000원',
+    time: '15분',
+    level: '쉬움',
+    author: '절약왕',
+    likes: 88,
+    comments: 12,
+    saves: 24,
+    image: recipeThumbImage,
   },
 ]
 
@@ -103,16 +148,11 @@ function RecipeCard({
         }
       }}
     >
-      <div className="recipe-share-card__thumb" aria-hidden="true">
-        썸네일
-      </div>
+      <img className="recipe-share-card__thumb" src={item.image} alt="" aria-hidden="true" />
 
       <div className="recipe-share-card__content">
-        <div className="recipe-share-card__title-row">
-          <h2>{item.title}</h2>
-          {item.highlight && <span>↗</span>}
-        </div>
         <p className="recipe-share-card__subtitle">{item.subtitle}</p>
+        <h2 className="recipe-share-card__title">{item.title}</h2>
 
         <div className="recipe-share-card__badges">
           <span className="is-price">{item.price}</span>
@@ -121,7 +161,10 @@ function RecipeCard({
         </div>
 
         <div className="recipe-share-card__meta-row">
-          <small>{item.tag}</small>
+          <small>
+            <span aria-hidden="true">🐥</span>
+            {item.author}
+          </small>
           <div className="recipe-share-card__actions" aria-label="반응 통계">
             <div>
               <RecipeActionIcon kind="heart" />
@@ -133,6 +176,7 @@ function RecipeCard({
             </div>
             <div>
               <RecipeActionIcon kind="bookmark" />
+              {item.saves}
             </div>
           </div>
         </div>
