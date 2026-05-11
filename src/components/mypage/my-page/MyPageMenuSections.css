@@ -1,0 +1,27 @@
+.mypage-menus {
+  margin-top: 20px;
+  background: var(--color-bg-sub);
+}
+
+.mypage-menu-section {
+  border-top: 1px solid #faca40;
+}
+
+.mypage-menu-title {
+  font-size: 18px;
+  color: var(--color-disabled);
+  font-weight: 600;
+  padding: 20px 20px 6px;
+}
+
+.mypage-menu-row {
+  display: flex;
+  padding: 18px 20px;
+}
+
+.mypage-menu-item {
+  flex: 1;
+  font-size: 14px;
+  color: var(--color-text-sub);
+  cursor: pointer;
+}

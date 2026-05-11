@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
-import BottomNav from '../../components/common/layout/BottomNav'
-import Header from '../../components/common/layout/Header'
-import '../../styles/Tailwind.css'
-import AttendanceCircles from '../../components/mypage/AttendanceCircles'
-import type { DayData } from '../../components/mypage/AttendanceCircles'
-import GoalBottomSheet from '../../components/mypage/GoalBottomSheet'
-import PointBottomSheet from '../../components/mypage/PointBottomSheet'
+import type { DayData } from '../../components/mypage/my-page/AttendanceCircles'
+import GoalBottomSheet from '../../components/mypage/my-page/GoalBottomSheet'
+import MyPageGoalCard from '../../components/mypage/my-page/MyPageGoalCard'
+import MyPageMenuSections from '../../components/mypage/my-page/MyPageMenuSections'
+import MyPagePointCard from '../../components/mypage/my-page/MyPagePointCard'
+import MyPageProfile from '../../components/mypage/my-page/MyPageProfile'
+import MyPageShell from '../../components/mypage/my-page/MyPageShell'
+import MyPageStats from '../../components/mypage/my-page/MyPageStats'
+import type { MyPageStatItem } from '../../components/mypage/my-page/MyPageStats'
+import PointBottomSheet from '../../components/mypage/my-page/PointBottomSheet'
 import profileImg from './images/profile 1.svg?url'
 import LikePage from './LikePage'
 import './MyPage.css'
@@ -24,23 +27,10 @@ const GOAL = { current: 72000, target: 100000 }
 const TOTAL_POINTS = 245
 const MONTHLY_POINTS = 133
 
-const MENU_SECTIONS = [
-  {
-    title: '스토어',
-    items: [['구매 내역', '정기 배송']],
-  },
-  {
-    title: '멤버십',
-    items: [['멤버십 혜택', '구독 현황']],
-  },
-  {
-    title: '설정 / 관리',
-    items: [
-      ['계정 설정', '알림 설정'],
-      ['구독·결제', '앱 환경 설정'],
-      ['약관·정책', '고객지원 센터'],
-    ],
-  },
+const STATS: MyPageStatItem[] = [
+  { id: 'likes', value: '9', label: '좋아요', highlight: true, clickable: true },
+  { id: 'posts', value: '6', label: '내 게시글' },
+  { id: 'comments', value: '8', label: '내 댓글' },
 ]
 
 function MyPage() {
@@ -48,9 +38,9 @@ function MyPage() {
   const [pointOpen, setPointOpen] = useState(false)
   const [pointSheetKey, setPointSheetKey] = useState(0)
   const [showLikes, setShowLikes] = useState(false)
+  const [goalBarPct, setGoalBarPct] = useState(0)
 
   const pct = Math.round((GOAL.current / GOAL.target) * 100)
-  const [goalBarPct, setGoalBarPct] = useState(0)
 
   useEffect(() => {
     const rafId = requestAnimationFrame(() => {
@@ -65,111 +55,50 @@ function MyPage() {
   }
 
   return (
-    <div className="app-shell">
-      <div className="app-screen">
-        <Header />
-
-        <div className="page-scroll">
-          <div className="mypage">
-
-            {/* 프로필 */}
-            <div className="mypage-profile">
-              <div className="mypage-avatar">
-                <img src={profileImg} alt="프로필" />
-              </div>
-              <div>
-                <div className="mypage-user-level">LV.재료좀줌</div>
-                <div className="mypage-user-name">도시락 러버</div>
-                <div className="mypage-user-email">hyseah@gmail.com</div>
-              </div>
-            </div>
-
-            {/* 통계 */}
-            <div className="mypage-stats">
-              <div
-                className="mypage-stat-item clickable"
-                onClick={() => setShowLikes(true)}
-              >
-                <div className="mypage-stat-num highlight">9</div>
-                <div className="mypage-stat-label">좋아요</div>
-              </div>
-              {([['6', '내 게시글'], ['8', '내 댓글']] as const).map(([num, label]) => (
-                <div key={label} className="mypage-stat-item">
-                  <div className="mypage-stat-num">{num}</div>
-                  <div className="mypage-stat-label">{label}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* 이번달 절약 목표 */}
-            <div className="mypage-card">
-              <div className="mypage-goal-header">
-                <span className="mypage-goal-title">이번달 절약 목표</span>
-                <button className="mypage-goal-edit" onClick={() => setGoalOpen(true)}>수정</button>
-              </div>
-              <div className="mypage-goal-amount">
-                <strong>현재 지출 {GOAL.current.toLocaleString()}원</strong>
-                <span className="sub-text"> /목표 {GOAL.target.toLocaleString()}원</span>
-              </div>
-              <div className="mypage-goal-bar-bg">
-                <div className="mypage-goal-bar-fill" style={{ width: `${goalBarPct}%` }} />
-              </div>
-              <div className="mypage-goal-percent-text">목표금액의 {pct}% 소비 하셨어요!</div>
-            </div>
-
-            {/* 나의 포인트 */}
-            <div className="mypage-card">
-              <div className="mypage-point-header">
-                <span className="mypage-point-title">나의 포인트</span>
-                <span className="mypage-point-amount">{TOTAL_POINTS}P</span>
-              </div>
-              <AttendanceCircles data={ATTENDANCE} />
-              <div className="mypage-point-stamp-info">출석도장 3/7</div>
-              <button
-                className="mypage-point-btn"
-                onClick={() => {
-                  setPointSheetKey((prev) => prev + 1)
-                  setPointOpen(true)
-                }}
-              >
-                포인트 내역
-                <svg viewBox="0 0 16 16" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="m6 3.5 4 4.5-4 4.5" />
-                </svg>
-              </button>
-            </div>
-
-            {/* 메뉴 */}
-            <div className="mypage-menus">
-              {MENU_SECTIONS.map((section) => (
-                <div key={section.title} className="mypage-menu-section">
-                  <div className="mypage-menu-title">{section.title}</div>
-                  {section.items.map((row, i) => (
-                    <div key={i} className="mypage-menu-row">
-                      {row.map((item) => (
-                        <div key={item} className="mypage-menu-item">{item}</div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-
-          </div>
+    <MyPageShell>
+      <div className="page-scroll">
+        <div className="mypage">
+          {/* MyPageProfile: 프로필 이미지, 레벨, 이름, 이메일 영역 */}
+          <MyPageProfile profileImg={profileImg} />
+          {/* MyPageStats: 좋아요, 내 게시글, 내 댓글 통계 영역 */}
+          <MyPageStats
+            stats={STATS}
+            onStatClick={(stat) => {
+              if (stat.id === 'likes') setShowLikes(true)
+            }}
+          />
+          {/* MyPageGoalCard: 이번달 절약 목표 카드 */}
+          <MyPageGoalCard
+            goal={GOAL}
+            pct={pct}
+            goalBarPct={goalBarPct}
+            onEdit={() => setGoalOpen(true)}
+          />
+          {/* MyPagePointCard: 포인트, 출석도장, 포인트 내역 버튼 카드 */}
+          <MyPagePointCard
+            attendance={ATTENDANCE}
+            totalPoints={TOTAL_POINTS}
+            onPointHistoryClick={() => {
+              setPointSheetKey((prev) => prev + 1)
+              setPointOpen(true)
+            }}
+          />
+          {/* MyPageMenuSections: 스토어, 멤버십, 설정/관리 메뉴 목록 */}
+          <MyPageMenuSections />
         </div>
-
-        <GoalBottomSheet open={goalOpen} onClose={() => setGoalOpen(false)} />
-        <PointBottomSheet
-          key={pointSheetKey}
-          open={pointOpen}
-          onClose={() => setPointOpen(false)}
-          totalPoints={TOTAL_POINTS}
-          monthlyPoints={MONTHLY_POINTS}
-        />
-
-        <BottomNav />
       </div>
-    </div>
+
+      {/* GoalBottomSheet: 절약 목표 수정 바텀시트 */}
+      <GoalBottomSheet open={goalOpen} onClose={() => setGoalOpen(false)} />
+      {/* PointBottomSheet: 포인트 내역 바텀시트 */}
+      <PointBottomSheet
+        key={pointSheetKey}
+        open={pointOpen}
+        onClose={() => setPointOpen(false)}
+        totalPoints={TOTAL_POINTS}
+        monthlyPoints={MONTHLY_POINTS}
+      />
+    </MyPageShell>
   )
 }
 

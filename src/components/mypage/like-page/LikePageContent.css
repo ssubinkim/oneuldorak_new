@@ -1,0 +1,12 @@
+.like-page {
+  background: var(--color-bg-sub);
+  min-height: 100%;
+  padding: 16px 20px;
+  padding-top: calc(var(--header-height, 44px) + 28px);
+}
+
+.like-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

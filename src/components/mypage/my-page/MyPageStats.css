@@ -1,0 +1,38 @@
+.mypage-stats {
+  display: flex;
+  margin: 0 20px 24px;
+  border-radius: 14px;
+  background: #fff7d0;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(206, 206, 206, 0.45);
+}
+
+.mypage-stat-item {
+  flex: 1;
+  text-align: center;
+  padding: 14px 0;
+}
+
+.mypage-stat-item + .mypage-stat-item {
+  border-left: 1px solid var(--color-secondary-40);
+}
+
+.mypage-stat-item.clickable {
+  cursor: pointer;
+}
+
+.mypage-stat-num {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.mypage-stat-num.highlight {
+  color: var(--color-status-emphasis);
+}
+
+.mypage-stat-label {
+  font-size: 12px;
+  color: var(--color-disabled);
+  margin-top: 2px;
+}

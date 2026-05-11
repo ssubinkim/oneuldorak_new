@@ -1,0 +1,49 @@
+.mypage-point-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.mypage-point-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.mypage-point-amount {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--color-status-success);
+  font-family: 'Pretendard', sans-serif;
+}
+
+.mypage-point-stamp-info {
+  font-size: 12px;
+  color: var(--color-disabled);
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.mypage-point-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px 0;
+  background: var(--color-primary);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.mypage-point-btn:hover {
+  background: #fffdf7;
+  border-color: #faca40;
+}
