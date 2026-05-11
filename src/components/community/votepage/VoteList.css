@@ -137,6 +137,11 @@ article.vote-result-item {
   border-color: var(--color-primary);
 }
 
+.vote-result-item.is-highlighted .vote-result-item__row strong,
+.vote-result-item.is-highlighted .vote-result-item__row span {
+  color: #f16359;
+}
+
 .vote-result-item.is-highlighted .vote-result-item__progress {
   background: var(--color-primary-30);
 }

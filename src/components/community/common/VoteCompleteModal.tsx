@@ -1,6 +1,9 @@
+import { useEffect } from 'react'
 import dorakRewardImage from './images/dorak09.png'
 import votePointImage from './images/community_vote_point.png'
 import './VoteCompleteModal.css'
+
+const AUTO_CLOSE_DELAY_MS = 900
 
 type VoteCompleteModalProps = {
   isOpen: boolean
@@ -17,6 +20,16 @@ function VoteCompleteModal({
   reward,
   onClose,
 }: VoteCompleteModalProps) {
+  useEffect(() => {
+    if (!isOpen) {
+      return undefined
+    }
+
+    const closeTimer = window.setTimeout(onClose, AUTO_CLOSE_DELAY_MS)
+
+    return () => window.clearTimeout(closeTimer)
+  }, [isOpen, onClose])
+
   if (!isOpen) {
     return null
   }
