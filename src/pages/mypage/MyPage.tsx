@@ -8,7 +8,6 @@ import GoalBottomSheet from '../../components/mypage/GoalBottomSheet'
 import PointBottomSheet from '../../components/mypage/PointBottomSheet'
 import profileImg from './images/profile 1.svg?url'
 import LikePage from './LikePage'
-import SavedRecipePage from './SavedRecipePage'
 import './MyPage.css'
 
 const ATTENDANCE: DayData[] = [
@@ -49,7 +48,6 @@ function MyPage() {
   const [pointOpen, setPointOpen] = useState(false)
   const [pointSheetKey, setPointSheetKey] = useState(0)
   const [showLikes, setShowLikes] = useState(false)
-  const [showSavedRecipes, setShowSavedRecipes] = useState(false)
 
   const pct = Math.round((GOAL.current / GOAL.target) * 100)
   const [goalBarPct, setGoalBarPct] = useState(0)
@@ -64,10 +62,6 @@ function MyPage() {
 
   if (showLikes) {
     return <LikePage onBack={() => setShowLikes(false)} />
-  }
-
-  if (showSavedRecipes) {
-    return <SavedRecipePage onBack={() => setShowSavedRecipes(false)} />
   }
 
   return (
@@ -140,17 +134,6 @@ function MyPage() {
               >
                 포인트 내역
                 <svg viewBox="0 0 16 16" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="m6 3.5 4 4.5-4 4.5" />
-                </svg>
-              </button>
-            </div>
-
-            {/* 저장한 레시피 */}
-            <div className="mypage-recipe-section">
-              <div className="mypage-section-title">저장한 레시피</div>
-              <button className="mypage-recipe-btn" onClick={() => setShowSavedRecipes(true)}>
-                보러가기
-                <svg viewBox="0 0 16 16" width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <path d="m6 3.5 4 4.5-4 4.5" />
                 </svg>
               </button>

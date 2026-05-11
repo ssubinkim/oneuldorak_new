@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import LikePostCard from '../../components/mypage/LikePostCard'
 import type { LikePost } from '../../components/mypage/LikePostCard'
+import SavedRecipeCard from '../../components/mypage/SavedRecipeCard'
+import type { SavedRecipe } from '../../components/mypage/SavedRecipeCard'
 import '../../styles/Tailwind.css'
 import './LikePage.css'
 
@@ -11,10 +14,19 @@ const LIKED_POSTS: LikePost[] = [
   { id: 4, category: '추천', showIcon: false, title: '도시락 용기 추천 부탁드려요', savedAt: '4일 전 저장' },
 ]
 
-type Props = { onBack?: () => void }
+const SAVED_RECIPES: SavedRecipe[] = [
+  { id: 1, showIcon: false, title: '냉동실 파먹기 레시피', savedAt: '5일 전 저장' },
+  { id: 2, showIcon: true, title: '3000원으로 만드는 도시락', savedAt: '2일 전 저장' },
+  { id: 3, showIcon: false, title: '냉동실 파먹기 레시피', savedAt: '5일 전 저장' },
+  { id: 4, showIcon: false, title: '냉동실 파먹기 레시피', savedAt: '5일 전 저장' },
+]
 
-function LikePage({ onBack }: Props = {}) {
+type Tab = 'likes' | 'recipes'
+type Props = { onBack?: () => void; initialTab?: Tab }
+
+function LikePage({ onBack, initialTab = 'likes' }: Props) {
   const handleBack = onBack ?? (() => { window.location.hash = '#/mypage' })
+  const [activeTab, setActiveTab] = useState<Tab>(initialTab)
 
   return (
     <div className="app-shell">
@@ -31,17 +43,40 @@ function LikePage({ onBack }: Props = {}) {
               <path d="M9 1L1 9L9 17" stroke="#1a1a1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
-          <span className="like-header-title">좋아요</span>
         </header>
+
+        {/* 탭 */}
+        <div className="like-tabs">
+          <button
+            className={`like-tab${activeTab === 'likes' ? ' like-tab--active' : ''}`}
+            onClick={() => setActiveTab('likes')}
+          >
+            좋아요
+          </button>
+          <button
+            className={`like-tab${activeTab === 'recipes' ? ' like-tab--active' : ''}`}
+            onClick={() => setActiveTab('recipes')}
+          >
+            저장한 레시피
+          </button>
+        </div>
 
         {/* 콘텐츠 */}
         <div className="page-scroll">
           <div className="like-page">
-            <div className="like-list">
-              {LIKED_POSTS.map((post) => (
-                <LikePostCard key={post.id} post={post} />
-              ))}
-            </div>
+            {activeTab === 'likes' ? (
+              <div className="like-list">
+                {LIKED_POSTS.map((post) => (
+                  <LikePostCard key={post.id} post={post} />
+                ))}
+              </div>
+            ) : (
+              <div className="like-list">
+                {SAVED_RECIPES.map((recipe) => (
+                  <SavedRecipeCard key={recipe.id} recipe={recipe} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

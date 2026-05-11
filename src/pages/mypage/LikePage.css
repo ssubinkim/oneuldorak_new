@@ -10,7 +10,6 @@
   padding: 0 20px;
   background: #fff;
   z-index: 10;
-  border-bottom: 1px solid #f0f0f0;
 }
 
 .like-header-back {
@@ -22,16 +21,44 @@
   align-items: center;
 }
 
-.like-header-title {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--color-text-main);
+/* ── Tabs ─────────────────────────────────────── */
+.like-tabs {
+  position: absolute;
+  top: var(--header-height, 44px);
+  left: 0;
+  right: 0;
+  display: flex;
+  background: #fff;
+  z-index: 10;
+  border-bottom: 1.5px solid #f0f0f0;
 }
 
+.like-tab {
+  flex: 1;
+  padding: 14px 0;
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-disabled, #aaa);
+  cursor: pointer;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -1.5px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.like-tab--active {
+  color: var(--color-text-main, #1a1a1a);
+  border-bottom-color: var(--color-text-main, #1a1a1a);
+}
+
+/* ── Content ─────────────────────────────────── */
 .like-page {
   background: var(--color-bg-sub);
   min-height: 100%;
   padding: 16px 20px;
+  /* push content below header + tabs */
+  padding-top: calc(var(--header-height, 44px) + 28px);
 }
 
 .like-list {
