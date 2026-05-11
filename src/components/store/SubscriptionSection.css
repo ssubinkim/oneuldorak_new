@@ -1,0 +1,231 @@
+.subscription {
+  padding: 24px 0 0;
+}
+
+.subscription__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0 16px;
+  margin-bottom: 14px;
+}
+
+.subscription__title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #111;
+  margin: 0 0 3px;
+}
+
+.subscription__desc {
+  font-size: 12px;
+  color: #aaa;
+  margin: 0;
+}
+
+.subscription__more {
+  font-size: 12px;
+  color: #888;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.subscription__banner {
+  position: relative;
+  margin: 0 16px;
+  border-radius: 14px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 14px;
+}
+
+.subscription__banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.subscription__banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.52) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.subscription__banner-text {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+  pointer-events: none;
+}
+
+.subscription__banner-text p {
+  margin: 0;
+}
+
+.subscription__tabs {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px;
+  margin-bottom: 14px;
+}
+
+.subscription__tab {
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 20px;
+  border: 1.5px solid #ddd;
+  background: #fff;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.subscription__tab--active {
+  border-color: #ffdb78;
+  background: #ffdb78;
+  color: #111;
+}
+
+.subscription__slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.subscription__slider::-webkit-scrollbar {
+  display: none;
+}
+
+.subscription__page {
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+}
+
+.subscription__dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.subscription__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: none;
+  background: #ddd;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.2s, width 0.2s;
+}
+
+.subscription__dot--active {
+  width: 20px;
+  border-radius: 4px;
+  background: #ffdb78;
+}
+
+.subscription__item {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.subscription__item-img-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 110px;
+  height: 110px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.subscription__item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.subscription__item-cart {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  padding: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.subscription__item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.subscription__item-brand {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 2px;
+}
+
+.subscription__item-name {
+  font-size: 13px;
+  color: #555;
+  margin: 0 0 6px;
+  line-height: 1.4;
+}
+
+.subscription__item-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 4px;
+}
+
+.subscription__item-rating {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  color: #888;
+}
+
+.subscription__item-star {
+  color: #ffd515;
+}
+
+.subscription__item-review {
+  color: #bbb;
+  font-size: 11px;
+}

@@ -1,7 +1,13 @@
+import './ProductCard.css'
+
 export type Product = {
   id: string
   name: string
   price: number
+  brand?: string
+  image?: string
+  rating?: number
+  reviewCount?: number
   likes?: number
 }
 
@@ -10,40 +16,41 @@ type Props = Product & {
   onClick?: () => void
 }
 
-function ProductCard({ name, price, likes, rank, onClick }: Props) {
+function ProductCard({ name, price, brand, image, rating, reviewCount, rank, onClick }: Props) {
   return (
-    <div onClick={onClick} style={{ cursor: 'pointer' }}>
-      <div style={{
-        position: 'relative', background: '#e8e8e8', borderRadius: 8,
-        aspectRatio: '1', marginBottom: 6, overflow: 'hidden',
-      }}>
+    <div className="product-card" onClick={onClick}>
+      <div className="product-card__image-wrap">
+        {image && <img className="product-card__image" src={image} alt={name} />}
         {rank !== undefined && (
-          <span style={{
-            position: 'absolute', bottom: 6, left: 8,
-            fontSize: 20, fontWeight: 800, color: '#111',
-          }}>
-            {rank}
-          </span>
+          <span className="product-card__rank">{rank}</span>
         )}
         <button
+          className="product-card__cart-btn"
           onClick={e => e.stopPropagation()}
-          style={{
-            position: 'absolute', bottom: 6, right: 6,
-            background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-          }}
+          type="button"
+          aria-label="장바구니 담기"
         >
-          <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="#aaa" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          <svg viewBox="0 0 24 24" width={15} height={15} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
           </svg>
         </button>
       </div>
-      <div style={{ fontSize: 12, color: '#222', marginBottom: 2, lineHeight: 1.4 }}>{name}</div>
-      <div style={{ fontSize: 12, fontWeight: 700, color: '#111' }}>{price.toLocaleString()}₩</div>
-      {likes !== undefined && (
-        <div style={{ fontSize: 10, color: '#aaa', marginTop: 2 }}>
-          ☑ {likes > 0 ? `${likes}+` : '0'}
-        </div>
-      )}
+      <div className="product-card__info">
+        {brand && <span className="product-card__brand">{brand}</span>}
+        <p className="product-card__name">{name}</p>
+        <p className="product-card__price">{price.toLocaleString()} ₩</p>
+        {rating !== undefined && (
+          <div className="product-card__rating">
+            <span className="product-card__star">★</span>
+            <span>{rating}</span>
+            {reviewCount !== undefined && (
+              <span className="product-card__review-count">({reviewCount})</span>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
