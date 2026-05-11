@@ -93,11 +93,10 @@
   bottom: -2px;
   left: 50%;
   z-index: 0;
-  width: 46px;
-  height: 5px;
+  width: 30px;
+  height: 2px;
   border-radius: 999px;
   background: #ffd515;
-  box-shadow: 0 0 12px rgba(255, 213, 21, 0.55);
   opacity: 0;
   transform: translateX(-50%) translateY(4px) scaleX(0.18);
   transform-origin: center;
@@ -228,7 +227,6 @@
 }
 
 .bottom-nav__link[aria-current='page']:not(.bottom-nav__link--home) .bottom-nav__icon-slot {
-  filter: drop-shadow(0 4px 7px rgba(255, 213, 21, 0.24));
   transform: translateY(-2px) scale(1.06);
 }
 
