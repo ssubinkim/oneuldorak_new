@@ -1,30 +1,38 @@
 .meal-screen {
-  display: flex;
-  flex-direction: column;
-  /* 상단 노란색 → 하단 아이보리 그라데이션 */
-  background: linear-gradient(
-    180deg,
-    #FFDB78 0%,
-    #FFE99A 14%,
-    #FFF3C4 30%,
-    #FFF8E8 50%,
-    #F5F3EF 100%
-  );
+  background: #fffffd;
 }
 
-/* ── Hero 영역 ─────────────────────────────────── */
-.meal-hero {
-  background: transparent; /* 그라데이션이 비쳐 보이도록 */
-  flex-shrink: 0;
-}
-
+/* 상태바 헤더를 투명하게 — 그라데이션이 비쳐 보이도록 */
 .meal-screen .app-header {
   background: transparent;
 }
 
+/* ── 전체 스크롤 컨테이너 ──────────────────────── */
+.meal-scroll {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: var(--bottom-nav-height);
+}
+
+.meal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 그라데이션을 콘텐츠 래퍼에 — 스크롤과 함께 자연스럽게 움직임 */
+.meal-grad {
+  background: linear-gradient(180deg, #FFDB78 0px, #fffffd 600px);
+}
+
+/* ── 히어로 영역 ─────────────────────────────── */
 .meal-hero-inner {
   padding: 20px 20px 24px;
-  padding-top: calc(44px + 20px);
+  padding-top: calc(var(--header-height, 44px) + 20px);
 }
 
 .meal-hero-top {
@@ -70,13 +78,9 @@
   margin: 0;
 }
 
-/* ── 대시보드 스크롤 영역 ──────────────────────── */
+/* ── 대시보드 섹션 컨테이너 ──────────────────── */
 .meal-dashboard {
-  background: transparent; /* 그라데이션이 비쳐 보이도록 */
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
-  padding: 20px 0 100px;
+  padding: 20px 0 0;
 }
 
 /* ── 공통 섹션 헤더 ────────────────────────────── */

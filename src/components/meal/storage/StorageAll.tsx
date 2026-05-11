@@ -2,7 +2,7 @@ import {
   carrotImg, potatoImg, appleImg, onionImg, romainImg,
   brocollyImg, beansproutsImg, garlicImg, chiliImg, tofuImg,
   meatImg, tunaImg, salmonImg, porkImg, sosageImg,
-} from './mealData'
+} from '../mealData'
 
 interface Props {
   onBack: () => void

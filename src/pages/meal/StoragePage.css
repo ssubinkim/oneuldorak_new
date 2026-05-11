@@ -1,0 +1,313 @@
+.sp-screen {
+  background: #f5f3ef;
+}
+
+.sp-scroll {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding-bottom: var(--bottom-nav-height);
+}
+
+.sp-scroll::-webkit-scrollbar { display: none; }
+
+/* ── 헤더 ─────────────────────────────────────── */
+.sp-header {
+  display: flex;
+  align-items: center;
+  padding: 20px 20px;
+  gap: 10px;
+  background: #f5f3ef;
+}
+
+.sp-back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.sp-header-title {
+  flex: 1;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.sp-add-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+/* ── 냉장고 현황 카드 ─────────────────────────── */
+.sp-fridge-card {
+  margin: 0 20px 16px;
+  position: relative;
+  background: #fff3d2;
+  border-radius: 10px;
+  padding: 22px 10px 20px;
+  overflow: hidden;
+}
+
+.sp-fridge-top {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 0 10px 18px;
+}
+
+.sp-fridge-icon-wrap {
+  width: 66px;
+  height: 70px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sp-fridge-icon {
+  width: 66px;
+  height: 70px;
+  object-fit: contain;
+}
+
+.sp-fridge-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sp-fridge-label {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 700;
+  color: #2a2a2a;
+}
+
+.sp-fridge-count {
+  margin: 0 0 10px;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 700;
+  color: #2a2a2a;
+}
+
+.sp-fridge-count strong {
+  font-size: 26px;
+  font-weight: 900;
+  color: #111;
+}
+
+.sp-fridge-menu {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 500;
+  color: #303030;
+}
+
+.sp-fridge-menu-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.sp-fridge-stats {
+  position: relative;
+  display: flex;
+  background: #fff;
+  border-radius: 10px;
+  min-height: 92px;
+  padding: 14px 8px 15px;
+}
+
+.sp-fridge-stat-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.sp-fridge-index {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  width: 30px;
+  height: 10px;
+  object-fit: fill;
+  transform: translateX(-50%) scale(1.9);
+  transform-origin: center;
+  z-index: 2;
+}
+
+.sp-fridge-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 18px;
+  text-align: center;
+}
+
+.sp-fridge-divider {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  bottom: 10px;
+  width: 1px;
+  background: #ececec;
+}
+
+.sp-stat-label {
+  font-size: 16px;
+  line-height: 1;
+  color: #3c3c3c;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sp-stat-num {
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 700;
+  color: #2a2a2a;
+  white-space: nowrap;
+}
+
+.sp-stat-num strong {
+  font-size: 28px;
+  font-weight: 900;
+  color: #111;
+}
+
+.sp-stat-num.urgent,
+.sp-stat-num.moderate,
+.sp-stat-num.plenty {
+  color: #2a2a2a;
+}
+
+/* ── 필터 칩 ─────────────────────────────────── */
+.sp-filters {
+  display: flex;
+  gap: 8px;
+  padding: 0 20px 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sp-filters::-webkit-scrollbar { display: none; }
+
+.sp-filter-chip {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1.5px solid #ddd;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.sp-filter-chip--active {
+  background: #444;
+  border-color: #444;
+  color: #fff;
+}
+
+/* ── 재료 그리드 ─────────────────────────────── */
+.sp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px 10px;
+  padding: 10px 20px 24px;
+}
+
+.sp-item-card {
+  position: relative;
+  background: #fffdf4;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 118px;
+  padding: 16px 8px 10px;
+  box-shadow: none;
+}
+
+.sp-item-card--urgent {
+  background: #fff8f6;
+}
+
+.sp-item-card--moderate {
+  background: #fffdf3;
+}
+
+.sp-item-card--plenty {
+  background: #f9fff6;
+}
+
+.sp-item-index {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  width: 30px;
+  height: 10px;
+  object-fit: fill;
+  transform: translateX(-50%) scale(1.35);
+  transform-origin: center;
+  z-index: 2;
+}
+
+.sp-item-img-wrap {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.sp-item-emoji {
+  font-size: 38px;
+  line-height: 1;
+}
+
+.sp-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.sp-item-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: #3b3b3b;
+  margin-bottom: 8px;
+}
+
+.sp-item-days {
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 800;
+  color: #9a9a9a !important;
+}

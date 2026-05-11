@@ -1,4 +1,4 @@
-import { weeklyMenuData } from './mealData'
+import { weeklyMenuData } from '../mealData'
 import './RecipeCarousel.css'
 
 const RECIPES = weeklyMenuData
@@ -32,8 +32,9 @@ function DishIcon() {
 
 function usageBadgeStyle(usage: number | null): React.CSSProperties {
   if (usage === null) return { background: '#f0f0f0', color: '#bbb' }
-  if (usage >= 90) return { background: '#FFDB78', color: '#7a5000' }
-  if (usage >= 60) return { background: '#b8f0d0', color: '#1a7a4a' }
+  if (usage === 100) return { background: '#ffe6a1', color: '#7a5000' }
+  if (usage === 90)  return { background: '#b4c9ff', color: '#2a4fa8' }
+  if (usage >= 60)   return { background: '#FFDB78', color: '#7a5000' }
   return { background: '#ffd0d0', color: '#cc3333' }
 }
 

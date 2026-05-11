@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   carrotImg, potatoImg, appleImg, onionImg, romainImg,
   brocollyImg, beansproutsImg,
-} from './mealData'
+} from '../mealData'
 
 interface Props {
   onShowAll: () => void

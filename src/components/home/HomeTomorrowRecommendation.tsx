@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import FanDeck, { type FanDeckItem } from '../effects/cards/FanDeck'
-import fridayMenuImage from '../../pages/meal/images/friday_menu.png'
-import saturdayMenuImage from '../../pages/meal/images/saturday_menu.png'
-import todayMenuImage from '../../pages/meal/images/today_menu.png'
-import tuesdayMenuImage from '../../pages/meal/images/tuesday_menu.png'
-import wednesdayMenuImage from '../../pages/meal/images/wednesday_menu.png'
+import fridayMenuImage from '../meal/images/friday_menu.png'
+import saturdayMenuImage from '../meal/images/saturday_menu.png'
+import todayMenuImage from '../meal/images/today_menu.png'
+import tuesdayMenuImage from '../meal/images/tuesday_menu.png'
+import wednesdayMenuImage from '../meal/images/wednesday_menu.png'
 import './HomeTomorrowRecommendation.css'
 
 const tomorrowCards: FanDeckItem[] = [

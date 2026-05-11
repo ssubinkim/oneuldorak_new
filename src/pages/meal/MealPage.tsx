@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import StorageAll from '../../components/meal/StorageAll'
-import StorageMain from '../../components/meal/StorageMain'
+import StorageAll from '../../components/meal/storage/StorageAll'
+import StorageMain from '../../components/meal/storage/StorageMain'
 import './MealPage.css'
 
 function MealPage() {

@@ -1,4 +1,4 @@
-import { weeklyMenuData } from './mealData'
+import { weeklyMenuData } from '../mealData'
 import './WeeklyPlanSection.css'
 
 const TODAY_DATE = 1
@@ -23,18 +23,21 @@ function CalendarIcon() {
 
 function usageBadgeStyle(usage: number | null): React.CSSProperties {
   if (usage === null) return { background: '#f0f0f0', color: '#bbb' }
-  if (usage >= 90) return { background: '#FFDB78', color: '#7a5000' }
-  if (usage >= 60) return { background: '#b8f0d0', color: '#1a7a4a' }
+  if (usage === 100) return { background: '#ffe6a1', color: '#7a5000' }
+  if (usage === 90)  return { background: '#b4c9ff', color: '#2a4fa8' }
+  if (usage >= 60)   return { background: '#FFDB78', color: '#7a5000' }
   return { background: '#ffd0d0', color: '#cc3333' }
 }
 
-function WeeklyPlanSection() {
+type Props = { onMore?: () => void }
+
+function WeeklyPlanSection({ onMore }: Props) {
   return (
     <section className="wps-section">
       <div className="wps-header">
         <CalendarIcon />
         <span className="wps-title">이번주 도시락 계획</span>
-        <button className="wps-more-btn">더보기 <ChevronRight /></button>
+        <button className="wps-more-btn" onClick={onMore}>더보기 <ChevronRight /></button>
       </div>
 
       <div className="wps-scroll">
@@ -50,6 +53,10 @@ function WeeklyPlanSection() {
                 {menu.month}/{menu.date} {menu.day}
               </span>
 
+              <span className="wps-card-name">
+                {hasMenu ? menu.name : '메뉴추가'}
+              </span>
+
               <div className="wps-card-img-wrap">
                 {hasMenu ? (
                   <img
@@ -61,10 +68,6 @@ function WeeklyPlanSection() {
                   <span className="wps-card-add">+</span>
                 )}
               </div>
-
-              <span className="wps-card-name">
-                {hasMenu ? menu.name : '메뉴추가'}
-              </span>
 
               <span
                 className="wps-card-badge"

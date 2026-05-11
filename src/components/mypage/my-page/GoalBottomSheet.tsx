@@ -1,4 +1,4 @@
-import BottomSheet from './BottomSheet'
+import BottomSheet from '../common/BottomSheet'
 import './GoalBottomSheet.css'
 
 type Props = {

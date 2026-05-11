@@ -55,7 +55,7 @@
   border: 1.5px solid #f0f0f0;
   padding: 10px 8px 10px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
-  gap: 6px;
+  gap: 10px;
 }
 
 .wps-card--today {
@@ -64,7 +64,7 @@
 }
 
 .wps-card-date {
-  font-size: 10px;
+  font-size: 14px;
   color: #999;
   font-weight: 500;
   white-space: nowrap;
@@ -77,9 +77,9 @@
 
 /* ── Image / Add button ────────────────────────── */
 .wps-card-img-wrap {
-  width: 64px;
-  height: 50px;
-  border-radius: 10px;
+  width: 67px;
+  height: 67px;
+  border-radius: 50%;
   overflow: hidden;
   background: #f5f5f5;
   display: flex;
@@ -102,7 +102,7 @@
 
 /* ── Menu name ─────────────────────────────────── */
 .wps-card-name {
-  font-size: 10px;
+  font-size: 16px;
   font-weight: 600;
   color: #444;
   text-align: center;

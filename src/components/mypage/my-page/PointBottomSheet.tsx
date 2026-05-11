@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import AttendanceCircles from './AttendanceCircles'
 import type { DayData } from './AttendanceCircles'
-import BottomSheet from './BottomSheet'
+import BottomSheet from '../common/BottomSheet'
 import './PointBottomSheet.css'
 
 const GUIDE_ATTENDANCE: DayData[] = [

@@ -1,5 +1,5 @@
-import { weeklyMenuData } from './mealData'
-import bookOpenImg from '../../pages/meal/images/book_open.svg'
+import { weeklyMenuData } from '../mealData'
+import bookOpenImg from '../images/book_open.svg'
 import './TodayMenuList.css'
 
 interface Props {

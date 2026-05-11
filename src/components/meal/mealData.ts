@@ -1,27 +1,27 @@
-import todayMenuImg from '../../pages/meal/images/today_menu.png'
-import tuesdayMenuImg from '../../pages/meal/images/tuesday_menu.png'
-import wednesdayMenuImg from '../../pages/meal/images/wednesday_menu.png'
-import fridayMenuImg from '../../pages/meal/images/friday_menu.png'
-import saturdayMenuImg from '../../pages/meal/images/saturday_menu.png'
-import salmonImg from '../../pages/meal/images/salmon.svg'
-import romainImg from '../../pages/meal/images/romain.svg'
-import onionImg from '../../pages/meal/images/onion.svg'
-import tunaImg from '../../pages/meal/images/tuna.svg'
-import meatImg from '../../pages/meal/images/meat.svg'
-import porkImg from '../../pages/meal/images/pork.svg'
-import carrotImg from '../../pages/meal/images/carrot.svg'
-import potatoImg from '../../pages/meal/images/potato.svg'
-import garlicImg from '../../pages/meal/images/garlic.svg'
-import beansproutsImg from '../../pages/meal/images/beansprouts.svg'
-import brocollyImg from '../../pages/meal/images/brocolly.svg'
-import chiliImg from '../../pages/meal/images/chili.svg'
-import tofuImg from '../../pages/meal/images/tofu.svg'
-import sosageImg from '../../pages/meal/images/sosage.svg'
-import appleImg from '../../pages/meal/images/apple.svg'
-import grapeImg from '../../pages/meal/images/grape.svg'
-import kiwiImg from '../../pages/meal/images/kiwi.svg'
-import mangoImg from '../../pages/meal/images/mango.svg'
-import strawberryImg from '../../pages/meal/images/strawberry.svg'
+import todayMenuImg from './images/today_menu.png'
+import tuesdayMenuImg from './images/tuesday_menu.png'
+import wednesdayMenuImg from './images/wednesday_menu.png'
+import fridayMenuImg from './images/friday_menu.png'
+import saturdayMenuImg from './images/saturday_menu.png'
+import salmonImg from './images/salmon.svg'
+import romainImg from './images/romain.svg'
+import onionImg from './images/onion.svg'
+import tunaImg from './images/tuna.svg'
+import meatImg from './images/meat.svg'
+import porkImg from './images/pork.svg'
+import carrotImg from './images/carrot.svg'
+import potatoImg from './images/potato.svg'
+import garlicImg from './images/garlic.svg'
+import beansproutsImg from './images/beansprouts.svg'
+import brocollyImg from './images/brocolly.svg'
+import chiliImg from './images/chili.svg'
+import tofuImg from './images/tofu.svg'
+import sosageImg from './images/sosage.svg'
+import appleImg from './images/apple.svg'
+import grapeImg from './images/grape.svg'
+import kiwiImg from './images/kiwi.svg'
+import mangoImg from './images/mango.svg'
+import strawberryImg from './images/strawberry.svg'
 
 export {
   salmonImg, romainImg, onionImg, tunaImg, meatImg, porkImg,
@@ -107,7 +107,7 @@ export const weeklyMenuData: DayMenu[] = [
     image: fridayMenuImg,
     name: '계란 볶음밥', time: '5분',
     description: '간단하지만 영양 만점! 부드러운 계란의 고소함!',
-    savedAmount: 1500, difficulty: 1, usage: null,
+    savedAmount: 1500, difficulty: 1, usage: 100,
     ingredients: [
       { name: '당근', image: carrotImg },
       { name: '양파', image: onionImg },

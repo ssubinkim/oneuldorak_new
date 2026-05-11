@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import CoverflowSwiper, { type CoverflowSlideItem } from '../effects/swiper/CoverFlow'
-import fridayMenuImage from '../../pages/meal/images/friday_menu.png'
-import saladRecipeImage from '../../pages/meal/images/recipe1.png'
-import saturdayMenuImage from '../../pages/meal/images/saturday_menu.png'
-import tuesdayMenuImage from '../../pages/meal/images/tuesday_menu.png'
-import wednesdayMenuImage from '../../pages/meal/images/wednesday_menu.png'
+import fridayMenuImage from '../meal/images/friday_menu.png'
+import saladRecipeImage from '../meal/images/recipe1.png'
+import saturdayMenuImage from '../meal/images/saturday_menu.png'
+import tuesdayMenuImage from '../meal/images/tuesday_menu.png'
+import wednesdayMenuImage from '../meal/images/wednesday_menu.png'
 import './HomeRecipeSection.css'
 
 const recipes: CoverflowSlideItem[] = [

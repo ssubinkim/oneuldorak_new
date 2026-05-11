@@ -1,7 +1,7 @@
 import {
   carrotImg, potatoImg, appleImg, onionImg,
   romainImg, brocollyImg, strawberryImg,
-} from './mealData'
+} from '../mealData'
 import './IngredientSection.css'
 
 interface Ingredient {
@@ -31,7 +31,9 @@ function FridgeIcon() {
   )
 }
 
-function IngredientSection() {
+type Props = { onAddIngredient?: () => void; onShowAll?: () => void }
+
+function IngredientSection({ onAddIngredient, onShowAll }: Props) {
   return (
     <section className="ing-section">
       <div className="ing-header">
@@ -57,8 +59,8 @@ function IngredientSection() {
       </div>
 
       <div className="ing-actions">
-        <button className="ing-btn ing-btn--primary">재료추가하기</button>
-        <button className="ing-btn ing-btn--outline">모든 재료 보러가기</button>
+        <button className="ing-btn ing-btn--primary" onClick={onAddIngredient}>재료추가하기</button>
+        <button className="ing-btn ing-btn--outline" onClick={onShowAll}>모든 재료 보러가기</button>
       </div>
     </section>
   )

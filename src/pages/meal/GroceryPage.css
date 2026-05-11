@@ -1,0 +1,434 @@
+.gp-screen {
+  background: linear-gradient(180deg, #FFDB78 0px, #fffffd 360px);
+}
+
+.gp-scroll {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding-bottom: var(--bottom-nav-height);
+}
+
+.gp-scroll::-webkit-scrollbar { display: none; }
+
+/* ── 헤더 ─────────────────────────────────────── */
+.gp-header {
+  display: flex;
+  align-items: center;
+  padding: 20px 20px;
+}
+
+.gp-back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.gp-header-title {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--color-text-main);
+  margin-left: 10px;
+}
+
+.gp-header-spacer { flex: 1; }
+
+.gp-header-crew {
+  height: 58px;
+  object-fit: contain;
+  flex-shrink: 0;
+  align-self: flex-end;
+  margin-bottom: -24px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── 콘텐츠 흰색 영역 ─────────────────────────── */
+.gp-content {
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── 탭 ──────────────────────────────────────── */
+.gp-tabs {
+  display: flex;
+  border-bottom: 1.5px solid #f0f0f0;
+}
+
+.gp-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 16px 0 14px;
+  background: none;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  margin-bottom: -1.5px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.gp-tab--active {
+  color: var(--color-text-main);
+  border-bottom-color: #ffdb78;
+}
+
+.gp-tab-badge {
+  background: #FFDB78;
+  color: #7a5000;
+  font-size: 11px;
+  font-weight: 800;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 탭 공통 콘텐츠 영역 ─────────────────────── */
+.gp-tab-content {
+  padding: 20px 20px;
+}
+
+.gp-tab-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.gp-empty-text {
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* ── 섹션 타이틀 ─────────────────────────────── */
+.gp-section-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-text-main);
+  margin-bottom: 16px;
+}
+
+/* ── 전체선택 / 삭제 행 ──────────────────────── */
+.gp-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.gp-check-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.gp-checkbox {
+  display: none;
+}
+
+.gp-check-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1.5px solid #ddd;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.gp-check-box[data-checked='true'] {
+  background: #FFDB78;
+  border-color: #FFDB78;
+}
+
+.gp-check-box[data-checked='true']::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.gp-check-text {
+  font-size: 14px;
+  color: #666;
+}
+
+.gp-delete-btn {
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: #aaa;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ── 아이템 리스트 ───────────────────────────── */
+.gp-item-list {
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.gp-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
+}
+
+.gp-item:last-child {
+  border-bottom: none;
+}
+
+.gp-item-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.gp-item-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-main);
+  flex: 1;
+}
+
+/* ── 장바구니 담기 버튼 ──────────────────────── */
+.gp-cart-btn {
+  width: 100%;
+  background: #FFDB78;
+  border: none;
+  border-radius: 14px;
+  padding: 17px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.gp-cart-btn:active { opacity: 0.85; }
+
+/* ── 보관함 탭 필터 칩 ───────────────────────── */
+.gp-filters {
+  display: flex;
+  gap: 8px;
+  padding: 16px 20px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.gp-filters::-webkit-scrollbar { display: none; }
+
+.gp-filter-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #e0e0e0;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.gp-filter-chip--active {
+  background: #FFDB78;
+  border-color: #FFDB78;
+  color: #5a4000;
+}
+
+/* ── 보관함 레시피 2열 그리드 ────────────────── */
+.gp-recipe-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 0 20px 24px;
+}
+
+.gp-recipe-card {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.gp-recipe-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gp-recipe-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 10px 10px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
+}
+
+.gp-recipe-channel {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 3px;
+  font-weight: 500;
+}
+
+.gp-recipe-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.gp-recipe-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* ── 추천재료 탭 ─────────────────────────────── */
+.gp-rec-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.gp-rec-banner-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.gp-rec-banner-img {
+  height: 100px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.gp-rec-list {
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.gp-rec-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.gp-rec-item:last-child {
+  border-bottom: none;
+}
+
+.gp-rec-img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.gp-rec-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.gp-rec-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.gp-rec-recipes {
+  font-size: 12px;
+  color: #FFAB00;
+  font-weight: 500;
+}
+
+.gp-rec-add-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #FFDB78;
+  background: transparent;
+  color: #FFDB78;
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.gp-rec-add-btn:active {
+  background: #FFDB78;
+  color: #fff;
+}
+
+.gp-recipe-likes {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
