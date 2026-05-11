@@ -1,0 +1,53 @@
+.community-banner {
+  background: var(--color-secondary);
+  padding: 16px 16px 30px;
+  overflow: visible;
+  position: relative;
+}
+
+.community-banner__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.community-banner__header h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: -0.5px;
+}
+
+.community-banner__actions {
+  display: flex;
+  gap: 4px;
+}
+
+.community-banner__actions button {
+  padding: 4px;
+  color: #1a1a1a;
+  background: transparent;
+  border: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.community-banner__subtitle {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #333;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.community-banner__image {
+  display: block;
+  width: min(82%, 560px);
+  margin: 0 auto -18px;
+  position: relative;
+  z-index: 5;
+  pointer-events: none;
+}
