@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import VoteCompleteModal from '../common/VoteCompleteModal'
 import './VoteList.css'
 
 export type VoteFilter = 'active' | 'ended'
@@ -239,12 +240,29 @@ function VoteCard({
 
 function VoteList({ filter, variant = 'list' }: VoteListProps) {
   const [selectedVotes, setSelectedVotes] = useState<Record<string, string>>({})
+  const [voteModal, setVoteModal] = useState<{
+    question: string
+    selectedOption: string
+    reward?: string
+  } | null>(null)
+  const shownVoteModalIdsRef = useRef<Set<string>>(new Set())
 
   const handleVote = (cardId: string, optionLabel: string) => {
+    const selectedCard = voteCards.find((card) => card.id === cardId)
+
     setSelectedVotes((prevSelectedVotes) => ({
       ...prevSelectedVotes,
       [cardId]: optionLabel,
     }))
+
+    if (selectedCard && !shownVoteModalIdsRef.current.has(cardId)) {
+      shownVoteModalIdsRef.current.add(cardId)
+      setVoteModal({
+        question: selectedCard.question,
+        selectedOption: optionLabel,
+        reward: selectedCard.reward,
+      })
+    }
   }
 
   const cards = (() => {
@@ -273,6 +291,14 @@ function VoteList({ filter, variant = 'list' }: VoteListProps) {
           isEnded={filter === 'ended'}
         />
       ))}
+
+      <VoteCompleteModal
+        isOpen={voteModal !== null}
+        question={voteModal?.question ?? ''}
+        selectedOption={voteModal?.selectedOption ?? ''}
+        reward={voteModal?.reward}
+        onClose={() => setVoteModal(null)}
+      />
     </section>
   )
 }

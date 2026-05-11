@@ -5,6 +5,7 @@
   margin: 0 auto;
   perspective: 900px;
   overflow: visible;
+  touch-action: pan-y;
 }
 
 .fan-deck__card {

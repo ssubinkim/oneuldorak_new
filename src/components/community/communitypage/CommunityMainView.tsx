@@ -1,10 +1,10 @@
 import type { CommunityTabRoute } from '../../../pages/community/CommunityTabRoute'
 import CommunityTabs from '../common/CommunityTabs'
 import PopularRecipeSection from '../common/PopularRecipeSection'
+import VoteList from '../votepage/VoteList'
 import CommunityBanner from './CommunityBanner'
 import PopularPosts from './PopularPosts'
 import RankingBanner from './RankingBanner'
-import VotePreviewBox from './VotePreviewBox'
 import { dorakRankings, hotPosts, popularRecipes } from './communityData'
 import './CommunityMainView.css'
 
@@ -25,7 +25,7 @@ function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
       />
 
       <div className="community-content">
-        <VotePreviewBox />
+        <VoteList filter="active" variant="featured" />
         <PopularRecipeSection recipes={popularRecipes} />
         <PopularPosts posts={hotPosts} />
         <RankingBanner rankings={dorakRankings} />
