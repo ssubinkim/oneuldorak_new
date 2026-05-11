@@ -1,0 +1,146 @@
+.recipe-section {
+  margin-top: 20px;
+}
+
+.recipe-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.recipe-section__header h2 {
+  margin: 0;
+  color: #050505;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.recipe-section__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  color: #777;
+  background: transparent;
+  border: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.recipe-section__more span {
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 0.8;
+}
+
+.recipe-section__scroll {
+  display: flex;
+  gap: 14px;
+  margin: 0 -16px;
+  padding: 0 16px 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.recipe-section__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.popular-recipe-card {
+  position: relative;
+  flex: 0 0 clamp(178px, 48vw, 230px);
+  height: clamp(218px, 58vw, 286px);
+  overflow: hidden;
+  border-radius: 14px;
+  background: #ececec;
+}
+
+.popular-recipe-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+}
+
+.popular-recipe-card__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 14px 16px;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 48%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  color: #fff;
+}
+
+.popular-recipe-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.popular-recipe-card__title-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.popular-recipe-card__title {
+  min-width: 0;
+  margin: 0;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.popular-recipe-card__likes {
+  flex: 0 0 auto;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+@media (max-width: 360px) {
+  .recipe-section__header h2 {
+    font-size: 21px;
+  }
+
+  .recipe-section__more {
+    font-size: 15px;
+  }
+
+  .popular-recipe-card {
+    flex-basis: 168px;
+    height: 210px;
+  }
+
+  .popular-recipe-card__meta {
+    font-size: 12px;
+  }
+
+  .popular-recipe-card__title {
+    font-size: 17px;
+  }
+
+  .popular-recipe-card__likes {
+    font-size: 14px;
+  }
+}

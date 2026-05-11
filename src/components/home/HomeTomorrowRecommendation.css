@@ -31,33 +31,114 @@
 
 .tomorrow-section__deck {
   padding: 0 10px;
+  overflow: visible;
 }
 
-.tomorrow-section__deck .fan-deck {
-  width: min(100%, 310px);
-  height: 322px;
-  perspective: 1000px;
+.tomorrow-swiper {
+  width: min(100%, 284px);
+  min-height: 322px;
+  margin: 0 auto;
+  padding: 0 0 8px;
+  overflow: visible;
 }
 
-.tomorrow-section__deck .fan-deck__card {
+.tomorrow-swiper .swiper-wrapper {
+  align-items: flex-end;
+}
+
+.tomorrow-swiper__slide {
+  display: flex;
+  justify-content: center;
+  width: 252px;
+  transition:
+    transform 320ms ease,
+    opacity 320ms ease;
+}
+
+.tomorrow-swiper__slide.swiper-slide-active {
+  z-index: 5;
+  transform: scale(1);
+  opacity: 1;
+}
+
+.tomorrow-swiper__slide.swiper-slide-prev {
+  z-index: 3;
+  transform: translateX(12px) translateY(10px) rotate(-3deg) scale(0.96);
+  opacity: 0.92;
+}
+
+.tomorrow-swiper__slide.swiper-slide-next {
+  z-index: 4;
+  transform: translateX(-12px) translateY(8px) rotate(3deg) scale(0.97);
+  opacity: 0.94;
+}
+
+.tomorrow-swiper__slide:not(.swiper-slide-active):not(.swiper-slide-prev):not(.swiper-slide-next) {
+  transform: translateY(14px) scale(0.92);
+  opacity: 0.38;
+}
+
+.tomorrow-card {
+  display: grid;
+  justify-items: center;
   width: 252px;
   min-height: 286px;
+  margin: 0;
   padding: 22px 17px 18px;
+  box-sizing: border-box;
+  color: #575757;
+  text-align: center;
   background: #f4f0e8;
   border: 1px solid rgba(78, 71, 60, 0.12);
   border-radius: 18px;
   box-shadow: 0 10px 22px rgba(41, 36, 28, 0.16);
 }
 
-.tomorrow-section__deck .fan-deck__card.is-active {
+.tomorrow-swiper__slide.swiper-slide-active .tomorrow-card {
   background: #fff;
   box-shadow: 0 16px 30px rgba(41, 36, 28, 0.2);
 }
 
-.tomorrow-section__deck .fan-deck__image {
+.tomorrow-card__title {
+  margin: 0;
+  color: #4e4e4e;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.tomorrow-card__price {
+  margin: 6px 0 0;
+  color: #fa4c4c;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.tomorrow-card__image {
   width: 184px;
   height: 132px;
+  margin-top: 20px;
+  object-fit: cover;
   border-radius: 14px;
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.16);
+}
+
+.tomorrow-card__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 24px;
+  color: #686868;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.tomorrow-card__clock-icon {
+  width: 13px;
+  height: 13px;
+  color: #686868;
 }
 
 .home-dots {

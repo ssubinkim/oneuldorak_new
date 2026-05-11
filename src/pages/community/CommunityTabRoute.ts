@@ -1,1 +1,1 @@
-export type CommunityTabRoute = 'recipe' | 'free' | 'vote'
+export type CommunityTabRoute = 'all' | 'recipe' | 'free' | 'vote'

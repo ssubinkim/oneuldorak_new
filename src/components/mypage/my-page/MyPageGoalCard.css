@@ -1,0 +1,56 @@
+.mypage-goal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.mypage-goal-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.mypage-goal-edit {
+  font-size: 13px;
+  color: var(--color-disabled);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mypage-goal-amount {
+  font-size: 14px;
+  color: var(--color-text-sub);
+  margin-bottom: 10px;
+}
+
+.mypage-goal-amount strong {
+  font-weight: 700;
+}
+
+.mypage-goal-amount .sub-text {
+  color: var(--color-disabled);
+  font-size: 13px;
+}
+
+.mypage-goal-bar-bg {
+  height: 8px;
+  background: #efefef;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.mypage-goal-bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 4px;
+  transition: width 1.2s ease-out;
+}
+
+.mypage-goal-percent-text {
+  font-size: 12px;
+  color: var(--color-disabled);
+}

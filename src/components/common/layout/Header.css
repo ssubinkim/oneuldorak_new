@@ -48,3 +48,17 @@
 .app-header__status-icon--battery {
   width: 27px;
 }
+
+@media (max-width: 767px) {
+  .app-header {
+    display: none;
+  }
+
+  .app-screen:has(> .app-header) > .page-scroll {
+    top: 0;
+  }
+
+  .app-screen:has(> .app-header) > .home-scroll {
+    padding-top: 0;
+  }
+}

@@ -1,68 +1,81 @@
 .vote-preview-box {
-  margin-top: 14px;
   padding: 16px;
   background: #fff;
-  border: 1px solid #e8e9ef;
-  border-radius: 12px;
+  border-radius: 14px;
 }
 
 .vote-preview-box__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
-.vote-preview-box__header h2 {
+.vote-preview-box__title-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vote-preview-box__title-group h2 {
   margin: 0;
   color: #1f232d;
   font-size: 15px;
   font-weight: 800;
 }
 
-.vote-preview-box__header button {
-  padding: 0;
-  color: #7d8290;
-  background: transparent;
-  border: 0;
-  font-size: 13px;
+.vote-preview-box__reward {
+  padding: 2px 8px;
+  color: #fff;
+  background: #5CC464;
+  border-radius: 20px;
+  font-size: 11px;
   font-weight: 700;
 }
 
-.vote-preview-box__item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 10px;
-  background: #f6f7fb;
-  border: 1px solid #edf0f5;
-  border-radius: 10px;
+.vote-preview-box__header > button {
+  padding: 0;
+  color: #9097a3;
+  background: transparent;
+  border: 0;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.vote-preview-box__item h3 {
-  margin: 0;
-  color: #232833;
+.vote-preview-box__question {
+  margin: 0 0 12px;
+  color: #1f232d;
   font-size: 14px;
   font-weight: 700;
 }
 
-.vote-preview-box__item p {
-  margin: 8px 0 0;
-  color: #767d88;
-  font-size: 11px;
-  font-weight: 500;
+.vote-preview-box__options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.vote-preview-box__item span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 34px;
-  height: 24px;
-  padding: 0 8px;
-  color: #fff;
-  background: #ff7d10;
+.vote-preview-box__option {
+  width: 100%;
+  padding: 10px 14px;
+  color: #333;
+  background: #fff;
+  border: 1px solid #d9dce6;
   border-radius: 8px;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.vote-preview-box__footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  color: #9097a3;
+  font-size: 11px;
 }

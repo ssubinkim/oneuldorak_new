@@ -1,0 +1,40 @@
+.mypage-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 20px 16px;
+}
+
+.mypage-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid var(--color-primary-50);
+  background: var(--color-tertiary);
+}
+
+.mypage-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mypage-user-level {
+  font-size: 11px;
+  color: var(--color-disabled);
+  margin-bottom: 2px;
+}
+
+.mypage-user-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text-main);
+  margin-bottom: 2px;
+}
+
+.mypage-user-email {
+  font-size: 13px;
+  color: var(--color-disabled);
+}

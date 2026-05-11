@@ -1,0 +1,11 @@
+.saved-recipe-page {
+  background: var(--color-bg-sub);
+  min-height: 100%;
+  padding: 16px 20px;
+}
+
+.saved-recipe-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

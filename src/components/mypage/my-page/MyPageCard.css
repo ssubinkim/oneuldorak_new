@@ -1,0 +1,7 @@
+.mypage-card {
+  margin: 0 20px 12px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid var(--color-secondary-30);
+}
