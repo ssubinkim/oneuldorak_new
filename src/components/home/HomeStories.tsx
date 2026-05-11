@@ -9,20 +9,22 @@ const stories = [
   { id: 5, title: '맛집 알려줄게 다 들어와~~~', likes: 36, comments: 13 },
 ]
 
+const topStories = stories.slice(0, 3)
+
 function HomeStories() {
   return (
     <section className="stories-section" aria-labelledby="storiesTitle">
       <div className="home-section-title stories-section__title">
         <div>
           <h2 id="storiesTitle">도락이들의 이야기</h2>
-          <p>이번주 인기를 TOP5</p>
+          <p>이번주 인기를 TOP3</p>
         </div>
         <a href="#more-stories">더보기 〉</a>
       </div>
       <div className="story-list">
         <SequentialHighlightList
           className="stories-section__stagger"
-          items={stories}
+          items={topStories}
           intervalMs={1200}
           startIndex={0}
           loop

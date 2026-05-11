@@ -29,9 +29,10 @@ function HomeTomorrowRecommendation() {
         <FanDeck
           items={tomorrowCards}
           startIndex={activeCardIndex}
-          intervalMs={1700}
           loop
-          autoplay
+          autoplay={false}
+          cardOffsetX={22}
+          layout="stack"
           onActiveIndexChange={setActiveCardIndex}
         />
       </div>
