@@ -6,6 +6,22 @@ interface Props {
   selectedDay: number
 }
 
+function ChefHatIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+      <path d="M8 21h8M6 21h12" stroke="#555" strokeWidth="1.6" strokeLinecap="round" />
+      <path
+        d="M6 14v4h12v-4"
+        stroke="#555" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
+      />
+      <path
+        d="M6 14c-2.21 0-4-1.79-4-4s1.79-4 4-4c.34 0 .67.04.98.12A5 5 0 0 1 12 3a5 5 0 0 1 5.02 3.12c.31-.08.64-.12.98-.12 2.21 0 4 1.79 4 4s-1.79 4-4 4H6Z"
+        stroke="#555" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 function StarRating({ value, max = 5 }: { value: number; max?: number }) {
   return (
     <div className="star-rating">
@@ -30,15 +46,28 @@ function TodayMenuList({ selectedDay }: Props) {
 
   if (!menu.image && menu.status === 'thinking') {
     return (
-      <div className="today-empty-card">
-        <p className="today-empty-text">아직 메뉴를 정하지 않았어요!</p>
-        <p className="today-empty-sub">도락이에게 추천받아보세요 🐶</p>
+      <div className="today-card">
+        <div className="today-card-header">
+          <ChefHatIcon />
+          <span className="today-card-title">오늘의 메뉴</span>
+        </div>
+        <div className="today-empty-card">
+          <p className="today-empty-text">아직 메뉴를 정하지 않았어요!</p>
+          <p className="today-empty-sub">도락이에게 추천받아보세요 🐶</p>
+        </div>
       </div>
     )
   }
 
   return (
     <div className="today-card">
+      {/* 카드 내부 타이틀 */}
+      <div className="today-card-header">
+        <ChefHatIcon />
+        <span className="today-card-title">오늘의 메뉴</span>
+      </div>
+
+      {/* 이미지 + 메뉴 정보 */}
       <div className="today-header">
         <div className="today-img-wrapper">
           {menu.image && (
@@ -57,6 +86,7 @@ function TodayMenuList({ selectedDay }: Props) {
         </div>
       </div>
 
+      {/* 절약금액 / 난이도 / 조리시간 */}
       <div className="today-stats">
         <div className="today-stat">
           <p className="stat-label">절약금액</p>
@@ -77,6 +107,7 @@ function TodayMenuList({ selectedDay }: Props) {
         </div>
       </div>
 
+      {/* 필요한 재료 */}
       {menu.ingredients.length > 0 && (
         <div className="today-ingredients-section">
           <p className="today-ingredients-title">필요한 재료</p>

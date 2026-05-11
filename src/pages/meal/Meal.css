@@ -1,12 +1,20 @@
 .meal-screen {
   display: flex;
   flex-direction: column;
-  background: #f5f3ef;
+  /* 상단 노란색 → 하단 아이보리 그라데이션 */
+  background: linear-gradient(
+    180deg,
+    #FFDB78 0%,
+    #FFE99A 14%,
+    #FFF3C4 30%,
+    #FFF8E8 50%,
+    #F5F3EF 100%
+  );
 }
 
-/* ── Hero 영역 ── */
+/* ── Hero 영역 ─────────────────────────────────── */
 .meal-hero {
-  background: #FFDB78;
+  background: transparent; /* 그라데이션이 비쳐 보이도록 */
   flex-shrink: 0;
 }
 
@@ -15,7 +23,7 @@
 }
 
 .meal-hero-inner {
-  padding: 20px 20px 44px;
+  padding: 20px 20px 24px;
   padding-top: calc(44px + 20px);
 }
 
@@ -62,16 +70,37 @@
   margin: 0;
 }
 
-/* ── Content 컨테이너 ── */
-.meal-content {
-  background: #fff;
-  border-radius: 20px 20px 0 0;
-  margin-top: -24px;
+/* ── 대시보드 스크롤 영역 ──────────────────────── */
+.meal-dashboard {
+  background: transparent; /* 그라데이션이 비쳐 보이도록 */
   flex: 1;
   overflow-y: auto;
   min-height: 0;
+  padding: 20px 0 100px;
 }
 
-.menu-list-container {
-  padding: 12px 16px 80px;
+/* ── 공통 섹션 헤더 ────────────────────────────── */
+.dash-section {
+  margin-bottom: 32px;
+}
+
+.dash-section-hd {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 20px;
+  margin-bottom: 14px;
+}
+
+.dash-section-title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+/* 오늘의 메뉴 카드 좌우 패딩 */
+.dash-today-wrap {
+  padding: 0 20px;
+  margin-bottom: 32px;
 }
