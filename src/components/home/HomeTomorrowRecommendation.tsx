@@ -30,6 +30,7 @@ function HomeTomorrowRecommendation() {
           items={tomorrowCards}
           startIndex={activeCardIndex}
           layout="stack"
+          autoplay={false}
           cardOffsetX={58}
           onActiveIndexChange={setActiveCardIndex}
         />

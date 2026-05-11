@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import './FanDeck.css'
 
 export type FanDeckItem = {
@@ -61,7 +61,26 @@ function FanDeck({
   const [activeIndex, setActiveIndex] = useState(() =>
     getSafeStartIndex(startIndex, safeItems.length)
   )
+  const swipeStartRef = useRef<{ x: number; y: number } | null>(null)
+  const didSwipeRef = useRef(false)
   const normalizedActiveIndex = getSafeStartIndex(activeIndex, safeItems.length)
+
+  const moveActiveIndex = (direction: 1 | -1) => {
+    setActiveIndex((previousIndex) => {
+      const previousSafeIndex = getSafeStartIndex(previousIndex, safeItems.length)
+      const nextIndex = previousSafeIndex + direction
+
+      if (nextIndex < 0) {
+        return loop ? safeItems.length - 1 : previousSafeIndex
+      }
+
+      if (nextIndex >= safeItems.length) {
+        return loop ? 0 : previousSafeIndex
+      }
+
+      return nextIndex
+    })
+  }
 
   useEffect(() => {
     onActiveIndexChange?.(normalizedActiveIndex)
@@ -93,7 +112,37 @@ function FanDeck({
   }
 
   return (
-    <div className={`fan-deck ${className}`.trim()} role="list" aria-label="카드 스택">
+    <div
+      className={`fan-deck ${className}`.trim()}
+      role="list"
+      aria-label="카드 스택"
+      onPointerDown={(event) => {
+        swipeStartRef.current = { x: event.clientX, y: event.clientY }
+        didSwipeRef.current = false
+      }}
+      onPointerUp={(event) => {
+        const swipeStart = swipeStartRef.current
+        swipeStartRef.current = null
+
+        if (!swipeStart) {
+          return
+        }
+
+        const deltaX = event.clientX - swipeStart.x
+        const deltaY = event.clientY - swipeStart.y
+        const isHorizontalSwipe = Math.abs(deltaX) > 36 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2
+
+        if (!isHorizontalSwipe) {
+          return
+        }
+
+        didSwipeRef.current = true
+        moveActiveIndex(deltaX < 0 ? 1 : -1)
+      }}
+      onPointerCancel={() => {
+        swipeStartRef.current = null
+      }}
+    >
       {safeItems.map((item, index) => {
         const isStackLayout = layout === 'stack'
         const offset = isStackLayout
@@ -128,6 +177,11 @@ function FanDeck({
               transform: `translateX(calc(-50% + ${translateX}px)) translateY(${translateY}px) rotate(${rotate}deg) scale(${scale})`,
             }}
             onClick={() => {
+              if (didSwipeRef.current) {
+                didSwipeRef.current = false
+                return
+              }
+
               if (isStackLayout && isActive) {
                 setActiveIndex(loop ? nextIndex : Math.min(normalizedActiveIndex + 1, safeItems.length - 1))
                 return
