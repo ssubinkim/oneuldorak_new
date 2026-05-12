@@ -49,6 +49,16 @@
   color: #aaa;
 }
 
+.pdesc__product-img--filled {
+  height: auto;
+  background: none;
+}
+
+.pdesc__product-img--filled img {
+  width: 100%;
+  display: block;
+}
+
 /* 리뷰 섹션 */
 .pdesc__review {
   padding: 20px 16px;

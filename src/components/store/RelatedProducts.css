@@ -1,0 +1,9 @@
+.related-product-item .product-card__image-wrap {
+  width: 120px;
+  height: 120px;
+}
+
+.related-product-item .product-card__image {
+  object-fit: cover;
+  background: #f5f5f5;
+}

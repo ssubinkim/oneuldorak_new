@@ -11,10 +11,10 @@
 }
 
 .subscription__title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 800;
   color: #111;
-  margin: 0 0 3px;
+  margin: 0 0 8px;
 }
 
 .subscription__desc {
@@ -63,14 +63,23 @@
   bottom: 16px;
   left: 16px;
   color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.5;
   pointer-events: none;
 }
 
 .subscription__banner-text p {
   margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.subscription__banner-title {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
+
+.subscription__banner-text .store-banner__subtitle {
+  font-size: 14px;
 }
 
 .subscription__tabs {

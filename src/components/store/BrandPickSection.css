@@ -11,10 +11,10 @@
 }
 
 .brand-pick__title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 800;
   color: #111;
-  margin: 0 0 3px;
+  margin: 0 0 8px;
 }
 
 .brand-pick__desc {
@@ -37,7 +37,7 @@
 
 .brand-pick__track {
   display: flex;
-  gap: 16px;
+  gap: 24px;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -76,7 +76,7 @@
 }
 
 .brand-pick__name {
-  font-size: 11px;
+  font-size: 16px;
   color: #444;
   margin: 0;
   text-align: center;

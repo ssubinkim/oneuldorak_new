@@ -3,6 +3,7 @@ import storecall1 from '../images/storecall_1.svg'
 import storecall2 from '../images/storecall_2.svg'
 import RelatedRecipes from '../RelatedRecipes'
 import RelatedProducts from '../RelatedProducts'
+import { type Product } from '../ProductCard'
 
 export type Inquiry = {
   id: string
@@ -15,7 +16,7 @@ export type Inquiry = {
 
 type Props = {
   inquiries: Inquiry[]
-  onSelectProduct?: (id: string) => void
+  onSelectProduct?: (product: Product) => void
 }
 
 function InquiryTab({ onSelectProduct }: Props) {

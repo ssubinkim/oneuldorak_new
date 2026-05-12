@@ -11,9 +11,12 @@
 }
 
 .store-detail__nav-title {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
   color: #111;
+  flex: 1;
+  text-align: left;
+  margin-left: 8px;
 }
 
 .store-detail__nav-actions {

@@ -1,14 +1,15 @@
 import { useState, useRef } from 'react'
 import StoreDetail from '../../components/store/StoreDetail'
+import { type Product } from '../../components/store/ProductCard'
 import './StoreDetailPage.css'
 
 type Props = {
-  productId: string | null
+  product: Product | null
   onBack: () => void
-  onSelectProduct: (id: string) => void
+  onSelectProduct: (product: Product) => void
 }
 
-function StoreDetailPage({ productId, onBack, onSelectProduct }: Props) {
+function StoreDetailPage({ product, onBack, onSelectProduct }: Props) {
   const [showTop, setShowTop] = useState(false)
   const scrollRef = useRef<HTMLElement>(null)
 
@@ -30,7 +31,7 @@ function StoreDetailPage({ productId, onBack, onSelectProduct }: Props) {
         onScroll={handleScroll}
       >
         <StoreDetail
-          productId={productId}
+          product={product}
           onBack={onBack}
           onSelectProduct={onSelectProduct}
         />

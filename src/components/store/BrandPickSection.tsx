@@ -6,11 +6,11 @@ import logo4 from './images/storelogo_4.png'
 import logo5 from './images/storelogo_5.png'
 
 const BRANDS = [
-  { id: '1', name: '밥픽', logo: logo1 },
-  { id: '2', name: '키친무드', logo: logo2 },
-  { id: '3', name: '요미키친', logo: logo3 },
-  { id: '4', name: '한끼랩', logo: logo4 },
-  { id: '5', name: '혹포켓', logo: logo5 },
+  { id: '1', name: '프레시잇', logo: logo1 },
+  { id: '2', name: '파머스픽', logo: logo2 },
+  { id: '3', name: '팜스토리', logo: logo3 },
+  { id: '4', name: '모노메이트', logo: logo4 },
+  { id: '5', name: '밥픽', logo: logo5 },
 ]
 
 function BrandPickSection() {

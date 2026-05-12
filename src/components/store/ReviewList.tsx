@@ -1,5 +1,8 @@
+import { useState } from 'react'
 import './ReviewList.css'
 import reviewBanner from './images/review_banner.svg'
+import ReviewWriteSheet from './ReviewWriteSheet'
+import VoteCompleteModal from '../community/common/VoteCompleteModal'
 
 export type Review = {
   id: string
@@ -45,7 +48,24 @@ function Stars({ rating, size = 14 }: { rating: number; size?: number }) {
 }
 
 function ReviewList({ reviews, totalCount, averageRating }: Props) {
+  const [showWriteSheet, setShowWriteSheet] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+
+  function handleSubmit() {
+    setShowWriteSheet(false)
+    setShowModal(true)
+  }
+
   return (
+    <>
+    {showWriteSheet && <ReviewWriteSheet onClose={() => setShowWriteSheet(false)} onSubmit={handleSubmit} />}
+    <VoteCompleteModal
+      isOpen={showModal}
+      question="리뷰 작성"
+      selectedOption="리뷰 완료"
+      reward="+30p"
+      onClose={() => setShowModal(false)}
+    />
     <div>
       {/* 베스트 리뷰 배너 */}
       <div className="review-banner">
@@ -97,7 +117,7 @@ function ReviewList({ reviews, totalCount, averageRating }: Props) {
         <div className="review-photos__list">
           <div className="review-photo-thumb" />
           <div className="review-photo-thumb" />
-          <div className="review-photo-write">
+          <div className="review-photo-write" onClick={() => setShowWriteSheet(true)}>
             <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#bbb" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
               <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
               <circle cx="12" cy="13" r="4"/>
@@ -160,6 +180,7 @@ function ReviewList({ reviews, totalCount, averageRating }: Props) {
         ))}
       </div>
     </div>
+    </>
   )
 }
 

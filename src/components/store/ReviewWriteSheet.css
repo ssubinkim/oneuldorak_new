@@ -1,0 +1,245 @@
+.review-sheet__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 200;
+}
+
+.review-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 201;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slide-up 0.3s ease;
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+/* 헤더 */
+.review-sheet__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 16px;
+  position: relative;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.review-sheet__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+}
+
+.review-sheet__close {
+  position: absolute;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #555;
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* 상품 카드 */
+.review-sheet__product {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  align-items: center;
+}
+
+.review-sheet__product-img {
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  background: #e8e8e8;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.review-sheet__product-img-icon {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-sheet__brand {
+  font-size: 12px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 2px;
+}
+
+.review-sheet__name {
+  font-size: 13px;
+  color: #444;
+  margin: 0 0 4px;
+}
+
+.review-sheet__price-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.review-sheet__price {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+}
+
+.review-sheet__original-price {
+  font-size: 11px;
+  color: #888888;
+  text-decoration: line-through;
+  white-space: nowrap;
+}
+
+.review-sheet__option {
+  font-size: 11px;
+  color: #aaa;
+  margin: 0;
+}
+
+/* 별점 */
+.review-sheet__rating-section {
+  padding: 24px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.review-sheet__rating-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 16px;
+}
+
+.review-sheet__stars {
+  display: flex;
+  gap: 8px;
+}
+
+.review-sheet__star {
+  font-size: 36px;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.1s;
+  line-height: 1;
+}
+
+.review-sheet__star--active {
+  color: #f5a623;
+}
+
+/* 리뷰 내용 */
+.review-sheet__content {
+  padding: 20px 16px 0;
+}
+
+.review-sheet__content-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 4px;
+}
+
+.review-sheet__content-desc {
+  font-size: 13px;
+  color: #888;
+  margin: 0 0 14px;
+}
+
+.review-sheet__textarea {
+  width: 100%;
+  height: 120px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 13px;
+  color: #333;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+
+.review-sheet__textarea::placeholder {
+  color: #bbb;
+}
+
+/* 사진 첨부 */
+.review-sheet__photos {
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.review-sheet__photo-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 64px;
+  height: 64px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 11px;
+  color: #888;
+  cursor: pointer;
+}
+
+.review-sheet__photo-add {
+  width: 64px;
+  height: 64px;
+  border: none;
+  border-radius: 8px;
+  background: #d0d0d0;
+  font-size: 28px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CTA 버튼 */
+.review-sheet__cta {
+  width: 100%;
+  padding: 16px 0;
+  background: #ffdb78;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
