@@ -1,0 +1,43 @@
+.onboarding-complete-screen {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  padding: 0 23px;
+  background: var(--color-tertiary-90);
+}
+
+.onboarding-complete-screen__content {
+  width: 100%;
+  margin-top: 7px;
+}
+
+.onboarding-complete-screen__content h1 {
+  margin: 0 0 30px 45px;
+  color: #111111;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 130%;
+  letter-spacing: 0;
+}
+
+.onboarding-complete-screen__content img {
+  display: block;
+  width: min(81vw, 316px);
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+@media (max-height: 780px) {
+  .onboarding-complete-screen__content h1 {
+    margin-bottom: 24px;
+  }
+
+  .onboarding-complete-screen__content img {
+    width: min(76vw, 292px);
+  }
+}

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
+import { useUserProfile } from '../../components/common/useUserProfile'
 import type { BoardPost } from '../../components/community/boardpage/BoardList'
 import CommunityWriteButton from '../../components/community/common/CommunityWriteButton'
 import type { RecipeItem } from '../../components/community/recipepage/RecipeList'
@@ -72,7 +73,10 @@ function getTemporaryVoteOptions(options: string[]) {
   return optionLabels.map((label) => ({ label, votes: 0 }))
 }
 
-function createRegisteredRecipe(payload: Extract<CommunityWritePayload, { tab: 'recipe' }>): RecipeItem {
+function createRegisteredRecipe(
+  payload: Extract<CommunityWritePayload, { tab: 'recipe' }>,
+  author: string,
+): RecipeItem {
   const { data } = payload
 
   return {
@@ -82,14 +86,17 @@ function createRegisteredRecipe(payload: Extract<CommunityWritePayload, { tab: '
     price: data.budget || '예산 미정',
     time: data.time || '시간 미정',
     level: `난이도 ${data.difficulty}`,
-    author: '나',
+    author,
     likes: 0,
     comments: 0,
     saves: 0,
   }
 }
 
-function createRegisteredBoardPost(payload: Extract<CommunityWritePayload, { tab: 'board' }>): BoardPost {
+function createRegisteredBoardPost(
+  payload: Extract<CommunityWritePayload, { tab: 'board' }>,
+  user: string,
+): BoardPost {
   const { data } = payload
 
   return {
@@ -97,7 +104,7 @@ function createRegisteredBoardPost(payload: Extract<CommunityWritePayload, { tab
     category: data.category,
     title: getFilledText(data.title, '새 게시글'),
     body: getSummaryText(data.content, '방금 등록한 게시글입니다.'),
-    user: '나',
+    user,
     timeAgo: '방금 전',
     likes: 0,
     comments: 0,
@@ -119,6 +126,7 @@ function createRegisteredVote(payload: Extract<CommunityWritePayload, { tab: 'vo
 }
 
 function Community() {
+  const { nickname } = useUserProfile()
   const [activeTab, setActiveTab] = useState<CommunityTab>('all')
   const [view, setView] = useState<CommunityView>('main')
   const [previousView, setPreviousView] = useState<CommunityView>('main')
@@ -150,7 +158,7 @@ function Community() {
 
   const handleWriteSubmit = (payload: CommunityWritePayload) => {
     if (payload.tab === 'recipe') {
-      setRegisteredRecipes((prevRecipes) => [createRegisteredRecipe(payload), ...prevRecipes])
+      setRegisteredRecipes((prevRecipes) => [createRegisteredRecipe(payload, nickname), ...prevRecipes])
       setActiveTab('recipe')
       setView('recipe')
       return
@@ -163,7 +171,7 @@ function Community() {
       return
     }
 
-    setRegisteredBoardPosts((prevPosts) => [createRegisteredBoardPost(payload), ...prevPosts])
+    setRegisteredBoardPosts((prevPosts) => [createRegisteredBoardPost(payload, nickname), ...prevPosts])
     setActiveTab('free')
     setView('free')
   }

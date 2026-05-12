@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useUserProfile } from '../../components/common/useUserProfile'
 import BoardContent, { type BoardDetailPost } from '../../components/community/boarddetailpage/BoardContent'
 import type { BoardComment } from '../../components/community/boarddetailpage/CommentItem'
 import CommentSection from '../../components/community/boarddetailpage/CommentSection'
@@ -126,6 +127,7 @@ function BoardDetailIcon({ kind }: { kind: 'share' | 'bookmark' }) {
 }
 
 function BoardDetailPage({ postId, onBack, onOpenPost }: BoardDetailPageProps) {
+  const { nickname } = useUserProfile()
   const pageRef = useRef<HTMLElement | null>(null)
   const currentPostId = postId ?? boardPosts[1].id
   const post = boardPosts.find((item) => item.id === currentPostId) ?? boardPosts[1]
@@ -153,7 +155,7 @@ function BoardDetailPage({ postId, onBack, onOpenPost }: BoardDetailPageProps) {
     setCommentsByPostId((prevCommentsByPostId) => ({
       ...prevCommentsByPostId,
       [currentPostId]: [
-        { user: '나', timeAgo: '방금 전', text: trimmedText },
+        { user: nickname, timeAgo: '방금 전', text: trimmedText },
         ...(prevCommentsByPostId[currentPostId] ?? initialComments),
       ],
     }))

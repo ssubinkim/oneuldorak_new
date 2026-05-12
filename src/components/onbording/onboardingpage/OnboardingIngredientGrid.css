@@ -1,0 +1,51 @@
+.onboarding-ingredient-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 23px 18px;
+  margin-top: 28px;
+}
+
+.onboarding-ingredient-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: 51px;
+  padding: 4px 4px 5px;
+  border: 1px solid #dedede;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #111111;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 130%;
+  letter-spacing: 0;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.onboarding-ingredient-card img {
+  display: block;
+  width: 27px;
+  height: 27px;
+  object-fit: contain;
+}
+
+.onboarding-ingredient-card__spacer {
+  display: block;
+  width: 27px;
+  height: 27px;
+}
+
+.onboarding-ingredient-card--selected {
+  border-color: var(--color-primary-100);
+  background: #fff8cf;
+}
+
+@media (max-height: 780px) {
+  .onboarding-ingredient-grid {
+    gap: 18px 18px;
+  }
+}
