@@ -5,8 +5,12 @@ import Chatbot from './pages/chatbot/Chatbot'
 import ChatbotCamera from './pages/chatbot/ChatbotCamera'
 import Home from './pages/home/Home'
 import Meal from './pages/meal/Meal'
+import WeeklyPlanPage from './pages/meal/WeeklyPlanPage'
+import GroceryPage from './pages/meal/GroceryPage'
+import StoragePage from './pages/meal/StoragePage'
 import MyPage from './pages/mypage/MyPage'
 import LikePage from './pages/mypage/LikePage'
+import SavedRecipePage from './pages/mypage/SavedRecipePage'
 import LoginPage from './pages/onbording/LoginPage'
 import OnboardingPage from './pages/onbording/OnboardingPage'
 import SignupPage from './pages/onbording/SignupPage'
@@ -22,6 +26,10 @@ type AppRoute =
   | 'chatbot'
   | 'chatbot-camera'
   | 'mypage-likes'
+  | 'mypage-saved-recipes'
+  | 'meal-weekly-plan'
+  | 'meal-grocery'
+  | 'meal-storage'
 
 const pages = {
   start: StartPage,
@@ -34,6 +42,10 @@ const pages = {
   store: Store,
   mypage: MyPage,
   'mypage-likes': () => <LikePage />,
+  'mypage-saved-recipes': () => <SavedRecipePage />,
+  'meal-weekly-plan': () => <WeeklyPlanPage />,
+  'meal-grocery': () => <GroceryPage />,
+  'meal-storage': () => <StoragePage />,
   chatbot: Chatbot,
   'chatbot-camera': ChatbotCamera,
 } satisfies Record<AppRoute, () => React.JSX.Element>

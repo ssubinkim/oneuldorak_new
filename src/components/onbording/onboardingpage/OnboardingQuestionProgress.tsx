@@ -2,17 +2,19 @@ import { type CSSProperties } from 'react'
 import { useMemo } from 'react'
 import { BarElement, CategoryScale, Chart as ChartJS, LinearScale, type ChartData, type ChartOptions } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
-import onboardingProgressVideo from '../images/onboding_video.mp4'
+import dorak06Image from '../images/dorak06.png'
+import signupDorakImage from '../images/signup_dorak.png'
 import './OnboardingQuestionProgress.css'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement)
 
 type OnboardingQuestionProgressProps = {
   current: number
+  mascotType?: 'dorak06' | 'signup'
   total: number
 }
 
-function OnboardingQuestionProgress({ current, total }: OnboardingQuestionProgressProps) {
+function OnboardingQuestionProgress({ current, mascotType = 'signup', total }: OnboardingQuestionProgressProps) {
   const progressPercent = (current / total) * 100
   const progressStyle = {
     '--progress-percent': `${progressPercent}%`,
@@ -82,7 +84,12 @@ function OnboardingQuestionProgress({ current, total }: OnboardingQuestionProgre
       <span className="onboarding-question-progress__count">
         {current}/{total}
       </span>
-      <video className="onboarding-question-progress__video" src={onboardingProgressVideo} autoPlay muted loop playsInline />
+      <img
+        className="onboarding-question-progress__mascot onboarding-question-progress__mascot--image"
+        src={mascotType === 'dorak06' ? dorak06Image : signupDorakImage}
+        alt=""
+        aria-hidden="true"
+      />
       <div className="onboarding-question-progress__chart" aria-hidden="true">
         <Bar data={chartData} options={chartOptions} />
       </div>

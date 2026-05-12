@@ -1,8 +1,18 @@
+import { useState } from 'react'
 import '../../styles/Tailwind.css'
-import ChatbotSuggestions from '../../components/chatbot/ChatbotSuggestions'
+import { useUserProfile } from '../../components/common/useUserProfile'
+import chatbotHeroImage from '../../components/chatbot/images/ai_main.svg'
 import './Chatbot.css'
 
-function goBack() {
+const quickSuggestions = [
+  '오늘 도시락 추천',
+  '주간 도시락 플랜',
+  '재료별 레시피',
+  '오늘 추천 재료',
+  '남은 재료 활용',
+]
+
+function closeChatbot() {
   if (window.history.length > 1) {
     window.history.back()
     return
@@ -15,6 +25,14 @@ function openCameraPage() {
   window.location.hash = '#/chatbot-camera'
 }
 
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="m7 7 10 10M17 7 7 17" />
+    </svg>
+  )
+}
+
 function CameraIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -24,48 +42,84 @@ function CameraIcon() {
   )
 }
 
-function BackIcon() {
+function SendIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="m15 5-7 7 7 7" />
+      <path d="M12 17V7" />
+      <path d="m7.5 11 4.5-4.5 4.5 4.5" />
     </svg>
   )
 }
 
 function Chatbot() {
+  const [prompt, setPrompt] = useState('')
+  const { nickname } = useUserProfile()
+  const displayName = nickname?.trim() || '도시락러버'
+
   return (
     <div className="app-shell">
       <div className="app-screen chatbot-screen">
         <main className="chatbot-page" aria-label="챗봇">
-          <div className="chatbot-topbar">
-            <h1 className="chatbot-title">오늘 도락</h1>
-            <button className="chatbot-back" type="button" aria-label="뒤로가기" onClick={goBack}>
-              <BackIcon />
+          <header className="chatbot-topbar">
+            <button className="chatbot-close" type="button" aria-label="닫기" onClick={closeChatbot}>
+              <CloseIcon />
             </button>
-          </div>
+          </header>
 
-          <p className="chatbot-greeting">
-            안녕하세요. 000님!
-            <br />
-            오늘은 무엇을 도와드릴까요?
-          </p>
+          <section className="chatbot-content">
+            <p className="chatbot-greeting">
+              안녕하세요. <strong>{displayName}님!</strong>
+              <br />
+              오늘은 무엇을 도와드릴까요?
+            </p>
 
-          <ChatbotSuggestions />
+            <div className="chatbot-suggestions" aria-label="추천 질문">
+              {quickSuggestions.map((suggestion) => (
+                <button
+                  key={suggestion}
+                  className="chatbot-chip"
+                  type="button"
+                  onClick={() => setPrompt(suggestion)}
+                >
+                  {suggestion}
+                </button>
+              ))}
+            </div>
 
-          <form
-            className="chatbot-input-bar"
-            onSubmit={(event) => {
-              event.preventDefault()
-            }}
-          >
-            <input aria-label="하고 싶은 것 입력" placeholder="하고 싶은 것을 입력해 주세요" />
-            <button className="chatbot-submit" type="submit">
-              입력
+            <div className="chatbot-hero">
+              <img src={chatbotHeroImage} alt="" aria-hidden="true" />
+            </div>
+          </section>
+
+          <section className="chatbot-bottom">
+            <button className="chatbot-help" type="button" aria-label="도움말">
+              ?
             </button>
-            <button className="chatbot-camera" type="button" aria-label="사진 추가" onClick={openCameraPage}>
-              <CameraIcon />
+
+            <button className="chatbot-camera-widget" type="button" onClick={openCameraPage} aria-label="살까 말까 카메라 열기">
+              <span className="chatbot-camera-widget-icon">
+                <CameraIcon />
+              </span>
+              <span className="chatbot-camera-widget-label">살까 말까</span>
             </button>
-          </form>
+
+            <form
+              className="chatbot-input-bar"
+              onSubmit={(event) => {
+                event.preventDefault()
+              }}
+            >
+              <input
+                aria-label="댓글 입력"
+                placeholder="댓글을 입력하세요"
+                value={prompt}
+                onChange={(event) => setPrompt(event.target.value)}
+              />
+              <button className="chatbot-submit" type="submit" aria-label="전송">
+                <SendIcon />
+              </button>
+            </form>
+          </section>
         </main>
       </div>
     </div>
