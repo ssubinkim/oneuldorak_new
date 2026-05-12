@@ -1,4 +1,4 @@
-import mascotImage from '../../pages/chatbot/images/todaydorak-logo.png'
+import mascotImage from './images/chatbot.png'
 import './ChatbotSuggestions.css'
 
 const suggestions = [

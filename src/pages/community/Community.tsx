@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
+import CommunityWriteButton from '../../components/community/common/CommunityWriteButton'
 import BoardDetailPage from './BoardDetailPage'
 import BoardPage from './BoardPage'
 import type { CommunityTabRoute } from './CommunityTabRoute'
@@ -9,6 +10,7 @@ import RecipeDetailPage from '../recipedetail/RecipeDetailPage'
 import RecipePage from './RecipePage'
 import VotePage from './VotePage'
 import '../../styles/Tailwind.css'
+import './Community.css'
 
 type CommunityTab = CommunityTabRoute
 type CommunityView = 'main' | 'recipe' | 'free' | 'vote' | 'detail' | 'boardDetail'
@@ -92,6 +94,8 @@ function Community() {
         )}
 
         {/* BottomNav: 하단 탭바 영역 */}
+        <CommunityWriteButton className="community-page__write-button" aria-label="글쓰기" />
+
         <BottomNav />
       </div>
     </div>

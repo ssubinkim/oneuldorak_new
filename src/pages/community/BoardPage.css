@@ -68,13 +68,6 @@
   background: var(--color-bg-sub);
 }
 
-.free-detail-fab {
-  position: absolute;
-  right: 16px;
-  bottom: 80px;
-  z-index: 35;
-}
-
 @media (max-width: 360px) {
   .free-detail-tabs {
     height: 76px;
