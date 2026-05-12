@@ -1,0 +1,71 @@
+.social-login-options {
+  margin-top: 29px;
+}
+
+.social-login-options__divider {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  color: #999999;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 130%;
+}
+
+.social-login-options__divider::before,
+.social-login-options__divider::after {
+  display: block;
+  height: 1px;
+  background: #d3d0c4;
+  content: '';
+}
+
+.social-login-options__list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 33px;
+  margin-top: 27px;
+}
+
+.social-login-options__button {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+}
+
+.social-login-options__button--google {
+  background: #ffffff;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+
+.social-login-options__button--naver {
+  background: #03c75a;
+}
+
+.social-login-options__button--kakao {
+  background: #ffe14a;
+}
+
+.social-login-options__button img {
+  display: block;
+  width: 21px;
+  height: 21px;
+  object-fit: contain;
+}
+
+.social-login-options__button--naver img {
+  width: 19px;
+  height: 19px;
+}
+
+.social-login-options__button--kakao img {
+  width: 22px;
+  height: 22px;
+}

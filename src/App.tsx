@@ -7,11 +7,27 @@ import Home from './pages/home/Home'
 import Meal from './pages/meal/Meal'
 import MyPage from './pages/mypage/MyPage'
 import LikePage from './pages/mypage/LikePage'
+import LoginPage from './pages/onbording/LoginPage'
+import OnboardingPage from './pages/onbording/OnboardingPage'
+import SignupPage from './pages/onbording/SignupPage'
+import StartPage from './pages/onbording/StartPage'
 import Store from './pages/store/Store'
 
-type AppRoute = BottomNavRoute | 'chatbot' | 'chatbot-camera' | 'mypage-likes'
+type AppRoute =
+  | BottomNavRoute
+  | 'start'
+  | 'login'
+  | 'signup'
+  | 'onboarding'
+  | 'chatbot'
+  | 'chatbot-camera'
+  | 'mypage-likes'
 
 const pages = {
+  start: StartPage,
+  login: LoginPage,
+  signup: SignupPage,
+  onboarding: OnboardingPage,
   home: Home,
   meal: Meal,
   community: Community,
@@ -29,7 +45,7 @@ function getRouteFromHash(): AppRoute {
     return route
   }
 
-  return 'home'
+  return 'start'
 }
 
 function App() {

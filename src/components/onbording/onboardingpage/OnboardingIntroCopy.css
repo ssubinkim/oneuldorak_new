@@ -1,0 +1,20 @@
+.onboarding-intro-copy {
+  margin: 42px 25px 0;
+  color: #1f1f1f;
+  font-family: 'Pretendard', sans-serif;
+  letter-spacing: 0;
+}
+
+.onboarding-intro-copy h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 130%;
+}
+
+.onboarding-intro-copy p {
+  margin: 17px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 130%;
+}

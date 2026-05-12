@@ -1,0 +1,32 @@
+.onboarding-intro-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-top: 43px;
+}
+
+.onboarding-intro-actions__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 130%;
+}
+
+.onboarding-intro-actions__button--secondary {
+  border: 1px solid #dddddd;
+  background: #ffffff;
+  color: #111111;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.03);
+}
+
+.onboarding-intro-actions__button--primary {
+  border: 1px solid var(--color-primary-100);
+  background: var(--color-primary-100);
+  color: #111111;
+}
