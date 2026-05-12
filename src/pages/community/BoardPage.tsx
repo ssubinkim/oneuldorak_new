@@ -5,8 +5,8 @@ import BoardCategoryFilters, {
 } from '../../components/community/boardpage/BoardCategoryFilters'
 import BoardList, { type BoardPost } from '../../components/community/boardpage/BoardList'
 import BoardPopularPosts, { type BoardPopularPost } from '../../components/community/boardpage/BoardPopularPosts'
-import CommunityTabs from '../../components/community/common/CommunityTabs'
-import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
+import CommunityStickyHeader from '../../components/community/common/CommunityStickyHeader'
+import useCommunityHeaderCollapse from '../../components/community/common/useCommunityHeaderCollapse'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './BoardPage.css'
 
@@ -24,14 +24,14 @@ const popularPosts: BoardPopularPost[] = [
 
 function BoardPage({ onSelectTab, onOpenDetail, extraPosts = [] }: BoardPageProps) {
   const [activeFilter, setActiveFilter] = useState<BoardFilter>(boardFilters[0])
+  const { isHeaderCompact, handleCommunityScroll } = useCommunityHeaderCollapse()
 
   return (
-    <main className="page-scroll free-detail-page">
-      <CommunityBanner />
-
-      <CommunityTabs
+    <main className="page-scroll free-detail-page" onScroll={handleCommunityScroll}>
+      <CommunityStickyHeader
         activeTab="free"
-        className="free-detail-tabs"
+        tabsClassName="free-detail-tabs"
+        isCompact={isHeaderCompact}
         onSelectTab={onSelectTab}
       />
 

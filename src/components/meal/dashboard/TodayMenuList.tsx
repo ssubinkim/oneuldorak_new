@@ -1,4 +1,4 @@
-import { weeklyMenuData } from '../mealData'
+import { getIngredientIconClassName, weeklyMenuData } from '../mealData'
 import bookOpenImg from '../images/book_open.svg'
 import './TodayMenuList.css'
 
@@ -114,7 +114,7 @@ function TodayMenuList({ selectedDay }: Props) {
           <div className="today-ingredients-list">
             {menu.ingredients.map(ing => (
               <div key={ing.name} className="today-ingredient">
-                <img className="ingredient-img" src={ing.image} alt={ing.name} />
+                <img className={`ingredient-img ${getIngredientIconClassName(ing.image)}`} src={ing.image} alt={ing.name} />
                 <span className="ingredient-name">{ing.name}</span>
               </div>
             ))}

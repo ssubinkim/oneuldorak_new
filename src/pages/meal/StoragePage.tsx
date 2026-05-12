@@ -4,6 +4,7 @@ import {
   onionImg, brocollyImg, potatoImg, carrotImg,
   romainImg, beansproutsImg, tofuImg,
   strawberryImg, garlicImg, appleImg, chiliImg, mangoImg,
+  getIngredientIconClassName,
 } from '../../components/meal/mealData'
 import refrigeImg from '../../components/meal/images/refrige.svg'
 import bookOpenImg from '../../components/meal/images/book_open.svg'
@@ -118,7 +119,7 @@ function IngredientCard({ item }: { item: FridgeItem }) {
       <div className="sp-item-img-wrap">
         {item.isEmoji
           ? <span className="sp-item-emoji">{item.image}</span>
-          : <img src={item.image} alt={item.name} className="sp-item-img" />
+          : <img src={item.image} alt={item.name} className={`sp-item-img ${getIngredientIconClassName(item.image)}`} />
         }
       </div>
       <span className="sp-item-name">{item.name}</span>

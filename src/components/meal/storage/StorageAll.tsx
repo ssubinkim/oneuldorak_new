@@ -2,6 +2,7 @@ import {
   carrotImg, potatoImg, appleImg, onionImg, romainImg,
   brocollyImg, beansproutsImg, garlicImg, chiliImg, tofuImg,
   meatImg, tunaImg, salmonImg, porkImg, sosageImg,
+  getIngredientIconClassName,
 } from '../mealData'
 
 interface Props {
@@ -49,7 +50,7 @@ function StorageAll({ onBack }: Props) {
         {allIngredients.map(item => (
           <div key={item.id} className="storage-item">
             <div className={`storage-item-emoji${item.highlight ? ` highlight-${item.highlight}` : ''}`}>
-              <img className="storage-item-img" src={item.image} alt={item.name} />
+              <img className={`storage-item-img ${getIngredientIconClassName(item.image)}`} src={item.image} alt={item.name} />
             </div>
             <span className="storage-item-name">{item.name}</span>
           </div>

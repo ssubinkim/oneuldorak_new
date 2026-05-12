@@ -3,31 +3,35 @@ import tuesdayMenuImg from './images/tuesday_menu.png'
 import wednesdayMenuImg from './images/wednesday_menu.png'
 import fridayMenuImg from './images/friday_menu.png'
 import saturdayMenuImg from './images/saturday_menu.png'
-import salmonImg from './images/salmon.svg'
-import romainImg from './images/romain.svg'
-import onionImg from './images/onion.svg'
-import tunaImg from './images/tuna.svg'
-import meatImg from './images/meat.svg'
-import porkImg from './images/pork.svg'
-import carrotImg from './images/carrot.svg'
-import potatoImg from './images/potato.svg'
-import garlicImg from './images/garlic.svg'
-import beansproutsImg from './images/beansprouts.svg'
-import brocollyImg from './images/brocolly.svg'
-import chiliImg from './images/chili.svg'
-import tofuImg from './images/tofu.svg'
-import sosageImg from './images/sosage.svg'
-import appleImg from './images/apple.svg'
-import grapeImg from './images/grape.svg'
-import kiwiImg from './images/kiwi.svg'
-import mangoImg from './images/mango.svg'
-import strawberryImg from './images/strawberry.svg'
+import salmonImg from '../../assets/images/food_icon/salmon.svg'
+import romainImg from '../../assets/images/food_icon/lettuce.svg'
+import onionImg from '../../assets/images/food_icon/onion.svg'
+import tunaImg from '../../assets/images/food_icon/canned_tuna.svg'
+import meatImg from '../../assets/images/food_icon/beef.svg'
+import porkImg from '../../assets/images/food_icon/pork_belly.svg'
+import carrotImg from '../../assets/images/food_icon/carrot.svg'
+import potatoImg from '../../assets/images/food_icon/potato.svg'
+import garlicImg from '../../assets/images/food_icon/garlic.svg'
+import beansproutsImg from '../../assets/images/food_icon/bean_sprouts.svg'
+import brocollyImg from '../../assets/images/food_icon/broccoli.svg'
+import chiliImg from '../../assets/images/food_icon/chili_pepper.svg'
+import tofuImg from '../../assets/images/food_icon/tofu.svg'
+import sosageImg from '../../assets/images/food_icon/sausage.svg'
+import appleImg from '../../assets/images/food_icon/apple.svg'
+import grapeImg from '../../assets/images/food_icon/grapes.svg'
+import kiwiImg from '../../assets/images/food_icon/kiwi.svg'
+import mangoImg from '../../assets/images/food_icon/mango.svg'
+import strawberryImg from '../../assets/images/food_icon/strawberry.svg'
 
 export {
   salmonImg, romainImg, onionImg, tunaImg, meatImg, porkImg,
   carrotImg, potatoImg, garlicImg, beansproutsImg, brocollyImg,
   chiliImg, tofuImg, sosageImg, appleImg, grapeImg, kiwiImg,
   mangoImg, strawberryImg,
+}
+
+export function getIngredientIconClassName(image: string) {
+  return image === romainImg ? 'ingredient-icon--lettuce' : ''
 }
 
 export interface MenuIngredient {
