@@ -1,3 +1,6 @@
+import './ReviewList.css'
+import reviewBanner from './images/review_banner.svg'
+
 export type Review = {
   id: string
   username: string
@@ -17,77 +20,145 @@ type Props = {
   averageRating: number
 }
 
-function Stars({ rating }: { rating: number }) {
+const RATING_BARS = [
+  { label: '5점', pct: 78 },
+  { label: '4점', pct: 16 },
+  { label: '3점', pct: 4 },
+  { label: '2점', pct: 1 },
+  { label: '1점', pct: 1 },
+]
+
+const KEYWORDS = ['👍 가성비 좋아요', '😋 맛있어요', '🌿 신선해요', '🚚 배송이 빨라요']
+
+const REVIEW_TAGS: Record<string, string[]> = {
+  '1': ['👍 가성비 좋아요', '😋 맛있어요'],
+}
+
+function Stars({ rating, size = 14 }: { rating: number; size?: number }) {
   return (
-    <span>
+    <div className="review-card__meta">
       {[1, 2, 3, 4, 5].map(i => (
-        <span key={i} style={{ color: i <= Math.round(rating) ? '#f5a623' : '#ddd', fontSize: 14 }}>★</span>
+        <span key={i} className="review-card__star" style={{ fontSize: size, color: i <= Math.round(rating) ? '#f5a623' : '#ddd' }}>★</span>
       ))}
-    </span>
+    </div>
   )
 }
 
 function ReviewList({ reviews, totalCount, averageRating }: Props) {
   return (
-    <div style={{ padding: '0 16px' }}>
-      <div style={{ marginBottom: 16 }}>
-        <div style={{ fontSize: 13, color: '#555', marginBottom: 4 }}>리뷰 {totalCount}+</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <span style={{ fontSize: 24, fontWeight: 800, color: '#111' }}>{averageRating}/5</span>
-          <Stars rating={averageRating} />
+    <div>
+      {/* 베스트 리뷰 배너 */}
+      <div className="review-banner">
+        <div className="review-banner__body">
+          <p className="review-banner__text-label">베스트 리뷰 선정 시 추가 100p 지급</p>
+          <p className="review-banner__text-main">다양한 각도에서 상품 상태를<br />촬영하여 첨부해주세요 !</p>
         </div>
-        <div style={{ fontSize: 12, color: '#888', marginBottom: 12 }}>가장 많은 만족 · 4,000명 구매</div>
-        <div style={{
-          display: 'inline-block', background: '#f2f2f2', borderRadius: 20,
-          padding: '6px 14px', fontSize: 12, color: '#555', fontWeight: 600,
-        }}>
-          사진 리뷰 (999+)
+        <img src={reviewBanner} alt="리뷰 배너" className="review-banner__img" />
+      </div>
+
+      {/* 전체 평점 요약 */}
+      <div className="review-summary">
+        <div className="review-summary__top">
+          <div className="review-summary__left">
+            <p className="review-summary__label">전체 리뷰</p>
+            <p className="review-summary__score">{averageRating}<span>/5</span></p>
+            <div className="review-summary__stars">
+              {[1, 2, 3, 4, 5].map(i => (
+                <span key={i} className="review-summary__star" style={{ color: i <= Math.round(averageRating) ? '#f5a623' : '#ddd' }}>★</span>
+              ))}
+            </div>
+            <p className="review-summary__count">({totalCount}+)</p>
+          </div>
+          <div className="review-summary__bars">
+            {RATING_BARS.map(b => (
+              <div key={b.label} className="review-bar">
+                <span className="review-bar__label">{b.label}</span>
+                <div className="review-bar__track">
+                  <div className="review-bar__fill" style={{ width: `${b.pct}%` }} />
+                </div>
+                <span className="review-bar__pct">{b.pct}%</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="review-summary__tags">
+          {KEYWORDS.map(kw => (
+            <span key={kw} className="review-tag">{kw}</span>
+          ))}
         </div>
       </div>
 
-      {reviews.map(r => (
-        <div key={r.id} style={{ borderTop: '1px solid #f2f2f2', paddingTop: 16, marginTop: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-            <div style={{
-              width: 32, height: 32, borderRadius: '50%', background: '#e8e8e8', flexShrink: 0,
-            }} />
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
-                <span style={{ fontSize: 13, fontWeight: 600, color: '#222' }}>{r.username}</span>
-                {r.verifiedPercent !== undefined && (
-                  <span style={{ fontSize: 11, color: '#a259e0', fontWeight: 600 }}>실제 {r.verifiedPercent}%</span>
-                )}
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <Stars rating={r.rating} />
-                <span style={{ fontSize: 11, color: '#aaa' }}>{r.date}</span>
-              </div>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
-            {[0, 1, 2].map(i => (
-              <div key={i} style={{ width: 80, height: 80, background: '#e8e8e8', borderRadius: 6, flexShrink: 0 }} />
-            ))}
-          </div>
-
-          {r.option && (
-            <div style={{ fontSize: 11, color: '#555', marginBottom: 4 }}>
-              옵션 {r.option}
-              <span style={{ color: '#4caf50', marginLeft: 6 }}>☑ 적립</span>
-            </div>
-          )}
-
-          <div style={{ fontSize: 13, color: '#333', lineHeight: 1.6, marginBottom: 10 }}>
-            {r.content}
-          </div>
-
-          <div style={{ display: 'flex', gap: 16, fontSize: 12, color: '#888' }}>
-            <span style={{ cursor: 'pointer' }}>♡ 도움 {r.helpful}</span>
-            <span style={{ cursor: 'pointer' }}>👍 도움됨 {r.notHelpful}</span>
+      {/* 포토 리뷰 */}
+      <div className="review-photos">
+        <div className="review-photos__header">
+          <span className="review-photos__title">포토 리뷰</span>
+          <span className="review-photos__more">더보기 &gt;</span>
+        </div>
+        <div className="review-photos__list">
+          <div className="review-photo-thumb" />
+          <div className="review-photo-thumb" />
+          <div className="review-photo-write">
+            <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#bbb" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+            리뷰쓰기
           </div>
         </div>
-      ))}
+      </div>
+
+      {/* 리뷰 모아보기 */}
+      <div className="review-list">
+        <p className="review-list__header">리뷰 모아보기</p>
+        <div className="review-list__filter-row">
+          <button className="review-filter-btn">⚙ 필터</button>
+          <button className="review-sort-btn">↑↓ 최신순</button>
+        </div>
+
+        {reviews.map(r => (
+          <div key={r.id} className="review-card">
+            <div className="review-card__header">
+              <div className="review-card__avatar">🍱</div>
+              <div className="review-card__user-info">
+                <span className="review-card__username">{r.username}</span>
+                <div className="review-card__meta">
+                  <Stars rating={r.rating} />
+                  <span className="review-card__date">{r.date}</span>
+                </div>
+              </div>
+            </div>
+
+            {REVIEW_TAGS[r.id] && (
+              <div className="review-card__tags">
+                {REVIEW_TAGS[r.id].map(tag => (
+                  <span key={tag} className="review-tag">{tag}</span>
+                ))}
+              </div>
+            )}
+
+            {r.photos && r.photos.length > 0 && (
+              <div className="review-card__photos">
+                <div className="review-card__photo-main" />
+                <div className="review-card__photo-col">
+                  <div className="review-card__photo-small" />
+                  <div className="review-card__photo-small">
+                    {r.photos.length > 2 && (
+                      <div className="review-card__photo-more">+{r.photos.length - 2}</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <p className="review-card__content">{r.content}</p>
+
+            <div className="review-card__footer">
+              <button>👍 도움돼요 {r.helpful}</button>
+              <button>💬 댓글 {r.notHelpful}</button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

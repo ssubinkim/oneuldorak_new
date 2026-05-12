@@ -1,3 +1,4 @@
+import { useState, useRef } from 'react'
 import StoreDetail from '../../components/store/StoreDetail'
 import './StoreDetailPage.css'
 
@@ -8,15 +9,40 @@ type Props = {
 }
 
 function StoreDetailPage({ productId, onBack, onSelectProduct }: Props) {
+  const [showTop, setShowTop] = useState(false)
+  const scrollRef = useRef<HTMLElement>(null)
+
+  function handleScroll() {
+    if (scrollRef.current) {
+      setShowTop(scrollRef.current.scrollTop > 200)
+    }
+  }
+
+  function scrollToTop() {
+    scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
     <>
-      <main className="page-scroll store-detail-page">
+      <main
+        ref={scrollRef}
+        className="page-scroll store-detail-page"
+        onScroll={handleScroll}
+      >
         <StoreDetail
           productId={productId}
           onBack={onBack}
           onSelectProduct={onSelectProduct}
         />
       </main>
+
+      {showTop && (
+        <button className="store-detail-scroll-top" onClick={scrollToTop} aria-label="맨 위로">
+          <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+            <path d="m18 15-6-6-6 6" />
+          </svg>
+        </button>
+      )}
 
       <div className="store-detail-action-bar">
         <button className="store-detail-action-button" type="button" aria-label="찜하기">

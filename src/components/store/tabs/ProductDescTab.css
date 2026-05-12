@@ -1,0 +1,108 @@
+.pdesc__info {
+  padding: 20px 16px 0;
+}
+
+.pdesc__info-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 12px;
+}
+
+.pdesc__info-row {
+  display: flex;
+  padding: 10px 0;
+  gap: 12px;
+}
+
+.pdesc__info-label {
+  font-size: 12px;
+  color: #888;
+  flex-shrink: 0;
+  width: 110px;
+}
+
+.pdesc__info-value {
+  font-size: 12px;
+  color: #333;
+  flex: 1;
+}
+
+.pdesc__info-note {
+  font-size: 11px;
+  color: #aaa;
+  margin: 8px 0 0;
+}
+
+/* 상품소개 이미지 */
+.pdesc__product-img {
+  height: 220px;
+  background: #e8e8e8;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdesc__product-img span {
+  font-size: 13px;
+  color: #aaa;
+}
+
+/* 리뷰 섹션 */
+.pdesc__review {
+  padding: 20px 16px;
+  cursor: pointer;
+  border-top: 8px solid #f5f5f5;
+}
+
+.pdesc__review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.pdesc__review-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.pdesc__review-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pdesc__review-star {
+  color: #f5a623;
+  font-size: 15px;
+}
+
+.pdesc__review-rating span:last-child {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+}
+
+.pdesc__review-more {
+  font-size: 12px;
+  color: #888;
+  white-space: nowrap;
+}
+
+.pdesc__review-thumbs {
+  display: flex;
+  gap: 6px;
+}
+
+.pdesc__review-thumb {
+  width: 68px;
+  height: 68px;
+  background: #e8e8e8;
+  border-radius: 6px;
+  flex-shrink: 0;
+}

@@ -1,4 +1,6 @@
-import InquiryEmpty from '../InquiryEmpty'
+import './InquiryTab.css'
+import storecall1 from '../images/storecall_1.svg'
+import storecall2 from '../images/storecall_2.svg'
 import RelatedRecipes from '../RelatedRecipes'
 import RelatedProducts from '../RelatedProducts'
 
@@ -16,47 +18,47 @@ type Props = {
   onSelectProduct?: (id: string) => void
 }
 
-function InquiryTab({ inquiries, onSelectProduct }: Props) {
+function InquiryTab({ onSelectProduct }: Props) {
   return (
     <div>
-      <div style={{ padding: '0 16px' }}>
-        <button style={{
-          width: '100%', padding: '14px 0', marginBottom: 16,
-          border: '1px solid #ddd', borderRadius: 8,
-          background: '#fff', fontSize: 14, fontWeight: 600, color: '#333', cursor: 'pointer',
-        }}>
-          상품 문의하기
-        </button>
+      {/* 상품 문의 */}
+      <div className="inquiry-section">
+        <img className="inquiry-section__img" src={storecall1} alt="상품 문의" />
+        <p className="inquiry-section__title">상품에 대해 궁금한 것이 있으신가요?</p>
+        <p className="inquiry-section__desc">상품 관련 문의는 판매자가 상세히 답변드립니다.</p>
+        <button className="inquiry-section__btn">상품 문의하기</button>
+      </div>
 
-        {inquiries.length === 0
-          ? <InquiryEmpty />
-          : inquiries.map(inq => (
-            <div key={inq.id} style={{ padding: '14px 0', borderBottom: '1px solid #f2f2f2' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 6 }}>
-                {inq.isSecret && (
-                  <svg
-                    viewBox="0 0 24 24" width={14} height={14}
-                    fill="none" stroke="#aaa" strokeWidth={1.8}
-                    style={{ marginTop: 1, flexShrink: 0 }}
-                  >
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                  </svg>
-                )}
-                <span style={{ fontSize: 13, color: inq.isSecret ? '#aaa' : '#222' }}>
-                  {inq.content}
-                </span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11 }}>
-                {inq.isAnswered && (
-                  <span style={{ color: '#888', fontWeight: 600 }}>답변완료</span>
-                )}
-                <span style={{ color: '#aaa' }}>{inq.username}</span>
-                <span style={{ color: '#aaa' }}>{inq.date}</span>
-              </div>
-            </div>
-          ))
-        }
+      {/* 배송 문의 */}
+      <div className="inquiry-section">
+        <img className="inquiry-section__img" src={storecall2} alt="배송 문의" />
+        <p className="inquiry-section__title">배송에 대해 궁금한 것이 있으신가요?</p>
+        <p className="inquiry-section__desc">배송 관련 문의는 오늘도락 고객센터에서 답변드립니다</p>
+        <button className="inquiry-section__btn">배송 문의하기</button>
+      </div>
+
+      {/* 판매자 고객센터 */}
+      <div className="inquiry-cs">
+        <p className="inquiry-cs__title">판매자 고객센터</p>
+        <p className="inquiry-cs__info-text">
+          <span className="inquiry-cs__info-label">운영시간</span>
+          평일 13:00 ~ 17:00 점심 12:00 ~ 13:00<br />주말, 공휴일 휴무
+        </p>
+        <div className="inquiry-cs__btns">
+          <button className="inquiry-cs__btn">
+            <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z" />
+            </svg>
+            전화하기
+          </button>
+          <button className="inquiry-cs__btn">
+            <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+            이메일 보내기
+          </button>
+        </div>
       </div>
 
       <RelatedRecipes />

@@ -7,7 +7,7 @@ const RECIPES = [
 
 function RelatedRecipes() {
   return (
-    <div style={{ padding: '24px 0 0' }}>
+    <div style={{ padding: '24px 0 0', borderBottom: '1px solid #eee', paddingBottom: 24 }}>
       <div style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         padding: '0 16px', marginBottom: 12,

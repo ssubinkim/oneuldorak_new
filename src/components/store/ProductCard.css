@@ -86,11 +86,25 @@
   -webkit-box-orient: vertical;
 }
 
+.product-card__price-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 3px;
+}
+
 .product-card__price {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: #111;
-  margin: 0 0 3px;
+  white-space: nowrap;
+}
+
+.product-card__original-price {
+  font-size: 11px;
+  color: #888888;
+  text-decoration: line-through;
+  white-space: nowrap;
 }
 
 .product-card__rating {

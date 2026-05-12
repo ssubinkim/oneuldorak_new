@@ -4,6 +4,7 @@ export type Product = {
   id: string
   name: string
   price: number
+  originalPrice?: number
   brand?: string
   image?: string
   rating?: number
@@ -16,7 +17,7 @@ type Props = Product & {
   onClick?: () => void
 }
 
-function ProductCard({ name, price, brand, image, rating, reviewCount, rank, onClick }: Props) {
+function ProductCard({ name, price, originalPrice, brand, image, rating, reviewCount, rank, onClick }: Props) {
   return (
     <div className="product-card" onClick={onClick}>
       <div className="product-card__image-wrap">
@@ -40,14 +41,17 @@ function ProductCard({ name, price, brand, image, rating, reviewCount, rank, onC
       <div className="product-card__info">
         {brand && <span className="product-card__brand">{brand}</span>}
         <p className="product-card__name">{name}</p>
-        <p className="product-card__price">{price.toLocaleString()} ₩</p>
-        {rating !== undefined && (
+        <div className="product-card__price-row">
+          <span className="product-card__price">{price.toLocaleString()} ₩</span>
+          {originalPrice && (
+            <span className="product-card__original-price">{originalPrice.toLocaleString()} ₩</span>
+          )}
+        </div>
+        {rating !== undefined && reviewCount !== 0 && (
           <div className="product-card__rating">
             <span className="product-card__star">★</span>
             <span>{rating}</span>
-            {reviewCount !== undefined && (
-              <span className="product-card__review-count">({reviewCount})</span>
-            )}
+            <span className="product-card__review-count">({reviewCount ?? 0})</span>
           </div>
         )}
       </div>

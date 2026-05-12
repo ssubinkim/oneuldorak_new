@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import './SubscriptionSection.css'
 import { type Product } from './ProductCard'
-import slide1 from './images/slide1.png'
+import slide1 from './images/slide1.svg'
 
 const SUB_TABS = ['전체', '도시락', '밀키트']
 const PAGE_SIZE = 3
@@ -90,14 +90,17 @@ function SubscriptionSection({ products, onSelect }: Props) {
                 <div className="subscription__item-info">
                   {p.brand && <span className="subscription__item-brand">{p.brand}</span>}
                   <p className="subscription__item-name">{p.name}</p>
-                  <p className="subscription__item-price">{p.price.toLocaleString()} ₩</p>
-                  {p.rating !== undefined && (
+                  <div className="subscription__item-price-row">
+                    <span className="subscription__item-price">{p.price.toLocaleString()} ₩</span>
+                    {p.originalPrice && (
+                      <span className="subscription__item-original-price">{p.originalPrice.toLocaleString()} ₩</span>
+                    )}
+                  </div>
+                  {p.rating !== undefined && p.reviewCount !== 0 && (
                     <div className="subscription__item-rating">
                       <span className="subscription__item-star">★</span>
                       <span>{p.rating}</span>
-                      {p.reviewCount !== undefined && (
-                        <span className="subscription__item-review">({p.reviewCount})</span>
-                      )}
+                      <span className="subscription__item-review">({p.reviewCount ?? 0})</span>
                     </div>
                   )}
                 </div>
