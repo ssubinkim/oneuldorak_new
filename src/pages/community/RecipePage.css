@@ -142,13 +142,6 @@
   border-color: #444;
 }
 
-.recipe-page__fab {
-  position: absolute;
-  right: 16px;
-  bottom: 80px;
-  z-index: 35;
-}
-
 @media (max-width: 360px) {
   .recipe-page__tabs {
     height: 76px;

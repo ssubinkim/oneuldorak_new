@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { DayData } from './AttendanceCircles'
+import { usePointBalance } from '../../common/usePoints'
 import GoalBottomSheet from './GoalBottomSheet'
 import MyPageGoalCard from './MyPageGoalCard'
 import MyPageMenuSections from './MyPageMenuSections'
@@ -24,8 +25,6 @@ const ATTENDANCE: DayData[] = [
 ]
 
 const GOAL = { current: 72000, target: 100000 }
-const TOTAL_POINTS = 245
-const MONTHLY_POINTS = 133
 
 const STATS: MyPageStatItem[] = [
   { id: 'likes', value: '9', label: '좋아요', highlight: true, clickable: true },
@@ -38,6 +37,7 @@ function MyPageView() {
   const [pointOpen, setPointOpen] = useState(false)
   const [pointSheetKey, setPointSheetKey] = useState(0)
   const [showLikes, setShowLikes] = useState(false)
+  const { totalPoints, monthlyPoints } = usePointBalance()
 
   const pct = Math.round((GOAL.current / GOAL.target) * 100)
   const [goalBarPct, setGoalBarPct] = useState(0)
@@ -73,7 +73,7 @@ function MyPageView() {
           />
           <MyPagePointCard
             attendance={ATTENDANCE}
-            totalPoints={TOTAL_POINTS}
+            totalPoints={totalPoints}
             onPointHistoryClick={() => {
               setPointSheetKey((prev) => prev + 1)
               setPointOpen(true)
@@ -88,8 +88,8 @@ function MyPageView() {
         key={pointSheetKey}
         open={pointOpen}
         onClose={() => setPointOpen(false)}
-        totalPoints={TOTAL_POINTS}
-        monthlyPoints={MONTHLY_POINTS}
+        totalPoints={totalPoints}
+        monthlyPoints={monthlyPoints}
       />
     </MyPageShell>
   )

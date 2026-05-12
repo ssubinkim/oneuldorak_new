@@ -1,4 +1,4 @@
-import todaydorakLogo from './images/todaydorak-logo.png'
+import chatbotImage from './images/chatbot.png'
 import './ChatBotbtn.css'
 
 function ChatBotbtn() {
@@ -11,7 +11,7 @@ function ChatBotbtn() {
         window.location.hash = '#/chatbot'
       }}
     >
-      <img src={todaydorakLogo} alt="" aria-hidden="true" />
+      <img src={chatbotImage} alt="" aria-hidden="true" />
     </button>
   )
 }

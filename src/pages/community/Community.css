@@ -1,0 +1,6 @@
+.community-page__write-button {
+  position: absolute;
+  right: 16px;
+  bottom: 80px;
+  z-index: 35;
+}

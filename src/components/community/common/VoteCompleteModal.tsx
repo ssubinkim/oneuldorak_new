@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
-import dorakRewardImage from './images/dorak09.png'
+import dorakRewardImage from './images/dorak10.png'
 import votePointImage from './images/community_vote_point.png'
 import './VoteCompleteModal.css'
 
-const AUTO_CLOSE_DELAY_MS = 900
+const AUTO_CLOSE_DELAY_MS = 2000
 
 type VoteCompleteModalProps = {
   isOpen: boolean
@@ -52,6 +52,18 @@ function VoteCompleteModal({
             src={votePointImage}
             alt=""
           />
+          <div className="vote-complete-modal__sparks">
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
           <img
             className="vote-complete-modal__image"
             src={dorakRewardImage}

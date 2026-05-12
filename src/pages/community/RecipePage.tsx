@@ -1,4 +1,3 @@
-import CommunityWriteButton from '../../components/community/common/CommunityWriteButton'
 import CommunityTabs from '../../components/community/common/CommunityTabs'
 import PopularRecipeSection from '../../components/community/common/PopularRecipeSection'
 import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
@@ -11,38 +10,34 @@ type RecipePageProps = {
   onSelectTab: (tab: CommunityTabRoute) => void
   onOpenDetail: (recipeId: string) => void
 }
-//검색 필터는 비활성화 컴포넌트 X
+
 const filters = ['인기순', '최신순', '가격순', '시간순', '난이도순']
 
 function RecipePage({ onSelectTab, onOpenDetail }: RecipePageProps) {
   return (
-    <>
-      <main className="page-scroll recipe-page">
-        <CommunityBanner />
+    <main className="page-scroll recipe-page">
+      <CommunityBanner />
 
-        <CommunityTabs
-          activeTab="recipe"
-          className="recipe-page__tabs"
-          onSelectTab={onSelectTab}
-        />
+      <CommunityTabs
+        activeTab="recipe"
+        className="recipe-page__tabs"
+        onSelectTab={onSelectTab}
+      />
 
-        <div className="recipe-page__body">
-          <PopularRecipeSection recipes={popularRecipes} showMore={false} />
+      <div className="recipe-page__body">
+        <PopularRecipeSection recipes={popularRecipes} showMore={false} />
 
-          <div className="recipe-page__filters">
-            {filters.map((filter, index) => (
-              <button type="button" key={filter} className={index === 0 ? 'is-active' : undefined}>
-                {filter}
-              </button>
-            ))}
-          </div>
-
-          <RecipeList onOpenDetail={onOpenDetail} />
+        <div className="recipe-page__filters">
+          {filters.map((filter, index) => (
+            <button type="button" key={filter} className={index === 0 ? 'is-active' : undefined}>
+              {filter}
+            </button>
+          ))}
         </div>
-      </main>
 
-      <CommunityWriteButton className="recipe-page__fab" aria-label="글쓰기" />
-    </>
+        <RecipeList onOpenDetail={onOpenDetail} />
+      </div>
+    </main>
   )
 }
 

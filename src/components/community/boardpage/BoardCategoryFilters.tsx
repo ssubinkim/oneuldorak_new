@@ -7,7 +7,7 @@ type BoardCategoryFiltersProps = {
   onChange: (filter: BoardFilter) => void
 }
 
-const boardFilters: BoardFilter[] = [
+export const boardFilters: BoardFilter[] = [
   '인기순',
   '최신순',
   '냉장고SOS',

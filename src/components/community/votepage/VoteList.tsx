@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react'
+import { awardVotePoint } from '../../common/usePoints'
 import VoteCompleteModal from '../common/VoteCompleteModal'
+import { useVoteSelections } from './useVoteSelections'
 import './VoteList.css'
 
 export type VoteFilter = 'active' | 'ended'
@@ -17,7 +19,7 @@ type VoteCardItem = {
   subtitle?: string
   reward?: string
   participants: number
-  deadline: string
+  deadline: string | (() => string)
   options: VoteOption[]
 }
 
@@ -26,45 +28,66 @@ type VoteListProps = {
   variant?: 'featured' | 'list'
 }
 
+const DAY_MS = 24 * 60 * 60 * 1000
+
+function getSeoulDate(dayOffset = 0) {
+  const targetDate = new Date(Date.now() + dayOffset * DAY_MS)
+  const dateParts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(targetDate)
+  const year = dateParts.find((part) => part.type === 'year')?.value ?? ''
+  const month = dateParts.find((part) => part.type === 'month')?.value ?? ''
+  const day = dateParts.find((part) => part.type === 'day')?.value ?? ''
+
+  return `${year}.${month}.${day}`
+}
+
+function getDeadline(dayOffset: number, time = '18:00') {
+  return `~ ${getSeoulDate(dayOffset)} ${time}`
+}
+
 const voteCards: VoteCardItem[] = [
   {
     id: 'vote-today',
     heading: '오늘의 투표',
-    question: '여름철 도시락으로 뭐가 더 좋을까요?',
+    question: '오늘 점심 도시락으로 뭐가 좋을까요?',
     reward: '+1p',
     participants: 53,
-    deadline: '~ 2026.05.18 18:00',
+    deadline: () => getDeadline(0),
     options: [
-      { label: '샐러드 파스타', votes: 18 },
-      { label: '사과 브리치즈 샌드위치', votes: 13 },
-      { label: '오이 참치 주먹밥', votes: 12 },
-      { label: '닭가슴살 샐러드 랩', votes: 10 },
+      { label: '에그마요 샌드위치', votes: 18 },
+      { label: '치킨 브리또 도시락', votes: 13 },
+      { label: '참치 주먹밥', votes: 12 },
+      { label: '샐러드 도시락', votes: 10 },
     ],
   },
   {
     id: 'vote-fail',
-    question: '가장 실패한 도시락은?',
-    subtitle: '실패 경험 공유해요ㅎㅎㅎ',
+    question: '가장 실패 없는 도시락 메뉴는?',
+    subtitle: '실패 경험을 공유해요',
     reward: '+1p',
-    participants: 53,
-    deadline: '~ 2026.05.18 18:00',
+    participants: 44,
+    deadline: () => getDeadline(2),
     options: [
-      { label: '물기 많은 반찬', votes: 20 },
-      { label: '비린내 나는 생선', votes: 17 },
-      { label: '식어서 굳은 밥', votes: 16 },
+      { label: '불고기 덮밥', votes: 16 },
+      { label: '계란말이 도시락', votes: 15 },
+      { label: '소시지 야채볶음', votes: 13 },
     ],
   },
   {
     id: 'vote-monday',
     question: '월요일 점심 메뉴는?',
-    subtitle: '한 주 시작에 가장 먹고 싶은 도시락을 골라주세요',
+    subtitle: '한 주를 시작할 때 가장 먹고 싶은 도시락을 골라주세요',
     reward: '+1p',
-    participants: 53,
-    deadline: '~ 2026.05.18 18:00',
+    participants: 62,
+    deadline: () => getDeadline(4, '12:00'),
     options: [
-      { label: '참치마요 덮밥', votes: 19 },
-      { label: '닭가슴살 샐러드', votes: 18 },
-      { label: '소시지 야채볶음', votes: 16 },
+      { label: '참치마요 덮밥', votes: 22 },
+      { label: '샐러드 파스타', votes: 21 },
+      { label: '소시지 볶음밥', votes: 19 },
     ],
   },
   {
@@ -72,12 +95,12 @@ const voteCards: VoteCardItem[] = [
     question: '도시락 필수 반찬은?',
     subtitle: '하나만 넣을 수 있다면 무엇을 고를까요?',
     reward: '+1p',
-    participants: 53,
-    deadline: '~ 2026.05.18 18:00',
+    participants: 48,
+    deadline: () => getDeadline(6),
     options: [
-      { label: '계란말이', votes: 21 },
-      { label: '멸치볶음', votes: 15 },
-      { label: '진미채', votes: 17 },
+      { label: '계란말이', votes: 18 },
+      { label: '멸치볶음', votes: 16 },
+      { label: '진미채', votes: 14 },
     ],
   },
 ]
@@ -105,13 +128,13 @@ const endedVoteCards: VoteCardItem[] = [
     options: [
       { label: '계란말이 주먹밥', votes: 31, highlighted: true },
       { label: '참치마요 샌드위치', votes: 22 },
-      { label: '요거트 과일컵', votes: 15 },
+      { label: '과일컵', votes: 15 },
     ],
   },
   {
     id: 'vote-ended-budget',
     question: '가성비 도시락 재료 1위는?',
-    subtitle: '도락이들이 고른 절약 재료예요',
+    subtitle: '오늘도락 유저들이 고른 절약 재료예요',
     participants: 74,
     deadline: '종료',
     options: [
@@ -129,7 +152,7 @@ const endedVoteCards: VoteCardItem[] = [
     options: [
       { label: '진미채', votes: 18 },
       { label: '멸치볶음', votes: 27, highlighted: true },
-      { label: '오이무침', votes: 16 },
+      { label: '무생채', votes: 16 },
     ],
   },
 ]
@@ -144,6 +167,12 @@ const getVotePercent = (votes: number, totalVotes: number) => {
   }
 
   return (votes / totalVotes) * 100
+}
+
+const getRewardPointAmount = (reward?: string) => {
+  const rewardAmount = Number(reward?.match(/\d+/)?.[0] ?? 1)
+
+  return Number.isFinite(rewardAmount) ? rewardAmount : 1
 }
 
 function getVotedOptions(options: VoteOption[], selectedOption?: string) {
@@ -235,6 +264,8 @@ function VoteCard({
   isEnded?: boolean
 }) {
   const votedOptions = getVotedOptions(card.options, selectedOption)
+  const deadlineText = typeof card.deadline === 'function' ? card.deadline() : card.deadline
+  const participantCount = selectedOption ? card.participants + 1 : card.participants
 
   return (
     <article className={`vote-card${card.heading ? ' vote-card--featured' : ''}`}>
@@ -267,15 +298,15 @@ function VoteCard({
       )}
 
       <footer className="vote-card-footer">
-        <span>현재 참여자 {card.participants}명</span>
-        <span>{card.deadline}</span>
+        <span>현재 참여자 {participantCount}명</span>
+        <span>{deadlineText}</span>
       </footer>
     </article>
   )
 }
 
 function VoteList({ filter, variant = 'list' }: VoteListProps) {
-  const [selectedVotes, setSelectedVotes] = useState<Record<string, string>>({})
+  const { selectedVotes, selectVoteOption } = useVoteSelections()
   const [voteModal, setVoteModal] = useState<{
     question: string
     selectedOption: string
@@ -286,18 +317,18 @@ function VoteList({ filter, variant = 'list' }: VoteListProps) {
   const handleVote = (cardId: string, optionLabel: string) => {
     const selectedCard = voteCards.find((card) => card.id === cardId)
 
-    setSelectedVotes((prevSelectedVotes) => ({
-      ...prevSelectedVotes,
-      [cardId]: optionLabel,
-    }))
+    selectVoteOption(cardId, optionLabel)
 
     if (selectedCard && !shownVoteModalIdsRef.current.has(cardId)) {
       shownVoteModalIdsRef.current.add(cardId)
-      setVoteModal({
-        question: selectedCard.question,
-        selectedOption: optionLabel,
-        reward: selectedCard.reward,
-      })
+
+      if (awardVotePoint(cardId, getRewardPointAmount(selectedCard.reward))) {
+        setVoteModal({
+          question: selectedCard.question,
+          selectedOption: optionLabel,
+          reward: selectedCard.reward,
+        })
+      }
     }
   }
 
