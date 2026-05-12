@@ -18,6 +18,11 @@
   transform: translateX(-50%);
 }
 
+.onboarding-question__actions--fixed.onboarding-question__actions--ingredients {
+  padding: 14px 23px calc(16px + env(safe-area-inset-bottom));
+  background: transparent;
+}
+
 .onboarding-question__button {
   display: inline-flex;
   align-items: center;
@@ -59,5 +64,9 @@
   .onboarding-question__actions--fixed {
     margin-top: 0;
     padding-bottom: 28px;
+  }
+
+  .onboarding-question__actions--fixed.onboarding-question__actions--ingredients {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
   }
 }

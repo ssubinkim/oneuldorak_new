@@ -5,6 +5,70 @@
   margin-top: 28px;
 }
 
+.onboarding-page--ingredients .onboarding-ingredient-scroll {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.onboarding-page--ingredients .onboarding-ingredient-grid {
+  height: 100%;
+  margin-top: 0;
+  overflow-y: auto;
+  align-content: start;
+  padding-right: 2px;
+  padding-bottom: 84px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.onboarding-page--ingredients .onboarding-ingredient-grid::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.onboarding-ingredient-scroll__blur {
+  display: none;
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .onboarding-page--ingredients .onboarding-ingredient-scroll__blur {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    z-index: 2;
+    height: 32px;
+    opacity: 0;
+    pointer-events: none;
+    background: transparent;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 80%, #000 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 80%, #000 100%);
+    transition: opacity 180ms ease;
+  }
+
+  .onboarding-page--ingredients .onboarding-ingredient-scroll__blur.onboarding-ingredient-scroll__blur--visible {
+    opacity: 1;
+  }
+
+  .onboarding-page--ingredients .onboarding-ingredient-scroll__blur::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    background: linear-gradient(
+      180deg,
+      rgb(248 246 236 / 0%) 0%,
+      rgb(248 246 236 / 4%) 100%
+    );
+  }
+}
+
 .onboarding-ingredient-card {
   display: flex;
   flex-direction: column;

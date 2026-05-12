@@ -1,5 +1,5 @@
 .onboarding-question__content {
-  margin-top: 20px;
+  margin-top: 14px;
 }
 
 .onboarding-question__step {
@@ -36,37 +36,44 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 248px;
-  margin-top: 23px;
+  min-height: 204px;
+  margin-top: 16px;
 }
 
 .onboarding-question__media img {
   display: block;
-  width: min(58vw, 225px);
+  width: min(47vw, 186px);
   height: auto;
   object-fit: contain;
 }
 
 .onboarding-question__content--grid .onboarding-question__media {
-  min-height: 185px;
-  margin-top: 22px;
+  min-height: 170px;
+  margin-top: 16px;
 }
 
 .onboarding-question__content--grid .onboarding-question__media img {
-  width: min(54vw, 210px);
+  width: min(45vw, 174px);
 }
 
 .onboarding-question__content--ingredients {
   margin-top: 20px;
 }
 
+.onboarding-page--ingredients .onboarding-question__content--ingredients {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
 @media (max-height: 780px) {
   .onboarding-question__media {
-    min-height: 214px;
-    margin-top: 12px;
+    min-height: 176px;
+    margin-top: 10px;
   }
 
   .onboarding-question__media img {
-    width: min(52vw, 198px);
+    width: min(42vw, 164px);
   }
 }

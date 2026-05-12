@@ -1,13 +1,9 @@
-import { useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import Header from '../../components/common/layout/Header'
 import TodayMenuList from '../../components/meal/dashboard/TodayMenuList'
 import WeeklyPlanSection from '../../components/meal/dashboard/WeeklyPlanSection'
 import IngredientSection from '../../components/meal/dashboard/IngredientSection'
 import RecipeCarousel from '../../components/meal/dashboard/RecipeCarousel'
-import WeeklyPlanPage from './WeeklyPlanPage'
-import GroceryPage from './GroceryPage'
-import StoragePage from './StoragePage'
 import ChatBotbtn from '../../components/chatbot/ChatBotbtn'
 import mydorakLogo from '../../components/meal/images/mydorak_logo.svg'
 import '../../styles/Tailwind.css'
@@ -23,22 +19,6 @@ function BellIcon() {
 }
 
 function Meal() {
-  const [showWeeklyPlan, setShowWeeklyPlan] = useState(false)
-  const [showGrocery, setShowGrocery] = useState(false)
-  const [showStorage, setShowStorage] = useState(false)
-
-  if (showWeeklyPlan) {
-    return <WeeklyPlanPage onBack={() => setShowWeeklyPlan(false)} />
-  }
-
-  if (showGrocery) {
-    return <GroceryPage onBack={() => setShowGrocery(false)} />
-  }
-
-  if (showStorage) {
-    return <StoragePage onBack={() => setShowStorage(false)} />
-  }
-
   return (
     <div className="app-shell">
       <div className="app-screen meal-screen">
@@ -67,8 +47,11 @@ function Meal() {
               <div className="dash-today-wrap">
                 <TodayMenuList selectedDay={1} />
               </div>
-              <WeeklyPlanSection onMore={() => setShowWeeklyPlan(true)} />
-              <IngredientSection onAddIngredient={() => setShowGrocery(true)} onShowAll={() => setShowStorage(true)} />
+              <WeeklyPlanSection onMore={() => { window.location.hash = '#/meal-weekly-plan' }} />
+              <IngredientSection
+                onAddIngredient={() => { window.location.hash = '#/meal-grocery' }}
+                onShowAll={() => { window.location.hash = '#/meal-storage' }}
+              />
               <RecipeCarousel />
             </div>
 

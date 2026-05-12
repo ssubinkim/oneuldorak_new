@@ -103,7 +103,11 @@ function OnboardingPage() {
             className={`onboarding-page onboarding-page--question${isIngredientsQuestion ? ' onboarding-page--ingredients' : ''}`}
             aria-label="도시락 기준 질문"
           >
-            <OnboardingQuestionProgress current={questionIndex + 1} total={onboardingQuestions.length} />
+            <OnboardingQuestionProgress
+              current={questionIndex + 1}
+              mascotType={questionIndex < 3 ? 'dorak06' : 'signup'}
+              total={onboardingQuestions.length}
+            />
 
             <OnboardingQuestionBody optionLayout={optionLayout} question={activeQuestion}>
               {isIngredientsQuestion ? (
@@ -124,6 +128,7 @@ function OnboardingPage() {
 
             <OnboardingQuestionActions
               disabled={!hasSelection}
+              isIngredientsQuestion={isIngredientsQuestion}
               isFixed={isIngredientsQuestion}
               nextLabel={isLastQuestion ? '완료' : '다음'}
               onNext={handleNextQuestion}
