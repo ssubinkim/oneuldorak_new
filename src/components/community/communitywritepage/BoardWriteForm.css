@@ -1,0 +1,33 @@
+.community-write-section--compact {
+  gap: 14px;
+}
+
+.community-write-category-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.community-write-category-row::-webkit-scrollbar {
+  display: none;
+}
+
+.community-write-category-row button {
+  flex: 0 0 auto;
+  height: 38px;
+  padding: 0 15px;
+  color: #303030;
+  background: #fff;
+  border: 1px solid #e6e2da;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(20, 20, 20, 0.04);
+}
+
+.community-write-category-row button.is-active {
+  color: #fff;
+  background: #3b3b3b;
+  border-color: #3b3b3b;
+}

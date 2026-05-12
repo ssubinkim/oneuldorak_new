@@ -1,7 +1,7 @@
 import './RecipeList.css'
 import recipeThumbImage from './images/menu_1 (1).png'
 
-type RecipeItem = {
+export type RecipeItem = {
   id: string
   title: string
   subtitle: string
@@ -12,11 +12,12 @@ type RecipeItem = {
   likes: number
   comments: number
   saves: number
-  image: string
+  image?: string
 }
 
 type RecipeListProps = {
   onOpenDetail: (recipeId: string) => void
+  extraItems?: RecipeItem[]
 }
 
 const recipeItems: RecipeItem[] = [
@@ -148,7 +149,7 @@ function RecipeCard({
         }
       }}
     >
-      <img className="recipe-share-card__thumb" src={item.image} alt="" aria-hidden="true" />
+      <img className="recipe-share-card__thumb" src={item.image ?? recipeThumbImage} alt="" aria-hidden="true" />
 
       <div className="recipe-share-card__content">
         <p className="recipe-share-card__subtitle">{item.subtitle}</p>
@@ -185,10 +186,12 @@ function RecipeCard({
   )
 }
 
-function RecipeList({ onOpenDetail }: RecipeListProps) {
+function RecipeList({ onOpenDetail, extraItems = [] }: RecipeListProps) {
+  const items = [...extraItems, ...recipeItems]
+
   return (
     <section className="recipe-page__list" aria-label="레시피 목록">
-      {recipeItems.map((item) => (
+      {items.map((item) => (
         <RecipeCard
           key={item.id}
           item={item}

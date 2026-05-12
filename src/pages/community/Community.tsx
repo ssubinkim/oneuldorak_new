@@ -1,10 +1,16 @@
 import { useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
+import type { BoardPost } from '../../components/community/boardpage/BoardList'
 import CommunityWriteButton from '../../components/community/common/CommunityWriteButton'
+import type { RecipeItem } from '../../components/community/recipepage/RecipeList'
+import type { VoteCardItem } from '../../components/community/votepage/VoteList'
+import type { CommunityWritePayload } from '../../components/community/communitywritepage/writeTypes'
 import BoardDetailPage from './BoardDetailPage'
 import BoardPage from './BoardPage'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import CommunityMainView from '../../components/community/communitypage/CommunityMainView'
+import CommunityWritePage from './CommunityWritePage'
+import { getWriteTabFromCommunityTab } from './getWriteTabFromCommunityTab'
 import Header from '../../components/common/layout/Header'
 import RecipeDetailPage from '../recipedetail/RecipeDetailPage'
 import RecipePage from './RecipePage'
@@ -13,7 +19,9 @@ import '../../styles/Tailwind.css'
 import './Community.css'
 
 type CommunityTab = CommunityTabRoute
-type CommunityView = 'main' | 'recipe' | 'free' | 'vote' | 'detail' | 'boardDetail'
+type CommunityView = 'main' | 'recipe' | 'free' | 'vote' | 'detail' | 'boardDetail' | 'write'
+
+const DAY_MS = 24 * 60 * 60 * 1000
 
 const tabViewMap: Record<CommunityTab, CommunityView> = {
   all: 'main',
@@ -22,11 +30,103 @@ const tabViewMap: Record<CommunityTab, CommunityView> = {
   vote: 'vote',
 }
 
+function createTemporaryId(prefix: string) {
+  return `${prefix}-${Date.now()}`
+}
+
+function getFilledText(value: string, fallback: string) {
+  const trimmedValue = value.trim()
+
+  return trimmedValue || fallback
+}
+
+function getSummaryText(value: string, fallback: string) {
+  const trimmedValue = value.trim()
+
+  if (!trimmedValue) {
+    return fallback
+  }
+
+  return trimmedValue.length > 42 ? `${trimmedValue.slice(0, 42)}...` : trimmedValue
+}
+
+function getSeoulDate(dayOffset = 0) {
+  const targetDate = new Date(Date.now() + dayOffset * DAY_MS)
+  const dateParts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(targetDate)
+  const year = dateParts.find((part) => part.type === 'year')?.value ?? ''
+  const month = dateParts.find((part) => part.type === 'month')?.value ?? ''
+  const day = dateParts.find((part) => part.type === 'day')?.value ?? ''
+
+  return `${year}.${month}.${day}`
+}
+
+function getTemporaryVoteOptions(options: string[]) {
+  const filledOptions = options.map((option) => option.trim()).filter(Boolean)
+  const optionLabels = filledOptions.length >= 2 ? filledOptions : ['보기 1', '보기 2']
+
+  return optionLabels.map((label) => ({ label, votes: 0 }))
+}
+
+function createRegisteredRecipe(payload: Extract<CommunityWritePayload, { tab: 'recipe' }>): RecipeItem {
+  const { data } = payload
+
+  return {
+    id: createTemporaryId('user-recipe'),
+    title: getFilledText(data.title, '새 도시락 레시피'),
+    subtitle: getSummaryText(data.content, '방금 등록한 도시락 레시피'),
+    price: data.budget || '예산 미정',
+    time: data.time || '시간 미정',
+    level: `난이도 ${data.difficulty}`,
+    author: '나',
+    likes: 0,
+    comments: 0,
+    saves: 0,
+  }
+}
+
+function createRegisteredBoardPost(payload: Extract<CommunityWritePayload, { tab: 'board' }>): BoardPost {
+  const { data } = payload
+
+  return {
+    id: createTemporaryId('user-board'),
+    category: data.category,
+    title: getFilledText(data.title, '새 게시글'),
+    body: getSummaryText(data.content, '방금 등록한 게시글입니다.'),
+    user: '나',
+    timeAgo: '방금 전',
+    likes: 0,
+    comments: 0,
+  }
+}
+
+function createRegisteredVote(payload: Extract<CommunityWritePayload, { tab: 'vote' }>): VoteCardItem {
+  const { data } = payload
+
+  return {
+    id: createTemporaryId('user-vote'),
+    question: getFilledText(data.title, '새 투표'),
+    subtitle: getSummaryText(data.content, '방금 등록한 투표입니다.'),
+    reward: '+1p',
+    participants: 0,
+    deadline: `~ ${getSeoulDate(2)} 18:00`,
+    options: getTemporaryVoteOptions(data.options),
+  }
+}
+
 function Community() {
   const [activeTab, setActiveTab] = useState<CommunityTab>('all')
   const [view, setView] = useState<CommunityView>('main')
+  const [previousView, setPreviousView] = useState<CommunityView>('main')
   const [selectedRecipeId, setSelectedRecipeId] = useState<string | null>(null)
   const [selectedBoardId, setSelectedBoardId] = useState<string | null>(null)
+  const [registeredRecipes, setRegisteredRecipes] = useState<RecipeItem[]>([])
+  const [registeredBoardPosts, setRegisteredBoardPosts] = useState<BoardPost[]>([])
+  const [registeredVotes, setRegisteredVotes] = useState<VoteCardItem[]>([])
 
   const handleTabClick = (tab: CommunityTab) => {
     setActiveTab(tab)
@@ -43,34 +143,57 @@ function Community() {
     setView('boardDetail')
   }
 
+  const handleOpenWrite = () => {
+    setPreviousView(view)
+    setView('write')
+  }
+
+  const handleWriteSubmit = (payload: CommunityWritePayload) => {
+    if (payload.tab === 'recipe') {
+      setRegisteredRecipes((prevRecipes) => [createRegisteredRecipe(payload), ...prevRecipes])
+      setActiveTab('recipe')
+      setView('recipe')
+      return
+    }
+
+    if (payload.tab === 'vote') {
+      setRegisteredVotes((prevVotes) => [createRegisteredVote(payload), ...prevVotes])
+      setActiveTab('vote')
+      setView('vote')
+      return
+    }
+
+    setRegisteredBoardPosts((prevPosts) => [createRegisteredBoardPost(payload), ...prevPosts])
+    setActiveTab('free')
+    setView('free')
+  }
+
   return (
     <div className="app-shell">
       <div className="app-screen">
         <Header />
 
         {view === 'main' && (
-          /* CommunityMainView: 커뮤니티 메인 배너, 탭, 투표/레시피/인기글/랭킹 영역 */
           <CommunityMainView activeTab={activeTab} onSelectTab={handleTabClick} />
         )}
 
         {view === 'recipe' && (
-          /* RecipePage: 레시피 탭 목록 화면 */
           <RecipePage
             onSelectTab={handleTabClick}
             onOpenDetail={handleOpenRecipeDetail}
+            extraRecipes={registeredRecipes}
           />
         )}
 
         {view === 'free' && (
-          /* BoardPage: 자유 게시글 탭 목록 화면 */
           <BoardPage
             onSelectTab={handleTabClick}
             onOpenDetail={handleOpenBoardDetail}
+            extraPosts={registeredBoardPosts}
           />
         )}
 
         {view === 'detail' && (
-          /* RecipeDetailPage: 선택한 레시피 상세 화면 */
           <RecipeDetailPage
             recipeId={selectedRecipeId}
             onBack={() => setView('recipe')}
@@ -78,7 +201,6 @@ function Community() {
         )}
 
         {view === 'boardDetail' && (
-          /* BoardDetailPage: 선택한 자유 게시글 상세 화면 */
           <BoardDetailPage
             postId={selectedBoardId}
             onBack={() => setView('free')}
@@ -87,14 +209,24 @@ function Community() {
         )}
 
         {view === 'vote' && (
-          /* VotePage: 투표 탭 목록 화면 */
-          <VotePage
-            onSelectTab={handleTabClick}
+          <VotePage onSelectTab={handleTabClick} extraVotes={registeredVotes} />
+        )}
+
+        {view === 'write' && (
+          <CommunityWritePage
+            initialTab={getWriteTabFromCommunityTab(activeTab)}
+            onBack={() => setView(previousView)}
+            onSubmit={handleWriteSubmit}
           />
         )}
 
-        {/* BottomNav: 하단 탭바 영역 */}
-        <CommunityWriteButton className="community-page__write-button" aria-label="글쓰기" />
+        {view !== 'write' && (
+          <CommunityWriteButton
+            className="community-page__write-button"
+            aria-label="글쓰기"
+            onClick={handleOpenWrite}
+          />
+        )}
 
         <BottomNav />
       </div>

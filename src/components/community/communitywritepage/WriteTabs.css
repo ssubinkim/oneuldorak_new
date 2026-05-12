@@ -1,0 +1,35 @@
+.community-write-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  height: 46px;
+  padding: 4px;
+  background: #fff;
+  border: 1px solid #e5e2dc;
+  border-radius: 11px;
+  box-shadow: 0 1px 4px rgba(20, 20, 20, 0.04);
+}
+
+.community-write-tabs button {
+  min-width: 0;
+  height: 38px;
+  padding: 0;
+  color: #2d2d2d;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.community-write-tabs button[aria-selected='true'] {
+  color: #fff;
+  background: #3b3b3b;
+  font-weight: 700;
+}
+
+@media (max-width: 360px) {
+  .community-write-tabs button {
+    font-size: 15px;
+  }
+}
