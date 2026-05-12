@@ -58,18 +58,21 @@
 }
 
 .brand-pick__circle {
-  width: 56px;
-  height: 56px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  background: #fff;
 }
 
-.brand-pick__icon {
-  font-size: 26px;
-  line-height: 1;
+.brand-pick__logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .brand-pick__name {

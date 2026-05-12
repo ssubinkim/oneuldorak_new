@@ -22,14 +22,22 @@
 
 .product-card__rank {
   position: absolute;
-  bottom: 8px;
-  left: 10px;
-  font-size: 22px;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 56px;
+  background: #F5C835;
+  clip-path: path('M 8,0 Q 0,0 0,8 L 0,56 L 18,42 L 36,56 L 36,8 Q 36,0 28,0 Z');
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 9px;
+  font-size: 20px;
   font-weight: 900;
   color: #fff;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   line-height: 1;
   pointer-events: none;
+  z-index: 1;
 }
 
 .product-card__cart-btn {
