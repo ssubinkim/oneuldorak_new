@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   carrotImg, potatoImg, appleImg, onionImg, romainImg,
   brocollyImg, beansproutsImg,
+  getIngredientIconClassName,
 } from '../mealData'
 
 interface Props {
@@ -151,7 +152,7 @@ function StorageMain({ onShowAll }: Props) {
           {previewIngredients.map(item => (
             <div key={item.id} className="storage-item">
               <div className="storage-item-emoji">
-                <img className="storage-item-img" src={item.image} alt={item.name} />
+                <img className={`storage-item-img ${getIngredientIconClassName(item.image)}`} src={item.image} alt={item.name} />
               </div>
               <span className="storage-item-name">{item.name}</span>
             </div>

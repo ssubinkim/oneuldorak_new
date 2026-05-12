@@ -1,3 +1,8 @@
+:where(.ingredient-icon--lettuce) {
+  transform: scale(0.86);
+  transform-origin: center;
+}
+
 :root {
   --color-bg: #ffffff;
   --color-bg-sub: #fffdf7;

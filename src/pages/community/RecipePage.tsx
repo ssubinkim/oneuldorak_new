@@ -1,6 +1,6 @@
-import CommunityTabs from '../../components/community/common/CommunityTabs'
+import CommunityStickyHeader from '../../components/community/common/CommunityStickyHeader'
 import PopularRecipeSection from '../../components/community/common/PopularRecipeSection'
-import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
+import useCommunityHeaderCollapse from '../../components/community/common/useCommunityHeaderCollapse'
 import { popularRecipes } from '../../components/community/communitypage/communityData'
 import RecipeList, { type RecipeItem } from '../../components/community/recipepage/RecipeList'
 import type { CommunityTabRoute } from './CommunityTabRoute'
@@ -15,13 +15,14 @@ type RecipePageProps = {
 const filters = ['인기순', '최신순', '가격순', '시간순', '난이도순']
 
 function RecipePage({ onSelectTab, onOpenDetail, extraRecipes = [] }: RecipePageProps) {
-  return (
-    <main className="page-scroll recipe-page">
-      <CommunityBanner />
+  const { isHeaderCompact, handleCommunityScroll } = useCommunityHeaderCollapse()
 
-      <CommunityTabs
+  return (
+    <main className="page-scroll recipe-page" onScroll={handleCommunityScroll}>
+      <CommunityStickyHeader
         activeTab="recipe"
-        className="recipe-page__tabs"
+        tabsClassName="recipe-page__tabs"
+        isCompact={isHeaderCompact}
         onSelectTab={onSelectTab}
       />
 

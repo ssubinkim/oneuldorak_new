@@ -1,6 +1,7 @@
 import {
   carrotImg, potatoImg, appleImg, onionImg,
   romainImg, brocollyImg, strawberryImg,
+  getIngredientIconClassName,
 } from '../mealData'
 import './IngredientSection.css'
 
@@ -47,7 +48,7 @@ function IngredientSection({ onAddIngredient, onShowAll }: Props) {
           <div key={item.id} className="ing-item">
             <div className="ing-circle-wrap">
               <div className={`ing-circle${item.daysLeft !== null ? ' ing-circle--urgent' : ''}`}>
-                <img src={item.image} alt={item.name} className="ing-img" />
+                <img src={item.image} alt={item.name} className={`ing-img ${getIngredientIconClassName(item.image)}`} />
               </div>
               {item.daysLeft !== null && (
                 <span className="ing-urgent-badge">D-{item.daysLeft}</span>

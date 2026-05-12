@@ -1,0 +1,70 @@
+.community-sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--color-secondary);
+}
+
+.community-sticky-header.is-compact {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.community-sticky-header.is-compact .community-banner {
+  min-height: 72px;
+  padding: 16px 20px 0;
+  overflow: hidden;
+}
+
+.community-sticky-header.is-compact .community-banner::before {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  width: 18px;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.28);
+  border-radius: 999px;
+  transform: translateX(-50%);
+}
+
+.community-sticky-header.is-compact .community-banner__header {
+  min-height: 44px;
+  margin-bottom: 0;
+}
+
+.community-sticky-header.is-compact .community-banner__header h1 {
+  font-size: 24px;
+}
+
+.community-sticky-header.is-compact .community-banner__subtitle,
+.community-sticky-header.is-compact .community-banner__image {
+  max-height: 0;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.community-sticky-header.is-compact .community-tabs,
+.community-sticky-header.is-compact .recipe-page__tabs,
+.community-sticky-header.is-compact .free-detail-tabs,
+.community-sticky-header.is-compact .vote-page-tabs {
+  height: 74px;
+  margin-top: 0;
+  padding-top: 22px;
+}
+
+@media (max-width: 360px) {
+  .community-sticky-header.is-compact .community-banner {
+    min-height: 68px;
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .community-sticky-header.is-compact .community-tabs,
+  .community-sticky-header.is-compact .recipe-page__tabs,
+  .community-sticky-header.is-compact .free-detail-tabs,
+  .community-sticky-header.is-compact .vote-page-tabs {
+    height: 70px;
+    padding-top: 20px;
+  }
+}

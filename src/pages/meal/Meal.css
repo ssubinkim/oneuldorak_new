@@ -3,10 +3,6 @@
 }
 
 /* 상태바 헤더를 투명하게 — 그라데이션이 비쳐 보이도록 */
-.meal-screen .app-header {
-  background: transparent;
-}
-
 /* ── 전체 스크롤 컨테이너 ──────────────────────── */
 .meal-scroll {
   position: absolute;
