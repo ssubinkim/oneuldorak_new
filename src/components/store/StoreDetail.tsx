@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './StoreDetail.css'
 import ProductDescTab from './tabs/ProductDescTab'
 import ProductInfoTab from './tabs/ProductInfoTab'
 import ReviewTab from './tabs/ReviewTab'
@@ -9,8 +10,7 @@ type Tab = 'desc' | 'info' | 'review' | 'inquiry'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'desc', label: '상품설명' },
-  { id: 'info', label: '상세정보' },
-  { id: 'review', label: '리뷰' },
+  { id: 'info', label: '리뷰' },
   { id: 'inquiry', label: '문의' },
 ]
 
@@ -40,12 +40,11 @@ const MOCK_INQUIRIES: Inquiry[] = [
 
 type ProductData = { reviews: Review[]; inquiries: Inquiry[] }
 
-// 상품별 리뷰/문의 상태를 다르게 구성
 const PRODUCTS_MAP: Record<string, ProductData> = {
-  '1': { reviews: MOCK_REVIEWS,  inquiries: MOCK_INQUIRIES }, // 리뷰 O, 문의 O
-  '2': { reviews: [],            inquiries: MOCK_INQUIRIES }, // 리뷰 X, 문의 O
-  '3': { reviews: MOCK_REVIEWS,  inquiries: [] },             // 리뷰 O, 문의 X
-  '4': { reviews: [],            inquiries: [] },             // 리뷰 X, 문의 X
+  '1': { reviews: MOCK_REVIEWS,  inquiries: MOCK_INQUIRIES },
+  '2': { reviews: [],            inquiries: MOCK_INQUIRIES },
+  '3': { reviews: MOCK_REVIEWS,  inquiries: [] },
+  '4': { reviews: [],            inquiries: [] },
 }
 
 function getProductData(productId: string | null): ProductData {
@@ -65,60 +64,94 @@ function StoreDetail({ productId, onBack, onSelectProduct }: Props) {
 
   return (
     <div>
-      {/* 상단 네비 + 탭바 — sticky */}
-      <div style={{ position: 'sticky', top: 0, zIndex: 10, background: '#fff' }}>
-        {/* 네비 바 */}
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '12px 16px', borderBottom: '1px solid #f2f2f2',
-        }}>
-          <button onClick={onBack} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
-            <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="#111" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <path d="m15 18-6-6 6-6" />
+      {/* 상단 네비 — sticky */}
+      <div className="store-detail__nav">
+        <button className="store-detail__nav-btn" onClick={onBack}>
+          <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="#111" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <path d="m15 18-6-6 6-6" />
+          </svg>
+        </button>
+        <span className="store-detail__nav-title">제품이름</span>
+        <div className="store-detail__nav-actions">
+          <button className="store-detail__nav-btn">
+            <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#111" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
           </button>
-          <span style={{ fontSize: 15, fontWeight: 700, color: '#111' }}>제품이름</span>
-          <div style={{ display: 'flex', gap: 4 }}>
-            <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
-              <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#111" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          <button className="store-detail__nav-btn">
+            <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#111" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* 상품 이미지 */}
+      <div className="store-detail__product-img" />
+
+      {/* 상품 정보 */}
+      <div className="store-detail__product-header">
+        <div className="store-detail__top-row">
+          <button className="store-detail__brand-badge">밥픽 &gt;</button>
+          <div className="store-detail__product-actions">
+            <button className="store-detail__action-btn">
+              <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="#888" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
             </button>
-            <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
-              <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#111" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </button>
-            <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
-              <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#111" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
+            <button className="store-detail__action-btn">
+              <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="#888" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15,3 21,3 21,9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
               </svg>
             </button>
           </div>
         </div>
-
-        {/* 탭 바 */}
-        <div style={{ display: 'flex', borderBottom: '1px solid #eee' }}>
-          {TABS.map(tab => (
-            <div
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              style={{
-                flex: 1, textAlign: 'center', padding: '12px 0', fontSize: 13, cursor: 'pointer',
-                fontWeight: activeTab === tab.id ? 700 : 400,
-                color: activeTab === tab.id ? '#111' : '#aaa',
-                borderBottom: activeTab === tab.id ? '2px solid #111' : '2px solid transparent',
-                marginBottom: -1,
-              }}
-            >
-              {tab.label}
-            </div>
-          ))}
+        <h2 className="store-detail__product-name">제품이름</h2>
+        <p className="store-detail__product-desc">제품에 대한 설명입니다다이아잇</p>
+        <p className="store-detail__product-kcal">120kcal</p>
+        <div className="store-detail__price-row">
+          <span className="store-detail__product-price">12,000 ₩</span>
+          <button className="store-detail__coupon-btn">
+            <svg viewBox="0 0 24 24" width={13} height={13} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            받은쿠폰
+          </button>
         </div>
+      </div>
+
+      {/* 혜택/배송 정보 */}
+      <div className="store-detail__benefits">
+        <div className="store-detail__benefit-item">
+          <span className="store-detail__benefit-label">적립</span>
+          <span className="store-detail__benefit-content">
+            포인트 최대 10p 적립<br />리뷰 작성시 최대 10p 적립
+          </span>
+        </div>
+        <div className="store-detail__benefit-item">
+          <span className="store-detail__benefit-label">배송</span>
+          <span className="store-detail__benefit-content">
+            3일 이내 판매자 발송 예정<br />50,000원 이상 무료
+          </span>
+        </div>
+      </div>
+
+      {/* 탭 바 — sticky */}
+      <div className="store-detail__tabbar">
+        {TABS.map(tab => (
+          <div
+            key={tab.id}
+            className={`store-detail__tab${activeTab === tab.id ? ' store-detail__tab--active' : ''}`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </div>
+        ))}
       </div>
 
       {/* 탭 콘텐츠 */}
@@ -129,13 +162,14 @@ function StoreDetail({ productId, onBack, onSelectProduct }: Props) {
           onSelectProduct={onSelectProduct}
         />
       )}
-      {activeTab === 'info' && <ProductInfoTab />}
-      {activeTab === 'review' && (
+      {activeTab === 'info' && (
         <ReviewTab reviews={reviews} onSelectProduct={onSelectProduct} />
       )}
+      {activeTab === 'review' && <ProductInfoTab />}
       {activeTab === 'inquiry' && (
         <InquiryTab inquiries={inquiries} onSelectProduct={onSelectProduct} />
       )}
+
     </div>
   )
 }

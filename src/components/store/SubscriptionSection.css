@@ -206,11 +206,25 @@
   line-height: 1.4;
 }
 
+.subscription__item-price-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 4px;
+}
+
 .subscription__item-price {
   font-size: 16px;
   font-weight: 700;
   color: #111;
-  margin: 0 0 4px;
+  white-space: nowrap;
+}
+
+.subscription__item-original-price {
+  font-size: 12px;
+  color: #888888;
+  text-decoration: line-through;
+  white-space: nowrap;
 }
 
 .subscription__item-rating {

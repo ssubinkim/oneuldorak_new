@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import './StoreBanner.css'
-import slide1 from './images/slide1.png'
-import slide2 from './images/slide2.png'
-import slide3 from './images/slide3.png'
-import slide4 from './images/slide4.png'
-import slide5 from './images/slide5.png'
+import slide1 from './images/slide1.svg'
+import slide2 from './images/slide2.svg'
+import slide3 from './images/slide3.svg'
+import slide4 from './images/slide4.svg'
+import slide5 from './images/slide5.svg'
 
 const SLIDES = [
   { id: 1, image: slide1, title: '오늘도 가볍고 건강하게', subtitle: '신선함이 채워지는 순간' },

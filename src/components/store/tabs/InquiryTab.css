@@ -1,0 +1,88 @@
+.inquiry-section {
+  padding: 36px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.inquiry-section__img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 16px;
+}
+
+.inquiry-section__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 6px;
+}
+
+.inquiry-section__desc {
+  font-size: 13px;
+  color: #888;
+  margin: 0 0 30px;
+  line-height: 1.5;
+}
+
+.inquiry-section__btn {
+  width: 200px;
+  padding: 14px 0;
+  background: #6baa62;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* 판매자 고객센터 */
+.inquiry-cs {
+  padding: 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.inquiry-cs__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 10px;
+}
+
+.inquiry-cs__info-label {
+  font-size: 12px;
+  color: #888;
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.inquiry-cs__info-text {
+  font-size: 12px;
+  color: #555;
+  line-height: 1.7;
+  margin: 0 0 16px;
+}
+
+.inquiry-cs__btns {
+  display: flex;
+  gap: 10px;
+}
+
+.inquiry-cs__btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13px;
+  color: #444;
+  cursor: pointer;
+}
