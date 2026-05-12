@@ -3,19 +3,19 @@
   top: 0;
   z-index: 30;
   background: var(--color-secondary);
+  transition: box-shadow 160ms ease;
 }
 
 .community-sticky-header.is-compact {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
-.community-sticky-header.is-compact .community-banner {
-  min-height: 72px;
-  padding: 16px 20px 0;
-  overflow: hidden;
+.community-sticky-header .community-banner {
+  padding: 16px var(--community-banner-padding-x, 16px) var(--community-banner-padding-bottom, 30px);
+  overflow: visible;
 }
 
-.community-sticky-header.is-compact .community-banner::before {
+.community-sticky-header .community-banner::before {
   content: '';
   position: absolute;
   top: 9px;
@@ -24,47 +24,54 @@
   height: 2px;
   background: rgba(0, 0, 0, 0.28);
   border-radius: 999px;
+  opacity: var(--community-header-progress, 0);
   transform: translateX(-50%);
-}
-
-.community-sticky-header.is-compact .community-banner__header {
-  min-height: 44px;
-  margin-bottom: 0;
-}
-
-.community-sticky-header.is-compact .community-banner__header h1 {
-  font-size: 24px;
-}
-
-.community-sticky-header.is-compact .community-banner__subtitle,
-.community-sticky-header.is-compact .community-banner__image {
-  max-height: 0;
-  margin: 0;
-  opacity: 0;
   pointer-events: none;
 }
 
-.community-sticky-header.is-compact .community-tabs,
-.community-sticky-header.is-compact .recipe-page__tabs,
-.community-sticky-header.is-compact .free-detail-tabs,
-.community-sticky-header.is-compact .vote-page-tabs {
-  height: 74px;
-  margin-top: 0;
-  padding-top: 22px;
+.community-sticky-header .community-banner__header {
+  margin-bottom: var(--community-banner-header-margin, 8px);
+}
+
+.community-sticky-header .community-banner__header h1 {
+  font-size: var(--community-banner-title-size, 22px);
+}
+
+.community-sticky-header .community-banner__subtitle {
+  max-height: var(--community-subtitle-max-height, 48px);
+  margin: 0 0 var(--community-subtitle-margin-bottom, 10px);
+  opacity: var(--community-collapsible-opacity, 1);
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.community-sticky-header.is-compact .community-banner__subtitle {
+  pointer-events: none;
+}
+
+.community-sticky-header .community-banner__image {
+  max-height: var(--community-image-max-height, 220px);
+  margin: 0 auto var(--community-image-margin-bottom, -18px);
+  opacity: var(--community-collapsible-opacity, 1);
+  object-fit: contain;
+}
+
+.community-sticky-header.is-compact .community-banner__image {
+  pointer-events: none;
+}
+
+.community-sticky-header .community-tabs,
+.community-sticky-header .recipe-page__tabs,
+.community-sticky-header .free-detail-tabs,
+.community-sticky-header .vote-page-tabs {
+  height: var(--community-tabs-height, 82px);
+  margin-top: var(--community-tabs-margin-top, -38px);
+  padding-top: var(--community-tabs-padding-top, 34px);
 }
 
 @media (max-width: 360px) {
-  .community-sticky-header.is-compact .community-banner {
-    min-height: 68px;
-    padding-right: 18px;
-    padding-left: 18px;
-  }
-
-  .community-sticky-header.is-compact .community-tabs,
-  .community-sticky-header.is-compact .recipe-page__tabs,
-  .community-sticky-header.is-compact .free-detail-tabs,
-  .community-sticky-header.is-compact .vote-page-tabs {
-    height: 70px;
-    padding-top: 20px;
+  .community-sticky-header .community-banner {
+    padding-right: var(--community-banner-padding-x, 18px);
+    padding-left: var(--community-banner-padding-x, 18px);
   }
 }
