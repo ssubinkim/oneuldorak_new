@@ -8,7 +8,7 @@ const PAGE_SIZE = 3
 
 type Props = {
   products: Product[]
-  onSelect?: (id: string) => void
+  onSelect?: (product: Product) => void
 }
 
 function SubscriptionSection({ products, onSelect }: Props) {
@@ -49,9 +49,9 @@ function SubscriptionSection({ products, onSelect }: Props) {
         <img className="subscription__banner-img" src={slide1} alt="정기식단 배너" />
         <div className="subscription__banner-overlay" />
         <div className="subscription__banner-text">
-          <p>식단 구성 보는 전</p>
-          <p>매주 새로운 도시락을</p>
-          <p>간편하게 받아보세요 !</p>
+          <p className="store-banner__title subscription__banner-title">식단 고민 없는 한 주</p>
+          <p className="store-banner__subtitle">매주 새로운 도시락을</p>
+          <p className="store-banner__subtitle">간편하게 받아보세요 !</p>
         </div>
       </div>
 
@@ -72,7 +72,7 @@ function SubscriptionSection({ products, onSelect }: Props) {
         {pages.map((page, pi) => (
           <div key={pi} className="subscription__page">
             {page.map((p, i) => (
-              <div key={`${p.id}-${i}`} className="subscription__item" onClick={() => onSelect?.(p.id)}>
+              <div key={`${p.id}-${i}`} className="subscription__item" onClick={() => onSelect?.(p)}>
                 <div className="subscription__item-img-wrap">
                   {p.image && <img className="subscription__item-img" src={p.image} alt={p.name} />}
                   <button

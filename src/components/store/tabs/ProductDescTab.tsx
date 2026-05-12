@@ -1,6 +1,19 @@
 import './ProductDescTab.css'
 import RelatedRecipes from '../RelatedRecipes'
 import RelatedProducts from '../RelatedProducts'
+import { type Product } from '../ProductCard'
+import subimg1_1 from '../images/subitem/subimg1_1.png'
+import subimg1_2 from '../images/subitem/subimg1_2.png'
+import subimg1_3 from '../images/subitem/subimg1_3.png'
+import subimg1_4 from '../images/subitem/subimg1_4.png'
+import subimg2_1 from '../images/subitem/subimg2_1.png'
+import subimg2_2 from '../images/subitem/subimg2_2.png'
+import subimg2_3 from '../images/subitem/subimg2_3.png'
+import subimg2_4 from '../images/subitem/subimg2_4.png'
+import subimg3_1 from '../images/subitem/subimg3_1.png'
+import subimg3_2 from '../images/subitem/subimg3_2.png'
+import subimg3_3 from '../images/subitem/subimg3_3.png'
+import subimg3_4 from '../images/subitem/subimg3_4.png'
 
 const PRODUCT_INFO = [
   { label: '식품유형', value: '예: 도시락, 죽식조리식품, 샐러드' },
@@ -11,13 +24,34 @@ const PRODUCT_INFO = [
   { label: '영양정보', value: '탄수화물, 단백질, 지방 등 총 kcal 표기' },
 ]
 
-type Props = {
-  reviewCount: number
-  onGoToReview: () => void
-  onSelectProduct?: (id: string) => void
+const DETAIL_IMAGES: Record<string, string[]> = {
+  '간편 도시락 세트':       [subimg1_1, subimg1_2, subimg1_3, subimg1_4],
+  '계란말이 도시락':        [subimg2_1, subimg2_2, subimg2_3, subimg2_4],
+  '참치마요 덮밥':          [subimg3_1, subimg3_2, subimg3_3, subimg3_4],
+  '전자레인지 런치박스':    [subimg1_1, subimg1_2, subimg1_3, subimg1_4],
+  '오늘의야채 샐러드':      [subimg2_1, subimg2_2, subimg2_3, subimg2_4],
+  '2칸 컬러풀 도시락':      [subimg3_1, subimg3_2, subimg3_3, subimg3_4],
+  '아보카도 계란 샐러드':   [subimg1_1, subimg1_2, subimg1_3, subimg1_4],
+  '훈제연어 샐러드':        [subimg2_1, subimg2_2, subimg2_3, subimg2_4],
+  '제육볶음 밀키트':        [subimg3_1, subimg3_2, subimg3_3, subimg3_4],
+  '4종 밀키트 골라담기':    [subimg1_1, subimg1_2, subimg1_3, subimg1_4],
+  '1-2인용 에어프라이기':   [subimg2_1, subimg2_2, subimg2_3, subimg2_4],
+  '저당 칼로볼':            [subimg3_1, subimg3_2, subimg3_3, subimg3_4],
+  '500ml 보온 텀블러':      [subimg1_1, subimg1_2, subimg1_3, subimg1_4],
+  '도시락 보냉가방':        [subimg2_1, subimg2_2, subimg2_3, subimg2_4],
+  '밀프랩 전용 법랑용기':   [subimg3_1, subimg3_2, subimg3_3, subimg3_4],
 }
 
-function ProductDescTab({ reviewCount, onGoToReview, onSelectProduct }: Props) {
+type Props = {
+  product?: Product | null
+  reviewCount: number
+  onGoToReview: () => void
+  onSelectProduct?: (product: Product) => void
+}
+
+function ProductDescTab({ product, reviewCount, onGoToReview, onSelectProduct }: Props) {
+  const detailImages = product?.name ? DETAIL_IMAGES[product.name] : undefined
+
   return (
     <div>
       {/* 상품정보 테이블 */}
@@ -33,11 +67,18 @@ function ProductDescTab({ reviewCount, onGoToReview, onSelectProduct }: Props) {
       </div>
 
       {/* 상품소개 이미지 */}
-      {[1, 2, 3, 4].map(i => (
-        <div key={i} className="pdesc__product-img">
-          <span>상품소개 이미지</span>
-        </div>
-      ))}
+      {detailImages
+        ? detailImages.map((src, i) => (
+            <div key={i} className="pdesc__product-img pdesc__product-img--filled">
+              <img src={src} alt={`상품소개 이미지 ${i + 1}`} />
+            </div>
+          ))
+        : [1, 2, 3, 4].map(i => (
+            <div key={i} className="pdesc__product-img">
+              <span>상품소개 이미지</span>
+            </div>
+          ))
+      }
 
       {/* 리뷰 미리보기 */}
       <div className="pdesc__review" onClick={onGoToReview}>

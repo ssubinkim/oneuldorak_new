@@ -51,7 +51,7 @@ const KITCHEN_PRODUCTS: Product[] = [
 ]
 
 type Props = {
-  onSelect: (id: string) => void
+  onSelect: (product: Product) => void
 }
 
 function StoreMain({ onSelect }: Props) {

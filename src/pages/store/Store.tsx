@@ -3,6 +3,7 @@ import Header from '../../components/common/layout/Header'
 import BottomNav from '../../components/common/layout/BottomNav'
 import StoreMain from '../../components/store/StoreMain'
 import StoreDetailPage from './StoreDetailPage'
+import { type Product } from '../../components/store/ProductCard'
 import '../../styles/Tailwind.css'
 import './Store.css'
 
@@ -10,10 +11,10 @@ type View = 'home' | 'detail'
 
 function Store() {
   const [view, setView] = useState<View>('home')
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
-  function handleSelect(id: string) {
-    setSelectedId(id)
+  function handleSelect(product: Product) {
+    setSelectedProduct(product)
     setView('detail')
   }
 
@@ -35,7 +36,7 @@ function Store() {
           </>
         ) : (
           <StoreDetailPage
-            productId={selectedId}
+            product={selectedProduct}
             onBack={handleBack}
             onSelectProduct={handleSelect}
           />

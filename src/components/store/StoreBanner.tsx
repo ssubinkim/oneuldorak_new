@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './StoreBanner.css'
 import slide1 from './images/slide1.svg'
 import slide2 from './images/slide2.svg'
@@ -15,89 +15,57 @@ const SLIDES = [
 ]
 
 const DURATION = 3000
+const N = SLIDES.length
 
 function StoreBanner() {
   const [current, setCurrent] = useState(0)
-  const [progress, setProgress] = useState(0)
-  const trackRef = useRef<HTMLDivElement>(null)
-  const startTimeRef = useRef<number | null>(null)
-  const rafRef = useRef<number | null>(null)
+  const fillRef = useRef<HTMLDivElement>(null)
+  const currentRef = useRef(0)
 
-  const goTo = useCallback((index: number) => {
-    const el = trackRef.current
-    if (!el) return
-    el.scrollTo({ left: index * el.clientWidth, behavior: 'smooth' })
-    setCurrent(index)
-    setProgress(0)
-    startTimeRef.current = null
-  }, [])
-
+  // RAF 루프 한 번만 시작 — current 바뀌어도 재시작 안 함
   useEffect(() => {
-    function tick(timestamp: number) {
-      if (startTimeRef.current === null) startTimeRef.current = timestamp
-      const pct = Math.min(((timestamp - startTimeRef.current) / DURATION) * 100, 100)
-      setProgress(pct)
-      if (pct < 100) {
-        rafRef.current = requestAnimationFrame(tick)
-      } else {
-        setCurrent(prev => {
-          const next = (prev + 1) % SLIDES.length
-          const el = trackRef.current
-          if (el) el.scrollTo({ left: next * el.clientWidth, behavior: 'smooth' })
-          return next
-        })
-        setProgress(0)
-        startTimeRef.current = null
-        rafRef.current = requestAnimationFrame(tick)
-      }
-    }
-    rafRef.current = requestAnimationFrame(tick)
-    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
-  }, [current])
+    let startTime = performance.now()
+    let raf: number
 
-  function handleScroll() {
-    const el = trackRef.current
-    if (!el) return
-    const index = Math.round(el.scrollLeft / el.clientWidth)
-    if (index !== current) {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      setCurrent(index)
-      setProgress(0)
-      startTimeRef.current = null
+    function tick(timestamp: number) {
+      const pct = Math.min((timestamp - startTime) / DURATION, 1)
+      const width = ((currentRef.current + pct) / N) * 100
+      if (fillRef.current) fillRef.current.style.width = `${width}%`
+
+      if (pct >= 1) {
+        currentRef.current = (currentRef.current + 1) % N
+        startTime = timestamp
+        setCurrent(currentRef.current)
+      }
+
+      raf = requestAnimationFrame(tick)
     }
-  }
+
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+  }, [])
 
   return (
     <div className="store-banner">
-      <div className="store-banner__track" ref={trackRef} onScroll={handleScroll}>
-        {SLIDES.map(slide => (
-          <div key={slide.id} className="store-banner__card">
-            <img className="store-banner__image" src={slide.image} alt={slide.title} />
-            <div className="store-banner__overlay" />
-            <div className="store-banner__text">
-              <p className="store-banner__title">{slide.title}</p>
-              <p className="store-banner__subtitle">{slide.subtitle}</p>
+      <div className="store-banner__track-outer">
+        <div
+          className="store-banner__track"
+          style={{ transform: `translateX(-${current * 100}%)` }}
+        >
+          {SLIDES.map(slide => (
+            <div key={slide.id} className="store-banner__card">
+              <img className="store-banner__image" src={slide.image} alt={slide.title} />
+              <div className="store-banner__overlay" />
+              <div className="store-banner__text">
+                <p className="store-banner__title">{slide.title}</p>
+                <p className="store-banner__subtitle">{slide.subtitle}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-      <div className="store-banner__bars">
-        {SLIDES.map((slide, i) => (
-          <button
-            key={slide.id}
-            type="button"
-            aria-label={`슬라이드 ${i + 1}`}
-            className="store-banner__bar"
-            onClick={() => goTo(i)}
-          >
-            <span
-              className="store-banner__bar-fill"
-              style={{
-                width: i < current ? '100%' : i === current ? `${progress}%` : '0%',
-              }}
-            />
-          </button>
-        ))}
+      <div className="store-banner__progress">
+        <div ref={fillRef} className="store-banner__progress-fill" />
       </div>
     </div>
   )
