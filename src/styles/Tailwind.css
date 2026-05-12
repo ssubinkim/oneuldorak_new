@@ -44,18 +44,31 @@
   --color-tertiary-20: rgb(var(--color-tertiary-rgb) / 20%);
   --color-tertiary-10: rgb(var(--color-tertiary-rgb) / 10%);
 
-  --color-green: #00a652;
-  --color-green-rgb: 0 166 82;
-  --color-green-100: rgb(var(--color-green-rgb) / 100%);
-  --color-green-90: rgb(var(--color-green-rgb) / 90%);
-  --color-green-80: rgb(var(--color-green-rgb) / 80%);
-  --color-green-70: rgb(var(--color-green-rgb) / 70%);
-  --color-green-60: rgb(var(--color-green-rgb) / 60%);
-  --color-green-50: rgb(var(--color-green-rgb) / 50%);
-  --color-green-40: rgb(var(--color-green-rgb) / 40%);
-  --color-green-30: rgb(var(--color-green-rgb) / 30%);
-  --color-green-20: rgb(var(--color-green-rgb) / 20%);
-  --color-green-10: rgb(var(--color-green-rgb) / 10%);
+  --color-green01_: #B7E886;
+  --color-green01_-rgb: 183 232 134;
+  --color-green01_-100: rgb(var(--color-green01_-rgb) / 100%);
+  --color-green01_-90: rgb(var(--color-green01_-rgb) / 90%);
+  --color-green01_-80: rgb(var(--color-green01_-rgb) / 80%);
+  --color-green01_-70: rgb(var(--color-green01_-rgb) / 70%);
+  --color-green01_-60: rgb(var(--color-green01_-rgb) / 60%);
+  --color-green01_-50: rgb(var(--color-green01_-rgb) / 50%);
+  --color-green01_-40: rgb(var(--color-green01_-rgb) / 40%);
+  --color-green01_-30: rgb(var(--color-green01_-rgb) / 30%);
+  --color-green01_-20: rgb(var(--color-green01_-rgb) / 20%);
+  --color-green01_-10: rgb(var(--color-green01_-rgb) / 10%);
+
+  --color-green02_: #92BA6B;
+  --color-green02_-rgb: 146 186 107;
+  --color-green02_-100: rgb(var(--color-green02_-rgb) / 100%);
+  --color-green02_-90: rgb(var(--color-green02_-rgb) / 90%);
+  --color-green02_-80: rgb(var(--color-green02_-rgb) / 80%);
+  --color-green02_-70: rgb(var(--color-green02_-rgb) / 70%);
+  --color-green02_-60: rgb(var(--color-green02_-rgb) / 60%);
+  --color-green02_-50: rgb(var(--color-green02_-rgb) / 50%);
+  --color-green02_-40: rgb(var(--color-green02_-rgb) / 40%);
+  --color-green02_-30: rgb(var(--color-green02_-rgb) / 30%);
+  --color-green02_-20: rgb(var(--color-green02_-rgb) / 20%);
+  --color-green02_-10: rgb(var(--color-green02_-rgb) / 10%);
 
   --color-status-emphasis: #ef5246;
   --color-status-emphasis-rgb: 239 82 70;

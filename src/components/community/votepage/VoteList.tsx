@@ -6,13 +6,13 @@ import './VoteList.css'
 
 export type VoteFilter = 'active' | 'ended'
 
-type VoteOption = {
+export type VoteOption = {
   label: string
   votes: number
   highlighted?: boolean
 }
 
-type VoteCardItem = {
+export type VoteCardItem = {
   id: string
   heading?: string
   question: string
@@ -26,6 +26,7 @@ type VoteCardItem = {
 type VoteListProps = {
   filter: VoteFilter
   variant?: 'featured' | 'list'
+  extraVotes?: VoteCardItem[]
 }
 
 const DAY_MS = 24 * 60 * 60 * 1000
@@ -305,7 +306,7 @@ function VoteCard({
   )
 }
 
-function VoteList({ filter, variant = 'list' }: VoteListProps) {
+function VoteList({ filter, variant = 'list', extraVotes = [] }: VoteListProps) {
   const { selectedVotes, selectVoteOption } = useVoteSelections()
   const [voteModal, setVoteModal] = useState<{
     question: string
@@ -313,9 +314,10 @@ function VoteList({ filter, variant = 'list' }: VoteListProps) {
     reward?: string
   } | null>(null)
   const shownVoteModalIdsRef = useRef<Set<string>>(new Set())
+  const activeVoteCards = [...extraVotes, ...voteCards]
 
   const handleVote = (cardId: string, optionLabel: string) => {
-    const selectedCard = voteCards.find((card) => card.id === cardId)
+    const selectedCard = activeVoteCards.find((card) => card.id === cardId)
 
     selectVoteOption(cardId, optionLabel)
 
@@ -341,7 +343,7 @@ function VoteList({ filter, variant = 'list' }: VoteListProps) {
       return endedVoteCards
     }
 
-    return voteCards.slice(1)
+    return [...extraVotes, ...voteCards.slice(1)]
   })()
 
   return (

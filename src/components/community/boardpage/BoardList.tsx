@@ -1,7 +1,7 @@
 import './BoardList.css'
-import type { BoardFilter } from './BoardCategoryFilters'
+import { boardFilters, type BoardFilter } from './BoardCategoryFilters'
 
-type BoardPost = {
+export type BoardPost = {
   id: string
   category: string
   title: string
@@ -16,6 +16,7 @@ type BoardPost = {
 type BoardListProps = {
   activeFilter: BoardFilter
   onOpenDetail: (postId: string) => void
+  extraPosts?: BoardPost[]
 }
 
 const posts: BoardPost[] = [
@@ -161,15 +162,17 @@ function BoardCard({
 }
 
 function shouldShowPost(post: BoardPost, activeFilter: BoardFilter) {
-  if (['꿀팁', '냉장고SOS', '질문', '고민'].includes(activeFilter)) {
+  const categoryFilters = boardFilters.slice(2)
+
+  if (categoryFilters.includes(activeFilter)) {
     return post.category === activeFilter
   }
 
   return true
 }
 
-function BoardList({ activeFilter, onOpenDetail }: BoardListProps) {
-  const visiblePosts = posts.filter((post) => shouldShowPost(post, activeFilter))
+function BoardList({ activeFilter, onOpenDetail, extraPosts = [] }: BoardListProps) {
+  const visiblePosts = [...extraPosts, ...posts].filter((post) => shouldShowPost(post, activeFilter))
 
   return (
     <section className="free-detail-list" aria-label="자유게시판 글 목록">

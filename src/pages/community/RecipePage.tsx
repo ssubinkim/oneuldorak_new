@@ -2,18 +2,19 @@ import CommunityTabs from '../../components/community/common/CommunityTabs'
 import PopularRecipeSection from '../../components/community/common/PopularRecipeSection'
 import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
 import { popularRecipes } from '../../components/community/communitypage/communityData'
-import RecipeList from '../../components/community/recipepage/RecipeList'
+import RecipeList, { type RecipeItem } from '../../components/community/recipepage/RecipeList'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './RecipePage.css'
 
 type RecipePageProps = {
   onSelectTab: (tab: CommunityTabRoute) => void
   onOpenDetail: (recipeId: string) => void
+  extraRecipes?: RecipeItem[]
 }
 
 const filters = ['인기순', '최신순', '가격순', '시간순', '난이도순']
 
-function RecipePage({ onSelectTab, onOpenDetail }: RecipePageProps) {
+function RecipePage({ onSelectTab, onOpenDetail, extraRecipes = [] }: RecipePageProps) {
   return (
     <main className="page-scroll recipe-page">
       <CommunityBanner />
@@ -35,7 +36,7 @@ function RecipePage({ onSelectTab, onOpenDetail }: RecipePageProps) {
           ))}
         </div>
 
-        <RecipeList onOpenDetail={onOpenDetail} />
+        <RecipeList onOpenDetail={onOpenDetail} extraItems={extraRecipes} />
       </div>
     </main>
   )
