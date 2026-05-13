@@ -3,3 +3,7 @@
 :root {
   font-family: var(--font-nanum-square-neo);
 }
+
+h2 {
+  font-size: 1.5rem;
+}
