@@ -4,6 +4,7 @@ import heartIcon from '../../assets/icons/heart.svg'
 import kimchiRiceImage from '../meal/images/kimbok.png'
 import spamMayoImage from '../meal/images/chamchimayo.png'
 import bannerImage from './images/banner.png'
+import { ChevronIcon } from './ChevronIcon'
 import './HomeRecipeSection.css'
 
 type HomeRecipeCard = {
@@ -46,14 +47,6 @@ const recipes: HomeRecipeCard[] = [
   },
 ]
 
-function ChevronRightIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="m9 5 7 7-7 7" />
-    </svg>
-  )
-}
-
 function HomeRecipeCardItem({ recipe }: { recipe: HomeRecipeCard }) {
   return (
     <article className={`home-recipe-card home-recipe-card--${recipe.size}`}>
@@ -62,8 +55,8 @@ function HomeRecipeCardItem({ recipe }: { recipe: HomeRecipeCard }) {
         <div className="home-recipe-card__bottom">
           <div className="home-recipe-card__text">
             <p className="home-recipe-card__channel">
-              <span aria-hidden="true">
-                <img src={recipe.icon} alt="" />
+              <span className="home-recipe-card__mascot" aria-hidden="true">
+                <img className="home-recipe-card__mascot-image" src={recipe.icon} alt="" />
               </span>
               {recipe.channel}
             </p>
@@ -81,7 +74,7 @@ function HomeRecipeCardItem({ recipe }: { recipe: HomeRecipeCard }) {
 
 function HomeRecipeSection() {
   return (
-    <section className="home-recipe-section" aria-labelledby="recipeTitle">
+    <section className="home-recipe-section font-pretendard-variable" aria-labelledby="recipeTitle">
       <div className="home-recipe-section__header">
         <div>
           <h2 id="recipeTitle">
@@ -93,7 +86,7 @@ function HomeRecipeSection() {
         </div>
         <a href="#more-recipes">
           더보기
-          <ChevronRightIcon />
+          <ChevronIcon />
         </a>
       </div>
 

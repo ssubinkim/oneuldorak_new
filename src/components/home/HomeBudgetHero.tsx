@@ -6,7 +6,7 @@ function HomeBudgetHero() {
   const { nickname } = useUserProfile()
 
   return (
-    <section className="home-hero" aria-label="이번주 예상 식비">
+    <section className="home-hero font-pretendard" aria-label="이번주 예상 식비">
       <div className="home-hero__greeting">
         <p className="home-hero__name">
           <span className="home-hero__chef" aria-hidden="true" />

@@ -1,4 +1,4 @@
-import mascotImage from './images/chatbot.png'
+import mascotImage from './images/chatbot .svg'
 import './ChatbotSuggestions.css'
 
 const suggestions = [
