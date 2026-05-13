@@ -22,21 +22,23 @@
 .recipe-section__more {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   padding: 0;
-  color: #777;
+  color: #767676;
   background: transparent;
   border: 0;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: -0.08px;
   cursor: pointer;
 }
 
 .recipe-section__more span {
-  font-size: 28px;
-  font-weight: 300;
-  line-height: 0.8;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 130%;
 }
 
 .recipe-section__scroll {
@@ -125,9 +127,6 @@
     font-size: 20px;
   }
 
-  .recipe-section__more {
-    font-size: 15px;
-  }
 
   .popular-recipe-card {
     flex-basis: 168px;
