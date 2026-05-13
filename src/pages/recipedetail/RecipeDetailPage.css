@@ -12,7 +12,7 @@
 
   background: linear-gradient(180deg, var(--recipe-yellow) 0 92px, #fffaf0 92px 100%);
   color: var(--recipe-text);
-  font-family: 'NanumSquareNeo', 'Pretendard', sans-serif;
+  font-family: 'NanumSquareNeo', 'Pretendard Variable', sans-serif;
 }
 
 .recipe-detail-page svg {
