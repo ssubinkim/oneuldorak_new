@@ -7,10 +7,18 @@
   --color-bg: #ffffff;
   --color-bg-sub: #fffdf7;
   --color-text-main: #1a1a1a;
-  --color-text-sub: #313131;
-  --color-text-disabled: #a3a3a3;
+  --color-text-body: #3c3c3c;
+  --color-text-sub: #636363;
+  --color-text-sub-title: var(--color-text-sub);
+  --color-text-date: #767676;
+  /* 비활성 글 색 : a3a3a3 */
+  --color-text-before: #a3a3a3;
+  --color-text-disabled: var(--color-text-before);
   --color-border: #d1d1d1;
-  --color-disabled: #9a9a9a;
+  /* 구분선 :e5e5e5 */
+  --color-divider: #e5e5e5;
+  --color-empty-photo: #e9e9e9;
+  --color-disabled: var(--color-text-before);
   --layout-padding-x: 20px;
 
   --color-primary: #ffd515;

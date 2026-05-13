@@ -24,19 +24,19 @@
 .home-recipe-section__header h2 {
   margin: 0;
   color: var(--color-text-main);
-  font-size: clamp(24px, 6.4vw, 28px);
+  font-size: 24px;
   font-style: normal;
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0;
 }
 
 .home-recipe-section__header p {
   margin: 12px 0 0;
-  color: var(--color-text-main);
-  font-size: 13px;
+  color: var(--color-text-sub);
+  font-size: 14px;
   font-style: normal;
-  font-weight: 900;
+  font-weight: 400;
   line-height: 1.2;
 }
 
@@ -46,20 +46,21 @@
   align-items: center;
   gap: 2px;
   margin-bottom: 2px;
-  color: var(--color-text-main);
-  font-size: 13px;
+  color: var(--color-text-date);
+  font-size: 14px;
   font-style: normal;
-  font-weight: 900;
-  line-height: 1;
+  font-weight: 400;
+  line-height: 1.2;
   text-decoration: none;
 }
 
 .home-recipe-section__header a svg {
-  width: 16px;
-  height: 16px;
+  width: 5px;
+  height: 10px;
+  aspect-ratio: 1 / 2;
   fill: none;
-  stroke: currentColor;
-  stroke-width: 2.4;
+  stroke: var(--color-text-date);
+  stroke-width: 1px;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -131,31 +132,35 @@
 }
 
 .home-recipe-card__channel {
+  --home-recipe-channel-size: 14px;
+
   display: flex;
   align-items: center;
   gap: 4px;
   margin: 0;
   color: #fff;
-  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
-  font-size: 14px;
+  font-size: var(--home-recipe-channel-size);
   font-style: normal;
   font-weight: 400;
   line-height: 130%;
   letter-spacing: -0.08px;
 }
 
-.home-recipe-card__channel span {
-  display: inline-grid;
+.home-recipe-card__mascot {
+  display: inline-flex;
   flex: 0 0 auto;
-  width: 14px;
-  height: 14px;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
+  width: var(--home-recipe-channel-size);
+  height: var(--home-recipe-channel-size);
+  line-height: 0;
+  overflow: visible;
 }
 
-.home-recipe-card__channel img {
+.home-recipe-card__mascot-image {
   display: block;
-  width: 14px;
-  height: 14px;
+  width: var(--home-recipe-channel-size);
+  height: var(--home-recipe-channel-size);
   max-width: none;
   object-fit: contain;
 }
@@ -185,7 +190,6 @@
   margin: 0;
   overflow: hidden;
   color: #fff;
-  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
@@ -202,7 +206,6 @@
   align-self: flex-end;
   gap: 3px;
   color: #fff;
-  font-family: 'Pretendard Variable', 'Pretendard', sans-serif;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -239,12 +242,7 @@
     gap: 10px;
   }
 
-  .home-recipe-section__header h2 {
-    font-size: 23px;
-  }
-
-  .home-recipe-section__header p,
-  .home-recipe-section__header a {
+  .home-recipe-section__header p {
     font-size: 12px;
   }
 
