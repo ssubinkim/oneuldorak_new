@@ -3,6 +3,7 @@ import CommunityStickyHeader from '../common/CommunityStickyHeader'
 import PopularRecipeSection from '../common/PopularRecipeSection'
 import useCommunityHeaderCollapse from '../common/useCommunityHeaderCollapse'
 import VoteList from '../votepage/VoteList'
+import CommunityBanner from './CommunityBanner'
 import PopularPosts from './PopularPosts'
 import RankingBanner from './RankingBanner'
 import { dorakRankings, hotPosts, popularRecipes } from './communityData'
@@ -18,6 +19,7 @@ function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
 
   return (
     <main className="page-scroll community-page" onScroll={handleCommunityScroll}>
+      <CommunityBanner />
       <CommunityStickyHeader
         activeTab={activeTab}
         tabsClassName="community-tabs"

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import CommunityStickyHeader from '../../components/community/common/CommunityStickyHeader'
 import useCommunityHeaderCollapse from '../../components/community/common/useCommunityHeaderCollapse'
+import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
 import VoteFilterTabs from '../../components/community/votepage/VoteFilterTabs'
 import VoteList, { type VoteCardItem, type VoteFilter } from '../../components/community/votepage/VoteList'
 import type { CommunityTabRoute } from './CommunityTabRoute'
@@ -17,6 +18,7 @@ function VotePage({ onSelectTab, extraVotes = [] }: VotePageProps) {
 
   return (
     <main className="page-scroll vote-page" onScroll={handleCommunityScroll}>
+      <CommunityBanner />
       <CommunityStickyHeader
         activeTab="vote"
         tabsClassName="vote-page-tabs"

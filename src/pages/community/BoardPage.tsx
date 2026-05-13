@@ -7,6 +7,7 @@ import BoardList, { type BoardPost } from '../../components/community/boardpage/
 import BoardPopularPosts, { type BoardPopularPost } from '../../components/community/boardpage/BoardPopularPosts'
 import CommunityStickyHeader from '../../components/community/common/CommunityStickyHeader'
 import useCommunityHeaderCollapse from '../../components/community/common/useCommunityHeaderCollapse'
+import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './BoardPage.css'
 
@@ -28,6 +29,7 @@ function BoardPage({ onSelectTab, onOpenDetail, extraPosts = [] }: BoardPageProp
 
   return (
     <main className="page-scroll free-detail-page" onScroll={handleCommunityScroll}>
+      <CommunityBanner />
       <CommunityStickyHeader
         activeTab="free"
         tabsClassName="free-detail-tabs"

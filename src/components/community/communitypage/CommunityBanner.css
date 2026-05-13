@@ -14,10 +14,12 @@
 
 .community-banner__header h1 {
   margin: 0;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
   color: #1a1a1a;
-  letter-spacing: -0.5px;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
 }
 
 .community-banner__actions {

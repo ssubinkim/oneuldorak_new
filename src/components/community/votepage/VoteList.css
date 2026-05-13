@@ -24,10 +24,12 @@
 
 .vote-card h2 {
   margin: 0;
-  color: #111;
-  font-size: 18px;
+  color: #1a1a1a;
+  font-size: 22px;
   font-weight: 700;
-  line-height: 1.25;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
 }
 
 .vote-card--featured h2 {
@@ -167,7 +169,7 @@ article.vote-result-item {
   }
 
   .vote-card h2 {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   .vote-card-question {

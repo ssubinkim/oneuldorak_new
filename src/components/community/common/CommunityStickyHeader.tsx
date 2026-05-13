@@ -1,5 +1,4 @@
 import type { CommunityTabRoute } from '../../../pages/community/CommunityTabRoute'
-import CommunityBanner from '../communitypage/CommunityBanner'
 import CommunityTabs from './CommunityTabs'
 import './CommunityStickyHeader.css'
 
@@ -18,7 +17,6 @@ function CommunityStickyHeader({
 }: CommunityStickyHeaderProps) {
   return (
     <div className={`community-sticky-header${isCompact ? ' is-compact' : ''}`}>
-      <CommunityBanner />
       <CommunityTabs
         activeTab={activeTab}
         className={tabsClassName}
