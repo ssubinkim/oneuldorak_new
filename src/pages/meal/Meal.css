@@ -27,8 +27,7 @@
 
 /* ── 히어로 영역 ─────────────────────────────── */
 .meal-hero-inner {
-  padding: 20px 20px 24px;
-  padding-top: calc(var(--header-height, 44px) + 20px);
+  padding: 20px 20px;
 }
 
 @media (max-width: 767px) {
@@ -57,7 +56,7 @@
 }
 
 .meal-brand-name {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
   color: var(--color-text-main);
 }
@@ -73,16 +72,17 @@
 }
 
 .meal-tagline {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--color-text-main);
   line-height: 1.55;
   margin: 0;
+  white-space: nowrap;
 }
 
 /* ── 대시보드 섹션 컨테이너 ──────────────────── */
 .meal-dashboard {
-  padding: 20px 0 0;
+  padding: 10px 0 0;
 }
 
 /* ── 공통 섹션 헤더 ────────────────────────────── */
