@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-family: 'Pretendard', sans-serif;
+  font-family: 'Pretendard Variable', sans-serif;
 }
 
 .weekly-card {
