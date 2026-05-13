@@ -1,7 +1,9 @@
+import type { CookingStep } from './recipeDetailData'
+
 type RecipeDetailMethodProps = {
   heroImage: string
   stepIcon: string
-  steps: string[]
+  steps: CookingStep[]
 }
 
 function RecipeDetailMethod({ heroImage, stepIcon, steps }: RecipeDetailMethodProps) {
@@ -21,10 +23,10 @@ function RecipeDetailMethod({ heroImage, stepIcon, steps }: RecipeDetailMethodPr
 
       <div className="recipe-detail-step-list">
         {steps.map((step, index) => (
-          <article className="recipe-detail-step" key={step}>
+          <article className="recipe-detail-step" key={step.id}>
             <div className="recipe-detail-step__copy">
               <span>{index + 1}</span>
-              <p>{step}</p>
+              <p>{step.description}</p>
             </div>
             <div className="recipe-detail-step__image" aria-hidden="true">
               <img src={stepIcon} alt="" />

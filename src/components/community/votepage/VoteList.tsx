@@ -18,6 +18,7 @@ export type VoteCardItem = {
   heading?: string
   question: string
   subtitle?: string
+  description?: string
   reward?: string
   participants: number
   deadline: string | (() => string)

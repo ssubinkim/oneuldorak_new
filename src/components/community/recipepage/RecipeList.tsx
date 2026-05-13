@@ -5,9 +5,11 @@ export type RecipeItem = {
   id: string
   title: string
   subtitle: string
+  content?: string
   price: string
   time: string
   level: string
+  ingredient?: string
   author: string
   likes: number
   comments: number

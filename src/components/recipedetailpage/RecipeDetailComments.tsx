@@ -1,11 +1,27 @@
+import { useState, type FormEvent } from 'react'
 import type { RecipeComment } from './recipeDetailData'
 import { StatIcon } from './RecipeDetailIcons'
 
 type RecipeDetailCommentsProps = {
   comments: RecipeComment[]
+  onAddComment?: (content: string) => void
 }
 
-function RecipeDetailComments({ comments }: RecipeDetailCommentsProps) {
+function RecipeDetailComments({ comments, onAddComment }: RecipeDetailCommentsProps) {
+  const [commentInput, setCommentInput] = useState('')
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const nextContent = commentInput.trim()
+    if (!nextContent) {
+      return
+    }
+
+    onAddComment?.(nextContent)
+    setCommentInput('')
+  }
+
   return (
     <section className="recipe-detail-section recipe-detail-comments">
       <div className="recipe-detail-comments__header">
@@ -18,23 +34,24 @@ function RecipeDetailComments({ comments }: RecipeDetailCommentsProps) {
 
       <div className="recipe-detail-comments__list">
         {comments.map((comment) => (
-          <article key={`${comment.user}-${comment.text}`}>
+          <article key={comment.id}>
             <h3>
-              {comment.user}
-              <span>{comment.date}</span>
+              {comment.authorName}
+              <span>{comment.publishedOn}</span>
             </h3>
-            <p>{comment.text}</p>
+            <p>{comment.content}</p>
           </article>
         ))}
       </div>
 
-      <form
-        className="recipe-detail-comment-form"
-        onSubmit={(event) => {
-          event.preventDefault()
-        }}
-      >
-        <input type="text" placeholder="댓글을 입력하세요" aria-label="댓글 입력" />
+      <form className="recipe-detail-comment-form" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="댓글을 입력하세요"
+          aria-label="댓글 입력"
+          value={commentInput}
+          onChange={(event) => setCommentInput(event.target.value)}
+        />
         <button type="submit" aria-label="댓글 등록">
           <StatIcon type="send" />
         </button>

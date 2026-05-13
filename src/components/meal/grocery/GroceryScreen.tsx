@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { readGroceryShoppingItems, saveGroceryShoppingItems } from '../../common/aiDataHub'
 import BottomNav from '../../common/layout/BottomNav'
 import GroceryHeader from './GroceryHeader'
 import GroceryRecommendTab from './GroceryRecommendTab'
@@ -14,8 +15,12 @@ type GroceryScreenProps = {
 
 function GroceryScreen({ onBack }: GroceryScreenProps) {
   const [activeTab, setActiveTab] = useState<GroceryTab>('shopping')
-  const [shoppingItems, setShoppingItems] = useState<ShoppingItem[]>(INITIAL_ITEMS)
+  const [shoppingItems, setShoppingItems] = useState<ShoppingItem[]>(() => readGroceryShoppingItems(INITIAL_ITEMS))
   const checkedShoppingCount = shoppingItems.filter((item) => item.checked).length
+
+  useEffect(() => {
+    saveGroceryShoppingItems(shoppingItems)
+  }, [shoppingItems])
 
   return (
     <div className="app-shell">

@@ -1,7 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import { useUserProfile } from '../../components/common/useUserProfile'
+import type { BoardDetailPost } from '../../components/community/boarddetailpage/BoardContent'
 import type { BoardPost } from '../../components/community/boardpage/BoardList'
+import {
+  readPersistedCommunityWriteState,
+  savePersistedCommunityWriteState,
+} from '../../components/community/common/communityWritePersistence'
+import type { RecipeDetail } from '../../components/recipedetailpage/recipeDetailData'
 import CommunityWriteButton from '../../components/community/common/CommunityWriteButton'
 import type { RecipeItem } from '../../components/community/recipepage/RecipeList'
 import type { VoteCardItem } from '../../components/community/votepage/VoteList'
@@ -83,13 +89,47 @@ function createRegisteredRecipe(
     id: createTemporaryId('user-recipe'),
     title: getFilledText(data.title, '새 도시락 레시피'),
     subtitle: getSummaryText(data.content, '방금 등록한 도시락 레시피'),
+    content: getFilledText(data.content, '방금 등록한 도시락 레시피'),
     price: data.budget || '예산 미정',
     time: data.time || '시간 미정',
     level: `난이도 ${data.difficulty}`,
+    ingredient: data.ingredient.trim(),
     author,
     likes: 0,
     comments: 0,
     saves: 0,
+  }
+}
+
+function getMinutesFromTimeLabel(timeLabel: string) {
+  const parsedMinutes = Number(timeLabel.match(/\d+/)?.[0] ?? 0)
+  return Number.isFinite(parsedMinutes) && parsedMinutes > 0 ? parsedMinutes : 15
+}
+
+function getDifficultyLevel(levelLabel: string) {
+  const parsedLevel = Number(levelLabel.match(/\d+/)?.[0] ?? 1)
+  return Number.isFinite(parsedLevel) && parsedLevel > 0 ? parsedLevel : 1
+}
+
+function mapRecipeItemToRecipeDetail(item: RecipeItem): RecipeDetail {
+  return {
+    id: item.id,
+    title: item.title,
+    summary: item.content ?? item.subtitle,
+    meta: {
+      authorName: item.author,
+      publishedOn: getSeoulDate(),
+    },
+    cook: {
+      durationMinutes: getMinutesFromTimeLabel(item.time),
+      budgetLabel: item.price,
+      difficultyLevel: getDifficultyLevel(item.level),
+    },
+    stats: {
+      likeCount: item.likes,
+      commentCount: item.comments,
+      saveCount: item.saves,
+    },
   }
 }
 
@@ -111,6 +151,30 @@ function createRegisteredBoardPost(
   }
 }
 
+function createRegisteredBoardDetailPost(
+  payload: Extract<CommunityWritePayload, { tab: 'board' }>,
+  author: string,
+): BoardDetailPost {
+  const { data } = payload
+  const trimmedParagraphs = data.content
+    .split(/\n+/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+
+  return {
+    id: createTemporaryId('user-board'),
+    category: data.category,
+    reward: '인기글 1P',
+    title: getFilledText(data.title, '새 게시글'),
+    author,
+    timeAgo: '방금 전',
+    likes: 0,
+    comments: 0,
+    paragraphs: trimmedParagraphs.length > 0 ? trimmedParagraphs : ['방금 등록한 게시글입니다.'],
+    methods: [],
+  }
+}
+
 function createRegisteredVote(payload: Extract<CommunityWritePayload, { tab: 'vote' }>): VoteCardItem {
   const { data } = payload
 
@@ -118,6 +182,7 @@ function createRegisteredVote(payload: Extract<CommunityWritePayload, { tab: 'vo
     id: createTemporaryId('user-vote'),
     question: getFilledText(data.title, '새 투표'),
     subtitle: getSummaryText(data.content, '방금 등록한 투표입니다.'),
+    description: getFilledText(data.content, '방금 등록한 투표입니다.'),
     reward: '+1p',
     participants: 0,
     deadline: `~ ${getSeoulDate(2)} 18:00`,
@@ -127,14 +192,43 @@ function createRegisteredVote(payload: Extract<CommunityWritePayload, { tab: 'vo
 
 function Community() {
   const { nickname } = useUserProfile()
+  const [persistedWriteState] = useState(readPersistedCommunityWriteState)
   const [activeTab, setActiveTab] = useState<CommunityTab>('all')
   const [view, setView] = useState<CommunityView>('main')
   const [previousView, setPreviousView] = useState<CommunityView>('main')
   const [selectedRecipeId, setSelectedRecipeId] = useState<string | null>(null)
   const [selectedBoardId, setSelectedBoardId] = useState<string | null>(null)
-  const [registeredRecipes, setRegisteredRecipes] = useState<RecipeItem[]>([])
-  const [registeredBoardPosts, setRegisteredBoardPosts] = useState<BoardPost[]>([])
-  const [registeredVotes, setRegisteredVotes] = useState<VoteCardItem[]>([])
+  const [registeredRecipes, setRegisteredRecipes] = useState<RecipeItem[]>(persistedWriteState.recipes)
+  const [registeredBoardPosts, setRegisteredBoardPosts] = useState<BoardPost[]>(persistedWriteState.boardPosts)
+  const [registeredBoardDetailPosts, setRegisteredBoardDetailPosts] = useState<BoardDetailPost[]>(
+    persistedWriteState.boardDetailPosts,
+  )
+  const [registeredVotes, setRegisteredVotes] = useState<VoteCardItem[]>(persistedWriteState.votes)
+  const selectedRegisteredRecipe = selectedRecipeId
+    ? registeredRecipes.find((recipe) => recipe.id === selectedRecipeId) ?? null
+    : null
+
+  useEffect(() => {
+    setRegisteredBoardDetailPosts((previousPosts) =>
+      previousPosts.map((post) =>
+        post.id.startsWith('user-board')
+          ? {
+              ...post,
+              methods: [],
+            }
+          : post,
+      ),
+    )
+  }, [])
+
+  useEffect(() => {
+    savePersistedCommunityWriteState({
+      recipes: registeredRecipes,
+      boardPosts: registeredBoardPosts,
+      boardDetailPosts: registeredBoardDetailPosts,
+      votes: registeredVotes,
+    })
+  }, [registeredBoardDetailPosts, registeredBoardPosts, registeredRecipes, registeredVotes])
 
   const handleTabClick = (tab: CommunityTab) => {
     setActiveTab(tab)
@@ -171,7 +265,11 @@ function Community() {
       return
     }
 
-    setRegisteredBoardPosts((prevPosts) => [createRegisteredBoardPost(payload, nickname), ...prevPosts])
+    const nextListPost = createRegisteredBoardPost(payload, nickname)
+    const nextDetailPost = createRegisteredBoardDetailPost(payload, nickname)
+
+    setRegisteredBoardPosts((prevPosts) => [nextListPost, ...prevPosts])
+    setRegisteredBoardDetailPosts((prevPosts) => [{ ...nextDetailPost, id: nextListPost.id }, ...prevPosts])
     setActiveTab('free')
     setView('free')
   }
@@ -204,6 +302,7 @@ function Community() {
         {view === 'detail' && (
           <RecipeDetailPage
             recipeId={selectedRecipeId}
+            overrideRecipe={selectedRegisteredRecipe ? mapRecipeItemToRecipeDetail(selectedRegisteredRecipe) : null}
             onBack={() => setView('recipe')}
           />
         )}
@@ -213,6 +312,7 @@ function Community() {
             postId={selectedBoardId}
             onBack={() => setView('free')}
             onOpenPost={handleOpenBoardDetail}
+            extraPosts={registeredBoardDetailPosts}
           />
         )}
 

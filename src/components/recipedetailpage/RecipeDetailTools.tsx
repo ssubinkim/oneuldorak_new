@@ -1,5 +1,7 @@
+import type { CookingTool } from './recipeDetailData'
+
 type RecipeDetailToolsProps = {
-  tools: string[]
+  tools: CookingTool[]
 }
 
 function RecipeDetailTools({ tools }: RecipeDetailToolsProps) {
@@ -8,7 +10,7 @@ function RecipeDetailTools({ tools }: RecipeDetailToolsProps) {
       <h2>조리도구</h2>
       <div className="recipe-detail-tool-list">
         {tools.map((tool) => (
-          <span key={tool}>{tool}</span>
+          <span key={tool.id}>{tool.label}</span>
         ))}
       </div>
     </section>
