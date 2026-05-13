@@ -1,5 +1,6 @@
 import { ChevronRight, ClockIcon } from './WeeklyPlanIcons'
 import { usageBadgeStyle } from './weeklyPlanConstants'
+import blueThink from '../../common/images/blue_think 1.svg'
 
 type WeeklyPlanMenuListProps = {
   month: number
@@ -30,7 +31,7 @@ function WeeklyPlanMenuList({ month, todayDate, menus }: WeeklyPlanMenuListProps
             </div>
 
             <div className="wpp-menu-img-wrap">
-              {menu.image ? <img src={menu.image} alt={menu.name} className="wpp-menu-img" /> : <div className="wpp-menu-img-empty" />}
+              {menu.image ? <img src={menu.image} alt={menu.name} className="wpp-menu-img" /> : <div className="wpp-menu-img-empty"><img src={blueThink} alt="메뉴 없음" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>}
             </div>
 
             <div className="wpp-menu-info">
