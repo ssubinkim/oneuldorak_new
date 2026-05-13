@@ -136,7 +136,7 @@ button {
   min-height: 100svh;
   color: var(--color-text-main);
   background: var(--color-bg);
-  font-family: 'NanumSquareNeo', 'Pretendard', sans-serif;
+  font-family: var(--font-nanum-square-neo);
 }
 
 .app-screen {

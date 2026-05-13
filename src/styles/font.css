@@ -123,3 +123,21 @@
   font-style: normal;
   font-display: swap;
 }
+
+:root {
+  --font-nanum-square-neo: 'NanumSquareNeo', 'Pretendard', sans-serif;
+  --font-pretendard: 'Pretendard', 'NanumSquareNeo', sans-serif;
+  --font-pretendard-variable: 'Pretendard Variable', 'Pretendard', 'NanumSquareNeo', sans-serif;
+}
+
+.font-nanum-square-neo {
+  font-family: var(--font-nanum-square-neo);
+}
+
+.font-pretendard {
+  font-family: var(--font-pretendard);
+}
+
+.font-pretendard-variable {
+  font-family: var(--font-pretendard-variable);
+}

@@ -34,7 +34,7 @@
 
 .today-card h2 {
   margin: 0;
-  color: #333;
+  color: var(--color-text-main);
   font-size: 22px;
   font-weight: 800;
   line-height: 120%;
@@ -80,7 +80,7 @@
 }
 
 .today-card__price mark {
-  color: #2b2b2b;
+  color: var(--color-text-main);
   background: var(--color-primary-100);
   font-size: 18px;
   font-weight: 800;
