@@ -6,9 +6,9 @@
 
 .login-welcome__title {
   margin: 0 0 0 20px;
-  color: #1e1e1e;
-  font-family: 'Pretendard', sans-serif;
-  font-size: 25px;
+  color: #1a1a1a;
+  font-family: var(--font-nanum-square-neo);
+  font-size: 24px;
   font-weight: 400;
   line-height: 130%;
   letter-spacing: 0;
