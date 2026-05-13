@@ -28,7 +28,7 @@ function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
       />
 
       <div className="community-content">
-        <VoteList filter="active" variant="featured" />
+        <VoteList filter="active" variant="featured" onMoreClick={() => onSelectTab('vote')} />
         <PopularRecipeSection recipes={popularRecipes} />
         <PopularPosts posts={hotPosts} />
         <RankingBanner rankings={dorakRankings} />
