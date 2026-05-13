@@ -8,7 +8,10 @@
   --color-bg-sub: #fffdf7;
   --color-text-main: #1a1a1a;
   --color-text-sub: #313131;
+  --color-text-disabled: #a3a3a3;
+  --color-border: #d1d1d1;
   --color-disabled: #9a9a9a;
+  --layout-padding-x: 20px;
 
   --color-primary: #ffd515;
   --color-primary-rgb: 255 213 21;
@@ -122,6 +125,11 @@ a {
 
 button {
   cursor: pointer;
+}
+
+.layout-padding-x {
+  padding-right: var(--layout-padding-x);
+  padding-left: var(--layout-padding-x);
 }
 
 .app-shell {

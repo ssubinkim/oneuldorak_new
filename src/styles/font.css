@@ -128,16 +128,27 @@
   --font-nanum-square-neo: 'NanumSquareNeo', 'Pretendard', sans-serif;
   --font-pretendard: 'Pretendard', 'NanumSquareNeo', sans-serif;
   --font-pretendard-variable: 'Pretendard Variable', 'Pretendard', 'NanumSquareNeo', sans-serif;
+  --font-line-height-default: 130%;
+  --font-letter-spacing-default: -0.08px;
 }
 
 .font-nanum-square-neo {
   font-family: var(--font-nanum-square-neo);
+  font-style: normal;
+  line-height: var(--font-line-height-default);
+  letter-spacing: var(--font-letter-spacing-default);
 }
 
 .font-pretendard {
   font-family: var(--font-pretendard);
+  font-style: normal;
+  line-height: var(--font-line-height-default);
+  letter-spacing: var(--font-letter-spacing-default);
 }
 
 .font-pretendard-variable {
   font-family: var(--font-pretendard-variable);
+  font-style: normal;
+  line-height: var(--font-line-height-default);
+  letter-spacing: var(--font-letter-spacing-default);
 }
