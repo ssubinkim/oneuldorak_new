@@ -18,11 +18,11 @@ function RelatedProducts({ onSelect }: { onSelect?: (product: Product) => void }
   return (
     <div style={{ padding: '24px 0 0' }}>
       <div style={{
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '0 16px', marginBottom: 12,
+        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
+        padding: '0 16px', marginBottom: 16,
       }}>
-        <span style={{ fontSize: 14, fontWeight: 700, color: '#111' }}>이 재료는 어떠세요 ?</span>
-        <span style={{ fontSize: 12, color: '#888', cursor: 'pointer', whiteSpace: 'nowrap' }}>전체보기 &gt;</span>
+        <span style={{ fontSize: 18, fontWeight: 500, color: '#3c3c3c' }}>이 재료는 어떠세요 ?</span>
+        <span style={{ fontSize: 14, color: '#888', cursor: 'pointer', whiteSpace: 'nowrap' }}>전체보기 &gt;</span>
       </div>
       <div style={{ display: 'flex', gap: 10, overflowX: 'auto', padding: '0 16px', scrollbarWidth: 'none' }}>
         {RELATED.map(p => (

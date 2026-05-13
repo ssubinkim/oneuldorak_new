@@ -11,8 +11,8 @@
 }
 
 .store-detail__nav-title {
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 600;
   color: #111;
   flex: 1;
   text-align: left;
@@ -82,19 +82,19 @@
 
 .store-detail__product-name {
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 500;
   color: #111;
   margin: 0 0 8px;
 }
 
 .store-detail__product-desc {
-  font-size: 13px;
+  font-size: 14px;
   color: #888;
   margin: 0 0 2px;
 }
 
 .store-detail__product-kcal {
-  font-size: 12px;
+  font-size: 14px;
   color: #aaa;
   margin: 0 0 14px;
 }
@@ -108,7 +108,7 @@
 
 .store-detail__product-price {
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 400;
   color: #111;
 }
 
@@ -142,18 +142,19 @@
 }
 
 .store-detail__benefit-label {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 500;
   color: #888;
   width: 28px;
   flex-shrink: 0;
-  padding-top: 1px;
+  align-self: flex-start;
 }
 
 .store-detail__benefit-content {
-  font-size: 12px;
+  font-size: 14px;
   color: #444;
   line-height: 1.8;
+  align-self: flex-start;
 }
 
 /* 탭 바 */
@@ -178,7 +179,7 @@
 }
 
 .store-detail__tab--active {
-  font-weight: 700;
+  font-weight: 600;
   color: #111;
   border-bottom-color: #ffdb78;
 }
