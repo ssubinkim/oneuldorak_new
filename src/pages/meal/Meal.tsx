@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import Header from '../../components/common/layout/Header'
 import TodayMenuList from '../../components/meal/dashboard/TodayMenuList'
 import WeeklyPlanSection from '../../components/meal/dashboard/WeeklyPlanSection'
 import IngredientSection from '../../components/meal/dashboard/IngredientSection'
 import RecipeCarousel from '../../components/meal/dashboard/RecipeCarousel'
+import ShoppingChecklistBottomSheet from '../../components/meal/common/ShoppingChecklistBottomSheet'
 import ChatBotbtn from '../../components/chatbot/ChatBotbtn'
 import '../../styles/Tailwind.css'
 import './Meal.css'
@@ -18,6 +20,8 @@ function BellIcon() {
 }
 
 function Meal() {
+  const [isShoppingSheetOpen, setIsShoppingSheetOpen] = useState(false)
+
   return (
     <div className="app-shell">
       <div className="app-screen meal-screen">
@@ -45,7 +49,7 @@ function Meal() {
               </div>
               <WeeklyPlanSection onMore={() => { window.location.hash = '#/meal-weekly-plan' }} />
               <IngredientSection
-                onAddIngredient={() => { window.location.hash = '#/meal-grocery' }}
+                onAddIngredient={() => setIsShoppingSheetOpen(true)}
                 onShowAll={() => { window.location.hash = '#/meal-storage' }}
               />
               <RecipeCarousel />
@@ -55,6 +59,10 @@ function Meal() {
         </div>
 
         <ChatBotbtn />
+        <ShoppingChecklistBottomSheet
+          isOpen={isShoppingSheetOpen}
+          onClose={() => setIsShoppingSheetOpen(false)}
+        />
         <BottomNav />
       </div>
     </div>

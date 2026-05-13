@@ -40,10 +40,12 @@ function RecipeDetailIngredients({
         ))}
       </ul>
 
-      <button type="button" className="recipe-detail-cart-button" onClick={onShoppingChecklistClick}>
-        <StatIcon type="basket" />
-        장보기 체크리스트 담기 ({checkedCount}/{ingredients.length})
-      </button>
+      {onShoppingChecklistClick ? (
+        <button type="button" className="recipe-detail-cart-button" onClick={onShoppingChecklistClick}>
+          <StatIcon type="basket" />
+          장보기 체크리스트 담기 ({checkedCount}/{ingredients.length})
+        </button>
+      ) : null}
     </section>
   )
 }

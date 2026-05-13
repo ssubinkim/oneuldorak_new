@@ -3,9 +3,9 @@ import chiliPepperIcon from '../../assets/images/food_icon/chili_pepper.svg'
 import eggIcon from '../../assets/images/food_icon/egg.svg'
 import garlicIcon from '../../assets/images/food_icon/garlic.svg'
 import greenOnionIcon from '../../assets/images/food_icon/green_onion.svg'
-import bulgogiImage from '../meal/images/bulgogi.png'
-import tunaMayoImage from '../meal/images/chamchimayo.png'
-import kimchiRiceImage from '../meal/images/kimbok.png'
+import bulgogiImage from '../../assets/images/food_imges/bulgogi.png'
+import tunaMayoImage from '../../assets/images/food_imges/chamchimayo.png'
+import kimchiRiceImage from '../../assets/images/food_imges/kimbok.png'
 
 export type RecipeId = 'recipe-1' | 'recipe-2' | 'recipe-3'
 

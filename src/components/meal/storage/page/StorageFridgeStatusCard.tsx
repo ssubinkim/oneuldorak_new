@@ -1,8 +1,8 @@
-import bookOpenImg from '../../images/book_open.svg'
-import indexGreenImg from '../../images/index_green.svg'
-import indexRedImg from '../../images/index_red.svg'
-import indexYellowImg from '../../images/index_yellow.svg'
-import refrigeImg from '../../images/refrige.svg'
+import bookOpenImg from '../../../../assets/icons/meal_book_open.svg'
+import indexGreenImg from '../../../../assets/icons/index_green.svg'
+import indexRedImg from '../../../../assets/icons/index_red.svg'
+import indexYellowImg from '../../../../assets/icons/index_yellow.svg'
+import refrigeImg from '../../../../assets/icons/refrige.svg'
 
 type StorageFridgeStatusCardProps = {
   total: number

@@ -4,7 +4,6 @@ import RecipeDetailHero from '../../components/recipedetailpage/RecipeDetailHero
 import RecipeDetailIngredients from '../../components/recipedetailpage/RecipeDetailIngredients'
 import RecipeDetailIntro from '../../components/recipedetailpage/RecipeDetailIntro'
 import RecipeDetailMethod from '../../components/recipedetailpage/RecipeDetailMethod'
-import ShoppingChecklistBottomSheet from '../../components/meal/common/ShoppingChecklistBottomSheet'
 import RecipeDetailSimilar from '../../components/recipedetailpage/RecipeDetailSimilar'
 import RecipeDetailTools from '../../components/recipedetailpage/RecipeDetailTools'
 import RecipeDetailTopBar from '../../components/recipedetailpage/RecipeDetailTopBar'
@@ -38,7 +37,6 @@ function isPersistableRecipeId(recipeId: string): recipeId is 'recipe-1' | 'reci
 }
 
 function RecipeDetailPage({ recipeId, onBack, overrideRecipe = null }: RecipeDetailPageProps) {
-  const [isShoppingSheetOpen, setIsShoppingSheetOpen] = useState(false)
   const [recipe, setRecipe] = useState(() => overrideRecipe ?? getRecipeDetail(recipeId))
   const [comments, setComments] = useState<RecipeComment[]>(recipeComments)
   const [checkedIngredientIds, setCheckedIngredientIds] = useState<string[]>([])
@@ -141,7 +139,6 @@ function RecipeDetailPage({ recipeId, onBack, overrideRecipe = null }: RecipeDet
           ingredients={ingredients}
           checkedIngredientIds={checkedIngredientIds}
           onToggleIngredient={handleToggleIngredient}
-          onShoppingChecklistClick={() => setIsShoppingSheetOpen(true)}
         />
         <RecipeDetailTools tools={cookingTools} />
         <RecipeDetailMethod
@@ -152,11 +149,6 @@ function RecipeDetailPage({ recipeId, onBack, overrideRecipe = null }: RecipeDet
         <RecipeDetailComments comments={comments} onAddComment={handleAddComment} />
         <RecipeDetailSimilar recipes={similarRecipes} />
       </article>
-
-      <ShoppingChecklistBottomSheet
-        isOpen={isShoppingSheetOpen}
-        onClose={() => setIsShoppingSheetOpen(false)}
-      />
     </main>
   )
 }

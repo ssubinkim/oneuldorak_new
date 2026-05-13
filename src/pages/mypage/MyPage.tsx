@@ -10,7 +10,7 @@ import MyPageShell from '../../components/mypage/my-page/MyPageShell'
 import MyPageStats from '../../components/mypage/my-page/MyPageStats'
 import type { MyPageStatItem } from '../../components/mypage/my-page/MyPageStats'
 import PointBottomSheet from '../../components/mypage/my-page/PointBottomSheet'
-import profileImg from '../../components/mypage/images/profile 1.svg?url'
+import profileImg from '../../assets/icons/profile 1.svg?url'
 import '../../components/mypage/my-page/MyPage.css'
 
 const ATTENDANCE: DayData[] = [

@@ -1,7 +1,7 @@
-import recipe1 from '../meal/images/bibimbap.png'
-import recipe2 from '../meal/images/bulgogi.png'
-import recipe3 from '../meal/images/chamchimayo.png'
-import recipe4 from '../meal/images/kimbok.png'
+import recipe1 from '../../assets/images/food_imges/bibimbap.png'
+import recipe2 from '../../assets/images/food_imges/bulgogi.png'
+import recipe3 from '../../assets/images/food_imges/chamchimayo.png'
+import recipe4 from '../../assets/images/food_imges/kimbok.png'
 
 const RECIPES = [
   { id: '1', text: '비빔밥을 한번 먹어보세요 속이 든든해져요', image: recipe1 },

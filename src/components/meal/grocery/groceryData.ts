@@ -9,12 +9,12 @@ import {
   carrotImg,
   garlicImg,
 } from '../mealData'
-import bibimbapImg from '../images/bibimbap.png'
-import bulgogiImg from '../images/bulgogi.png'
-import chamchiImg from '../images/chamchimayo.png'
-import kimbokImg from '../images/kimbok.png'
-import omuriceImg from '../images/omurice.png'
-import ssoyaImg from '../images/ssoya.png'
+import bibimbapImg from '../../../assets/images/food_imges/bibimbap.png'
+import bulgogiImg from '../../../assets/images/food_imges/bulgogi.png'
+import chamchiImg from '../../../assets/images/food_imges/chamchimayo.png'
+import kimbokImg from '../../../assets/images/food_imges/kimbok.png'
+import omuriceImg from '../../../assets/images/food_imges/omurice.png'
+import ssoyaImg from '../../../assets/images/food_imges/ssoya.png'
 import type { GroceryTab, RecommendItem, ShoppingItem, StorageRecipe } from './groceryTypes'
 
 export const INITIAL_ITEMS: ShoppingItem[] = [
