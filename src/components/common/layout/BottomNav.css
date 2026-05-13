@@ -93,7 +93,7 @@
   bottom: -2px;
   left: 50%;
   z-index: 0;
-  width: 30px;
+  width: 36px;
   height: 2px;
   border-radius: 999px;
   background: #ffd515;
@@ -101,6 +101,7 @@
   transform: translateX(-50%) translateY(4px) scaleX(0.18);
   transform-origin: center;
   pointer-events: none;
+  will-change: transform, opacity;
   transition:
     opacity 120ms ease,
     transform 220ms ease-out;
@@ -153,23 +154,29 @@
   gap: 0;
   width: var(--bottom-nav-home-size);
   height: var(--bottom-nav-home-size);
-  color: #7f858d;
+  color: #6d7480;
   background:
-    radial-gradient(circle at 30% 22%, rgba(255, 255, 255, 0.72) 0 16%, transparent 42%),
-    radial-gradient(circle at 74% 34%, rgba(255, 255, 255, 0.34) 0 13%, transparent 40%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.34), rgba(232, 238, 248, 0.12) 54%, rgba(255, 255, 255, 0.28));
-  border: 0;
+    radial-gradient(circle at 32% 22%, rgba(255, 255, 255, 0.7) 0 14%, transparent 40%),
+    radial-gradient(circle at 74% 38%, rgba(255, 255, 255, 0.32) 0 12%, transparent 42%),
+    linear-gradient(152deg, rgba(255, 255, 255, 0.42), rgba(235, 241, 252, 0.18) 54%, rgba(255, 255, 255, 0.26));
+  border: 1px solid rgba(255, 255, 255, 0.58);
   border-radius: 50%;
   box-sizing: border-box;
   box-shadow:
-    0 14px 24px rgba(24, 28, 36, 0.2),
-    0 2px 10px rgba(255, 255, 255, 0.5),
-    inset 0 10px 20px rgba(255, 255, 255, 0.36),
-    inset 0 -16px 24px rgba(110, 120, 136, 0.18);
-  backdrop-filter: blur(28px) saturate(190%) brightness(1.08);
-  -webkit-backdrop-filter: blur(28px) saturate(190%) brightness(1.08);
+    0 12px 24px rgba(25, 35, 56, 0.18),
+    0 4px 14px rgba(255, 255, 255, 0.42),
+    inset 0 10px 18px rgba(255, 255, 255, 0.32),
+    inset 0 -14px 20px rgba(112, 124, 144, 0.16);
+  backdrop-filter: blur(24px) saturate(170%) brightness(1.06);
+  -webkit-backdrop-filter: blur(24px) saturate(170%) brightness(1.06);
   transform: translateX(-50%);
   overflow: hidden;
+  isolation: isolate;
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 180ms ease;
 }
 
 .bottom-nav__link--home::before,
@@ -182,22 +189,14 @@
 .bottom-nav__link--home::before {
   inset: 0;
   background:
-    linear-gradient(160deg, rgba(255, 255, 255, 0.48) 0 20%, transparent 45%),
-    radial-gradient(circle at 58% 72%, rgba(145, 154, 168, 0.2), transparent 34%);
+    linear-gradient(160deg, rgba(255, 255, 255, 0.44) 0 22%, transparent 46%),
+    radial-gradient(circle at 60% 74%, rgba(136, 150, 171, 0.2), transparent 36%);
   border-radius: 50%;
-  filter: blur(0.2px);
+  filter: blur(0.4px);
 }
 
 .bottom-nav__link--home::after {
-  top: 16%;
-  right: 12px;
-  width: 13px;
-  height: 56%;
-  background:
-    linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.42), transparent);
-  border-radius: 999px;
-  filter: blur(4px);
-  transform: rotate(8deg);
+  display: none;
 }
 
 .bottom-nav__link--home .bottom-nav__label {
@@ -238,6 +237,7 @@
 .bottom-nav__link[aria-current='page']:not(.bottom-nav__link--home)::after {
   opacity: 1;
   transform: translateX(-50%) translateY(0) scaleX(1);
+  animation: bottom-nav-line-grow 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .bottom-nav__link:not(.bottom-nav__link--home):active {
@@ -260,8 +260,9 @@
 .bottom-nav__link--home .bottom-nav__icon {
   width: var(--bottom-nav-home-icon-size);
   height: var(--bottom-nav-home-icon-size);
-  transform: scale(1.08);
+  transform: scale(1.03);
   transform-origin: center;
+  filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.22));
 }
 
 .bottom-nav__link--home .bottom-nav__icon-slot {
@@ -278,31 +279,50 @@
 .bottom-nav__link--home[aria-current='page'] {
   color: #151515;
   background:
-    linear-gradient(155deg, rgba(255, 255, 255, 0.62) 0 18%, transparent 46%),
-    linear-gradient(145deg, rgba(255, 230, 112, 0.94), rgba(255, 213, 21, 0.82) 52%, rgba(255, 236, 152, 0.86));
+    linear-gradient(156deg, rgba(255, 255, 255, 0.68) 0 18%, transparent 46%),
+    radial-gradient(circle at 50% 84%, rgba(255, 213, 21, 0.52) 0 40%, rgba(255, 213, 21, 0.14) 68%, transparent 86%),
+    linear-gradient(148deg, rgba(255, 255, 255, 0.52), rgba(241, 246, 255, 0.24) 54%, rgba(255, 255, 255, 0.3));
+  border-color: rgba(255, 236, 168, 0.92);
   box-shadow:
-    0 14px 24px rgba(24, 28, 36, 0.16),
-    0 4px 16px rgba(255, 213, 21, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.72),
-    inset 0 -14px 22px rgba(176, 130, 0, 0.12);
-  backdrop-filter: blur(22px) saturate(160%) brightness(1.04);
-  -webkit-backdrop-filter: blur(22px) saturate(160%) brightness(1.04);
+    0 12px 22px rgba(24, 31, 44, 0.15),
+    0 6px 16px rgba(255, 213, 21, 0.34),
+    0 0 0 1px rgba(255, 223, 120, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.74),
+    inset 0 -14px 20px rgba(156, 134, 74, 0.16);
+  backdrop-filter: blur(24px) saturate(166%) brightness(1.05);
+  -webkit-backdrop-filter: blur(24px) saturate(166%) brightness(1.05);
+  transform: translateX(-50%) scale(1.04);
 }
 
 .bottom-nav__link--home[aria-current='page']::before {
   background:
-    radial-gradient(circle at 34% 24%, rgba(255, 255, 255, 0.5), transparent 30%),
-    radial-gradient(circle at 66% 78%, rgba(255, 196, 0, 0.16), transparent 38%);
+    radial-gradient(circle at 34% 24%, rgba(255, 255, 255, 0.58), transparent 28%),
+    radial-gradient(circle at 66% 78%, rgba(255, 206, 71, 0.2), transparent 44%);
 }
 
-.bottom-nav__link--home[aria-current='page']::after {
-  top: 16%;
-  right: 14px;
-  width: 10px;
-  height: 48%;
-  background:
-    linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.48), transparent);
-  opacity: 0.8;
+.bottom-nav__link--home[aria-current='page'] .bottom-nav__icon-slot {
+  box-shadow: none;
+}
+
+.bottom-nav__link--home[aria-current='page'] .bottom-nav__icon {
+  filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.28)) drop-shadow(0 0 6px rgba(255, 213, 21, 0.24));
+}
+
+@keyframes bottom-nav-line-grow {
+  0% {
+    transform: translateX(-50%) translateY(2px) scaleX(0.2);
+    opacity: 0.6;
+  }
+
+  65% {
+    transform: translateX(-50%) translateY(0) scaleX(1.08);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(0) scaleX(1);
+    opacity: 1;
+  }
 }
 
 @media (min-width: 1024px) {
