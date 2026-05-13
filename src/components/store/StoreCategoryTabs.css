@@ -20,8 +20,9 @@
 .store-category-tabs__tab {
   flex: 0 0 auto;
   padding: 12px 16px;
-  font-size: 14px;
-  font-weight: 500;
+  font-family: 'Pretendard', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
   color: #aaa;
   background: none;
   border: none;

@@ -1,5 +1,6 @@
 .pdesc__info {
-  padding: 20px 16px 0;
+  padding: 20px 16px;
+  background: #fffdf2;
 }
 
 .pdesc__info-title {
@@ -70,13 +71,13 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
 
 .pdesc__review-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: #111;
+  font-size: 18px;
+  font-weight: 500;
+  color: #3c3c3c;
   display: block;
   margin-bottom: 4px;
 }
@@ -99,7 +100,7 @@
 }
 
 .pdesc__review-more {
-  font-size: 12px;
+  font-size: 14px;
   color: #888;
   white-space: nowrap;
 }

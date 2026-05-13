@@ -14,7 +14,7 @@ const SLIDES = [
   { id: 5, image: slide5, title: '식탁에도 당신의 취향을 담으세요', subtitle: 'Color Your Table, Color Your Life' },
 ]
 
-const DURATION = 3000
+const DURATION = 5000
 const N = SLIDES.length
 
 function StoreBanner() {
@@ -52,11 +52,14 @@ function StoreBanner() {
           className="store-banner__track"
           style={{ transform: `translateX(-${current * 100}%)` }}
         >
-          {SLIDES.map(slide => (
+          {SLIDES.map((slide, index) => (
             <div key={slide.id} className="store-banner__card">
               <img className="store-banner__image" src={slide.image} alt={slide.title} />
               <div className="store-banner__overlay" />
-              <div className="store-banner__text">
+              <div
+                key={index === current ? `text-active-${current}` : `text-static-${slide.id}`}
+                className="store-banner__text"
+              >
                 <p className="store-banner__title">{slide.title}</p>
                 <p className="store-banner__subtitle">{slide.subtitle}</p>
               </div>

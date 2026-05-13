@@ -1,4 +1,8 @@
 import './ProductDescTab.css'
+import subreview1 from '../images/subreview/subreview_1.png'
+import subreview2 from '../images/subreview/subreview_2.png'
+import subreview3 from '../images/subreview/subreview_3.png'
+import subreview4 from '../images/subreview/subreview_4.png'
 import RelatedRecipes from '../RelatedRecipes'
 import RelatedProducts from '../RelatedProducts'
 import { type Product } from '../ProductCard'
@@ -96,8 +100,8 @@ function ProductDescTab({ product, reviewCount, onGoToReview, onSelectProduct }:
         </div>
         {reviewCount > 0 && (
           <div className="pdesc__review-thumbs">
-            {[0, 1, 2, 3].map(i => (
-              <div key={i} className="pdesc__review-thumb" />
+            {[subreview1, subreview2, subreview3, subreview4].map((src, i) => (
+              <img key={i} src={src} alt={`리뷰 이미지 ${i + 1}`} className="pdesc__review-thumb" style={{ objectFit: 'cover' }} />
             ))}
           </div>
         )}
