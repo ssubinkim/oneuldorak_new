@@ -38,23 +38,38 @@
 .vote-featured-section {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 24px;
   width: 100%;
+  padding-top: 20px;
 }
 
 .vote-featured-section__header {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
+  gap: 8px;
+}
+
+.vote-featured-section__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vote-featured-section__title-group h2 {
+  margin: 0;
 }
 
 .vote-featured-section__more {
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   padding: 0;
-  color: #9097a3;
+  color: #767676;
   background: transparent;
   border: 0;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   font-family: 'Pretendard', sans-serif;
   line-height: 130%;
@@ -63,9 +78,9 @@
 }
 
 .vote-featured-section__subtitle {
-  margin: 0 0 8px;
-  color: #7f8590;
-  font-size: 16px;
+  margin: 0;
+  color: #636363;
+  font-size: 14px;
   font-weight: 400;
   font-family: 'Pretendard', sans-serif;
   line-height: 130%;
@@ -82,7 +97,7 @@
   justify-content: center;
   height: 24px;
   padding: 0 7px;
-  color: #111;
+  color: #1a1a1a;
   background: #ffec8b;
   border-radius: 999px;
   font-size: 13px;
@@ -91,21 +106,21 @@
 }
 
 .vote-card-question {
-  margin: 22px 0 0;
-  color: #20242c;
+  margin: 0;
+  color: #3c3c3c;
   font-size: 16px;
   font-weight: 500;
   font-family: 'Pretendard', sans-serif;
-  line-height: 1.45;
+  line-height: 130%;
   letter-spacing: -0.08px;
 }
 
 .vote-card-subtitle {
   margin: 6px 0 0;
-  color: #7f8590;
-  font-size: 13px;
+  color: #636363;
+  font-size: 14px;
   font-family: 'Pretendard', sans-serif;
-  line-height: 1.45;
+  line-height: 130%;
   letter-spacing: -0.08px;
 }
 
@@ -124,11 +139,11 @@
 }
 
 .vote-choice-list button {
-  min-height: 39px;
+  min-height: 46px;
   padding: 0 12px;
-  color: #20242c;
+  color: #3c3c3c;
   background: #fff;
-  border: 1px solid #e7e3de;
+  border: 1px solid #D1D1D1;
   border-radius: 10px;
   text-align: left;
   font-size: 14px;
@@ -144,9 +159,9 @@
   width: 100%;
   padding: 0;
   overflow: hidden;
-  border: 1px solid #e7e3de;
+  border: 1px solid #d1d1d1;
   border-radius: 10px;
-  background: #fff;
+  background: #fffffd;
   text-align: left;
   font: inherit;
   cursor: pointer;

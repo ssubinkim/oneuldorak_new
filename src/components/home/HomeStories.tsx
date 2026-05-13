@@ -1,3 +1,4 @@
+import { ArrowRightIcon } from '../common/ui/ArrowRightIcon'
 import SequentialHighlightList from '../effects/stagger/SequentialHighlightList'
 import './HomeStories.css'
 
@@ -19,7 +20,7 @@ function HomeStories() {
           <h2 id="storiesTitle">도락이들의 이야기</h2>
           <p>이번주 인기를 TOP3</p>
         </div>
-        <a href="#more-stories">더보기 〉</a>
+        <a href="#more-stories">더보기 <ArrowRightIcon /></a>
       </div>
       <div className="story-list">
         <SequentialHighlightList

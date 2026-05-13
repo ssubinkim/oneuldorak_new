@@ -1,3 +1,4 @@
+import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import './PopularPosts.css'
 
 type HotPost = {
@@ -16,7 +17,7 @@ function PopularPosts({ posts }: PopularPostsProps) {
     <section className="hot-posts">
       <div className="hot-posts__header">
         <h2>실시간 인기글 TOP3</h2>
-        <button type="button">더보기 ›</button>
+        <button type="button">더보기 <ArrowRightIcon /></button>
       </div>
       <div className="hot-posts__card">
         {posts.map((post, index) => (

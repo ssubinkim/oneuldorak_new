@@ -4,7 +4,7 @@ import heartIcon from '../../assets/icons/heart.svg'
 import kimchiRiceImage from '../meal/images/kimbok.png'
 import spamMayoImage from '../meal/images/chamchimayo.png'
 import bannerImage from './images/banner.png'
-import { ChevronIcon } from './ChevronIcon'
+import { ArrowRightIcon } from '../common/ui/ArrowRightIcon'
 import './HomeRecipeSection.css'
 
 type HomeRecipeCard = {
@@ -84,10 +84,7 @@ function HomeRecipeSection() {
           </h2>
           <p>제일 많이 본 인기있는 레시피 모음</p>
         </div>
-        <a href="#more-recipes">
-          더보기
-          <ChevronIcon />
-        </a>
+        <a href="#more-recipes">더보기 <ArrowRightIcon /></a>
       </div>
 
       <div className="home-recipe-section__grid">

@@ -32,7 +32,7 @@ function BoardPage({ onSelectTab, onOpenDetail, extraPosts = [] }: BoardPageProp
       <CommunityBanner />
       <CommunityStickyHeader
         activeTab="free"
-        tabsClassName="free-detail-tabs"
+        tabsClassName="community-tabs"
         isCompact={isHeaderCompact}
         onSelectTab={onSelectTab}
       />

@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import { awardVotePoint } from '../../common/usePoints'
 import VoteCompleteModal from '../common/VoteCompleteModal'
 import { useVoteSelections } from './useVoteSelections'
@@ -289,16 +290,18 @@ function VoteCard({
     return (
       <div className="vote-featured-section">
         <div className="vote-featured-section__header">
-          <h2>{card.heading}</h2>
+          <div className="vote-featured-section__title-group">
+            <h2>{card.heading}</h2>
+            {card.subtitle && (
+              <p className="vote-featured-section__subtitle">{card.subtitle}</p>
+            )}
+          </div>
           {onMoreClick && (
             <button type="button" className="vote-featured-section__more" onClick={onMoreClick}>
-              더보기 ›
+              더보기 <ArrowRightIcon />
             </button>
           )}
         </div>
-        {card.subtitle && (
-          <p className="vote-featured-section__subtitle">{card.subtitle}</p>
-        )}
         <article className="vote-card vote-card--featured">
           <p className="vote-card-question">Q. {card.question}</p>
           {choices}
