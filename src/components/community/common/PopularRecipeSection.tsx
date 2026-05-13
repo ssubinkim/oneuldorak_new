@@ -1,3 +1,4 @@
+import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import './PopularRecipeSection.css'
 
 export type RecipeCard = {
@@ -21,8 +22,7 @@ function PopularRecipeSection({ recipes, showMore = true }: PopularRecipeSection
         <h2>인기 레시피</h2>
         {showMore && (
           <button type="button" className="recipe-section__more">
-            더보기
-            <span aria-hidden="true">›</span>
+            더보기 <ArrowRightIcon />
           </button>
         )}
       </div>

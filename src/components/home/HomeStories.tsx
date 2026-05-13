@@ -1,3 +1,4 @@
+import { ArrowRightIcon } from '../common/ui/ArrowRightIcon'
 import SequentialHighlightList from '../effects/stagger/SequentialHighlightList'
 import chatImage from './images/chat.png'
 import './HomeStories.css'
@@ -25,7 +26,7 @@ function HomeStories() {
           <a className="stories-section__link" href="#more-stories">
             이번주 인기글 TOP3
             <br />
-            보러가기 &gt;
+            보러가기 <ArrowRightIcon />
           </a>
         </div>
         <img className="stories-section__character" src={chatImage} alt="" aria-hidden="true" />

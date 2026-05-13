@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import { awardVotePoint } from '../../common/usePoints'
 import VoteCompleteModal from '../common/VoteCompleteModal'
 import { useVoteSelections } from './useVoteSelections'
@@ -27,34 +28,20 @@ type VoteListProps = {
   filter: VoteFilter
   variant?: 'featured' | 'list'
   extraVotes?: VoteCardItem[]
+  onMoreClick?: () => void
 }
 
-const DAY_MS = 24 * 60 * 60 * 1000
-
-function getSeoulDate(dayOffset = 0) {
-  const targetDate = new Date(Date.now() + dayOffset * DAY_MS)
-  const dateParts = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'Asia/Seoul',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).formatToParts(targetDate)
-  const year = dateParts.find((part) => part.type === 'year')?.value ?? ''
-  const month = dateParts.find((part) => part.type === 'month')?.value ?? ''
-  const day = dateParts.find((part) => part.type === 'day')?.value ?? ''
-
-  return `${year}.${month}.${day}`
-}
-
-function getDeadline(dayOffset: number, time = '18:00') {
-  return `~ ${getSeoulDate(dayOffset)} ${time}`
+function getDeadline(dayOffset: number) {
+  if (dayOffset === 0) return 'D-Day'
+  return `D-${dayOffset}`
 }
 
 const voteCards: VoteCardItem[] = [
   {
     id: 'vote-today',
-    heading: '오늘의 투표',
+    heading: '도락이들의 선택은?',
     question: '오늘 점심 도시락으로 뭐가 좋을까요?',
+    subtitle: '취향 투표하고 포인트까지 냠냠',
     reward: '+1p',
     participants: 53,
     deadline: () => getDeadline(0),
@@ -67,6 +54,7 @@ const voteCards: VoteCardItem[] = [
   },
   {
     id: 'vote-fail',
+    heading: '도락이들의 선택은?',
     question: '가장 실패 없는 도시락 메뉴는?',
     subtitle: '실패 경험을 공유해요',
     reward: '+1p',
@@ -84,7 +72,7 @@ const voteCards: VoteCardItem[] = [
     subtitle: '한 주를 시작할 때 가장 먹고 싶은 도시락을 골라주세요',
     reward: '+1p',
     participants: 62,
-    deadline: () => getDeadline(4, '12:00'),
+    deadline: () => getDeadline(4),
     options: [
       { label: '참치마요 덮밥', votes: 22 },
       { label: '샐러드 파스타', votes: 21 },
@@ -258,55 +246,85 @@ function VoteCard({
   selectedOption,
   onVote,
   isEnded,
+  onMoreClick,
 }: {
   card: VoteCardItem
   selectedOption?: string
   onVote: (cardId: string, optionLabel: string) => void
   isEnded?: boolean
+  onMoreClick?: () => void
 }) {
+  const isFeatured = Boolean(card.heading)
   const votedOptions = getVotedOptions(card.options, selectedOption)
   const deadlineText = typeof card.deadline === 'function' ? card.deadline() : card.deadline
   const participantCount = selectedOption ? card.participants + 1 : card.participants
 
+  const choices = selectedOption || isEnded ? (
+    <VoteResultList
+      options={votedOptions}
+      selectedOption={selectedOption}
+      onSelect={isEnded ? undefined : (optionLabel) => onVote(card.id, optionLabel)}
+    />
+  ) : (
+    <div className="vote-choice-list">
+      {card.options.map((option) => (
+        <button
+          type="button"
+          key={option.label}
+          onClick={() => onVote(card.id, option.label)}
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  )
+
+  const cardFooter = (
+    <footer className="vote-card-footer">
+      <span>현재 참여자 {participantCount}명</span>
+      <span>{isEnded ? '투표 종료' : `투표 마감 ${deadlineText}`}</span>
+    </footer>
+  )
+
+  if (isFeatured) {
+    return (
+      <div className="vote-featured-section">
+        <div className="vote-featured-section__header">
+          <div className="vote-featured-section__title-group">
+            <h2>{card.heading}</h2>
+            {card.subtitle && (
+              <p className="vote-featured-section__subtitle">{card.subtitle}</p>
+            )}
+          </div>
+          {onMoreClick && (
+            <button type="button" className="vote-featured-section__more" onClick={onMoreClick}>
+              더보기 <ArrowRightIcon />
+            </button>
+          )}
+        </div>
+        <article className="vote-card vote-card--featured">
+          <p className="vote-card-question">Q. {card.question}</p>
+          {choices}
+          {cardFooter}
+        </article>
+      </div>
+    )
+  }
+
   return (
-    <article className={`vote-card${card.heading ? ' vote-card--featured' : ''}`}>
+    <article className="vote-card">
       <div className="vote-card-title-wrap">
-        <h2>{card.heading || `Q. ${card.question}`}</h2>
+        <h2>{`Q. ${card.question}`}</h2>
         {card.reward && <span className="vote-card-reward">{card.reward}</span>}
       </div>
-
-      {card.heading && <p className="vote-card-question">Q. {card.question}</p>}
       {card.subtitle && <p className="vote-card-subtitle">{card.subtitle}</p>}
-
-      {selectedOption || isEnded ? (
-        <VoteResultList
-          options={votedOptions}
-          selectedOption={selectedOption}
-          onSelect={isEnded ? undefined : (optionLabel) => onVote(card.id, optionLabel)}
-        />
-      ) : (
-        <div className="vote-choice-list">
-          {card.options.map((option) => (
-            <button
-              type="button"
-              key={option.label}
-              onClick={() => onVote(card.id, option.label)}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      <footer className="vote-card-footer">
-        <span>현재 참여자 {participantCount}명</span>
-        <span>{deadlineText}</span>
-      </footer>
+      {choices}
+      {cardFooter}
     </article>
   )
 }
 
-function VoteList({ filter, variant = 'list', extraVotes = [] }: VoteListProps) {
+function VoteList({ filter, variant = 'list', extraVotes = [], onMoreClick }: VoteListProps) {
   const { selectedVotes, selectVoteOption } = useVoteSelections()
   const [voteModal, setVoteModal] = useState<{
     question: string
@@ -358,6 +376,7 @@ function VoteList({ filter, variant = 'list', extraVotes = [] }: VoteListProps) 
           selectedOption={selectedVotes[card.id]}
           onVote={handleVote}
           isEnded={filter === 'ended'}
+          onMoreClick={variant === 'featured' ? onMoreClick : undefined}
         />
       ))}
 

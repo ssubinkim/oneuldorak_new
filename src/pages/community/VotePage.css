@@ -20,67 +20,9 @@
   color: #1a1a1a;
   font-family: 'Pretendard', sans-serif;
   line-height: 130%;
-  letter-spacing: 0.08px;
+  letter-spacing: -0.08px;
 }
 
-.vote-page-tabs {
-  position: relative;
-  z-index: 3;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  align-items: flex-end;
-  height: 82px;
-  margin-top: -38px;
-  padding: 34px 20px 0;
-  box-sizing: border-box;
-  background: #fff;
-  border-radius: 22px 22px 0 0;
-  border: 0;
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.02);
-  font-family: 'Pretendard', sans-serif;
-}
-
-.vote-page-tabs::before {
-  content: '';
-  position: absolute;
-  right: 20px;
-  bottom: 0;
-  left: 20px;
-  height: 1px;
-  background: #d0d0d0;
-}
-
-.vote-page-tabs button {
-  position: relative;
-  display: grid;
-  place-items: center;
-  height: 48px;
-  padding: 0;
-  color: #8a8a8a;
-  background: transparent;
-  border: 0;
-  font-size: 18px;
-  font-weight: 400;
-  white-space: nowrap;
-}
-
-.vote-page-tabs button::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  background: transparent;
-}
-
-.vote-page-tabs button[aria-selected='true'] {
-  color: #202020;
-}
-
-.vote-page-tabs button[aria-selected='true']::after {
-  background: var(--color-primary);
-}
 
 .vote-page__body {
   padding: 30px 20px 42px;
@@ -88,23 +30,6 @@
 }
 
 @media (max-width: 360px) {
-  .vote-page-tabs {
-    height: 76px;
-    margin-top: -34px;
-    padding: 30px 18px 0;
-    border-radius: 20px 20px 0 0;
-  }
-
-  .vote-page-tabs::before {
-    right: 18px;
-    left: 18px;
-  }
-
-  .vote-page-tabs button {
-    height: 46px;
-    font-size: 17px;
-  }
-
   .vote-page__body {
     padding-right: 16px;
     padding-left: 16px;

@@ -21,7 +21,7 @@ function VotePage({ onSelectTab, extraVotes = [] }: VotePageProps) {
       <CommunityBanner />
       <CommunityStickyHeader
         activeTab="vote"
-        tabsClassName="vote-page-tabs"
+        tabsClassName="community-tabs"
         isCompact={isHeaderCompact}
         onSelectTab={onSelectTab}
       />

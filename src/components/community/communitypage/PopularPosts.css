@@ -12,7 +12,6 @@
 .hot-posts__header h2 {
   margin: 0;
   color: #1a1a1a;
-  font-size: 22px;
   font-weight: 800;
   font-family: 'Pretendard', sans-serif;
   line-height: 130%;
@@ -20,12 +19,18 @@
 }
 
 .hot-posts__header button {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   padding: 0;
-  color: #9097a3;
+  color: #767676;
   background: transparent;
   border: 0;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: -0.08px;
   cursor: pointer;
 }
 

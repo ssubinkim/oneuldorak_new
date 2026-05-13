@@ -23,7 +23,7 @@ function RecipePage({ onSelectTab, onOpenDetail, extraRecipes = [] }: RecipePage
       <CommunityBanner />
       <CommunityStickyHeader
         activeTab="recipe"
-        tabsClassName="recipe-page__tabs"
+        tabsClassName="community-tabs"
         isCompact={isHeaderCompact}
         onSelectTab={onSelectTab}
       />

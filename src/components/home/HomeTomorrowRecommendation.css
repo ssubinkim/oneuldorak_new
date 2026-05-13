@@ -22,10 +22,12 @@
 .home-section-title a {
   display: inline-flex;
   align-items: center;
-  color: #9b9b9b;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 120%;
+  gap: 3px;
+  color: #767676;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 130%;
+  letter-spacing: -0.08px;
   text-decoration: none;
 }
 
