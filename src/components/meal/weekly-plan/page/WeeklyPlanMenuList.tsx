@@ -1,6 +1,6 @@
 import { ChevronRight, ClockIcon } from './WeeklyPlanIcons'
 import { usageBadgeStyle } from './weeklyPlanConstants'
-import blueThink from '../../common/images/blue_think 1.svg'
+import blueThink from '../../../../assets/food_mascot/blue_think.svg'
 
 type WeeklyPlanMenuListProps = {
   month: number

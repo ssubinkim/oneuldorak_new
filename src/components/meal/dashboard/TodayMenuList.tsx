@@ -1,5 +1,5 @@
 import { getIngredientIconClassName, weeklyMenuData } from '../mealData'
-import bookOpenImg from '../images/book_open.svg'
+import bookOpenImg from '../../../assets/icons/meal_book_open.svg'
 import './TodayMenuList.css'
 
 interface Props {

@@ -1,6 +1,6 @@
-import googleIcon from '../images/google.svg'
-import kakaoIcon from '../images/kakao.svg'
-import naverIcon from '../images/naver.svg'
+import googleIcon from '../../../assets/icons/google.svg'
+import kakaoIcon from '../../../assets/icons/kakao.svg'
+import naverIcon from '../../../assets/icons/naver.svg'
 import './SocialLoginOptions.css'
 
 const socialOptions = [
