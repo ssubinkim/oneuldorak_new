@@ -1,80 +1,105 @@
-import { useState } from 'react'
-import CoverflowSwiper, { type CoverflowSlideItem } from '../effects/swiper/CoverFlow'
-import fridayMenuImage from '../meal/images/friday_menu.png'
-import saladRecipeImage from '../meal/images/recipe1.png'
-import saturdayMenuImage from '../meal/images/saturday_menu.png'
-import tuesdayMenuImage from '../meal/images/tuesday_menu.png'
-import wednesdayMenuImage from '../meal/images/wednesday_menu.png'
+import broThinkIcon from '../../assets/food_mascot/bro_think.svg'
+import eggThinkIcon from '../../assets/food_mascot/egg_think.svg'
+import heartIcon from '../../assets/icons/heart.svg'
+import kimchiRiceImage from '../meal/images/kimbok.png'
+import spamMayoImage from '../meal/images/chamchimayo.png'
+import bannerImage from './images/banner.png'
 import './HomeRecipeSection.css'
 
-const recipes: CoverflowSlideItem[] = [
+type HomeRecipeCard = {
+  id: string
+  channel: string
+  title: string
+  likes: number
+  image: string
+  icon: string
+  size: 'wide' | 'small'
+}
+
+const recipes: HomeRecipeCard[] = [
   {
-    id: 'recipe-1',
-    image: saladRecipeImage,
-    title: '샐러드',
-    likes: 36,
-    views: 13,
+    id: 'recipe-banner',
+    channel: '도시락락락',
+    title: '스팸 마요 덮밥',
+    likes: 452,
+    image: bannerImage,
+    icon: eggThinkIcon,
+    size: 'wide',
   },
   {
-    id: 'recipe-2',
-    image: fridayMenuImage,
-    title: '계란 볶음밥',
-    likes: 42,
-    views: 17,
+    id: 'recipe-kimchi-rice',
+    channel: '프로집밥러',
+    title: '깍두기 볶음밥',
+    likes: 375,
+    image: kimchiRiceImage,
+    icon: broThinkIcon,
+    size: 'small',
   },
   {
-    id: 'recipe-3',
-    image: tuesdayMenuImage,
-    title: '그릴드 치킨 샐러드',
-    likes: 31,
-    views: 11,
-  },
-  {
-    id: 'recipe-4',
-    image: wednesdayMenuImage,
-    title: '주먹밥 도시락',
-    likes: 28,
-    views: 9,
-  },
-  {
-    id: 'recipe-5',
-    image: saturdayMenuImage,
-    title: '김치 볶음밥',
-    likes: 55,
-    views: 21,
+    id: 'recipe-spam-mayo',
+    channel: '도시락락락',
+    title: '스팸 마요 덮밥',
+    likes: 452,
+    image: spamMayoImage,
+    icon: eggThinkIcon,
+    size: 'small',
   },
 ]
 
-function HomeRecipeSection() {
-  const [activeRecipeIndex, setActiveRecipeIndex] = useState(1)
-
+function ChevronRightIcon() {
   return (
-    <section className="recipe-section" aria-labelledby="recipeTitle">
-      <div className="home-section-title recipe-section__title">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="m9 5 7 7-7 7" />
+    </svg>
+  )
+}
+
+function HomeRecipeCardItem({ recipe }: { recipe: HomeRecipeCard }) {
+  return (
+    <article className={`home-recipe-card home-recipe-card--${recipe.size}`}>
+      <img className="home-recipe-card__image" src={recipe.image} alt={recipe.title} />
+      <div className="home-recipe-card__overlay">
+        <div className="home-recipe-card__bottom">
+          <div className="home-recipe-card__text">
+            <p className="home-recipe-card__channel">
+              <span aria-hidden="true">
+                <img src={recipe.icon} alt="" />
+              </span>
+              {recipe.channel}
+            </p>
+            <h3 className="home-recipe-card__title">{recipe.title}</h3>
+          </div>
+          <span className="home-recipe-card__likes">
+            <img className="home-recipe-card__heart-icon" src={heartIcon} alt="" aria-hidden="true" />
+            {recipe.likes}
+          </span>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function HomeRecipeSection() {
+  return (
+    <section className="home-recipe-section" aria-labelledby="recipeTitle">
+      <div className="home-recipe-section__header">
         <div>
-          <h2 id="recipeTitle">이 레시피 어때요?</h2>
+          <h2 id="recipeTitle">
+            도락이들의
+            <br />
+            도시락 모음.zip
+          </h2>
           <p>제일 많이 본 인기있는 레시피 모음</p>
         </div>
-        <a href="#more-recipes">더보기 〉</a>
+        <a href="#more-recipes">
+          더보기
+          <ChevronRightIcon />
+        </a>
       </div>
-      <div className="recipe-section__carousel">
-        <CoverflowSwiper
-          className="recipe-section__coverflow"
-          items={recipes}
-          initialSlide={activeRecipeIndex}
-          effectMode="slide"
-          spaceBetween={14}
-          autoplay
-          autoplayDelayMs={2000}
-          onActiveIndexChange={setActiveRecipeIndex}
-        />
-      </div>
-      <div className="home-dots recipe-section__dots" aria-hidden="true">
-        {recipes.map((recipe, index) => (
-          <span
-            key={recipe.id}
-            className={`home-dots__item${index === activeRecipeIndex ? ' home-dots__item--active' : ''}`}
-          />
+
+      <div className="home-recipe-section__grid">
+        {recipes.map((recipe) => (
+          <HomeRecipeCardItem recipe={recipe} key={recipe.id} />
         ))}
       </div>
     </section>

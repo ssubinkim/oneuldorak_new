@@ -13,7 +13,7 @@
 
 .home-section-title h2 {
   margin: 0;
-  color: #292929;
+  color: var(--color-text-main);
   font-size: 24px;
   font-weight: 800;
   line-height: 120%;
