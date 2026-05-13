@@ -60,10 +60,12 @@
 
 .free-post-card h2 {
   margin: 12px 0 0;
-  color: #171717;
-  font-size: 15px;
+  color: #1a1a1a;
+  font-size: 22px;
   font-weight: 800;
-  line-height: 1.35;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
 }
 
 .free-post-card__body {
@@ -127,7 +129,7 @@
 
 @media (max-width: 360px) {
   .free-post-card h2 {
-    font-size: 14px;
+    font-size: 18px;
   }
 
   .free-post-card__body,

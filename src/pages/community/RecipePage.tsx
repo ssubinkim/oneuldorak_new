@@ -1,6 +1,7 @@
 import CommunityStickyHeader from '../../components/community/common/CommunityStickyHeader'
 import PopularRecipeSection from '../../components/community/common/PopularRecipeSection'
 import useCommunityHeaderCollapse from '../../components/community/common/useCommunityHeaderCollapse'
+import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
 import { popularRecipes } from '../../components/community/communitypage/communityData'
 import RecipeList, { type RecipeItem } from '../../components/community/recipepage/RecipeList'
 import type { CommunityTabRoute } from './CommunityTabRoute'
@@ -19,6 +20,7 @@ function RecipePage({ onSelectTab, onOpenDetail, extraRecipes = [] }: RecipePage
 
   return (
     <main className="page-scroll recipe-page" onScroll={handleCommunityScroll}>
+      <CommunityBanner />
       <CommunityStickyHeader
         activeTab="recipe"
         tabsClassName="recipe-page__tabs"

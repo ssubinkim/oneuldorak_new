@@ -4,10 +4,12 @@
 
 .board-popular-posts h2 {
   margin: 0 0 20px;
-  color: #111;
-  font-size: 20px;
+  color: #1a1a1a;
+  font-size: 22px;
   font-weight: 800;
-  line-height: 1.2;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
 }
 
 .board-popular-posts__list {

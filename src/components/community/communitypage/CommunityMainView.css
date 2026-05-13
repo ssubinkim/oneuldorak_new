@@ -1,6 +1,25 @@
 .community-page {
-  background: #f2f2f3;
-  color: #222;
+  background: #fffffd;
+  color: #1a1a1a;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
+}
+
+.community-page h1 {
+  font-size: 24px;
+  color: #1a1a1a;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
+}
+
+.community-page h2 {
+  font-size: 22px;
+  color: #1a1a1a;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
 }
 
 .community-tabs {
@@ -42,6 +61,9 @@
   font-size: 18px;
   font-weight: 400;
   white-space: nowrap;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
 }
 
 .community-tabs button::after {
@@ -74,8 +96,16 @@
 }
 
 .community-content {
-  padding: 16px 16px 28px;
-  background: #f2f2f3;
+  display: flex;
+  width: 390px;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding-top: 55px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  background: #fffffd;
 }
 
 @media (max-width: 360px) {

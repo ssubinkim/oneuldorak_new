@@ -11,10 +11,12 @@
 
 .recipe-section__header h2 {
   margin: 0;
-  color: #050505;
+  color: #1a1a1a;
   font-size: 22px;
   font-weight: 800;
-  line-height: 1.15;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
 }
 
 .recipe-section__more {
@@ -120,7 +122,7 @@
 
 @media (max-width: 360px) {
   .recipe-section__header h2 {
-    font-size: 21px;
+    font-size: 20px;
   }
 
   .recipe-section__more {

@@ -1,7 +1,26 @@
 .recipe-page {
   min-height: 100%;
   background: var(--color-bg-sub);
-  color: #1f2430;
+  color: #1a1a1a;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
+}
+
+.recipe-page h1 {
+  font-size: 24px;
+  color: #1a1a1a;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
+}
+
+.recipe-page h2 {
+  font-size: 22px;
+  color: #1a1a1a;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
 }
 
 .recipe-page__tabs {

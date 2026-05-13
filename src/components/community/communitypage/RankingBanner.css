@@ -11,9 +11,12 @@
 
 .dorak-ranking__header h2 {
   margin: 0;
-  color: #1f232d;
-  font-size: 16px;
+  color: #1a1a1a;
+  font-size: 22px;
   font-weight: 800;
+  font-family: 'Pretendard', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
 }
 
 .dorak-ranking__header button {
