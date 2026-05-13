@@ -1,5 +1,6 @@
 import { ArrowRightIcon } from '../common/ui/ArrowRightIcon'
 import SequentialHighlightList from '../effects/stagger/SequentialHighlightList'
+import chatImage from './images/chat.png'
 import './HomeStories.css'
 
 const stories = [
@@ -14,14 +15,23 @@ const topStories = stories.slice(0, 3)
 
 function HomeStories() {
   return (
-    <section className="stories-section" aria-labelledby="storiesTitle">
-      <div className="home-section-title stories-section__title">
-        <div>
-          <h2 id="storiesTitle">도락이들의 이야기</h2>
-          <p>이번주 인기를 TOP3</p>
+    <section className="stories-section font-pretendard" aria-labelledby="storiesTitle">
+      <div className="stories-section__intro">
+        <div className="stories-section__copy">
+          <h2 id="storiesTitle">
+            지금 인기 있는
+            <br />
+            생활 이야기 <span aria-hidden="true">👀</span>
+          </h2>
+          <a className="stories-section__link" href="#more-stories">
+            이번주 인기글 TOP3
+            <br />
+            보러가기 <ArrowRightIcon />
+          </a>
         </div>
-        <a href="#more-stories">더보기 <ArrowRightIcon /></a>
+        <img className="stories-section__character" src={chatImage} alt="" aria-hidden="true" />
       </div>
+
       <div className="story-list">
         <SequentialHighlightList
           className="stories-section__stagger"

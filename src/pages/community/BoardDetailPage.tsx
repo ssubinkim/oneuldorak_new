@@ -10,32 +10,12 @@ type BoardDetailPageProps = {
   postId: string | null
   onBack: () => void
   onOpenPost: (postId: string) => void
+  extraPosts?: BoardDetailPost[]
 }
 
 const boardPosts: BoardDetailPost[] = [
   {
     id: 'free-1',
-    category: '질문',
-    reward: '인기글 3P',
-    title: '도시락 용기 추천 부탁드려요',
-    author: '도시락초보',
-    timeAgo: '10분 전',
-    likes: 23,
-    comments: 15,
-    paragraphs: [
-      '보온 잘되고 세척 편한 용기를 찾고 있어요.',
-      '출근길에 들고 다녀도 새지 않는 제품이면 좋겠습니다.',
-    ],
-    methods: [
-      '보온 성능이 좋은 스테인리스 내통 제품 먼저 보기',
-      '뚜껑 패킹 분리 세척 가능한지 확인하기',
-      '전자레인지 사용 여부와 용량 체크하기',
-      '실사용 후기에서 누수 여부 확인하기',
-      '예산에 맞는 2~3개 후보 비교하기',
-    ],
-  },
-  {
-    id: 'free-2',
     category: '꿀팁',
     reward: '인기글 5P',
     title: '식비 월 20만원으로 줄인 후기',
@@ -56,8 +36,8 @@ const boardPosts: BoardDetailPost[] = [
     ],
   },
   {
-    id: 'free-3',
-    category: '냉장고 SOS',
+    id: 'free-2',
+    category: '냉장고SOS',
     reward: '인기글 2P',
     title: '냉장고에 양배추만 남았는데 뭐 해먹을까요?',
     author: '요리고민',
@@ -74,6 +54,27 @@ const boardPosts: BoardDetailPost[] = [
       '밥이 있으면 양배추 볶음밥으로 활용하기',
       '남는 양배추는 소분해 냉동 보관하기',
       '다음 장보기 전까지 재료 순환 계획 세우기',
+    ],
+  },
+  {
+    id: 'free-3',
+    category: '질문',
+    reward: '인기글 3P',
+    title: '도시락 용기 추천 부탁드려요',
+    author: '도시락초보',
+    timeAgo: '10분 전',
+    likes: 23,
+    comments: 15,
+    paragraphs: [
+      '보온 잘되고 세척 편한 용기를 찾고 있어요.',
+      '출근길에 들고 다녀도 새지 않는 제품이면 좋겠습니다.',
+    ],
+    methods: [
+      '보온 성능이 좋은 스테인리스 내통 제품 먼저 보기',
+      '뚜껑 패킹 분리 세척 가능한지 확인하기',
+      '전자레인지 사용 여부와 용량 체크하기',
+      '실사용 후기에서 누수 여부 확인하기',
+      '예산에 맞는 2~3개 후보 비교하기',
     ],
   },
   {
@@ -126,15 +127,19 @@ function BoardDetailIcon({ kind }: { kind: 'share' | 'bookmark' }) {
   )
 }
 
-function BoardDetailPage({ postId, onBack, onOpenPost }: BoardDetailPageProps) {
+function BoardDetailPage({ postId, onBack, onOpenPost, extraPosts = [] }: BoardDetailPageProps) {
   const { nickname } = useUserProfile()
   const pageRef = useRef<HTMLElement | null>(null)
-  const currentPostId = postId ?? boardPosts[1].id
-  const post = boardPosts.find((item) => item.id === currentPostId) ?? boardPosts[1]
+  const hasUserPosts = extraPosts.length > 0
+  const allPosts = hasUserPosts ? extraPosts : boardPosts
+  const commentSeed = hasUserPosts ? [] : initialComments
+  const fallbackPost = allPosts[0]
+  const currentPostId = postId ?? fallbackPost?.id ?? null
+  const post = allPosts.find((item) => item.id === currentPostId) ?? fallbackPost
   const [commentsByPostId, setCommentsByPostId] = useState<Record<string, BoardComment[]>>({})
-  const commentList = commentsByPostId[currentPostId] ?? initialComments
-  const relatedPosts = boardPosts
-    .filter((item) => item.id !== post.id)
+  const commentList = currentPostId ? commentsByPostId[currentPostId] ?? commentSeed : commentSeed
+  const relatedPosts = allPosts
+    .filter((item) => item.id !== post?.id)
     .map((item) => ({
       id: item.id,
       title: item.title,
@@ -152,13 +157,21 @@ function BoardDetailPage({ postId, onBack, onOpenPost }: BoardDetailPageProps) {
       return
     }
 
-    setCommentsByPostId((prevCommentsByPostId) => ({
-      ...prevCommentsByPostId,
-      [currentPostId]: [
-        { user: nickname, timeAgo: '방금 전', text: trimmedText },
-        ...(prevCommentsByPostId[currentPostId] ?? initialComments),
-      ],
-    }))
+    if (!currentPostId) {
+      return
+    }
+
+    setCommentsByPostId((prevCommentsByPostId) => {
+      const currentComments = prevCommentsByPostId[currentPostId] ?? commentSeed
+
+      return {
+        ...prevCommentsByPostId,
+        [currentPostId]: [
+          { user: nickname, timeAgo: '방금 전', text: trimmedText },
+          ...currentComments,
+        ],
+      }
+    })
   }
 
   const handleOpenRelatedBoard = (nextPostId: string) => {
@@ -184,7 +197,7 @@ function BoardDetailPage({ postId, onBack, onOpenPost }: BoardDetailPageProps) {
       </section>
 
       <section className="board-detail-content">
-        <BoardContent post={post} />
+        {post ? <BoardContent post={post} /> : null}
 
         <CommentSection comments={commentList} onAddComment={handleAddComment} />
 

@@ -18,6 +18,7 @@ export type VoteCardItem = {
   heading?: string
   question: string
   subtitle?: string
+  description?: string
   reward?: string
   participants: number
   deadline: string | (() => string)
@@ -336,8 +337,11 @@ function VoteList({ filter, variant = 'list', extraVotes = [], onMoreClick }: Vo
 
   const handleVote = (cardId: string, optionLabel: string) => {
     const selectedCard = activeVoteCards.find((card) => card.id === cardId)
+    const hasSelectedOption = selectVoteOption(cardId, optionLabel)
 
-    selectVoteOption(cardId, optionLabel)
+    if (!hasSelectedOption) {
+      return
+    }
 
     if (selectedCard && !shownVoteModalIdsRef.current.has(cardId)) {
       shownVoteModalIdsRef.current.add(cardId)

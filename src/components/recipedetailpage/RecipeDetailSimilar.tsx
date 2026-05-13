@@ -11,14 +11,14 @@ function RecipeDetailSimilar({ recipes }: RecipeDetailSimilarProps) {
       <h2>비슷한 레시피</h2>
       <div className="recipe-detail-similar__scroll">
         {recipes.map((recipe) => (
-          <article className="recipe-detail-similar-card" key={recipe.title}>
+          <article className="recipe-detail-similar-card" key={recipe.id}>
             <img src={recipe.image} alt={recipe.title} />
             <div>
-              <small>{recipe.channel}</small>
+              <small>{recipe.sourceChannel}</small>
               <h3>{recipe.title}</h3>
               <span>
                 <StatIcon type="heart" />
-                {recipe.likes}
+                {recipe.likeCount}
               </span>
             </div>
           </article>

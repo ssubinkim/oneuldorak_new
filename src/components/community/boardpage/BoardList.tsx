@@ -172,7 +172,8 @@ function shouldShowPost(post: BoardPost, activeFilter: BoardFilter) {
 }
 
 function BoardList({ activeFilter, onOpenDetail, extraPosts = [] }: BoardListProps) {
-  const visiblePosts = [...extraPosts, ...posts].filter((post) => shouldShowPost(post, activeFilter))
+  const sourcePosts = extraPosts.length > 0 ? extraPosts : posts
+  const visiblePosts = sourcePosts.filter((post) => shouldShowPost(post, activeFilter))
 
   return (
     <section className="free-detail-list" aria-label="자유게시판 글 목록">
