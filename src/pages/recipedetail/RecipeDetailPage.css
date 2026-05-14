@@ -12,7 +12,7 @@
 
   background: linear-gradient(180deg, var(--recipe-yellow) 0 92px, #fffaf0 92px 100%);
   color: var(--recipe-text);
-  font-family: 'NanumSquareNeo', 'Pretendard', sans-serif;
+  font-family: 'NanumSquareNeo', 'Pretendard Variable', sans-serif;
 }
 
 .recipe-detail-page svg {
@@ -107,13 +107,21 @@
   line-height: 1;
 }
 
-.recipe-detail-reactions span {
+.recipe-detail-reaction {
   display: inline-flex;
   align-items: center;
   gap: 3px;
 }
 
-.recipe-detail-reactions .is-heart {
+.recipe-detail-reaction:is(button) {
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.recipe-detail-reaction.is-heart {
   color: #ff7f90;
 }
 
@@ -223,6 +231,11 @@
   box-shadow: 0 2px 8px rgba(84, 62, 31, 0.04);
 }
 
+.recipe-detail-ingredients li.is-checked {
+  border-color: #efd48d;
+  background: #fff9e9;
+}
+
 .recipe-detail-ingredient-name {
   display: inline-flex;
   align-items: center;
@@ -248,10 +261,17 @@
   width: 24px;
   height: 24px;
   padding: 0;
+  color: #c2b9a8;
+  background: #fff;
+  border: 1px solid #e6decd;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.recipe-detail-ingredients button.is-checked {
   color: #fff;
   background: #ffdb78;
-  border: 0;
-  border-radius: 6px;
+  border-color: #ffdb78;
 }
 
 .recipe-detail-ingredients button svg {

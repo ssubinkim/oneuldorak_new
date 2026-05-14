@@ -36,12 +36,6 @@ function LoginPage() {
     clearLoginError()
   }
 
-  const handleDummyAccountClick = () => {
-    setLoginId(dummyAccount.id)
-    setPassword(dummyAccount.password)
-    setLoginError('')
-  }
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -82,16 +76,7 @@ function LoginPage() {
               onChange={handlePasswordChange}
             />
 
-            {loginError ? (
-              <p className="login-page__error" role="alert">
-                {loginError}
-              </p>
-            ) : null}
-
-            <button className="login-page__dummy-button" type="button" onClick={handleDummyAccountClick}>
-              더미 계정 넣기
-              <span aria-hidden="true">›</span>
-            </button>
+            <p className="login-page__error" role="alert">{loginError}</p>
 
             <LoginActionButtons />
           </form>

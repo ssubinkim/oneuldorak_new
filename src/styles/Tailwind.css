@@ -152,7 +152,7 @@ button {
   min-height: 100svh;
   color: var(--color-text-main);
   background: var(--color-bg);
-  font-family: var(--font-nanum-square-neo);
+  font-family: var(--font-pretendard-variable);
 }
 
 .app-screen {

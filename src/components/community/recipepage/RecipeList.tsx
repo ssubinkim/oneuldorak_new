@@ -1,13 +1,15 @@
 import './RecipeList.css'
-import recipeThumbImage from './images/menu_1 (1).png'
+import recipeThumbImage from '../../../assets/images/food_imges/chamchimayo.png'
 
 export type RecipeItem = {
   id: string
   title: string
   subtitle: string
+  content?: string
   price: string
   time: string
   level: string
+  ingredient?: string
   author: string
   likes: number
   comments: number

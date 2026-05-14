@@ -13,10 +13,8 @@ function ChevronRight() {
 
 function CalendarIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-      <rect x="1.5" y="2.5" width="15" height="14" rx="3" stroke="#333" strokeWidth="1.5" />
-      <path d="M1.5 7h15" stroke="#333" strokeWidth="1.5" />
-      <path d="M5.5 1v3M12.5 1v3" stroke="#333" strokeWidth="1.5" strokeLinecap="round" />
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.5 11.6667V5.00002C17.5 4.55799 17.3244 4.13407 17.0118 3.82151C16.6993 3.50895 16.2754 3.33335 15.8333 3.33335H4.16667C3.72464 3.33335 3.30072 3.50895 2.98816 3.82151C2.67559 4.13407 2.5 4.55799 2.5 5.00002V16.6667C2.5 17.1087 2.67559 17.5326 2.98816 17.8452C3.30072 18.1578 3.72464 18.3334 4.16667 18.3334H10.8333M13.3333 1.66669V5.00002M6.66667 1.66669V5.00002M2.5 8.33335H17.5M13.3333 16.6667L15 18.3334L18.3333 15" stroke="#3C3C3C" strokeWidth="1.4" strokeLinecap="square"/>
     </svg>
   )
 }

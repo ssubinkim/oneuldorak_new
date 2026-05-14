@@ -22,10 +22,9 @@ function ClockIcon() {
 
 function DishIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-      <circle cx="9" cy="9" r="7" stroke="#333" strokeWidth="1.5" />
-      <circle cx="9" cy="9" r="4" stroke="#333" strokeWidth="1.5" />
-      <path d="M9 2v2M9 14v2M2 9h2M14 9h2" stroke="#333" strokeWidth="1.5" strokeLinecap="round" />
+    <svg width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1.66699 2.375H6.66699C7.55105 2.375 8.39889 2.70863 9.02402 3.3025C9.64914 3.89636 10.0003 4.70181 10.0003 5.54167V16.625C10.0003 15.9951 9.73693 15.391 9.26809 14.9456C8.79925 14.5002 8.16337 14.25 7.50033 14.25H1.66699V2.375Z" stroke="#3C3C3C" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M18.3333 2.375H13.3333C12.4493 2.375 11.6014 2.70863 10.9763 3.3025C10.3512 3.89636 10 4.70181 10 5.54167V16.625C10 15.9951 10.2634 15.391 10.7322 14.9456C11.2011 14.5002 11.837 14.25 12.5 14.25H18.3333V2.375Z" stroke="#3C3C3C" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   )
 }
@@ -55,13 +54,15 @@ function RecipeCarousel() {
             </div>
             <div className="rc-info">
               <p className="rc-name">{recipe.name}</p>
-              <p className="rc-time">
-                <ClockIcon />
-                약 {recipe.time}
-              </p>
-              <span className="rc-badge" style={usageBadgeStyle(recipe.usage)}>
-                {recipe.usage !== null ? `활용도 ${recipe.usage}%` : '활용도 %'}
-              </span>
+              <div className="rc-meta">
+                <p className="rc-time">
+                  <ClockIcon />
+                  약 {recipe.time}
+                </p>
+                <span className="rc-badge" style={usageBadgeStyle(recipe.usage)}>
+                  {recipe.usage !== null ? `활용도 ${recipe.usage}%` : '활용도 %'}
+                </span>
+              </div>
             </div>
           </div>
         ))}

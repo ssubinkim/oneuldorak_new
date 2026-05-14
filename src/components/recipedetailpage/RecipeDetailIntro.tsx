@@ -3,45 +3,47 @@ import { DifficultyStars, StatIcon } from './RecipeDetailIcons'
 
 type RecipeDetailIntroProps = {
   recipe: RecipeDetail
+  onLikeClick?: () => void
+  onSaveClick?: () => void
 }
 
-function RecipeDetailIntro({ recipe }: RecipeDetailIntroProps) {
+function RecipeDetailIntro({ recipe, onLikeClick, onSaveClick }: RecipeDetailIntroProps) {
   return (
     <section className="recipe-detail-section recipe-detail-intro">
       <h1>{recipe.title}</h1>
 
       <div className="recipe-detail-reactions" aria-label="레시피 반응">
-        <span className="is-heart">
+        <button type="button" className="recipe-detail-reaction is-heart" onClick={onLikeClick}>
           <StatIcon type="heart" />
-          {recipe.likes}
-        </span>
-        <span>
+          {recipe.stats.likeCount}
+        </button>
+        <span className="recipe-detail-reaction">
           <StatIcon type="comment" />
-          {recipe.comments}
+          {recipe.stats.commentCount}
         </span>
-        <span>
+        <button type="button" className="recipe-detail-reaction" onClick={onSaveClick}>
           <StatIcon type="bookmark" />
-          {recipe.saves}
-        </span>
+          {recipe.stats.saveCount}
+        </button>
       </div>
 
       <p className="recipe-detail-note">
-        {recipe.author} · {recipe.date}
-        <span>{recipe.description}</span>
+        {recipe.meta.authorName} · {recipe.meta.publishedOn}
+        <span>{recipe.summary}</span>
       </p>
 
       <div className="recipe-detail-info-grid">
         <article>
           <span>조리시간</span>
-          <strong>{recipe.time}</strong>
+          <strong>{recipe.cook.durationMinutes}분</strong>
         </article>
         <article>
           <span>예상식비</span>
-          <strong>{recipe.budget}</strong>
+          <strong>{recipe.cook.budgetLabel}</strong>
         </article>
         <article>
           <span>난이도</span>
-          <DifficultyStars level={recipe.level} />
+          <DifficultyStars level={recipe.cook.difficultyLevel} />
         </article>
       </div>
     </section>

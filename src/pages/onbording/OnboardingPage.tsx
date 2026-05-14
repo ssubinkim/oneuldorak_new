@@ -10,6 +10,7 @@ import OnboardingQuestionBody from '../../components/onbording/onboardingpage/On
 import OnboardingQuestionProgress from '../../components/onbording/onboardingpage/OnboardingQuestionProgress'
 import { initialOnboardingAnswers, onboardingQuestions } from '../../components/onbording/onboardingpage/onboardingQuestionData'
 import type { AnswerValue } from '../../components/onbording/onboardingpage/onboardingQuestionTypes'
+import { saveOnboardingAnswers } from '../../components/common/aiDataHub'
 import '../../styles/Tailwind.css'
 import './OnboardingPage.css'
 
@@ -69,7 +70,7 @@ function OnboardingPage() {
     if (activeQuestionIndex === null) return
 
     if (isLastQuestion) {
-      window.sessionStorage.setItem('oneuldorak:onboarding-answers', JSON.stringify(answers))
+      saveOnboardingAnswers(answers)
       setActiveQuestionIndex(null)
       setIsComplete(true)
       return

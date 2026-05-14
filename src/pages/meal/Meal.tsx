@@ -1,11 +1,12 @@
+import { useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import Header from '../../components/common/layout/Header'
 import TodayMenuList from '../../components/meal/dashboard/TodayMenuList'
 import WeeklyPlanSection from '../../components/meal/dashboard/WeeklyPlanSection'
 import IngredientSection from '../../components/meal/dashboard/IngredientSection'
 import RecipeCarousel from '../../components/meal/dashboard/RecipeCarousel'
+import ShoppingChecklistBottomSheet from '../../components/meal/common/ShoppingChecklistBottomSheet'
 import ChatBotbtn from '../../components/chatbot/ChatBotbtn'
-import mydorakLogo from '../../components/meal/images/mydorak_logo.svg'
 import '../../styles/Tailwind.css'
 import './Meal.css'
 
@@ -19,6 +20,8 @@ function BellIcon() {
 }
 
 function Meal() {
+  const [isShoppingSheetOpen, setIsShoppingSheetOpen] = useState(false)
+
   return (
     <div className="app-shell">
       <div className="app-screen meal-screen">
@@ -31,16 +34,13 @@ function Meal() {
             <div className="meal-hero-inner">
               <div className="meal-hero-top">
                 <div className="meal-brand">
-                  <img src={mydorakLogo} alt="마이도락 로고" className="meal-brand-logo" />
-                  <span className="meal-brand-name">마이도락</span>
+<span className="meal-brand-name">마이도락</span>
                 </div>
                 <button className="meal-bell-btn" aria-label="알림">
                   <BellIcon />
                 </button>
               </div>
-              <p className="meal-tagline">
-                냉장고 재료로<br />맛있는 메뉴를 추천해드려요 !
-              </p>
+              <p className="meal-tagline">냉장고 재료로 맛있는 메뉴를 추천해드려요 !</p>
             </div>
 
             <div className="meal-dashboard">
@@ -49,7 +49,7 @@ function Meal() {
               </div>
               <WeeklyPlanSection onMore={() => { window.location.hash = '#/meal-weekly-plan' }} />
               <IngredientSection
-                onAddIngredient={() => { window.location.hash = '#/meal-grocery' }}
+                onAddIngredient={() => setIsShoppingSheetOpen(true)}
                 onShowAll={() => { window.location.hash = '#/meal-storage' }}
               />
               <RecipeCarousel />
@@ -59,6 +59,10 @@ function Meal() {
         </div>
 
         <ChatBotbtn />
+        <ShoppingChecklistBottomSheet
+          isOpen={isShoppingSheetOpen}
+          onClose={() => setIsShoppingSheetOpen(false)}
+        />
         <BottomNav />
       </div>
     </div>

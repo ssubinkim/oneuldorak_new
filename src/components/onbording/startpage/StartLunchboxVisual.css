@@ -1,19 +1,13 @@
 .start-lunchbox-visual {
   display: grid;
   place-items: center;
-  width: min(42vw, 168px);
-  min-width: 138px;
-  transform-origin: center bottom;
+  width: min(51vw, 204px);
+  min-width: 167px;
 }
 
-.start-lunchbox-visual__image {
+.start-lunchbox-visual__video {
   display: block;
   width: 100%;
   height: auto;
   object-fit: contain;
-  transform-origin: center bottom;
-}
-
-.start-lunchbox-visual--open .start-lunchbox-visual__image {
-  transform: translateY(-2px) scale(1.02);
 }

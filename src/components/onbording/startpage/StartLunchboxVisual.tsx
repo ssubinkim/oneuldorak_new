@@ -1,17 +1,24 @@
-import onboardingSymbolImage from '../images/onboarding_symbol.png'
+import openingVideoWebm from '../images/opening01.webm'
+import openingVideoMov from '../images/opening01.mov'
 import './StartLunchboxVisual.css'
 
 type StartLunchboxVisualProps = {
-  isOpen?: boolean
+  onEnded?: () => void
 }
 
-function StartLunchboxVisual({ isOpen = false }: StartLunchboxVisualProps) {
+function StartLunchboxVisual({ onEnded }: StartLunchboxVisualProps) {
   return (
-    <div
-      className={`start-lunchbox-visual${isOpen ? ' start-lunchbox-visual--open' : ''}`}
-      aria-hidden="true"
-    >
-      <img className="start-lunchbox-visual__image" src={onboardingSymbolImage} alt="" />
+    <div className="start-lunchbox-visual" aria-hidden="true">
+      <video
+        className="start-lunchbox-visual__video"
+        autoPlay
+        muted
+        playsInline
+        onEnded={onEnded}
+      >
+        <source src={openingVideoWebm} type="video/webm" />
+        <source src={openingVideoMov} type="video/quicktime" />
+      </video>
     </div>
   )
 }
