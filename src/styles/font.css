@@ -53,7 +53,7 @@
 }
 
 :root {
-  --font-nanum-square-neo: 'Pretendard Variable', 'NanumSquareNeo', sans-serif;
+  --font-nanum-square-neo: 'NanumSquareNeo', 'Pretendard Variable', sans-serif;
   --font-pretendard-variable: 'Pretendard Variable', 'NanumSquareNeo', sans-serif;
   --font-line-height-default: 130%;
   --font-letter-spacing-default: -0.08px;
