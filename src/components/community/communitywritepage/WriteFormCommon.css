@@ -14,10 +14,13 @@
 
 .community-write-section h2 {
   margin: 0;
-  color: #151515;
-  font-size: 20px;
-  font-weight: 800;
-  line-height: 1.2;
+  color: #1a1a1a;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: -0.08px;
 }
 
 .community-write-field input,

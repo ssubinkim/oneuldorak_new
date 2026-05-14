@@ -40,13 +40,13 @@
 
 .community-write-hero-copy h1 {
   color: var(--color-text-main, #1a1a1a);
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
 }
 
 .community-write-hero-copy p {
   color: var(--color-text-body, #3c3c3c);
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -54,8 +54,8 @@
 .community-write-top-actions button {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   color: #222;
   background: transparent;
@@ -64,7 +64,7 @@
 
 .community-write-top-button {
   position: absolute;
-  left: 18px;
+  left: 16px;
 }
 
 .community-write-top-actions {
@@ -75,8 +75,8 @@
 
 .community-write-top-button svg,
 .community-write-top-actions svg {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   fill: none;
   stroke: currentColor;
   stroke-width: 2;

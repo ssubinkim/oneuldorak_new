@@ -14,10 +14,11 @@
   margin: 0;
   color: #1a1a1a;
   font-size: 22px;
-  font-weight: 800;
-  font-family: 'Pretendard Variable', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
   line-height: 130%;
-  letter-spacing: 0.08px;
+  letter-spacing: -0.08px;
 }
 
 .dorak-ranking__header button {

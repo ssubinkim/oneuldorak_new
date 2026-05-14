@@ -22,6 +22,11 @@
   line-height: 130%;
 }
 
+.community-write-recipe-info .community-write-inline-row input {
+  height: 44px;
+  border-radius: 13px;
+}
+
 .community-write-stars button {
   display: grid;
   place-items: center;
@@ -52,5 +57,9 @@
   .community-write-stars button img {
     width: 32px;
     height: 32px;
+  }
+
+  .community-write-recipe-info .community-write-inline-row input {
+    height: 40px;
   }
 }

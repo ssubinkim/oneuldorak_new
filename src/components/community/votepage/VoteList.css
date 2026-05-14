@@ -84,7 +84,7 @@
 .vote-featured-section__subtitle {
   margin: 0;
   color: #636363;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 400;
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 130%;
@@ -112,7 +112,7 @@
 .vote-card-question {
   margin: 0;
   color: #3c3c3c;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 130%;
@@ -122,7 +122,7 @@
 .vote-card-subtitle {
   margin: 6px 0 0;
   color: #636363;
-  font-size: 14px;
+  font-size: 18px;
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 130%;
   letter-spacing: -0.08px;
@@ -298,10 +298,6 @@ article.vote-result-item {
 
   .vote-card h2 {
     font-size: 20px;
-  }
-
-  .vote-card-question {
-    font-size: 15px;
   }
 
   .vote-choice-list button,

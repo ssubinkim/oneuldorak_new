@@ -12,10 +12,12 @@
 .hot-posts__header h2 {
   margin: 0;
   color: #1a1a1a;
-  font-weight: 800;
-  font-family: 'Pretendard Variable', sans-serif;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
   line-height: 130%;
-  letter-spacing: 0.08px;
+  letter-spacing: -0.08px;
 }
 
 .hot-posts__header button {
