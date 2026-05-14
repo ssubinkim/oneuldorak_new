@@ -157,6 +157,7 @@ export function readPersistedCommunityWriteState(): PersistedCommunityWriteState
       reward: '인기글 1P',
       title: post.title,
       author: post.user,
+      authorId: post.authorId,
       timeAgo: post.timeAgo,
       likes: post.likes,
       comments: post.comments,

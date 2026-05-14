@@ -136,6 +136,7 @@ function mapRecipeItemToRecipeDetail(item: RecipeItem): RecipeDetail {
 function createRegisteredBoardPost(
   payload: Extract<CommunityWritePayload, { tab: 'board' }>,
   user: string,
+  authorId: string,
 ): BoardPost {
   const { data } = payload
 
@@ -145,6 +146,7 @@ function createRegisteredBoardPost(
     title: getFilledText(data.title, '새 게시글'),
     body: getSummaryText(data.content, '방금 등록한 게시글입니다.'),
     user,
+    authorId,
     timeAgo: '방금 전',
     likes: 0,
     comments: 0,
@@ -154,6 +156,7 @@ function createRegisteredBoardPost(
 function createRegisteredBoardDetailPost(
   payload: Extract<CommunityWritePayload, { tab: 'board' }>,
   author: string,
+  authorId: string,
 ): BoardDetailPost {
   const { data } = payload
   const trimmedParagraphs = data.content
@@ -167,6 +170,7 @@ function createRegisteredBoardDetailPost(
     reward: '인기글 1P',
     title: getFilledText(data.title, '새 게시글'),
     author,
+    authorId,
     timeAgo: '방금 전',
     likes: 0,
     comments: 0,
@@ -191,7 +195,7 @@ function createRegisteredVote(payload: Extract<CommunityWritePayload, { tab: 'vo
 }
 
 function Community() {
-  const { nickname } = useUserProfile()
+  const { email, nickname } = useUserProfile()
   const [persistedWriteState] = useState(readPersistedCommunityWriteState)
   const [activeTab, setActiveTab] = useState<CommunityTab>('all')
   const [view, setView] = useState<CommunityView>('main')
@@ -245,6 +249,49 @@ function Community() {
     setView('boardDetail')
   }
 
+  const handleUpdateBoardPost = (postId: string, data: Extract<CommunityWritePayload, { tab: 'board' }>['data']) => {
+    const nextTitle = getFilledText(data.title, '새 게시글')
+    const nextBody = getSummaryText(data.content, '방금 등록한 게시글입니다.')
+    const nextParagraphs = data.content
+      .split(/\n+/)
+      .map((paragraph) => paragraph.trim())
+      .filter(Boolean)
+
+    setRegisteredBoardPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === postId
+          ? {
+              ...post,
+              category: data.category,
+              title: nextTitle,
+              body: nextBody,
+            }
+          : post,
+      ),
+    )
+    setRegisteredBoardDetailPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === postId
+          ? {
+              ...post,
+              category: data.category,
+              title: nextTitle,
+              paragraphs: nextParagraphs.length > 0 ? nextParagraphs : ['방금 등록한 게시글입니다.'],
+              methods: [],
+            }
+          : post,
+      ),
+    )
+  }
+
+  const handleDeleteBoardPost = (postId: string) => {
+    setRegisteredBoardPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId))
+    setRegisteredBoardDetailPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId))
+    setSelectedBoardId(null)
+    setActiveTab('free')
+    setView('free')
+  }
+
   const handleOpenWrite = () => {
     setPreviousView(view)
     setView('write')
@@ -265,8 +312,8 @@ function Community() {
       return
     }
 
-    const nextListPost = createRegisteredBoardPost(payload, nickname)
-    const nextDetailPost = createRegisteredBoardDetailPost(payload, nickname)
+    const nextListPost = createRegisteredBoardPost(payload, nickname, email)
+    const nextDetailPost = createRegisteredBoardDetailPost(payload, nickname, email)
 
     setRegisteredBoardPosts((prevPosts) => [nextListPost, ...prevPosts])
     setRegisteredBoardDetailPosts((prevPosts) => [{ ...nextDetailPost, id: nextListPost.id }, ...prevPosts])
@@ -312,6 +359,8 @@ function Community() {
             postId={selectedBoardId}
             onBack={() => setView('free')}
             onOpenPost={handleOpenBoardDetail}
+            onUpdatePost={handleUpdateBoardPost}
+            onDeletePost={handleDeleteBoardPost}
             extraPosts={registeredBoardDetailPosts}
           />
         )}

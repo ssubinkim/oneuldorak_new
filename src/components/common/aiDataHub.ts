@@ -1,4 +1,10 @@
 import type { ShoppingItem } from '../meal/grocery/groceryTypes'
+import {
+  mockBoardComments,
+  mockBoardDetailPosts,
+  mockBoardPopularPosts,
+  mockBoardPosts,
+} from '../community/common/boardMockData'
 import { readPersistedCommunityWriteState } from '../community/common/communityWritePersistence'
 import { getAllPersistedRecipeDetailState } from '../recipedetailpage/recipeDetailPersistence'
 import { getPointBalanceSnapshot, getPointStateSnapshot } from './usePoints'
@@ -26,6 +32,12 @@ export type AiUserDataSnapshot = {
   groceryShoppingItems: ShoppingItem[]
   chatbotHistory: ChatbotHistoryMessage[]
   communityWrite: ReturnType<typeof readPersistedCommunityWriteState>
+  communityBoardMock: {
+    posts: typeof mockBoardPosts
+    detailPosts: typeof mockBoardDetailPosts
+    popularPosts: typeof mockBoardPopularPosts
+    comments: typeof mockBoardComments
+  }
   points: {
     raw: ReturnType<typeof getPointStateSnapshot>
     balance: ReturnType<typeof getPointBalanceSnapshot>
@@ -179,6 +191,12 @@ export function getAiUserDataSnapshot(): AiUserDataSnapshot {
       : [],
     chatbotHistory: readChatbotHistory(),
     communityWrite: readPersistedCommunityWriteState(),
+    communityBoardMock: {
+      posts: mockBoardPosts,
+      detailPosts: mockBoardDetailPosts,
+      popularPosts: mockBoardPopularPosts,
+      comments: mockBoardComments,
+    },
     points: {
       raw: getPointStateSnapshot(),
       balance: getPointBalanceSnapshot(),

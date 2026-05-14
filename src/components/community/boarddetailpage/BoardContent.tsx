@@ -4,6 +4,7 @@ export type BoardDetailPost = {
   reward: string
   title: string
   author: string
+  authorId?: string
   timeAgo: string
   likes: number
   comments: number

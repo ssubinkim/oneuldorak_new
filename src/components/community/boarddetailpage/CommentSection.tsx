@@ -3,10 +3,19 @@ import CommentItem, { type BoardComment } from './CommentItem'
 
 type CommentSectionProps = {
   comments: BoardComment[]
+  currentUserId: string
   onAddComment: (text: string) => void
+  onUpdateComment: (commentId: string, text: string) => void
+  onDeleteComment: (commentId: string) => void
 }
 
-function CommentSection({ comments, onAddComment }: CommentSectionProps) {
+function CommentSection({
+  comments,
+  currentUserId,
+  onAddComment,
+  onUpdateComment,
+  onDeleteComment,
+}: CommentSectionProps) {
   const [commentText, setCommentText] = useState('')
 
   const handleSubmit = () => {
@@ -30,8 +39,11 @@ function CommentSection({ comments, onAddComment }: CommentSectionProps) {
       <div className="board-detail-comments__list">
         {comments.map((comment) => (
           <CommentItem
-            key={`${comment.user}-${comment.timeAgo}`}
+            key={comment.id}
             comment={comment}
+            canManage={Boolean(comment.authorId && comment.authorId === currentUserId)}
+            onUpdate={onUpdateComment}
+            onDelete={onDeleteComment}
           />
         ))}
       </div>
