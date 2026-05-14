@@ -1,5 +1,6 @@
 import './BoardList.css'
 import { boardFilters, type BoardFilter } from './BoardCategoryFilters'
+import { mockBoardPosts } from '../common/boardMockData'
 
 export type BoardPost = {
   id: string
@@ -7,6 +8,7 @@ export type BoardPost = {
   title: string
   body: string
   user: string
+  authorId?: string
   timeAgo: string
   likes: number
   comments: number
@@ -18,70 +20,6 @@ type BoardListProps = {
   onOpenDetail: (postId: string) => void
   extraPosts?: BoardPost[]
 }
-
-const posts: BoardPost[] = [
-  {
-    id: 'free-1',
-    category: '꿀팁',
-    title: '식비 월 20만원으로 줄인 후기',
-    body: '3개월 실천한 방법 공유합니다. 생각보다 어렵지 않았어요..!',
-    user: '절약왕',
-    timeAgo: '3일 전',
-    likes: 88,
-    comments: 12,
-    highlighted: true,
-  },
-  {
-    id: 'free-2',
-    category: '냉장고SOS',
-    title: '냉장고에 양배추만 남았는데 뭐 해먹을까요?',
-    body: '양배추랑 계란, 간장 정도 있어요. 찾아보면 더 있을지도?',
-    user: '즐거운요리고민',
-    timeAgo: '3일 전',
-    likes: 88,
-    comments: 12,
-  },
-  {
-    id: 'free-3',
-    category: '질문',
-    title: '도시락 용기 추천 부탁드려요.',
-    body: '보온 잘되고 세척 편한 용기 찾고 있어요. 추천해주세요!',
-    user: '도시락초보',
-    timeAgo: '3일 전',
-    likes: 88,
-    comments: 12,
-  },
-  {
-    id: 'free-4',
-    category: '고민',
-    title: '매일 도시락 싸는 게 힘들어요',
-    body: '요즘 도시락 권태기 왔는데 이겨내는 법 있나요?',
-    user: '지친직장인',
-    timeAgo: '3일 전',
-    likes: 88,
-    comments: 12,
-  },
-  {
-    id: 'free-5',
-    category: '꿀팁',
-    title: '식비 월 20만원으로 줄인 후기',
-    body: '3개월 실천한 방법 공유합니다. 생각보다 어렵지 않았어요..!',
-    user: '절약왕',
-    timeAgo: '3일 전',
-    likes: 88,
-    comments: 12,
-  },
-  {
-    id: 'free-6',
-    category: '꿀팁',
-    title: '식비 월 20만원으로 줄인 후기',
-    body: '3개월 실천한 방법 공유합니다. 생각보다 어렵지 않았어요..!',
-    user: '절약왕',
-    timeAgo: '3일 전',
-    likes: 88,
-    comments: 12,
-  },
-]
 
 function BoardActionIcon({ kind }: { kind: 'heart' | 'comment' | 'bookmark' }) {
   if (kind === 'heart') {
@@ -172,7 +110,7 @@ function shouldShowPost(post: BoardPost, activeFilter: BoardFilter) {
 }
 
 function BoardList({ activeFilter, onOpenDetail, extraPosts = [] }: BoardListProps) {
-  const sourcePosts = extraPosts.length > 0 ? extraPosts : posts
+  const sourcePosts = [...extraPosts, ...mockBoardPosts]
   const visiblePosts = sourcePosts.filter((post) => shouldShowPost(post, activeFilter))
 
   return (

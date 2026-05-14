@@ -4,7 +4,8 @@ import BoardCategoryFilters, {
   type BoardFilter,
 } from '../../components/community/boardpage/BoardCategoryFilters'
 import BoardList, { type BoardPost } from '../../components/community/boardpage/BoardList'
-import BoardPopularPosts, { type BoardPopularPost } from '../../components/community/boardpage/BoardPopularPosts'
+import BoardPopularPosts from '../../components/community/boardpage/BoardPopularPosts'
+import { mockBoardPopularPosts } from '../../components/community/common/boardMockData'
 import CommunityStickyHeader from '../../components/community/common/CommunityStickyHeader'
 import useCommunityHeaderCollapse from '../../components/community/common/useCommunityHeaderCollapse'
 import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
@@ -17,16 +18,9 @@ type BoardPageProps = {
   extraPosts?: BoardPost[]
 }
 
-const popularPosts: BoardPopularPost[] = [
-  { rank: 1, title: '오늘 점심 권태기 어떻게 해결하시나요?', likes: 100, comments: 88 },
-  { rank: 2, title: '일주일 식단 짜다가 진짜 도시락 찾음', likes: 96, comments: 65 },
-  { rank: 3, title: '식비 월 20만원으로 줄인 후기', likes: 65, comments: 52 },
-]
-
 function BoardPage({ onSelectTab, onOpenDetail, extraPosts = [] }: BoardPageProps) {
   const [activeFilter, setActiveFilter] = useState<BoardFilter>(boardFilters[0])
   const { isHeaderCompact, handleCommunityScroll } = useCommunityHeaderCollapse()
-  const hasUserPosts = extraPosts.length > 0
 
   return (
     <main className="page-scroll free-detail-page" onScroll={handleCommunityScroll}>
@@ -39,7 +33,7 @@ function BoardPage({ onSelectTab, onOpenDetail, extraPosts = [] }: BoardPageProp
       />
 
       <div className="free-detail-body">
-        {!hasUserPosts && <BoardPopularPosts posts={popularPosts} />}
+        <BoardPopularPosts posts={mockBoardPopularPosts} />
         <BoardCategoryFilters activeFilter={activeFilter} onChange={setActiveFilter} />
         <BoardList activeFilter={activeFilter} onOpenDetail={onOpenDetail} extraPosts={extraPosts} />
       </div>

@@ -122,6 +122,69 @@
   stroke-linejoin: round;
 }
 
+.board-detail-owner-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.board-detail-owner-actions button,
+.board-detail-edit-actions button,
+.board-detail-comment__actions button,
+.board-detail-comment__edit-actions button {
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.board-detail-owner-actions button {
+  min-width: 48px;
+  height: 30px;
+  color: #4f5868;
+  background: #eceff3;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.board-detail-owner-actions button:last-child {
+  color: #fff;
+  background: #343c4a;
+}
+
+.board-detail-edit-card {
+  padding: 16px 0 4px;
+}
+
+.board-detail-edit-card h1 {
+  margin: 0 0 14px;
+}
+
+.board-detail-edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.board-detail-edit-actions button {
+  flex: 1;
+  height: 42px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.board-detail-edit-actions button:first-child {
+  color: #4f5868;
+  background: #eceff3;
+}
+
+.board-detail-edit-actions button:last-child {
+  color: #fff;
+  background: #000;
+}
+
 .board-detail-body {
   margin-top: 18px;
 }
@@ -198,6 +261,13 @@
   border-radius: 10px;
 }
 
+.board-detail-comment__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .board-detail-comments__list h3 {
   display: flex;
   align-items: baseline;
@@ -205,6 +275,20 @@
   margin: 0;
   color: #222a36;
   font-size: 13px;
+}
+
+.board-detail-comment__actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.board-detail-comment__actions button {
+  padding: 0;
+  color: #7c8595;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .board-detail-comments__list h3 span {
@@ -218,6 +302,46 @@
   color: #4c5566;
   font-size: 13px;
   line-height: 1.45;
+}
+
+.board-detail-comment__edit {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.board-detail-comment__edit input {
+  width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  color: #2f3743;
+  background: #fff;
+  border: 1px solid #d6dbe4;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 13px;
+  outline: none;
+}
+
+.board-detail-comment__edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.board-detail-comment__edit-actions button {
+  min-width: 44px;
+  height: 28px;
+  color: #4f5868;
+  background: #fff;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.board-detail-comment__edit-actions button:last-child {
+  color: #fff;
+  background: #343c4a;
 }
 
 .board-detail-comments__input {
