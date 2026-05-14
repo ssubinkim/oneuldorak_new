@@ -1,5 +1,5 @@
 .community-page {
-  background: #fffffd;
+  background: var(--color-bg-base);
   color: #1a1a1a;
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 130%;
@@ -33,6 +33,6 @@
   justify-content: center;
   align-items: stretch;
   gap: 30px;
-  background: #fffffd;
+  background: var(--color-bg-base);
 }
 
