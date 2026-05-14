@@ -62,7 +62,7 @@ export const weeklyMenuData: DayMenu[] = [
     day: '월', date: 1, month: 5, status: 'confirmed',
     image: todayMenuImg,
     name: '연어 샐러드', time: '15분',
-    description: '상큼한 연어와 신선한 채소로 가볍고 든든하게!',
+    description: '신선함과 포만감을 한 번에 담은 데일리 샐러드.',
     savedAmount: 4800, difficulty: 1, usage: 90, calories: 270,
     ingredients: [
       { name: '연어', image: salmonImg },

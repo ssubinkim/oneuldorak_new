@@ -1,29 +1,29 @@
 import { useEffect, useRef, useState } from 'react'
 import communityOffIcon from '../../../assets/icons/Community_off.svg'
 import communityOnIcon from '../../../assets/icons/Community_on.svg'
-import homeOffIcon from '../../../assets/icons/home_off.svg'
-import homeOnIcon from '../../../assets/icons/home_on.svg'
 import myOffIcon from '../../../assets/icons/my_off.svg'
 import myOnIcon from '../../../assets/icons/my_on.svg'
 import mydorakOffIcon from '../../../assets/icons/mydorak_off.svg'
 import mydorakOnIcon from '../../../assets/icons/mydorak_on.svg'
 import storeOffIcon from '../../../assets/icons/store_off.svg'
 import storeOnIcon from '../../../assets/icons/store_on.svg'
+import chatbotIcon from '../../chatbot/images/chatbot .svg'
 import './BottomNav.css'
 
-export type BottomNavRoute = 'home' | 'meal' | 'community' | 'store' | 'mypage'
+export type BottomNavRoute = 'home' | 'meal' | 'community' | 'store' | 'mypage' | 'chatbot'
 
 type NavItem = {
   label: string
   route: BottomNavRoute
   offIcon: string
   onIcon: string
+  isCenter?: boolean
 }
 
 const navItems: NavItem[] = [
   { label: '오늘도락', route: 'meal', offIcon: mydorakOffIcon, onIcon: mydorakOnIcon },
   { label: '커뮤니티', route: 'community', offIcon: communityOffIcon, onIcon: communityOnIcon },
-  { label: '홈', route: 'home', offIcon: homeOffIcon, onIcon: homeOnIcon },
+  { label: '챗봇', route: 'chatbot', offIcon: chatbotIcon, onIcon: chatbotIcon, isCenter: true },
   { label: '스토어', route: 'store', offIcon: storeOffIcon, onIcon: storeOnIcon },
   { label: '마이', route: 'mypage', offIcon: myOffIcon, onIcon: myOnIcon },
 ]
@@ -73,7 +73,7 @@ function getCurrentRoute(): BottomNavRoute {
     return route
   }
 
-  return 'home'
+  return 'meal'
 }
 
 function NavIcon({ item, isActive }: { item: NavItem; isActive: boolean }) {
@@ -135,7 +135,7 @@ function BottomNav() {
 
         return (
           <a
-            className={`bottom-nav__link${item.route === 'home' ? ' bottom-nav__link--home' : ''}`}
+            className={`bottom-nav__link${item.isCenter ? ' bottom-nav__link--home' : ''}`}
             href={`#/${item.route}`}
             aria-current={isActive ? 'page' : undefined}
             key={item.route}

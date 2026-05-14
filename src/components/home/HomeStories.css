@@ -1,12 +1,13 @@
 .stories-section {
   box-sizing: border-box;
-  padding: 58px var(--layout-padding-x) 0;
+  padding-top: 40px;
   background: #fff;
 }
 
 .stories-section__intro {
   position: relative;
   min-height: 134px;
+  padding: 0 20px;
 }
 
 .stories-section__copy {
@@ -18,17 +19,17 @@
   margin: 0;
   color: var(--color-text-main);
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.08;
   letter-spacing: 0;
 }
 
 .stories-section__link {
   display: inline-block;
-  margin-top: 23px;
-  color: #1d1d1d;
+  margin-top: 10px;
+  color: #888;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 400;
   line-height: 1.22;
   text-decoration: none;
 }
@@ -111,6 +112,12 @@
 
 .stories-section__stagger .sequential-highlight-list__item:first-child .sequential-highlight-list__rank {
   color: #ff1f34;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.stories-section__stagger .sequential-highlight-list__item:not(:first-child) .sequential-highlight-list__rank {
+  font-weight: 400;
 }
 
 .stories-section__stagger .sequential-highlight-list__thumbnail {
@@ -135,8 +142,8 @@
   margin: 0;
   overflow: hidden;
   color: #555;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 1.25;
   text-overflow: ellipsis;
   white-space: nowrap;

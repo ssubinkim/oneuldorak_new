@@ -3,7 +3,6 @@ import type { BottomNavRoute } from './components/common/layout/BottomNav'
 import Community from './pages/community/Community'
 import Chatbot from './pages/chatbot/Chatbot'
 import ChatbotCamera from './pages/chatbot/ChatbotCamera'
-import Home from './pages/home/Home'
 import Meal from './pages/meal/Meal'
 import WeeklyPlanPage from './pages/meal/WeeklyPlanPage'
 import GroceryPage from './pages/meal/GroceryPage'
@@ -36,7 +35,7 @@ const pages = {
   login: LoginPage,
   signup: SignupPage,
   onboarding: OnboardingPage,
-  home: Home,
+  home: Meal,
   meal: Meal,
   community: Community,
   store: Store,

@@ -7,6 +7,7 @@ export type SequentialHighlightItem = {
   likes?: number
   comments?: number
   thumbnailColor?: string
+  thumbnailImage?: string
 }
 
 type SequentialHighlightListProps = {
@@ -101,7 +102,11 @@ function SequentialHighlightList({
                 className="sequential-highlight-list__thumbnail"
                 style={item.thumbnailColor ? { background: item.thumbnailColor } : undefined}
                 aria-hidden="true"
-              />
+              >
+                {item.thumbnailImage && (
+                  <img src={item.thumbnailImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }} />
+                )}
+              </span>
               <div className="sequential-highlight-list__content">
                 <p className="sequential-highlight-list__title">{item.title}</p>
                 <p className="sequential-highlight-list__meta">
