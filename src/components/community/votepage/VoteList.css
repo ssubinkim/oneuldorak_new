@@ -161,7 +161,7 @@
   overflow: hidden;
   border: 1px solid #d1d1d1;
   border-radius: 10px;
-  background: #fffffd;
+  background: var(--color-bg-base);
   text-align: left;
   font: inherit;
   cursor: pointer;

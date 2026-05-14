@@ -1,5 +1,5 @@
 .meal-screen {
-  background: #fffffd;
+  background: var(--color-bg-base);
 }
 
 /* 상태바 헤더를 투명하게 — 그라데이션이 비쳐 보이도록 */
@@ -22,7 +22,7 @@
 
 /* 그라데이션을 콘텐츠 래퍼에 — 스크롤과 함께 자연스럽게 움직임 */
 .meal-grad {
-  background: linear-gradient(180deg, #FFDB78 0px, #fffffd 600px);
+  background: linear-gradient(180deg, #FFDB78 0px, var(--color-bg-base) 600px);
 }
 
 /* ── 히어로 영역 ─────────────────────────────── */

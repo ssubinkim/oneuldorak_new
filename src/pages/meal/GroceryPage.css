@@ -1,5 +1,5 @@
 .gp-screen {
-  background: linear-gradient(180deg, #FFDB78 0px, #fffffd 360px);
+  background: linear-gradient(180deg, #FFDB78 0px, var(--color-bg-base) 360px);
 }
 
 .gp-scroll {
