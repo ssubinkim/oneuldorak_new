@@ -8,7 +8,6 @@ export type IngredientOption = {
 
 export type OnboardingQuestion = {
   id: string
-  step: string
   title: string
   subtitle: string
   image?: string

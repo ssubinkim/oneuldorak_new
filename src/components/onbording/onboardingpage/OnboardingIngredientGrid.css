@@ -73,17 +73,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   min-width: 0;
-  height: 51px;
-  padding: 4px 4px 5px;
+  height: 50px;
+  padding: 3px 4px 4px;
   border: 1px solid #dedede;
-  border-radius: 9px;
+  border-radius: 10px;
   background: #ffffff;
-  color: #111111;
+  color: #1a1a1a;
   font-family: 'Pretendard Variable', sans-serif;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 500;
   line-height: 130%;
   letter-spacing: 0;
   text-align: center;
@@ -101,6 +101,14 @@
   display: block;
   width: 27px;
   height: 27px;
+}
+
+.onboarding-ingredient-card[data-label="브로콜리"] img,
+.onboarding-ingredient-card[data-label="양배추"] img,
+.onboarding-ingredient-card[data-label="단호박"] img,
+.onboarding-ingredient-card[data-label="고구마"] img,
+.onboarding-ingredient-card[data-label="애호박"] img {
+  transform: scale(0.89);
 }
 
 .onboarding-ingredient-card--selected {

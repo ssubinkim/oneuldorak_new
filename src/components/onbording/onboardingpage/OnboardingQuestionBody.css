@@ -1,5 +1,9 @@
 .onboarding-question__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   margin-top: 14px;
+  padding-bottom: 25px;
 }
 
 .onboarding-question__step {
@@ -15,36 +19,39 @@
 .onboarding-question__content h1 {
   margin: 13px 0 0;
   color: #111111;
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 23px;
-  font-weight: 800;
+  font-family: var(--font-nanum-square-neo);
+  font-size: 22px;
+  font-weight: 600;
   line-height: 130%;
-  letter-spacing: 0;
+  letter-spacing: -0.08px;
 }
 
 .onboarding-question__subtitle {
   margin: 4px 0 0;
   color: #9a9a9a;
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
+  font-family: var(--font-pretendard-variable);
+  font-size: 14px;
+  font-weight: 400;
   line-height: 130%;
-  letter-spacing: 0;
+  letter-spacing: -0.08px;
 }
 
 .onboarding-question__media {
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
-  min-height: 204px;
-  margin-top: 16px;
 }
 
 .onboarding-question__media img {
   display: block;
-  width: min(47vw, 186px);
+  width: min(40vw, 155px);
   height: auto;
   object-fit: contain;
+}
+
+.onboarding-question__content--time .onboarding-question__media img {
+  width: min(60vw, 225px);
 }
 
 .onboarding-question__content--grid .onboarding-question__media {
@@ -53,7 +60,11 @@
 }
 
 .onboarding-question__content--grid .onboarding-question__media img {
-  width: min(45vw, 174px);
+  width: min(40vw, 155px);
+}
+
+.onboarding-question__content--avoidFoods .onboarding-question__media img {
+  width: min(49vw, 190px);
 }
 
 .onboarding-question__content--ingredients {
@@ -69,11 +80,11 @@
 
 @media (max-height: 780px) {
   .onboarding-question__media {
-    min-height: 176px;
-    margin-top: 10px;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 
   .onboarding-question__media img {
-    width: min(42vw, 164px);
+    width: min(38vw, 155px);
   }
 }

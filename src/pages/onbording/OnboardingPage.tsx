@@ -26,7 +26,7 @@ function OnboardingPage() {
 
     const homeTimer = window.setTimeout(() => {
       window.location.hash = '#/home'
-    }, 2000)
+    }, 1000)
 
     return () => {
       window.clearTimeout(homeTimer)
@@ -130,7 +130,7 @@ function OnboardingPage() {
             <OnboardingQuestionActions
               disabled={!hasSelection}
               isIngredientsQuestion={isIngredientsQuestion}
-              isFixed={isIngredientsQuestion}
+              isFixed={true}
               nextLabel={isLastQuestion ? '완료' : '다음'}
               onNext={handleNextQuestion}
               onPrevious={handlePreviousQuestion}

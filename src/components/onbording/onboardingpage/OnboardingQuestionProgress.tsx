@@ -82,7 +82,7 @@ function OnboardingQuestionProgress({ current, mascotType = 'signup', total }: O
   return (
     <div className="onboarding-question-progress" style={progressStyle} aria-label={`${current} / ${total}`}>
       <span className="onboarding-question-progress__count">
-        {current}/{total}
+        <span className="onboarding-question-progress__count--current">{current}</span>/{total}
       </span>
       <img
         className="onboarding-question-progress__mascot onboarding-question-progress__mascot--image"

@@ -12,10 +12,16 @@
 }
 
 .onboarding-question-progress__count {
-  font-size: 17px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 400;
   line-height: 130%;
-  letter-spacing: 0;
+  letter-spacing: -0.08px;
+}
+
+.onboarding-question-progress__count--current {
+  font-size: 22px;
+  font-weight: 600;
+  margin-right: 4px;
 }
 
 .onboarding-question-progress__mascot {

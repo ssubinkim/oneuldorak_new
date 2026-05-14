@@ -16,6 +16,8 @@ import fishCakeIcon from '../../../assets/images/food_icon/fish_cake.svg'
 import garlicIcon from '../../../assets/images/food_icon/garlic.svg'
 import grapesIcon from '../../../assets/images/food_icon/grapes.svg'
 import greenOnionIcon from '../../../assets/images/food_icon/green_onion.svg'
+import kimchiIcon from '../../../assets/images/food_icon/kimchi01.svg'
+import pumpkinIcon from '../../../assets/images/food_icon/pumpkin.svg'
 import kiwiIcon from '../../../assets/images/food_icon/kiwi.svg'
 import leafLettuceIcon from '../../../assets/images/food_icon/leaf_lettuce.svg'
 import lemonIcon from '../../../assets/images/food_icon/lemon.svg'
@@ -66,11 +68,11 @@ export const ingredientOptions: IngredientOption[] = [
   { label: '사과', icon: appleIcon },
   { label: '양배추', icon: lettuceIcon },
   { label: '고구마', icon: sweetPotatoIcon },
-  { label: '단호박', icon: zucchiniIcon },
+  { label: '단호박', icon: pumpkinIcon },
   { label: '무', icon: daikonRadishIcon },
   { label: '애호박', icon: zucchiniIcon },
   { label: '파', icon: greenOnionIcon },
-  { label: '김치' },
+  { label: '김치', icon: kimchiIcon },
   { label: '계란', icon: eggIcon },
   { label: '토마토', icon: tomatoIcon },
   { label: '포도', icon: grapesIcon },
@@ -86,8 +88,7 @@ export const ingredientOptions: IngredientOption[] = [
 export const onboardingQuestions: OnboardingQuestion[] = [
   {
     id: 'budget',
-    step: '01.',
-    title: '한끼 예산은 어느 정도로 맞출까요?',
+title: '한끼 예산은 어느 정도로 맞출까요?',
     subtitle: '선택한 예산에 맞춰 부담없는 메뉴를 추천해드릴게요.',
     image: customCarrotImage,
     imageAlt: '동전을 들고 있는 당근 캐릭터',
@@ -95,8 +96,7 @@ export const onboardingQuestions: OnboardingQuestion[] = [
   },
   {
     id: 'time',
-    step: '02.',
-    title: '도시락 준비에 쓸 수 있는 시간은 얼마나 되나요?',
+    title: '도시락 준비에\n쓸 수 있는 시간은 얼마나 되나요?',
     subtitle: '그 시간 안에 완성할 수 있는 메뉴를 알려드릴게요.',
     image: customBlueImage,
     imageAlt: '숟가락과 모래시계를 들고 있는 블루베리 캐릭터',
@@ -104,8 +104,7 @@ export const onboardingQuestions: OnboardingQuestion[] = [
   },
   {
     id: 'avoidFoods',
-    step: '03.',
-    title: '못 먹거나 피해야 할 음식이 있나요?',
+title: '못 먹거나 피해야 할 음식이 있나요?',
     subtitle: '안심하고 먹을 수 있는 도시락을 추천해드릴게요.',
     image: customBroImage,
     imageAlt: '알레르기 표시를 들고 있는 브로콜리 캐릭터',
@@ -115,8 +114,7 @@ export const onboardingQuestions: OnboardingQuestion[] = [
   },
   {
     id: 'ingredients',
-    step: '04.',
-    title: '냉장고에 있는 재료를 알려주세요.',
+title: '냉장고에 있는 재료를 알려주세요.',
     subtitle: '가지고 있는 재료로 낭비없는 도시락을 추천해드릴게요.',
     selectionType: 'multiple',
     optionLayout: 'ingredients',

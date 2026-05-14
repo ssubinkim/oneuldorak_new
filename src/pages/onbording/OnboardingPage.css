@@ -21,7 +21,8 @@
 
 .onboarding-page--question {
   justify-content: flex-start;
-  padding: 68px 23px 28px;
+  padding: 68px 23px 136px;
+  overflow: hidden;
   background: #f8f6ec;
 }
 
@@ -37,5 +38,6 @@
 
   .onboarding-page--question {
     padding-top: 54px;
+    padding-bottom: 136px;
   }
 }
