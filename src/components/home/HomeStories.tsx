@@ -1,6 +1,6 @@
 import { ArrowRightIcon } from '../common/ui/ArrowRightIcon'
 import SequentialHighlightList from '../effects/stagger/SequentialHighlightList'
-import chatImage from './images/chat.png'
+import chatImage from './images/chat.svg'
 import subreview1 from '../store/images/subreview/subreview_1.png'
 import subreview2 from '../store/images/subreview/subreview_2.png'
 import subreview3 from '../store/images/subreview/subreview_3.png'

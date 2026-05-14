@@ -24,7 +24,7 @@ const navItems: NavItem[] = [
   { label: '오늘도락', route: 'meal', offIcon: mydorakOffIcon, onIcon: mydorakOnIcon },
   { label: '커뮤니티', route: 'community', offIcon: communityOffIcon, onIcon: communityOnIcon },
   { label: '챗봇', route: 'chatbot', offIcon: chatbotIcon, onIcon: chatbotIcon, isCenter: true },
-  { label: '스토어', route: 'store', offIcon: storeOffIcon, onIcon: storeOnIcon },
+  { label: '도락마켓', route: 'store', offIcon: storeOffIcon, onIcon: storeOnIcon },
   { label: '마이', route: 'mypage', offIcon: myOffIcon, onIcon: myOnIcon },
 ]
 
