@@ -1,0 +1,29 @@
+.login-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.login-welcome__title {
+  margin: 0 0 0 20px;
+  color: #1a1a1a;
+  font-family: var(--font-nanum-square-neo);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 130%;
+  letter-spacing: 0;
+}
+
+.login-welcome__title strong {
+  font-weight: 800;
+}
+
+.login-welcome__image {
+  display: block;
+  align-self: flex-end;
+  width: min(50vw, 190px);
+  min-width: 168px;
+  height: auto;
+  margin: -1px 24px 0 0;
+  object-fit: contain;
+}

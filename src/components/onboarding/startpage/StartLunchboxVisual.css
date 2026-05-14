@@ -1,0 +1,13 @@
+.start-lunchbox-visual {
+  display: grid;
+  place-items: center;
+  width: min(51vw, 204px);
+  min-width: 167px;
+}
+
+.start-lunchbox-visual__video {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}

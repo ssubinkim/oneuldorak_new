@@ -1,0 +1,83 @@
+.signup-input-field {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  width: 100%;
+  min-height: 47px;
+  padding: 0 13px 0 21px;
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.03);
+}
+
+.signup-input-field__input {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  color: #a3a3a3;
+  background: transparent;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 130%;
+}
+
+.signup-input-field__input::placeholder {
+  color: #ababab;
+  opacity: 1;
+}
+
+.signup-input-field__action {
+  padding: 0 1px 0 12px;
+  border: 0;
+  background: transparent;
+  color: #9a9a9a;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 130%;
+  white-space: nowrap;
+}
+
+.signup-input-field__action--checked {
+  color: #00a652;
+  font-weight: 500;
+}
+
+.signup-input-field__action--shake {
+  animation: action-shake 400ms ease;
+}
+
+@keyframes action-shake {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-4px); }
+  40%  { transform: translateX(4px); }
+  60%  { transform: translateX(-3px); }
+  80%  { transform: translateX(3px); }
+  100% { transform: translateX(0); }
+}
+
+.signup-input-field__toggle {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #b6b6b6;
+}
+
+.signup-input-field__toggle svg {
+  width: 27px;
+  height: 27px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

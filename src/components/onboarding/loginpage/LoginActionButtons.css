@@ -1,0 +1,31 @@
+.login-action-buttons {
+  display: grid;
+  gap: 15px;
+}
+
+.login-action-buttons__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50px;
+  padding: 0 16px;
+  border-radius: 10px;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 130%;
+}
+
+.login-action-buttons__button--primary {
+  border: 1px solid var(--color-primary-100);
+  background: var(--color-primary-100);
+  color: #111111;
+}
+
+.login-action-buttons__button--secondary {
+  border: 1px solid #dddddd;
+  background: #ffffff;
+  color: #1f1f1f;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.03);
+}
