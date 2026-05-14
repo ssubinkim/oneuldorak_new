@@ -12,9 +12,9 @@ import {
   chiliImg,
   mangoImg,
 } from '../../mealData'
-import indexRedImg from '../../images/index_red.svg'
-import indexYellowImg from '../../images/index_yellow.svg'
-import indexGreenImg from '../../images/index_green.svg'
+import indexRedImg from '../../../../assets/icons/index_red.svg'
+import indexYellowImg from '../../../../assets/icons/index_yellow.svg'
+import indexGreenImg from '../../../../assets/icons/index_green.svg'
 
 export type Status = 'urgent' | 'moderate' | 'plenty'
 export type Category = '전체' | '과일' | '단백질' | '냉동' | '소스' | '채소'

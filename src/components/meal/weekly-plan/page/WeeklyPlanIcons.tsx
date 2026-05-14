@@ -20,7 +20,7 @@ export function CircleCheckIcon({ isToday }: { isToday: boolean }) {
   const color = isToday ? '#fff' : '#FFDB78'
 
   return (
-    <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+    <svg width="20" height="20" viewBox="0 0 26 26" fill="none">
       <circle cx="13" cy="13" r="11" stroke={color} strokeWidth="2" />
       <path d="M8 13l3.5 3.5 7-7" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>

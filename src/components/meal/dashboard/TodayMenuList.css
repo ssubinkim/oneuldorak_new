@@ -14,8 +14,8 @@
 }
 
 .today-card-title {
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 20px;
+  font-weight: 600;
   color: var(--color-text-main);
 }
 
@@ -49,25 +49,28 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .today-name {
-  font-size: 20px;
-  font-weight: 700;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
   margin: 0;
   color: var(--color-text-main);
 }
 
 .today-calories {
-  font-size: 13px;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 12px;
   color: var(--color-disabled);
-  margin: 0;
+  margin: 6px 0 0;
   font-weight: 500;
 }
 
 .today-desc {
-  font-size: 12px;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 14px;
   color: var(--color-text-sub);
   line-height: 1.55;
   margin: 0;
@@ -81,13 +84,14 @@
   border-bottom: 1px solid #f0f0f0;
   padding: 14px 0;
   margin-bottom: 20px;
+  font-family: 'Pretendard Variable', sans-serif;
 }
 
 .today-stat {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 6px;
 }
 
@@ -95,17 +99,19 @@
   width: 1px;
   height: 32px;
   background: #f0f0f0;
+  margin: 0 12px;
 }
 
 .stat-label {
-  font-size: 11px;
+  font-size: 14px;
+  font-weight: 400;
   color: var(--color-disabled);
   margin: 0;
 }
 
 .stat-value {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
   margin: 0;
   color: var(--color-text-main);
 }
@@ -144,8 +150,9 @@
 }
 
 .today-ingredients-title {
-  font-size: 14px;
-  font-weight: 700;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
   margin: 0 0 14px;
   color: var(--color-text-main);
 }
@@ -171,19 +178,20 @@
 }
 
 .ingredient-name {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--color-text-sub);
 }
 
 /* ── 레시피 버튼 ─────────────────────────────── */
 .today-recipe-btn {
   width: 100%;
-  background: var(--color-primary);
+  background: #ffdb78;
   border: none;
   border-radius: 14px;
   padding: 17px;
-  font-size: 15px;
-  font-weight: 700;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
   color: var(--color-text-main);
   cursor: pointer;
   transition: opacity 0.15s;

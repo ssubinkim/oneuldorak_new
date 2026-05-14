@@ -1,10 +1,11 @@
 import { useState } from 'react'
+import { ArrowRightIcon } from '../common/ui/ArrowRightIcon'
 import FanDeck, { type FanDeckItem } from '../effects/cards/FanDeck'
-import fridayMenuImage from '../meal/images/friday_menu.png'
-import saturdayMenuImage from '../meal/images/saturday_menu.png'
-import todayMenuImage from '../meal/images/today_menu.png'
-import tuesdayMenuImage from '../meal/images/tuesday_menu.png'
-import wednesdayMenuImage from '../meal/images/wednesday_menu.png'
+import fridayMenuImage from '../../assets/images/food_imges/friday_menu.png'
+import saturdayMenuImage from '../../assets/images/food_imges/saturday_menu.png'
+import todayMenuImage from '../../assets/images/food_imges/today_menu.png'
+import tuesdayMenuImage from '../../assets/images/food_imges/tuesday_menu.png'
+import wednesdayMenuImage from '../../assets/images/food_imges/wednesday_menu.png'
 import './HomeTomorrowRecommendation.css'
 
 const tomorrowCards: FanDeckItem[] = [
@@ -22,7 +23,7 @@ function HomeTomorrowRecommendation() {
     <section className="tomorrow-section" aria-labelledby="tomorrowTitle">
       <div className="home-section-title">
         <h2 id="tomorrowTitle">내일 도시락 뭐 먹지 ?</h2>
-        <a href="#more-lunch">더보기 〉</a>
+        <a href="#more-lunch">더보기 <ArrowRightIcon /></a>
       </div>
 
       <div className="tomorrow-section__deck">

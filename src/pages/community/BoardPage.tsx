@@ -26,19 +26,20 @@ const popularPosts: BoardPopularPost[] = [
 function BoardPage({ onSelectTab, onOpenDetail, extraPosts = [] }: BoardPageProps) {
   const [activeFilter, setActiveFilter] = useState<BoardFilter>(boardFilters[0])
   const { isHeaderCompact, handleCommunityScroll } = useCommunityHeaderCollapse()
+  const hasUserPosts = extraPosts.length > 0
 
   return (
     <main className="page-scroll free-detail-page" onScroll={handleCommunityScroll}>
       <CommunityBanner />
       <CommunityStickyHeader
         activeTab="free"
-        tabsClassName="free-detail-tabs"
+        tabsClassName="community-tabs"
         isCompact={isHeaderCompact}
         onSelectTab={onSelectTab}
       />
 
       <div className="free-detail-body">
-        <BoardPopularPosts posts={popularPosts} />
+        {!hasUserPosts && <BoardPopularPosts posts={popularPosts} />}
         <BoardCategoryFilters activeFilter={activeFilter} onChange={setActiveFilter} />
         <BoardList activeFilter={activeFilter} onOpenDetail={onOpenDetail} extraPosts={extraPosts} />
       </div>

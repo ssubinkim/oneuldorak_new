@@ -35,10 +35,10 @@
 
 .signup-page__header p {
   margin: 3px 0 0;
-  color: #1a1a1a;
-  font-family: 'Pretendard', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
+  color: #242424;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
   line-height: 130%;
 }
 
@@ -58,7 +58,7 @@
   border: 0;
   background: transparent;
   color: #343434;
-  font-family: 'Pretendard', sans-serif;
+  font-family: 'Pretendard Variable', sans-serif;
   font-size: 12px;
   font-weight: 600;
   line-height: 130%;
@@ -81,7 +81,7 @@
   border-radius: 8px;
   background: var(--color-primary-100);
   color: #111111;
-  font-family: 'Pretendard', sans-serif;
+  font-family: 'Pretendard Variable', sans-serif;
   font-size: 14px;
   font-weight: 800;
   line-height: 130%;

@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import '../../styles/Tailwind.css'
+import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import chatbotHeroImage from '../../components/chatbot/images/ai_main.svg'
 import './Chatbot.css'
@@ -56,6 +57,23 @@ function Chatbot() {
   const { nickname } = useUserProfile()
   const displayName = nickname?.trim() || '도시락러버'
 
+  const handleSuggestionClick = (suggestion: string) => {
+    setPrompt(suggestion)
+    appendChatbotHistoryMessage(suggestion, 'quick')
+  }
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const nextPrompt = prompt.trim()
+    if (!nextPrompt) {
+      return
+    }
+
+    appendChatbotHistoryMessage(nextPrompt, 'input')
+    setPrompt('')
+  }
+
   return (
     <div className="app-shell">
       <div className="app-screen chatbot-screen">
@@ -79,7 +97,7 @@ function Chatbot() {
                   key={suggestion}
                   className="chatbot-chip"
                   type="button"
-                  onClick={() => setPrompt(suggestion)}
+                  onClick={() => handleSuggestionClick(suggestion)}
                 >
                   {suggestion}
                 </button>
@@ -103,12 +121,7 @@ function Chatbot() {
               <span className="chatbot-camera-widget-label">살까 말까</span>
             </button>
 
-            <form
-              className="chatbot-input-bar"
-              onSubmit={(event) => {
-                event.preventDefault()
-              }}
-            >
+            <form className="chatbot-input-bar" onSubmit={handleSubmit}>
               <input
                 aria-label="댓글 입력"
                 placeholder="댓글을 입력하세요"

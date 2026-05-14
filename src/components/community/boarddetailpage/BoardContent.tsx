@@ -55,17 +55,16 @@ function BoardContent({ post }: { post: BoardDetailPost }) {
           <p key={paragraph}>{paragraph}</p>
         ))}
 
-        <section className="board-detail-method-box">
-          <h2>실천 방법</h2>
-          <ol>
-            {post.methods.map((method) => (
-              <li key={method}>{method}</li>
-            ))}
-          </ol>
-        </section>
-
-        <p>가장 중요한 건 계획을 세우는 거예요. 즉흥적으로 장을 보면 불필요한 게 많이 담기더라고요.</p>
-        <p>궁금한 점 있으시면 댓글 남겨주세요!</p>
+        {post.methods.length > 0 && (
+          <section className="board-detail-method-box">
+            <h2>실천 방법</h2>
+            <ol>
+              {post.methods.map((method) => (
+                <li key={method}>{method}</li>
+              ))}
+            </ol>
+          </section>
+        )}
       </div>
     </>
   )

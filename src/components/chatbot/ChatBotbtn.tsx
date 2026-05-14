@@ -1,4 +1,4 @@
-import chatbotImage from './images/chatbot.png'
+import chatbotImage from './images/chatbot .svg'
 import './ChatBotbtn.css'
 
 function ChatBotbtn() {

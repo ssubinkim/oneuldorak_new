@@ -20,13 +20,21 @@ function writeVoteSelections(nextVoteSelections: VoteSelections) {
 
 export function selectVoteOption(cardId: string, optionLabel: string) {
   if (!cardId || !optionLabel) {
-    return
+    return false
+  }
+
+  if (currentVoteSelections[cardId] === optionLabel) {
+    const { [cardId]: _removedOption, ...restSelections } = currentVoteSelections
+    writeVoteSelections(restSelections)
+    return false
   }
 
   writeVoteSelections({
     ...currentVoteSelections,
     [cardId]: optionLabel,
   })
+
+  return true
 }
 
 export function useVoteSelections() {

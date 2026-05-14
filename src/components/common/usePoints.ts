@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 const BASE_TOTAL_POINTS = 245
 const BASE_MONTHLY_POINTS = 133
+const POINT_STATE_STORAGE_KEY = 'oneuldorak:points-state:v1'
 const POINTS_CHANGED_EVENT = 'oneuldorak:points-changed'
 
 type PointState = {
@@ -18,7 +19,33 @@ function createDefaultPointState(): PointState {
   }
 }
 
-let currentPointState = createDefaultPointState()
+function readStoredPointState() {
+  if (typeof window === 'undefined') {
+    return createDefaultPointState()
+  }
+
+  const storedPointState = window.localStorage.getItem(POINT_STATE_STORAGE_KEY)
+
+  if (!storedPointState) {
+    return createDefaultPointState()
+  }
+
+  try {
+    const parsedPointState = JSON.parse(storedPointState) as Partial<PointState>
+
+    return {
+      earnedPoints: toPointNumber(parsedPointState.earnedPoints),
+      monthlyEarnedPoints: toPointNumber(parsedPointState.monthlyEarnedPoints),
+      awardedVoteIds: Array.isArray(parsedPointState.awardedVoteIds)
+        ? parsedPointState.awardedVoteIds.filter((voteId): voteId is string => typeof voteId === 'string')
+        : [],
+    }
+  } catch {
+    return createDefaultPointState()
+  }
+}
+
+let currentPointState = readStoredPointState()
 
 function toPointNumber(value: unknown) {
   if (typeof value !== 'number' || !Number.isFinite(value)) {
@@ -36,6 +63,7 @@ function writePointState(nextPointState: PointState) {
   currentPointState = nextPointState
 
   if (typeof window !== 'undefined') {
+    window.localStorage.setItem(POINT_STATE_STORAGE_KEY, JSON.stringify(nextPointState))
     window.dispatchEvent(new Event(POINTS_CHANGED_EVENT))
   }
 }
@@ -47,6 +75,14 @@ function getPointBalance() {
     totalPoints: BASE_TOTAL_POINTS + pointState.earnedPoints,
     monthlyPoints: BASE_MONTHLY_POINTS + pointState.monthlyEarnedPoints,
   }
+}
+
+export function getPointStateSnapshot() {
+  return readPointState()
+}
+
+export function getPointBalanceSnapshot() {
+  return getPointBalance()
 }
 
 export function awardVotePoint(voteId: string, amount = 1) {

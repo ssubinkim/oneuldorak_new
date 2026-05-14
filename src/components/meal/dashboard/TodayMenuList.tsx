@@ -1,23 +1,18 @@
 import { getIngredientIconClassName, weeklyMenuData } from '../mealData'
-import bookOpenImg from '../images/book_open.svg'
+import bookOpenImg from '../../../assets/icons/meal_book_open.svg'
 import './TodayMenuList.css'
 
 interface Props {
   selectedDay: number
 }
 
-function ChefHatIcon() {
+function BellIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <path d="M8 21h8M6 21h12" stroke="#555" strokeWidth="1.6" strokeLinecap="round" />
-      <path
-        d="M6 14v4h12v-4"
-        stroke="#555" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
-      />
-      <path
-        d="M6 14c-2.21 0-4-1.79-4-4s1.79-4 4-4c.34 0 .67.04.98.12A5 5 0 0 1 12 3a5 5 0 0 1 5.02 3.12c.31-.08.64-.12.98-.12 2.21 0 4 1.79 4 4s-1.79 4-4 4H6Z"
-        stroke="#555" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
-      />
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0.786133 16.1071C0.786133 13.3981 1.86228 10.8001 3.77783 8.88455C5.69338 6.969 8.29142 5.89285 11.0004 5.89285C13.7094 5.89285 16.3075 6.969 18.223 8.88455C20.1386 10.8001 21.2147 13.3981 21.2147 16.1071H0.786133Z" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M0.786133 20.0357H21.2147" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M11 5.89287V1.96429" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M8.64355 1.96429H13.3578" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   )
 }
@@ -48,7 +43,7 @@ function TodayMenuList({ selectedDay }: Props) {
     return (
       <div className="today-card">
         <div className="today-card-header">
-          <ChefHatIcon />
+          <BellIcon />
           <span className="today-card-title">오늘의 메뉴</span>
         </div>
         <div className="today-empty-card">
@@ -63,7 +58,7 @@ function TodayMenuList({ selectedDay }: Props) {
     <div className="today-card">
       {/* 카드 내부 타이틀 */}
       <div className="today-card-header">
-        <ChefHatIcon />
+        <BellIcon />
         <span className="today-card-title">오늘의 메뉴</span>
       </div>
 

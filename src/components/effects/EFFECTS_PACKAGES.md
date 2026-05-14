@@ -19,6 +19,30 @@ npm install react-chartjs-2
 npm install swiper
 ```
 
+## 온보딩 영상 사전 설치
+온보딩 영상 변환/압축 작업에는 로컬 환경에 `ffmpeg`가 필요합니다.
+`ffmpeg`는 npm 패키지가 아니라 OS에 설치하는 시스템 도구입니다.
+
+### macOS 또는 iOS 영상 작업 환경
+Homebrew가 설치되어 있다면 아래 명령어로 설치합니다.
+
+```bash
+brew install ffmpeg
+```
+
+### Windows
+Windows에서는 `ffmpeg`를 설치한 뒤 터미널에서 `ffmpeg` 명령어를 사용할 수 있도록 PATH에 등록합니다.
+
+```bash
+winget install Gyan.FFmpeg
+```
+
+설치 후 새 터미널을 열고 아래 명령어로 설치 여부를 확인합니다.
+
+```bash
+ffmpeg -version
+```
+
 ## 업데이트 규칙
 - 새 패키지를 설치할 때마다 이 파일에 즉시 추가합니다.
 - 버전이 바뀌면 기존 항목의 버전도 함께 갱신합니다.

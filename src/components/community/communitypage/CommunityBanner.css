@@ -1,6 +1,6 @@
 .community-banner {
   background: var(--color-secondary);
-  padding: 16px 16px 30px;
+  padding: 20px 20px 30px;
   overflow: visible;
   position: relative;
 }
@@ -9,15 +9,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
-.community-banner__header h1 {
+.community-banner .community-banner__header h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 800;
   color: #1a1a1a;
-  font-family: 'Pretendard', sans-serif;
+  font-family: 'NanumSquareNeo';
   line-height: 130%;
   letter-spacing: 0.08px;
 }
@@ -38,18 +38,19 @@
 }
 
 .community-banner__subtitle {
-  margin: 0 0 10px;
-  font-size: 12px;
-  color: #333;
-  line-height: 1.6;
-  font-weight: 500;
+  margin: 0 0 20px;
+  font-size: 16px;
+  color: #3c3c3c;
+  line-height: 130%;
+  letter-spacing: 0.08px;
+  font-weight: 400;
 }
 
 .community-banner__image {
   display: block;
-  width: min(82%, 560px);
-  margin: 0 auto -18px;
+  width: min(70%, 560px);
+  margin: 0 auto -10px;
   position: relative;
-  z-index: 5;
+  z-index: 999;
   pointer-events: none;
 }
