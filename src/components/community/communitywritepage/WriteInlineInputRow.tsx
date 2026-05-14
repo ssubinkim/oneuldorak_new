@@ -13,7 +13,7 @@ function WriteInlineInputRow({ label, addLabel, onAdd, ...inputProps }: WriteInl
     <div className="community-write-inline-row">
       <span>{label}</span>
       <input type="text" {...inputProps} />
-      <button type="button" aria-label={addLabel} onClick={onAdd}>
+      <button type="button" className="community-write-inline-add" aria-label={addLabel} onClick={onAdd}>
         <WriteTopIcon kind="plus" />
       </button>
     </div>

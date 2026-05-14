@@ -25,6 +25,12 @@ type CommunityWritePageProps = {
   onSubmit: (payload: CommunityWritePayload) => void
 }
 
+const writeHeroDescriptions: Record<WriteTab, string> = {
+  recipe: '나만의 도시락 레시피를 공유해보세요 !',
+  board: '냉털 일상을 남겨보세요 !',
+  vote: '궁금한 선택지를 투표로 물어보세요 !',
+}
+
 function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: CommunityWritePageProps) {
   const [activeTab, setActiveTab] = useState<WriteTab>(initialTab)
   const [formValues, setFormValues] = useState<CommunityWriteFormValues>(emptyWriteFormValues)
@@ -78,19 +84,14 @@ function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: Communit
   return (
     <main className="page-scroll community-write-page">
       <div className="community-write-hero">
-        <button className="community-write-top-button" type="button" aria-label="뒤로가기" onClick={onBack}>
-          <WriteTopIcon kind="back" />
-        </button>
-        <div className="community-write-top-actions">
-          <button type="button" aria-label="좋아요">
-            <WriteTopIcon kind="heart" />
+        <div className="community-write-hero-main">
+          <button className="community-write-top-button" type="button" aria-label="뒤로가기" onClick={onBack}>
+            <WriteTopIcon kind="back" />
           </button>
-          <button type="button" aria-label="북마크">
-            <WriteTopIcon kind="bookmark" />
-          </button>
-          <button type="button" aria-label="공유하기">
-            <WriteTopIcon kind="share" />
-          </button>
+          <div className="community-write-hero-copy">
+            <h1>글 작성</h1>
+            <p>{writeHeroDescriptions[activeTab]}</p>
+          </div>
         </div>
       </div>
 

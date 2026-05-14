@@ -3,6 +3,7 @@ export type WriteTopIconKind =
   | 'heart'
   | 'bookmark'
   | 'share'
+  | 'camera'
   | 'image'
   | 'video'
   | 'plus'
@@ -45,6 +46,15 @@ function WriteTopIcon({ kind }: WriteTopIconProps) {
         <circle cx="17.5" cy="6" r="2" />
         <circle cx="17.5" cy="18" r="2" />
         <path d="M7.8 11.1 15.7 7M7.8 12.9 15.7 17" />
+      </svg>
+    )
+  }
+
+  if (kind === 'camera') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M8.2 6.4 9.7 4.8h4.6l1.5 1.6h2.1a2.1 2.1 0 0 1 2.1 2.1v8.6a2.1 2.1 0 0 1-2.1 2.1H6.1A2.1 2.1 0 0 1 4 17.1V8.5a2.1 2.1 0 0 1 2.1-2.1h2.1Z" />
+        <circle cx="12" cy="12.8" r="3.2" />
       </svg>
     )
   }

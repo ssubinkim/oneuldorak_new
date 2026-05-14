@@ -5,13 +5,49 @@
 }
 
 .community-write-hero {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   min-height: 110px;
   padding: 32px 18px 28px;
   box-sizing: border-box;
   background: #ffdd77;
+}
+
+.community-write-hero-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.community-write-hero-copy {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  text-align: center;
+}
+
+.community-write-hero-copy h1,
+.community-write-hero-copy p {
+  margin: 0;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-style: normal;
+  line-height: 130%;
+  letter-spacing: 0;
+}
+
+.community-write-hero-copy h1 {
+  color: var(--color-text-main, #1a1a1a);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.community-write-hero-copy p {
+  color: var(--color-text-body, #3c3c3c);
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .community-write-top-button,
@@ -26,6 +62,11 @@
   border: 0;
 }
 
+.community-write-top-button {
+  position: absolute;
+  left: 18px;
+}
+
 .community-write-top-actions {
   display: flex;
   align-items: center;
@@ -34,8 +75,8 @@
 
 .community-write-top-button svg,
 .community-write-top-actions svg {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
@@ -44,12 +85,14 @@
 }
 
 .community-write-card {
+  position: relative;
+  z-index: 1;
   min-height: calc(100% - 110px);
-  margin-top: -1px;
-  padding: 48px 20px calc(var(--bottom-nav-height, 104px) + 28px);
+  margin-top: -18px;
+  padding: 48px 20px 12px;
   box-sizing: border-box;
-  background: #fffdf7;
-  border-radius: 18px 18px 0 0;
+  background: var(--color-bg-base, #fffffd);
+  border-radius: 22px 22px 0 0;
 }
 
 .community-write-form {
@@ -59,15 +102,28 @@
 }
 
 .community-write-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  gap: 6px;
   width: 100%;
-  height: 52px;
+  height: 50px;
   margin-top: 44px;
-  color: #151515;
-  background: #ffdc73;
+  padding: 10px 0;
+  box-sizing: border-box;
+  color: #3c3c3c;
+  background: #ffdb78;
   border: 0;
   border-radius: 10px;
-  font-size: 18px;
-  font-weight: 800;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  text-align: center;
 }
 
 .community-write-submit:active {
@@ -82,5 +138,21 @@
 
   .community-write-form {
     gap: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .community-write-card {
+    padding-top: 40px;
+    padding-bottom: 8px;
+  }
+
+  .community-write-form {
+    gap: 24px;
+    margin-top: 30px;
+  }
+
+  .community-write-submit {
+    margin-top: 28px;
   }
 }

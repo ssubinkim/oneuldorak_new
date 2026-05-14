@@ -394,15 +394,16 @@
 .recipe-detail-stars {
   display: flex;
   align-items: center;
-  gap: 1px;
-  color: #e5e1d8;
-  font-size: 13px;
+  gap: 2px;
   line-height: 1;
   white-space: nowrap;
 }
 
-.recipe-detail-stars .is-active {
-  color: #f7b721;
+.recipe-detail-stars img {
+  display: block;
+  width: 13px;
+  height: 13px;
+  object-fit: contain;
 }
 
 .recipe-detail-section h2 {

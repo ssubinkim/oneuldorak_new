@@ -5,6 +5,9 @@
 }
 
 .vote-page-list--featured {
+  display: flex;
+  justify-content: center;
+  width: 100%;
   padding: 0;
 }
 
@@ -39,7 +42,8 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width: 100%;
+  width: min(100%, 560px);
+  margin: 0 auto;
   padding-top: 20px;
 }
 
@@ -177,6 +181,8 @@ article.vote-result-item {
   bottom: 0;
   left: 0;
   background: var(--color-secondary-30);
+  transition: width 640ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: width;
 }
 
 .vote-result-item__row {
@@ -185,7 +191,7 @@ article.vote-result-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 39px;
+  min-height: 46px;
   padding: 0 12px;
   gap: 8px;
 }
@@ -211,6 +217,12 @@ article.vote-result-item {
 
 .vote-result-item.is-highlighted .vote-result-item__progress {
   background: var(--color-primary-30);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vote-result-item__progress {
+    transition: none;
+  }
 }
 
 .vote-card-footer {
@@ -295,5 +307,20 @@ article.vote-result-item {
   .vote-choice-list button,
   .vote-result-item__row {
     min-height: 37px;
+  }
+}
+
+@media (min-width: 600px) {
+  .vote-featured-section {
+    padding-top: 24px;
+  }
+
+  .vote-featured-section__header,
+  .vote-card--featured {
+    width: 100%;
+  }
+
+  .vote-card--featured {
+    padding: 24px;
   }
 }

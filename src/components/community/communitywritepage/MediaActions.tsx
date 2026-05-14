@@ -3,6 +3,9 @@ import WriteTopIcon from './WriteTopIcon'
 import type { CommunityMediaAttachment } from './writeTypes'
 import './MediaActions.css'
 
+const MAX_MEDIA_ATTACHMENT_COUNT = 5
+const REMOVE_FEEDBACK_MS = 140
+
 type MediaActionsProps = {
   value: CommunityMediaAttachment[]
   onChange: (value: CommunityMediaAttachment[]) => void
@@ -12,19 +15,16 @@ function createAttachmentId(kind: CommunityMediaAttachment['kind'], file: File) 
   return `${kind}-${Date.now()}-${file.name}-${file.size}`
 }
 
-function formatFileSize(size: number) {
-  if (size < 1024 * 1024) {
-    return `${Math.max(1, Math.round(size / 1024))}KB`
-  }
-
-  return `${(size / 1024 / 1024).toFixed(1)}MB`
+function getAttachmentKind(file: File): CommunityMediaAttachment['kind'] {
+  return file.type.startsWith('video/') ? 'video' : 'image'
 }
 
 function MediaActions({ value, onChange }: MediaActionsProps) {
-  const imageInputRef = useRef<HTMLInputElement | null>(null)
-  const videoInputRef = useRef<HTMLInputElement | null>(null)
+  const mediaInputRef = useRef<HTMLInputElement | null>(null)
   const generatedPreviewUrlRef = useRef<Record<string, string>>({})
   const [previewUrls, setPreviewUrls] = useState<Record<string, string>>({})
+  const [removingAttachmentIds, setRemovingAttachmentIds] = useState<string[]>([])
+  const isMaxReached = value.length >= MAX_MEDIA_ATTACHMENT_COUNT
 
   useEffect(() => {
     setPreviewUrls((currentUrls) => {
@@ -68,104 +68,114 @@ function MediaActions({ value, onChange }: MediaActionsProps) {
     }
   }, [])
 
-  const handleSelectFiles = (
-    kind: CommunityMediaAttachment['kind'],
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleSelectFiles = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(event.currentTarget.files ?? [])
 
     if (selectedFiles.length === 0) {
       return
     }
 
-    const nextAttachments = selectedFiles.map((file) => ({
-      id: createAttachmentId(kind, file),
-      kind,
-      file,
-      url: typeof URL !== 'undefined' ? URL.createObjectURL(file) : undefined,
-      name: file.name,
-      size: file.size,
-    }))
+    const availableCount = Math.max(0, MAX_MEDIA_ATTACHMENT_COUNT - value.length)
+    const nextAttachments = selectedFiles.slice(0, availableCount).map((file) => {
+      const kind = getAttachmentKind(file)
 
-    onChange([...value, ...nextAttachments])
+      return {
+        id: createAttachmentId(kind, file),
+        kind,
+        file,
+        name: file.name,
+        size: file.size,
+      }
+    })
+
+    if (nextAttachments.length > 0) {
+      onChange([...value, ...nextAttachments])
+    }
+
     event.currentTarget.value = ''
   }
 
   const handleRemoveAttachment = (attachmentId: string) => {
-    onChange(value.filter((attachment) => attachment.id !== attachmentId))
+    if (removingAttachmentIds.includes(attachmentId)) {
+      return
+    }
+
+    setRemovingAttachmentIds((ids) => [...ids, attachmentId])
+    window.setTimeout(() => {
+      onChange(value.filter((attachment) => attachment.id !== attachmentId))
+      setRemovingAttachmentIds((ids) => ids.filter((id) => id !== attachmentId))
+    }, REMOVE_FEEDBACK_MS)
   }
 
   return (
     <div className="community-write-media">
-      <div className="community-write-media-row">
+      <div className="community-write-media-header">
+        <div className="community-write-media-title-group">
+          <span className="community-write-media-label">사진 / 영상 추가</span>
+          <span className="community-write-media-limit">(최대 5개 까지)</span>
+        </div>
+        <strong>{value.length} / {MAX_MEDIA_ATTACHMENT_COUNT}</strong>
+      </div>
+
+      <div className="community-write-media-strip">
         <button
           type="button"
           className="community-write-media-button"
-          onClick={() => imageInputRef.current?.click()}
+          aria-label="사진 또는 동영상 추가"
+          disabled={isMaxReached}
+          onClick={() => mediaInputRef.current?.click()}
         >
-          <WriteTopIcon kind="image" />
-          <span>사진</span>
+          <WriteTopIcon kind="camera" />
         </button>
-        <button
-          type="button"
-          className="community-write-media-button"
-          onClick={() => videoInputRef.current?.click()}
-        >
-          <WriteTopIcon kind="video" />
-          <span>동영상</span>
-        </button>
+
+        {value.length > 0 && (
+          <ul className="community-write-media-preview-list" aria-label="업로드한 미디어">
+            {value.map((attachment) => {
+              const previewUrl = previewUrls[attachment.id]
+              const fileName = attachment.name ?? attachment.file?.name ?? '업로드한 미디어'
+
+              return (
+                <li
+                  key={attachment.id}
+                  className={[
+                    'community-write-media-preview',
+                    removingAttachmentIds.includes(attachment.id) ? 'is-removing' : '',
+                  ].filter(Boolean).join(' ')}
+                >
+                  <div className="community-write-media-preview__thumb">
+                    {previewUrl ? (
+                      attachment.kind === 'image' ? (
+                        <img src={previewUrl} alt="" aria-hidden="true" />
+                      ) : (
+                        <video src={previewUrl} muted playsInline aria-hidden="true" />
+                      )
+                    ) : (
+                      <span aria-hidden="true">{attachment.kind === 'image' ? 'IMG' : 'MOV'}</span>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    className="community-write-media-preview__remove"
+                    aria-label={`${fileName} 삭제`}
+                    onClick={() => handleRemoveAttachment(attachment.id)}
+                  >
+                    <WriteTopIcon kind="remove" />
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        )}
       </div>
 
       <input
-        ref={imageInputRef}
+        ref={mediaInputRef}
         className="community-write-media-input"
         type="file"
-        accept="image/*"
+        accept="image/*,video/*"
         multiple
-        onChange={(event) => handleSelectFiles('image', event)}
+        onChange={handleSelectFiles}
       />
-      <input
-        ref={videoInputRef}
-        className="community-write-media-input"
-        type="file"
-        accept="video/*"
-        multiple
-        onChange={(event) => handleSelectFiles('video', event)}
-      />
-
-      {value.length > 0 && (
-        <ul className="community-write-media-preview-list" aria-label="업로드한 미디어">
-          {value.map((attachment) => {
-            const previewUrl = previewUrls[attachment.id]
-            const fileName = attachment.name ?? attachment.file?.name ?? '업로드한 미디어'
-            const fileSize = attachment.size ?? attachment.file?.size ?? 0
-
-            return (
-              <li key={attachment.id} className="community-write-media-preview">
-                <div className="community-write-media-preview__thumb">
-                  {attachment.kind === 'image' && previewUrl ? (
-                    <img src={previewUrl} alt="" aria-hidden="true" />
-                  ) : (
-                    <video src={previewUrl} muted aria-hidden="true" />
-                  )}
-                </div>
-                <div className="community-write-media-preview__info">
-                  <strong>{fileName}</strong>
-                  <span>{attachment.kind === 'image' ? '사진' : '동영상'} · {formatFileSize(fileSize)}</span>
-                </div>
-                <button
-                  type="button"
-                  className="community-write-media-preview__remove"
-                  aria-label={`${fileName} 삭제`}
-                  onClick={() => handleRemoveAttachment(attachment.id)}
-                >
-                  삭제
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-      )}
     </div>
   )
 }
