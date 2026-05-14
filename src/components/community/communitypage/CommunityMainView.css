@@ -15,9 +15,11 @@
 }
 
 .community-page h2 {
-  font-size: 22px;
   color: #1a1a1a;
-  font-family: 'Pretendard Variable', sans-serif;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
   line-height: 130%;
   letter-spacing: -0.08px;
 }

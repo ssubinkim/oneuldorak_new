@@ -2,6 +2,13 @@ import type { RecipeCard } from '../common/PopularRecipeSection'
 import mayoRiceImage from '../../../assets/images/food_imges/chamchimayo.png'
 import bibimbapImage from '../../../assets/images/food_imges/bibimbap.png'
 import kimchiRiceImage from '../../../assets/images/food_imges/kimbok.png'
+import curryRiceImage from '../../../assets/images/food_imges/omurice.png'
+import riceBowlImage from '../../../assets/images/food_imges/today_menu.png'
+import spamMayoVideo from '../../../assets/food_video/video_sp.mp4'
+import kimchiRiceVideo from '../../../assets/food_video/video_kim.mp4'
+import eggRiceVideo from '../../../assets/food_video/video_rice.mp4'
+import curryRiceVideo from '../../../assets/food_video/video_ca.mp4'
+import riceBowlVideo from '../../../assets/food_video/food_rice.mp4'
 
 export const hotPosts = [
   {
@@ -28,26 +35,47 @@ export const popularRecipes: RecipeCard[] = [
   {
     id: 'r1',
     icon: '🐥',
-    channel: '도시락락락',
-    title: '스팸 마요 덮밥',
+    channel: '수진레전드',
+    title: '스파게티',
     likes: 452,
     image: mayoRiceImage,
+    video: spamMayoVideo,
   },
   {
     id: 'r2',
-    icon: '🥦',
-    channel: '프로집밥러',
-    title: '깍두기 볶음밥',
-    likes: 375,
-    image: kimchiRiceImage,
+    icon: '🍳',
+    channel: '오세훈 잘생김',
+    title: '유부초밥',
+    likes: 421,
+    image: bibimbapImage,
+    video: eggRiceVideo,
   },
   {
     id: 'r3',
-    icon: '🌿',
-    channel: '또락이',
-    title: '제철 비빔밥',
-    likes: 421,
-    image: bibimbapImage,
+    icon: '🌶️',
+    channel: '두비두밥',
+    title: '김치 볶음밥',
+    likes: 375,
+    image: kimchiRiceImage,
+    video: kimchiRiceVideo,
+  },
+  {
+    id: 'r4',
+    icon: '🍛',
+    channel: '송송송송 막시무스',
+    title: '카레 라이스',
+    likes: 398,
+    image: curryRiceImage,
+    video: curryRiceVideo,
+  },
+  {
+    id: 'r5',
+    icon: '🍚',
+    channel: '쪼세 마리',
+    title: '햄 볶음밥',
+    likes: 344,
+    image: riceBowlImage,
+    video: riceBowlVideo,
   },
 ]
 

@@ -8,6 +8,7 @@ export type RecipeCard = {
   title: string
   likes: number
   image: string
+  video?: string
 }
 
 type PopularRecipeSectionProps = {
@@ -30,7 +31,20 @@ function PopularRecipeSection({ recipes, showMore = true }: PopularRecipeSection
       <div className="recipe-section__scroll">
         {recipes.map((recipe) => (
           <article key={recipe.id} className="popular-recipe-card">
-            <img className="popular-recipe-card__image" src={recipe.image} alt={recipe.title} />
+            {recipe.video ? (
+              <video
+                className="popular-recipe-card__video"
+                src={recipe.video}
+                poster={recipe.image}
+                autoPlay
+                muted
+                loop
+                playsInline
+                aria-hidden="true"
+              />
+            ) : (
+              <img className="popular-recipe-card__image" src={recipe.image} alt={recipe.title} />
+            )}
             <div className="popular-recipe-card__overlay">
               <div className="popular-recipe-card__meta">
                 <span>{recipe.icon}</span>

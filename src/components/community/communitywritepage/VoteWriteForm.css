@@ -16,6 +16,8 @@
 
 .community-write-option-row input {
   grid-column: 2 / 4;
+  height: 44px;
+  border-radius: 13px;
 }
 
 .community-write-option-row > span + input {
@@ -136,6 +138,10 @@
 }
 
 @media (max-width: 360px) {
+  .community-write-option-row input {
+    height: 40px;
+  }
+
   .community-write-option-row--nested {
     grid-template-columns: 48px minmax(0, 1fr) 30px;
   }
