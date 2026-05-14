@@ -8,13 +8,13 @@
 .onboarding-intro-copy h1 {
   margin: 0;
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 130%;
 }
 
 .onboarding-intro-copy p {
-  margin: 17px 0 0;
+  margin: 12px 0 0;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 130%;
 }

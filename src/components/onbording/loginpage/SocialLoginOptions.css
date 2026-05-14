@@ -10,7 +10,7 @@
   color: #999999;
   font-family: 'Pretendard Variable', sans-serif;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 130%;
 }
 
@@ -26,7 +26,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 33px;
+  gap: 35px;
   margin-top: 27px;
 }
 
@@ -41,16 +41,18 @@
 }
 
 .social-login-options__button--google {
+  border: 0.5px solid #e5e5e5;
   background: #ffffff;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
 }
 
 .social-login-options__button--naver {
-  background: #03c75a;
+  border: 0.5px solid #e5e5e5;
+  background: #00bf18;
 }
 
 .social-login-options__button--kakao {
-  background: #ffe14a;
+  border: 0.5px solid #e5e5e5;
+  background: #ffeb3b;
 }
 
 .social-login-options__button img {

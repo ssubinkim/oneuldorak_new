@@ -18,16 +18,28 @@ function SignupPage() {
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false)
+  const [shakeNicknameCheck, setShakeNicknameCheck] = useState(false)
+
+  const handleNicknameChange = (value: string) => {
+    setNickname(value)
+    setIsNicknameChecked(false)
+  }
 
   const handleDummyAccountClick = () => {
     setName(dummySignupAccount.name)
     setNickname(dummySignupAccount.nickname)
     setEmail(dummySignupAccount.email)
     setPassword(dummySignupAccount.password)
+    setIsNicknameChecked(false)
   }
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (!isNicknameChecked) {
+      setShakeNicknameCheck(true)
+      return
+    }
     saveUserProfile({
       email,
       name,
@@ -53,7 +65,10 @@ function SignupPage() {
               label="닉네임"
               type="text"
               value={nickname}
-              onChange={setNickname}
+              onChange={handleNicknameChange}
+              onActionClick={() => setIsNicknameChecked(true)}
+              onShakeEnd={() => setShakeNicknameCheck(false)}
+              shouldShakeAction={shakeNicknameCheck}
               actionLabel="중복확인"
             />
             <SignupInputField label="이메일 주소" type="email" value={email} onChange={setEmail} />

@@ -125,8 +125,8 @@ export const onboardingQuestions: OnboardingQuestion[] = [
 ]
 
 export const initialOnboardingAnswers: Record<string, AnswerValue> = {
-  budget: '5,000원 ~ 8,000원',
-  time: '20분 내외',
-  avoidFoods: ['땅콩·견과류', '해산물'],
+  budget: '',
+  time: '',
+  avoidFoods: [],
   ingredients: [],
 }
