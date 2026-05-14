@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import WriteTopIcon from './WriteTopIcon'
 import WriteSelectRow from './WriteSelectRow'
 import WriteTextareaField from './WriteTextareaField'
@@ -17,8 +18,11 @@ type VoteWriteFormProps = {
 
 const voteDurationOptions = ['오늘까지', '1일', '3일', '7일']
 
+const REMOVE_FEEDBACK_MS = 140
+
 function VoteWriteForm({ value, onChange }: VoteWriteFormProps) {
   const voteOptions = value.options.slice(0, MAX_VOTE_OPTION_COUNT)
+  const [removingOptionIndexes, setRemovingOptionIndexes] = useState<number[]>([])
 
   const updateOption = (index: number, optionValue: string) => {
     const normalizedOptionValue = normalizeVoteOption(optionValue)
@@ -48,14 +52,18 @@ function VoteWriteForm({ value, onChange }: VoteWriteFormProps) {
   }
 
   const removeOption = (index: number) => {
-    if (voteOptions.length <= 2) {
+    if (voteOptions.length <= 2 || removingOptionIndexes.includes(index)) {
       return
     }
 
-    onChange({
-      ...value,
-      options: voteOptions.filter((_, optionIndex) => optionIndex !== index),
-    })
+    setRemovingOptionIndexes((indexes) => [...indexes, index])
+    window.setTimeout(() => {
+      onChange({
+        ...value,
+        options: voteOptions.filter((_, optionIndex) => optionIndex !== index),
+      })
+      setRemovingOptionIndexes((indexes) => indexes.filter((optionIndex) => optionIndex !== index))
+    }, REMOVE_FEEDBACK_MS)
   }
 
   return (
@@ -63,6 +71,7 @@ function VoteWriteForm({ value, onChange }: VoteWriteFormProps) {
       <WriteTextField
         label="제목"
         placeholder="예 ) 10분 내로 만드는 직장인 만능 도시락"
+        maxLength={50}
         value={value.title}
         onChange={(event) => onChange({ ...value, title: event.target.value })}
       />
@@ -70,6 +79,7 @@ function VoteWriteForm({ value, onChange }: VoteWriteFormProps) {
       <WriteTextareaField
         label="내용"
         placeholder="투표에 대한 설명을 간단하게 적어주세요."
+        maxLength={100}
         value={value.content}
         onChange={(event) => onChange({ ...value, content: event.target.value })}
       />
@@ -81,6 +91,7 @@ function VoteWriteForm({ value, onChange }: VoteWriteFormProps) {
             'community-write-option-row',
             optionIndex > 0 ? 'community-write-option-row--nested' : '',
             canRemoveOption ? 'is-removable' : '',
+            removingOptionIndexes.includes(optionIndex) ? 'is-removing' : '',
           ].filter(Boolean).join(' ')
 
           return (

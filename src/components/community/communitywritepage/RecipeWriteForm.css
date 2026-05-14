@@ -1,29 +1,56 @@
 .community-write-stars {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
+}
+
+.community-write-media + .community-write-recipe-info {
+  margin-top: 20px;
+}
+
+.community-write-recipe-info {
+  gap: 10px;
+}
+
+.community-write-recipe-info h2 {
+  margin: 0;
+  color: #000;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
 }
 
 .community-write-stars button {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   padding: 0;
-  color: #d9d9d9;
   background: transparent;
   border: 0;
-  font-size: 31px;
-  line-height: 1;
 }
 
-.community-write-stars button.is-active {
-  color: var(--color-primary);
+.community-write-stars button img {
+  display: block;
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
 }
 
 @media (max-width: 360px) {
+  .community-write-media + .community-write-recipe-info {
+    margin-top: 16px;
+  }
+
   .community-write-stars button {
-    width: 30px;
-    font-size: 28px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .community-write-stars button img {
+    width: 32px;
+    height: 32px;
   }
 }

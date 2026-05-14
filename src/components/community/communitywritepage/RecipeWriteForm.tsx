@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import starOffIcon from '../../../assets/icons/star_off.svg'
+import starOnIcon from '../../../assets/icons/star_on.svg'
 import { ingredientOptions } from '../../onbording/onboardingpage/onboardingQuestionData'
 import MediaActions from './MediaActions'
 import { difficultyLevels } from './writeFormData'
@@ -9,6 +11,8 @@ import WriteTextField from './WriteTextField'
 import type { RecipeWriteData } from './writeTypes'
 import './WriteFormCommon.css'
 import './RecipeWriteForm.css'
+
+const REMOVE_FEEDBACK_MS = 140
 
 type RecipeWriteFormProps = {
   value: RecipeWriteData
@@ -25,6 +29,8 @@ function getSelectedIngredients(value: string) {
 function RecipeWriteForm({ value, onChange }: RecipeWriteFormProps) {
   const [toolText, setToolText] = useState('')
   const [isIngredientPickerOpen, setIsIngredientPickerOpen] = useState(false)
+  const [removingIngredients, setRemovingIngredients] = useState<string[]>([])
+  const [removingTools, setRemovingTools] = useState<string[]>([])
   const selectedIngredients = getSelectedIngredients(value.ingredient)
 
   const updateValue = (nextValue: Partial<RecipeWriteData>) => {
@@ -48,7 +54,15 @@ function RecipeWriteForm({ value, onChange }: RecipeWriteFormProps) {
   }
 
   const handleRemoveIngredient = (ingredient: string) => {
-    updateIngredients(selectedIngredients.filter((item) => item !== ingredient))
+    if (removingIngredients.includes(ingredient)) {
+      return
+    }
+
+    setRemovingIngredients((items) => [...items, ingredient])
+    window.setTimeout(() => {
+      updateIngredients(selectedIngredients.filter((item) => item !== ingredient))
+      setRemovingIngredients((items) => items.filter((item) => item !== ingredient))
+    }, REMOVE_FEEDBACK_MS)
   }
 
   const handleAddTool = () => {
@@ -64,42 +78,58 @@ function RecipeWriteForm({ value, onChange }: RecipeWriteFormProps) {
   }
 
   const handleRemoveTool = (tool: string) => {
-    updateValue({ tools: value.tools.filter((item) => item !== tool) })
+    if (removingTools.includes(tool)) {
+      return
+    }
+
+    setRemovingTools((items) => [...items, tool])
+    window.setTimeout(() => {
+      updateValue({ tools: value.tools.filter((item) => item !== tool) })
+      setRemovingTools((items) => items.filter((item) => item !== tool))
+    }, REMOVE_FEEDBACK_MS)
   }
 
   return (
     <>
       <WriteTextField
         label="제목"
-        placeholder="예 ) 10분 내로 만드는 직장인 만능 도시락"
+        placeholder="예) 10분대로 만드는 직장인 만능 도시락"
+        maxLength={50}
         value={value.title}
         onChange={(event) => updateValue({ title: event.target.value })}
       />
 
       <WriteTextareaField
         label="내용"
-        placeholder="도시락 메뉴에 대한 설명을 간단하게 적어주세요."
+        placeholder="레시피 메뉴에 대한 설명을 간단하게 적어주세요."
+        maxLength={100}
         value={value.content}
         onChange={(event) => updateValue({ content: event.target.value })}
       />
 
-      <section className="community-write-section">
-        <h2>도시락 정보</h2>
+      <MediaActions value={value.media} onChange={(media) => updateValue({ media })} />
+
+      <section className="community-write-section community-write-recipe-info">
+        <h2>도시락 정보 </h2>
 
         <div className="community-write-info-row">
           <span>난이도</span>
           <div className="community-write-stars" aria-label={`난이도 ${value.difficulty}점`}>
-            {difficultyLevels.map((level) => (
-              <button
-                key={level}
-                type="button"
-                className={level <= value.difficulty ? 'is-active' : undefined}
-                aria-label={`${level}점`}
-                onClick={() => updateValue({ difficulty: level })}
-              >
-                ★
-              </button>
-            ))}
+            {difficultyLevels.map((level) => {
+              const isActive = level <= value.difficulty
+
+              return (
+                <button
+                  key={level}
+                  type="button"
+                  className={isActive ? 'is-active' : undefined}
+                  aria-label={`난이도 ${level}점`}
+                  onClick={() => updateValue({ difficulty: level })}
+                >
+                  <img src={isActive ? starOnIcon : starOffIcon} alt="" aria-hidden="true" />
+                </button>
+              )
+            })}
           </div>
         </div>
 
@@ -155,7 +185,13 @@ function RecipeWriteForm({ value, onChange }: RecipeWriteFormProps) {
         {selectedIngredients.length > 0 && (
           <div className="community-write-chip-list" aria-label="선택한 재료">
             {selectedIngredients.map((ingredient) => (
-              <span key={ingredient} className="community-write-chip">
+              <span
+                key={ingredient}
+                className={[
+                  'community-write-chip',
+                  removingIngredients.includes(ingredient) ? 'is-removing' : '',
+                ].filter(Boolean).join(' ')}
+              >
                 {ingredient}
                 <button
                   type="button"
@@ -171,7 +207,7 @@ function RecipeWriteForm({ value, onChange }: RecipeWriteFormProps) {
 
         <WriteInlineInputRow
           label="도구"
-          placeholder="예 ) 프라이팬"
+          placeholder="예) 프라이팬"
           addLabel="조리 도구 추가"
           value={toolText}
           onChange={(event) => setToolText(event.target.value)}
@@ -187,7 +223,13 @@ function RecipeWriteForm({ value, onChange }: RecipeWriteFormProps) {
         {value.tools.length > 0 && (
           <div className="community-write-chip-list" aria-label="추가한 조리 도구">
             {value.tools.map((tool) => (
-              <span key={tool} className="community-write-chip">
+              <span
+                key={tool}
+                className={[
+                  'community-write-chip',
+                  removingTools.includes(tool) ? 'is-removing' : '',
+                ].filter(Boolean).join(' ')}
+              >
                 {tool}
                 <button type="button" aria-label={`${tool} 삭제`} onClick={() => handleRemoveTool(tool)}>
                   x
@@ -198,10 +240,6 @@ function RecipeWriteForm({ value, onChange }: RecipeWriteFormProps) {
         )}
       </section>
 
-      <section className="community-write-section">
-        <h2>추가 기능</h2>
-        <MediaActions value={value.media} onChange={(media) => updateValue({ media })} />
-      </section>
     </>
   )
 }

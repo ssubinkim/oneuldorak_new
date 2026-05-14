@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import { awardVotePoint } from '../../common/usePoints'
 import { useUserProfile } from '../../common/useUserProfile'
@@ -218,9 +218,24 @@ function VoteResultItem({
   isHighlighted?: boolean
   onSelect?: (optionLabel: string) => void
 }) {
+  const [isGaugeReady, setIsGaugeReady] = useState(false)
+
+  useEffect(() => {
+    const frameId = window.requestAnimationFrame(() => {
+      setIsGaugeReady(true)
+    })
+
+    return () => {
+      window.cancelAnimationFrame(frameId)
+    }
+  }, [])
+
   const content = (
     <>
-      <span className="vote-result-item__progress" style={{ width: `${percent}%` }} />
+      <span
+        className="vote-result-item__progress"
+        style={{ width: isGaugeReady ? `${percent}%` : '0%' }}
+      />
       <div className="vote-result-item__row">
         <strong>{option.label}</strong>
         <span>{percent.toFixed(1)}% · {option.votes}표</span>

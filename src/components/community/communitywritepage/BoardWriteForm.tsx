@@ -37,6 +37,7 @@ function BoardWriteForm({ value, onChange }: BoardWriteFormProps) {
       <WriteTextField
         label="제목"
         placeholder="예 ) 오플레 유통기한이 내일까지에요."
+        maxLength={50}
         value={value.title}
         onChange={(event) => updateValue({ title: event.target.value })}
       />
@@ -44,14 +45,12 @@ function BoardWriteForm({ value, onChange }: BoardWriteFormProps) {
       <WriteTextareaField
         label="내용"
         placeholder="도시락 이야기, 꿀팁, 궁금한 점을 자유롭게 적어주세요."
+        maxLength={100}
         value={value.content}
         onChange={(event) => updateValue({ content: event.target.value })}
       />
 
-      <section className="community-write-section">
-        <h2>추가 기능</h2>
-        <MediaActions value={value.media} onChange={(media) => updateValue({ media })} />
-      </section>
+      <MediaActions value={value.media} onChange={(media) => updateValue({ media })} />
     </>
   )
 }

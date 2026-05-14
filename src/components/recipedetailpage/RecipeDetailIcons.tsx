@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react'
+import starOffIcon from '../../assets/icons/star_off.svg'
+import starOnIcon from '../../assets/icons/star_on.svg'
 
 type IconButtonProps = {
   label: string
@@ -85,11 +87,15 @@ export function BackIcon() {
 export function DifficultyStars({ level }: { level: number }) {
   return (
     <span className="recipe-detail-stars" aria-label={`난이도 ${level}점`}>
-      {Array.from({ length: 5 }, (_, index) => (
-        <span className={index < level ? 'is-active' : undefined} key={index}>
-          ★
-        </span>
-      ))}
+      {Array.from({ length: 5 }, (_, index) => {
+        const isActive = index < level
+
+        return (
+          <span className={isActive ? 'is-active' : undefined} key={index}>
+            <img src={isActive ? starOnIcon : starOffIcon} alt="" aria-hidden="true" />
+          </span>
+        )
+      })}
     </span>
   )
 }

@@ -8,8 +8,13 @@
 
 .community-write-select-field {
   grid-column: 2;
-  display: grid;
-  gap: 4px;
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1px;
+  width: 100%;
   min-width: 0;
 }
 
@@ -57,6 +62,8 @@
 .community-write-select-menu {
   display: grid;
   gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
   padding: 18px 20px;
   background: #fff;
   border: 1.5px solid var(--color-green02_);
@@ -65,23 +72,34 @@
 }
 
 .community-write-select-menu button {
+  display: flex;
+  align-items: center;
+  gap: 3px;
   width: 100%;
   min-width: 0;
-  min-height: 42px;
-  padding: 0 14px;
-  color: #050505;
+  height: 35px;
+  min-height: 35px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  color: #000;
   background: transparent;
   border: 0;
   border-radius: 12px;
-  font-size: 18px;
-  font-weight: 800;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
   text-align: left;
 }
 
 .community-write-select-menu button:hover,
 .community-write-select-menu button:focus-visible,
 .community-write-select-menu button.is-selected {
-  background: #fff4c7;
+  align-self: stretch;
+  background: var(--main_yellow-main_yellow09, #fff7d0);
+  border-radius: 10px;
   outline: 0;
 }
 

@@ -18,7 +18,7 @@ function WriteTabs({ activeTab, onChange }: WriteTabsProps) {
           aria-selected={activeTab === tab.id}
           onClick={() => onChange(tab.id)}
         >
-          {tab.label}
+          <span>{tab.label}</span>
         </button>
       ))}
     </div>
