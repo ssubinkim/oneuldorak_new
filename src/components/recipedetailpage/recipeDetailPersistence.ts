@@ -1,4 +1,4 @@
-import type { RecipeComment, RecipeId, RecipeStats } from './recipeDetailData'
+import type { RecipeComment, RecipeStats } from './recipeDetailData'
 
 const RECIPE_DETAIL_STORAGE_KEY = 'oneuldorak:recipe-detail-saved-data:v1'
 
@@ -6,10 +6,12 @@ export type PersistedRecipeDetailState = {
   stats: RecipeStats
   comments: RecipeComment[]
   checkedIngredientIds: string[]
+  isLiked: boolean
+  isSaved: boolean
   updatedAt: string
 }
 
-type PersistedRecipeDetailMap = Partial<Record<RecipeId, PersistedRecipeDetailState>>
+type PersistedRecipeDetailMap = Record<string, PersistedRecipeDetailState>
 
 function isBrowser() {
   return typeof window !== 'undefined'
@@ -37,6 +39,7 @@ function isValidComment(value: unknown): value is RecipeComment {
   return (
     typeof candidate.id === 'string' &&
     typeof candidate.authorName === 'string' &&
+    (typeof candidate.authorId === 'undefined' || typeof candidate.authorId === 'string') &&
     typeof candidate.publishedOn === 'string' &&
     typeof candidate.content === 'string'
   )
@@ -65,6 +68,8 @@ function readPersistedRecipeDetailMap(): PersistedRecipeDetailMap {
         stats?: unknown
         comments?: unknown
         checkedIngredientIds?: unknown
+        isLiked?: unknown
+        isSaved?: unknown
         updatedAt?: unknown
       }
 
@@ -77,12 +82,13 @@ function readPersistedRecipeDetailMap(): PersistedRecipeDetailMap {
         (ingredientId): ingredientId is string => typeof ingredientId === 'string',
       )
 
-      if (rawRecipeId === 'recipe-1' || rawRecipeId === 'recipe-2' || rawRecipeId === 'recipe-3') {
-        const recipeId = rawRecipeId as RecipeId
-        nextMap[recipeId] = {
+      if (rawRecipeId) {
+        nextMap[rawRecipeId] = {
           stats: state.stats,
           comments,
           checkedIngredientIds,
+          isLiked: typeof state.isLiked === 'boolean' ? state.isLiked : false,
+          isSaved: typeof state.isSaved === 'boolean' ? state.isSaved : false,
           updatedAt: typeof state.updatedAt === 'string' ? state.updatedAt : '',
         }
       }
@@ -103,8 +109,9 @@ function writePersistedRecipeDetailMap(dataMap: PersistedRecipeDetailMap) {
 }
 
 export function getPersistedRecipeDetailState(
-  recipeId: RecipeId,
-  fallbackState: Pick<PersistedRecipeDetailState, 'stats' | 'comments' | 'checkedIngredientIds'>,
+  recipeId: string,
+  fallbackState: Pick<PersistedRecipeDetailState, 'stats' | 'comments' | 'checkedIngredientIds'> &
+    Partial<Pick<PersistedRecipeDetailState, 'isLiked' | 'isSaved'>>,
 ) {
   const dataMap = readPersistedRecipeDetailMap()
   const persistedState = dataMap[recipeId]
@@ -112,6 +119,8 @@ export function getPersistedRecipeDetailState(
   if (!persistedState) {
     return {
       ...fallbackState,
+      isLiked: fallbackState.isLiked ?? false,
+      isSaved: fallbackState.isSaved ?? false,
       updatedAt: '',
     }
   }
@@ -120,8 +129,8 @@ export function getPersistedRecipeDetailState(
 }
 
 export function savePersistedRecipeDetailState(
-  recipeId: RecipeId,
-  state: Pick<PersistedRecipeDetailState, 'stats' | 'comments' | 'checkedIngredientIds'>,
+  recipeId: string,
+  state: Pick<PersistedRecipeDetailState, 'stats' | 'comments' | 'checkedIngredientIds' | 'isLiked' | 'isSaved'>,
 ) {
   const dataMap = readPersistedRecipeDetailMap()
 

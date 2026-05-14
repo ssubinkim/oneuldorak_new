@@ -1,5 +1,6 @@
 import './RecipeList.css'
 import recipeThumbImage from '../../../assets/images/food_imges/chamchimayo.png'
+import type { CommunityMediaAttachment } from '../communitywritepage/writeTypes'
 
 export type RecipeItem = {
   id: string
@@ -10,11 +11,14 @@ export type RecipeItem = {
   time: string
   level: string
   ingredient?: string
+  tools?: string[]
   author: string
+  authorId?: string
   likes: number
   comments: number
   saves: number
   image?: string
+  media?: CommunityMediaAttachment[]
 }
 
 type RecipeListProps = {

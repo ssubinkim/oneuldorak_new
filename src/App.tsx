@@ -51,7 +51,7 @@ const pages = {
 } satisfies Record<AppRoute, () => React.JSX.Element>
 
 function getRouteFromHash(): AppRoute {
-  const route = window.location.hash.replace('#/', '') as AppRoute
+  const route = window.location.hash.replace('#/', '').split('?')[0] as AppRoute
 
   if (route in pages) {
     return route

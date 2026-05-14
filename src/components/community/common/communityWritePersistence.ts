@@ -1,5 +1,6 @@
 import type { BoardDetailPost } from '../boarddetailpage/BoardContent'
 import type { BoardPost } from '../boardpage/BoardList'
+import type { CommunityMediaAttachment } from '../communitywritepage/writeTypes'
 import type { RecipeItem } from '../recipepage/RecipeList'
 import type { VoteCardItem } from '../votepage/VoteList'
 
@@ -58,6 +59,11 @@ function isRecipeItem(value: unknown): value is RecipeItem {
     typeof value.time === 'string' &&
     typeof value.level === 'string' &&
     typeof value.author === 'string' &&
+    (typeof value.tools === 'undefined' ||
+      (Array.isArray(value.tools) && value.tools.every((tool) => typeof tool === 'string'))) &&
+    (typeof value.image === 'undefined' || typeof value.image === 'string') &&
+    (typeof value.media === 'undefined' ||
+      (Array.isArray(value.media) && value.media.every(isMediaAttachment))) &&
     typeof value.likes === 'number' &&
     typeof value.comments === 'number' &&
     typeof value.saves === 'number'
@@ -81,6 +87,20 @@ function isBoardPost(value: unknown): value is BoardPost {
   )
 }
 
+function isMediaAttachment(value: unknown): value is CommunityMediaAttachment {
+  if (!isRecord(value)) {
+    return false
+  }
+
+  return (
+    typeof value.id === 'string' &&
+    (value.kind === 'image' || value.kind === 'video') &&
+    (typeof value.url === 'undefined' || typeof value.url === 'string') &&
+    (typeof value.name === 'undefined' || typeof value.name === 'string') &&
+    (typeof value.size === 'undefined' || typeof value.size === 'number')
+  )
+}
+
 function isBoardDetailPost(value: unknown): value is BoardDetailPost {
   if (!isRecord(value)) {
     return false
@@ -98,7 +118,9 @@ function isBoardDetailPost(value: unknown): value is BoardDetailPost {
     Array.isArray(value.paragraphs) &&
     value.paragraphs.every((paragraph) => typeof paragraph === 'string') &&
     Array.isArray(value.methods) &&
-    value.methods.every((method) => typeof method === 'string')
+    value.methods.every((method) => typeof method === 'string') &&
+    (typeof value.media === 'undefined' ||
+      (Array.isArray(value.media) && value.media.every(isMediaAttachment)))
   )
 }
 
@@ -111,6 +133,7 @@ function isVoteCardItem(value: unknown): value is VoteCardItem {
     typeof value.id === 'string' &&
     typeof value.question === 'string' &&
     typeof value.participants === 'number' &&
+    (typeof value.duration === 'undefined' || typeof value.duration === 'string') &&
     (typeof value.deadline === 'string' || typeof value.deadline === 'function') &&
     Array.isArray(value.options)
   )
@@ -163,6 +186,7 @@ export function readPersistedCommunityWriteState(): PersistedCommunityWriteState
       comments: post.comments,
       paragraphs: [post.body],
       methods: [],
+      media: [],
     }
   })
 

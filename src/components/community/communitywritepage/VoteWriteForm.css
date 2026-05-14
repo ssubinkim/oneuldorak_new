@@ -19,7 +19,50 @@
 }
 
 .community-write-option-row--nested input {
+  grid-column: 2 / 4;
+}
+
+.community-write-option-row.is-removable input,
+.community-write-option-row--nested.is-removable input {
   grid-column: 2;
+}
+
+.community-write-option-remove {
+  grid-column: 3;
+  color: #b0a99e;
+}
+
+.community-write-option-remove svg {
+  width: 19px;
+  height: 19px;
+  stroke-width: 2.3;
+}
+
+.community-write-option-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: fit-content;
+  min-height: 34px;
+  margin: 2px 0 0 64px;
+  padding: 0 12px;
+  color: #514229;
+  background: #fff8cf;
+  border: 1px solid #f1de96;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.community-write-option-add svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
 }
 
 .community-write-helper {
@@ -40,5 +83,9 @@
 @media (max-width: 360px) {
   .community-write-option-row--nested {
     grid-template-columns: 48px minmax(0, 1fr) 30px;
+  }
+
+  .community-write-option-add {
+    margin-left: 60px;
   }
 }

@@ -50,7 +50,7 @@ function BoardWriteForm({ value, onChange }: BoardWriteFormProps) {
 
       <section className="community-write-section">
         <h2>추가 기능</h2>
-        <MediaActions />
+        <MediaActions value={value.media} onChange={(media) => updateValue({ media })} />
       </section>
     </>
   )

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export type BoardComment = {
   id: string
@@ -19,6 +19,10 @@ function CommentItem({ comment, canManage, onUpdate, onDelete }: CommentItemProp
   const [isEditing, setIsEditing] = useState(false)
   const [draftText, setDraftText] = useState(comment.text)
 
+  useEffect(() => {
+    setDraftText(comment.text)
+  }, [comment.text])
+
   const handleCancelEdit = () => {
     setDraftText(comment.text)
     setIsEditing(false)
@@ -36,44 +40,72 @@ function CommentItem({ comment, canManage, onUpdate, onDelete }: CommentItemProp
   }
 
   return (
-    <article>
-      <div className="board-detail-comment__head">
-        <h3>
-          {comment.user}
-          <span>{comment.timeAgo}</span>
-        </h3>
-        {canManage && !isEditing && (
-          <div className="board-detail-comment__actions">
-            <button type="button" onClick={() => setIsEditing(true)}>수정</button>
-            <button type="button" onClick={() => onDelete(comment.id)}>삭제</button>
+    <article className="board-detail-comment">
+      <span className="board-detail-comment-avatar" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="8.4" r="3.3" />
+          <path d="M5.6 19.2c.8-3.3 3.1-5.2 6.4-5.2s5.6 1.9 6.4 5.2" />
+        </svg>
+      </span>
+
+      <div className="board-detail-comment__content">
+        <div className="board-detail-comment__head">
+          <h3>
+            {comment.user}
+            <span>{comment.timeAgo}</span>
+          </h3>
+        </div>
+
+        {isEditing ? (
+          <div className="board-detail-comment__edit">
+            <input
+              type="text"
+              value={draftText}
+              onChange={(event) => setDraftText(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  handleSaveEdit()
+                }
+
+                if (event.key === 'Escape') {
+                  handleCancelEdit()
+                }
+              }}
+            />
+            <div className="board-detail-comment__edit-actions">
+              <button type="button" onClick={handleCancelEdit}>취소</button>
+              <button type="button" onClick={handleSaveEdit}>저장</button>
+            </div>
           </div>
+        ) : (
+          <>
+            <p>{comment.text}</p>
+            <div className="board-detail-comment__actions">
+              <button type="button">좋아요</button>
+              <button type="button">댓글</button>
+              <button type="button">신고</button>
+              {canManage && (
+                <>
+                  <button
+                    type="button"
+                    className="board-detail-comment__manage-action"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    수정
+                  </button>
+                  <button
+                    type="button"
+                    className="board-detail-comment__manage-action"
+                    onClick={() => onDelete(comment.id)}
+                  >
+                    삭제
+                  </button>
+                </>
+              )}
+            </div>
+          </>
         )}
       </div>
-
-      {isEditing ? (
-        <div className="board-detail-comment__edit">
-          <input
-            type="text"
-            value={draftText}
-            onChange={(event) => setDraftText(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                handleSaveEdit()
-              }
-
-              if (event.key === 'Escape') {
-                handleCancelEdit()
-              }
-            }}
-          />
-          <div className="board-detail-comment__edit-actions">
-            <button type="button" onClick={handleCancelEdit}>취소</button>
-            <button type="button" onClick={handleSaveEdit}>저장</button>
-          </div>
-        </div>
-      ) : (
-        <p>{comment.text}</p>
-      )}
     </article>
   )
 }
