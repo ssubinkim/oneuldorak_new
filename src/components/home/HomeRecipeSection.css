@@ -6,7 +6,7 @@
   justify-content: center;
   gap: 30px;
   min-width: 0;
-  padding-top: 20px;
+  padding: 40px 20px 0;
   background: #fff;
   font-style: normal;
 }
@@ -26,14 +26,14 @@
   color: var(--color-text-main);
   font-size: 24px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
   letter-spacing: 0;
 }
 
 .home-recipe-section__header p {
   margin: 12px 0 0;
-  color: var(--color-text-sub);
+  color: #888;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -45,7 +45,6 @@
   flex: 0 0 auto;
   align-items: center;
   gap: 3px;
-  margin-bottom: 2px;
   color: #767676;
   font-size: 14px;
   font-style: normal;
@@ -172,7 +171,7 @@
   min-width: 0;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: 2px;
 }
 
 .home-recipe-card__title {

@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import {
   carrotImg, potatoImg, appleImg, onionImg,
   romainImg, brocollyImg, strawberryImg,
   getIngredientIconClassName,
 } from '../mealData'
+import WeeklyPlanCalendarModal from '../weekly-plan/page/WeeklyPlanCalendarModal'
 import './IngredientSection.css'
 
 interface Ingredient {
@@ -22,28 +24,38 @@ const INGREDIENTS: Ingredient[] = [
   { id: 7, name: '딸기', image: strawberryImg, daysLeft: null },
 ]
 
-function FridgeIcon() {
+function CalendarIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-      <rect x="2" y="1.5" width="14" height="15" rx="3" stroke="#333" strokeWidth="1.5" />
-      <path d="M2 7.5h14" stroke="#333" strokeWidth="1.5" />
-      <path d="M6.5 4.5v1.5M6.5 10v2" stroke="#333" strokeWidth="1.5" strokeLinecap="round" />
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" />
+      <path d="M16 2v4M8 2v4M3 10h18" />
     </svg>
   )
 }
 
-type Props = { onAddIngredient?: () => void; onShowAll?: () => void }
+function IngredientSection() {
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
+  const today = new Date()
 
-function IngredientSection({ onAddIngredient, onShowAll }: Props) {
   return (
     <section className="ing-section">
       <div className="ing-header">
-        <FridgeIcon />
-        <span className="ing-title">냉장고 재료 모아보기</span>
-        <button className="ing-more-btn">전체 {INGREDIENTS.length}개 &gt;</button>
+        <div className="ing-header__text">
+          <h2 className="ing-title">이번주<br />냉털 계획표</h2>
+          <p className="ing-subtitle">한 주 도시락을 미리 채워보세요!</p>
+        </div>
+        <button className="cal-icon-btn" aria-label="달력 열기" onClick={() => setIsCalendarOpen(true)}>
+          <CalendarIcon />
+        </button>
       </div>
 
       <div className="ing-scroll">
+        <div className="ing-item">
+          <button className="ing-add-btn" aria-label="재료 추가">
+            <span className="ing-add-plus">+</span>
+          </button>
+          <span className="ing-name"> </span>
+        </div>
         {INGREDIENTS.map((item) => (
           <div key={item.id} className="ing-item">
             <div className="ing-circle-wrap">
@@ -59,10 +71,14 @@ function IngredientSection({ onAddIngredient, onShowAll }: Props) {
         ))}
       </div>
 
-      <div className="ing-actions">
-        <button className="ing-btn ing-btn--primary" onClick={onAddIngredient}>재료추가하기</button>
-        <button className="ing-btn ing-btn--outline" onClick={onShowAll}>모든 재료 보러가기</button>
-      </div>
+      {isCalendarOpen && (
+        <WeeklyPlanCalendarModal
+          year={today.getFullYear()}
+          month={today.getMonth() + 1}
+          todayDate={today.getDate()}
+          onClose={() => setIsCalendarOpen(false)}
+        />
+      )}
     </section>
   )
 }

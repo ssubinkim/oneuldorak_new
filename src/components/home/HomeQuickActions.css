@@ -1,5 +1,5 @@
 .quick-section {
-  padding: 26px 17px 0;
+  padding: 20px 0;
   background: #fff;
 }
 
@@ -12,9 +12,8 @@
 }
 
 .quick-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .quick-card {
@@ -26,20 +25,20 @@
   color: #4d4d4d;
   background: transparent;
   border: 0;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 500;
   line-height: 120%;
 }
 
 .quick-card__icon {
   display: grid;
   place-items: center;
-  width: 100%;
-  max-width: 70px;
-  aspect-ratio: 1 / 0.78;
-  background: #f1f1f1;
+  width: 60px;
+  height: 60px;
+  background: #fffbe8;
+  border: 1px solid #ffdb78;
   border-radius: 7px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
+  box-shadow: 3px 3px 0 #ffdb78;
 }
 
 @media (max-width: 360px) {

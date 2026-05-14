@@ -40,8 +40,8 @@
 
 .sequential-highlight-list__rank {
   color: #6e6e6e;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 600;
   text-align: center;
 }
 
@@ -63,8 +63,8 @@
 .sequential-highlight-list__title {
   margin: 0;
   color: #5e5e5e;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 1.25;
   white-space: nowrap;
   overflow: hidden;

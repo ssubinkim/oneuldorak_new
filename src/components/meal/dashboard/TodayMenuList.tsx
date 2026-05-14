@@ -1,5 +1,7 @@
+import { useEffect, useRef, useState } from 'react'
 import { getIngredientIconClassName, weeklyMenuData } from '../mealData'
-import bookOpenImg from '../../../assets/icons/meal_book_open.svg'
+import moneyBagImg from '../../../assets/icons/money_bag.svg'
+import HomeQuickActions from '../../home/HomeQuickActions'
 import './TodayMenuList.css'
 
 interface Props {
@@ -17,97 +19,84 @@ function BellIcon() {
   )
 }
 
-function StarRating({ value, max = 5 }: { value: number; max?: number }) {
-  return (
-    <div className="star-rating">
-      {Array.from({ length: max }).map((_, i) => (
-        <span key={i} className={i < value ? 'star star-filled' : 'star star-empty'}>★</span>
-      ))}
-    </div>
-  )
-}
 
-function ClockIcon() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{ marginRight: 3 }}>
-      <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" strokeWidth="1.2" />
-      <path d="M6.5 3.5v3l2 1.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
-  )
-}
 
-function TodayMenuList({ selectedDay }: Props) {
-  const menu = weeklyMenuData.find(m => m.date === selectedDay) ?? weeklyMenuData[0]
+const slides = weeklyMenuData.filter(m => m.image !== null)
+const monthlySavings = weeklyMenuData.reduce((sum, m) => sum + m.savedAmount, 0)
 
-  if (!menu.image && menu.status === 'thinking') {
-    return (
-      <div className="today-card">
-        <div className="today-card-header">
-          <BellIcon />
-          <span className="today-card-title">오늘의 메뉴</span>
-        </div>
-        <div className="today-empty-card">
-          <p className="today-empty-text">아직 메뉴를 정하지 않았어요!</p>
-          <p className="today-empty-sub">도락이에게 추천받아보세요 🐶</p>
-        </div>
-      </div>
-    )
+function TodayMenuList({ selectedDay: _ }: Props) {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const touchStartX = useRef(0)
+  const currentMenu = slides[currentIndex]
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex(prev => (prev + 1) % slides.length)
+    }, 3000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX
+    if (Math.abs(diff) > 40) {
+      if (diff > 0) setCurrentIndex(prev => (prev + 1) % slides.length)
+      else setCurrentIndex(prev => (prev - 1 + slides.length) % slides.length)
+    }
   }
 
   return (
     <div className="today-card">
-      {/* 카드 내부 타이틀 */}
       <div className="today-card-header">
         <BellIcon />
-        <span className="today-card-title">오늘의 메뉴</span>
+        <span className="today-card-title">오늘의 추천 메뉴</span>
+        <button className="today-menu-add-btn">+ 메뉴추가</button>
       </div>
 
-      {/* 이미지 + 메뉴 정보 */}
       <div className="today-header">
-        <div className="today-img-wrapper">
-          {menu.image && (
-            <img
-              className="today-img"
-              src={menu.image}
-              alt={menu.name}
-              onError={e => { (e.target as HTMLImageElement).style.opacity = '0' }}
-            />
-          )}
-        </div>
-        <div className="today-title-section">
-          <p className="today-name">{menu.name}</p>
-          {menu.calories && <p className="today-calories">{menu.calories}kcal</p>}
-          {menu.description && <p className="today-desc">{menu.description}</p>}
+        <div
+          className="today-img-wrapper"
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div
+            className="today-slides-track"
+            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          >
+            {slides.map((slide, i) => (
+              <div key={i} className="today-slide">
+                <img className="today-img" src={slide.image!} alt={slide.name} />
+                <div className="today-img-gradient" />
+                <div className="today-img-overlay">
+                  {slide.time && <span className="today-time-badge">{slide.time}</span>}
+                  <p className="today-name">{slide.name}</p>
+                  {slide.description && <p className="today-desc">{slide.description}</p>}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="today-dots">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                className={`today-dot${i === currentIndex ? ' today-dot--active' : ''}`}
+                onClick={() => setCurrentIndex(i)}
+                aria-label={`슬라이드 ${i + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* 절약금액 / 난이도 / 조리시간 */}
-      <div className="today-stats">
-        <div className="today-stat">
-          <p className="stat-label">절약금액</p>
-          <p className="stat-value stat-blue">{menu.savedAmount.toLocaleString()}원</p>
-        </div>
-        <div className="today-stat-divider" />
-        <div className="today-stat">
-          <p className="stat-label">난이도</p>
-          <StarRating value={menu.difficulty} />
-        </div>
-        <div className="today-stat-divider" />
-        <div className="today-stat">
-          <p className="stat-label">조리시간</p>
-          <p className="stat-value stat-time">
-            <ClockIcon />
-            약 {menu.time ?? '-'}
-          </p>
-        </div>
-      </div>
-
-      {/* 필요한 재료 */}
-      {menu.ingredients.length > 0 && (
+      {currentMenu.ingredients.length > 0 && (
         <div className="today-ingredients-section">
           <p className="today-ingredients-title">필요한 재료</p>
           <div className="today-ingredients-list">
-            {menu.ingredients.map(ing => (
+            {currentMenu.ingredients.map(ing => (
               <div key={ing.name} className="today-ingredient">
                 <img className={`ingredient-img ${getIngredientIconClassName(ing.image)}`} src={ing.image} alt={ing.name} />
                 <span className="ingredient-name">{ing.name}</span>
@@ -117,10 +106,23 @@ function TodayMenuList({ selectedDay }: Props) {
         </div>
       )}
 
-      <button className="today-recipe-btn">
-        <img src={bookOpenImg} alt="" className="today-recipe-btn-icon" />
-        레시피 보러가기
-      </button>
+      <div className="today-savings">
+        <div className="savings-card">
+          <img src={moneyBagImg} alt="" className="savings-icon" />
+          <div className="savings-info">
+            <p className="savings-label">오늘 예상 절약</p>
+            <p className="savings-amount savings-amount--blue">{currentMenu.savedAmount.toLocaleString()}원</p>
+          </div>
+        </div>
+        <div className="savings-card">
+          <span className="savings-icon savings-icon--emoji">🪙</span>
+          <div className="savings-info">
+            <p className="savings-label">이번 달 누적 절약</p>
+            <p className="savings-amount savings-amount--yellow">{monthlySavings.toLocaleString()}원</p>
+          </div>
+        </div>
+      </div>
+      <HomeQuickActions />
     </div>
   )
 }

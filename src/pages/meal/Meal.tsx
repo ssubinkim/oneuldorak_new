@@ -1,12 +1,12 @@
-import { useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import Header from '../../components/common/layout/Header'
 import TodayMenuList from '../../components/meal/dashboard/TodayMenuList'
 import WeeklyPlanSection from '../../components/meal/dashboard/WeeklyPlanSection'
 import IngredientSection from '../../components/meal/dashboard/IngredientSection'
-import RecipeCarousel from '../../components/meal/dashboard/RecipeCarousel'
-import ShoppingChecklistBottomSheet from '../../components/meal/common/ShoppingChecklistBottomSheet'
-import ChatBotbtn from '../../components/chatbot/ChatBotbtn'
+import HomeFridgeBanner from '../../components/home/HomeFridgeBanner'
+import HomeStories from '../../components/home/HomeStories'
+import HomeRecipeSection from '../../components/home/HomeRecipeSection'
+import logoImg from '../../assets/logos/logo.svg'
 import '../../styles/Tailwind.css'
 import './Meal.css'
 
@@ -20,8 +20,6 @@ function BellIcon() {
 }
 
 function Meal() {
-  const [isShoppingSheetOpen, setIsShoppingSheetOpen] = useState(false)
-
   return (
     <div className="app-shell">
       <div className="app-screen meal-screen">
@@ -34,35 +32,32 @@ function Meal() {
             <div className="meal-hero-inner">
               <div className="meal-hero-top">
                 <div className="meal-brand">
-<span className="meal-brand-name">마이도락</span>
+                  <img src={logoImg} alt="오늘도락" className="meal-brand-logo" />
                 </div>
                 <button className="meal-bell-btn" aria-label="알림">
                   <BellIcon />
                 </button>
               </div>
-              <p className="meal-tagline">냉장고 재료로 맛있는 메뉴를 추천해드려요 !</p>
+              <div className="meal-tagline">
+                <p className="meal-tagline-name"><strong>도시락러버</strong> 님</p>
+                <p className="meal-tagline-sub">오늘도 맛있는<br />절약을 시작해보세요</p>
+              </div>
             </div>
 
             <div className="meal-dashboard">
               <div className="dash-today-wrap">
                 <TodayMenuList selectedDay={1} />
               </div>
-              <WeeklyPlanSection onMore={() => { window.location.hash = '#/meal-weekly-plan' }} />
-              <IngredientSection
-                onAddIngredient={() => setIsShoppingSheetOpen(true)}
-                onShowAll={() => { window.location.hash = '#/meal-storage' }}
-              />
-              <RecipeCarousel />
+              <IngredientSection />
+              <WeeklyPlanSection />
+              <HomeFridgeBanner />
+              <HomeStories />
+              <HomeRecipeSection />
             </div>
 
           </div>
         </div>
 
-        <ChatBotbtn />
-        <ShoppingChecklistBottomSheet
-          isOpen={isShoppingSheetOpen}
-          onClose={() => setIsShoppingSheetOpen(false)}
-        />
         <BottomNav />
       </div>
     </div>

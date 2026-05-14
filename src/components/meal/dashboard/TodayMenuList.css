@@ -1,8 +1,5 @@
 .today-card {
-  background: #fff;
-  border-radius: 20px;
   padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
 }
 
 /* ── 카드 내부 타이틀 ─────────────────────────── */
@@ -13,26 +10,52 @@
   margin-bottom: 18px;
 }
 
-.today-card-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--color-text-main);
+.today-card-header .today-card-title {
+  flex: 1;
 }
 
-/* ── 헤더: 이미지 + 타이틀 ───────────────────── */
+.today-menu-add-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #888;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.today-card-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  font-family: 'NanumSquareNeo', sans-serif;
+}
+
+/* ── 헤더: 이미지 오버레이 ───────────────────── */
 .today-header {
-  display: flex;
-  gap: 16px;
   margin-bottom: 20px;
 }
 
 .today-img-wrapper {
-  width: 130px;
-  min-width: 130px;
-  height: 150px;
-  border-radius: 14px;
+  position: relative;
+  width: 100%;
+  height: 210px;
+  border-radius: 16px;
   overflow: hidden;
   background: #e0e0e0;
+}
+
+.today-slides-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.45s ease;
+}
+
+.today-slide {
+  position: relative;
+  min-width: 100%;
+  height: 100%;
   flex-shrink: 0;
 }
 
@@ -43,36 +66,77 @@
   display: block;
 }
 
-.today-title-section {
-  flex: 1;
-  min-width: 0;
+.today-dots {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  z-index: 2;
+}
+
+.today-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.today-dot--active {
+  width: 18px;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.today-img-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.62) 100%);
+  border-radius: 16px;
+}
+
+.today-img-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 4px;
+}
+
+.today-time-badge {
+  display: inline-block;
+  align-self: flex-start;
+  background: #b6d7a0;
+  color: #2d5a1b;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 6px;
 }
 
 .today-name {
   font-family: 'Pretendard Variable', sans-serif;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 600;
   margin: 0;
-  color: var(--color-text-main);
-}
-
-.today-calories {
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 12px;
-  color: var(--color-disabled);
-  margin: 6px 0 0;
-  font-weight: 500;
+  color: #fff;
 }
 
 .today-desc {
   font-family: 'Pretendard Variable', sans-serif;
   font-size: 14px;
-  color: var(--color-text-sub);
-  line-height: 1.55;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.4;
   margin: 0;
 }
 
@@ -159,8 +223,8 @@
 
 .today-ingredients-list {
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-wrap: nowrap;
 }
 
 .today-ingredient {
@@ -209,6 +273,65 @@
 
 .today-recipe-btn:active {
   opacity: 0.85;
+}
+
+/* ── 절약 카드 ───────────────────────────────── */
+.today-savings {
+  display: flex;
+  gap: 5px;
+  margin-top: 16px;
+}
+
+.savings-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fffbe8;
+  border: 1px solid #ffe673;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.savings-icon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.savings-icon--emoji {
+  font-size: 30px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.savings-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.savings-label {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 400;
+  color: #999;
+}
+
+.savings-amount {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.savings-amount--blue {
+  color: #ff6a00;
+}
+
+.savings-amount--yellow {
+  color: #4a90d9;
 }
 
 /* ── 고민중 빈 카드 ─────────────────────────── */
