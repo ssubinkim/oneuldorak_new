@@ -1,11 +1,24 @@
+.fridge-banner-stage {
+  position: relative;
+  margin-top: 30px;
+}
+
+.fridge-banner__bottom-trigger {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
 .fridge-banner {
   position: relative;
   display: grid;
-  grid-template-columns: 29% 1fr 24px;
+  grid-template-columns: 1fr 40px;
   align-items: center;
   width: calc(100% - 34px);
-  min-height: 130px;
-  margin-top: 30px;
+  min-height: 168px;
   margin-right: auto;
   margin-left: auto;
   overflow: hidden;
@@ -15,33 +28,64 @@
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
 }
 
-.fridge-banner__door {
-  position: relative;
-  align-self: stretch;
-  background: #eeeeee;
-  border-right: 1px solid #d7d7d7;
+.fridge-banner::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.78) 45%, rgba(255, 255, 255, 0.96)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(244, 244, 244, 0.2));
+  content: '';
+  pointer-events: none;
 }
 
-.fridge-banner__door::after {
+.fridge-banner__media {
   position: absolute;
-  top: 26px;
-  right: 12px;
-  width: 4px;
-  height: 72px;
-  background: #d8d8d8;
-  border-radius: 999px;
-  content: '';
-  box-shadow: 0 0 0 1px #ececec;
+  inset: 0;
+  overflow: hidden;
+}
+
+.fridge-banner__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform-origin: center;
+  transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity;
+}
+
+.fridge-banner__image--closed {
+  z-index: 1;
+  opacity: 1;
+}
+
+.fridge-banner__image--open {
+  z-index: 2;
+  opacity: 0;
+}
+
+.fridge-banner-stage.is-open .fridge-banner__image--closed {
+  opacity: 0;
+}
+
+.fridge-banner-stage.is-open .fridge-banner__image--open {
+  opacity: 1;
 }
 
 .fridge-banner__content {
-  padding: 0 22px;
+  position: relative;
+  z-index: 2;
+  padding: 0 0 0 50%;
 }
 
 .fridge-banner__content h2 {
   margin: 0 0 12px;
   color: #4a4a4a;
-  font-size: 20px;
+  font-family: 'NanumSquare Neo', sans-serif;
+  font-size: 22px;
   font-weight: 700;
   line-height: 120%;
 }
@@ -49,20 +93,27 @@
 .fridge-banner__content p {
   margin: 0;
   color: #5f5f5f;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 140%;
 }
 
 .fridge-banner__arrow {
-  color: #22b23c;
-  font-size: 30px;
-  font-weight: 400;
+  position: relative;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  justify-self: end;
+  object-fit: contain;
 }
 
 @media (max-width: 360px) {
+  .fridge-banner {
+    min-height: 150px;
+  }
+
   .fridge-banner__content {
-    padding: 0 15px;
+    padding: 0 15px 0 38%;
   }
 
   .fridge-banner__content h2 {
