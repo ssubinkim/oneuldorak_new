@@ -1,7 +1,16 @@
 import { useRef, useState } from 'react'
 import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import { awardVotePoint } from '../../common/usePoints'
+import { useUserProfile } from '../../common/useUserProfile'
 import VoteCompleteModal from '../common/VoteCompleteModal'
+import VoteWriteForm from '../communitywritepage/VoteWriteForm'
+import {
+  MAX_VOTE_OPTION_COUNT,
+  getUniqueVoteOptions,
+  hasDuplicateVoteOptions,
+  hasTooManyVoteOptions,
+  type VoteWriteData,
+} from '../communitywritepage/writeTypes'
 import { useVoteSelections } from './useVoteSelections'
 import './VoteList.css'
 
@@ -19,8 +28,11 @@ export type VoteCardItem = {
   question: string
   subtitle?: string
   description?: string
+  author?: string
+  authorId?: string
   reward?: string
   participants: number
+  duration?: string
   deadline: string | (() => string)
   options: VoteOption[]
 }
@@ -30,6 +42,8 @@ type VoteListProps = {
   variant?: 'featured' | 'list'
   extraVotes?: VoteCardItem[]
   onMoreClick?: () => void
+  onUpdateVote?: (voteId: string, data: VoteWriteData) => void
+  onDeleteVote?: (voteId: string) => void
 }
 
 function getDeadline(dayOffset: number) {
@@ -176,6 +190,23 @@ function getVotedOptions(options: VoteOption[], selectedOption?: string) {
   }))
 }
 
+function getVoteEditValue(card: VoteCardItem): VoteWriteData {
+  return {
+    title: card.question,
+    content: card.description ?? card.subtitle ?? '',
+    options: card.options.slice(0, MAX_VOTE_OPTION_COUNT).map((option) => option.label),
+    duration: card.duration ?? '3일',
+  }
+}
+
+function isOwnVote(card: VoteCardItem, currentUserId: string, nickname: string) {
+  if (card.authorId) {
+    return card.authorId === currentUserId
+  }
+
+  return card.id.startsWith('user-vote') && (!card.author || card.author === nickname)
+}
+
 function VoteResultItem({
   option,
   percent,
@@ -248,12 +279,28 @@ function VoteCard({
   onVote,
   isEnded,
   onMoreClick,
+  canManage,
+  isEditing,
+  editValue,
+  onStartEdit,
+  onCancelEdit,
+  onChangeEdit,
+  onSaveEdit,
+  onDelete,
 }: {
   card: VoteCardItem
   selectedOption?: string
   onVote: (cardId: string, optionLabel: string) => void
   isEnded?: boolean
   onMoreClick?: () => void
+  canManage?: boolean
+  isEditing?: boolean
+  editValue?: VoteWriteData
+  onStartEdit?: () => void
+  onCancelEdit?: () => void
+  onChangeEdit?: (value: VoteWriteData) => void
+  onSaveEdit?: () => void
+  onDelete?: () => void
 }) {
   const isFeatured = Boolean(card.heading)
   const votedOptions = getVotedOptions(card.options, selectedOption)
@@ -312,6 +359,19 @@ function VoteCard({
     )
   }
 
+  if (isEditing && editValue && onChangeEdit && onCancelEdit && onSaveEdit) {
+    return (
+      <article className="vote-card vote-card--editing" aria-label="투표 수정">
+        <h2>투표 수정</h2>
+        <VoteWriteForm value={editValue} onChange={onChangeEdit} />
+        <div className="vote-card-owner-actions vote-card-owner-actions--editing">
+          <button type="button" onClick={onCancelEdit}>취소</button>
+          <button type="button" onClick={onSaveEdit}>저장</button>
+        </div>
+      </article>
+    )
+  }
+
   return (
     <article className="vote-card">
       <div className="vote-card-title-wrap">
@@ -321,17 +381,33 @@ function VoteCard({
       {card.subtitle && <p className="vote-card-subtitle">{card.subtitle}</p>}
       {choices}
       {cardFooter}
+      {canManage && (
+        <div className="vote-card-owner-actions">
+          <button type="button" onClick={onStartEdit}>수정</button>
+          <button type="button" onClick={onDelete}>삭제</button>
+        </div>
+      )}
     </article>
   )
 }
 
-function VoteList({ filter, variant = 'list', extraVotes = [], onMoreClick }: VoteListProps) {
+function VoteList({
+  filter,
+  variant = 'list',
+  extraVotes = [],
+  onMoreClick,
+  onUpdateVote,
+  onDeleteVote,
+}: VoteListProps) {
+  const { email, nickname } = useUserProfile()
   const { selectedVotes, selectVoteOption } = useVoteSelections()
   const [voteModal, setVoteModal] = useState<{
     question: string
     selectedOption: string
     reward?: string
   } | null>(null)
+  const [editingVoteId, setEditingVoteId] = useState<string | null>(null)
+  const [editingVoteValue, setEditingVoteValue] = useState<VoteWriteData | null>(null)
   const shownVoteModalIdsRef = useRef<Set<string>>(new Set())
   const activeVoteCards = [...extraVotes, ...voteCards]
 
@@ -368,6 +444,61 @@ function VoteList({ filter, variant = 'list', extraVotes = [], onMoreClick }: Vo
     return [...extraVotes, ...voteCards.slice(1)]
   })()
 
+  const handleStartEdit = (card: VoteCardItem) => {
+    setEditingVoteId(card.id)
+    setEditingVoteValue(getVoteEditValue(card))
+  }
+
+  const handleCancelEdit = () => {
+    setEditingVoteId(null)
+    setEditingVoteValue(null)
+  }
+
+  const handleSaveEdit = (voteId: string) => {
+    if (!editingVoteValue || !onUpdateVote) {
+      return
+    }
+
+    const nextTitle = editingVoteValue.title.trim()
+    const nextContent = editingVoteValue.content.trim()
+    const nextOptions = getUniqueVoteOptions(editingVoteValue.options)
+
+    if (hasDuplicateVoteOptions(editingVoteValue.options)) {
+      window.alert('같은 보기는 추가할 수 없어요.')
+      return
+    }
+
+    if (hasTooManyVoteOptions(editingVoteValue.options)) {
+      window.alert('투표 보기는 최대 5개까지 추가할 수 있어요.')
+      return
+    }
+
+    if (!nextTitle || nextOptions.length < 2) {
+      window.alert('투표 보기는 2개 이상 필요해요.')
+      return
+    }
+
+    onUpdateVote(voteId, {
+      title: nextTitle,
+      content: nextContent,
+      options: nextOptions,
+      duration: editingVoteValue.duration,
+    })
+    handleCancelEdit()
+  }
+
+  const handleDelete = (voteId: string) => {
+    if (!onDeleteVote) {
+      return
+    }
+
+    const shouldDelete = window.confirm('투표를 삭제할까요?')
+
+    if (shouldDelete) {
+      onDeleteVote(voteId)
+    }
+  }
+
   return (
     <section
       className={`vote-page-list vote-page-list--${variant}`}
@@ -381,6 +512,18 @@ function VoteList({ filter, variant = 'list', extraVotes = [], onMoreClick }: Vo
           onVote={handleVote}
           isEnded={filter === 'ended'}
           onMoreClick={variant === 'featured' ? onMoreClick : undefined}
+          canManage={
+            variant === 'list' &&
+            filter === 'active' &&
+            Boolean(onUpdateVote && onDeleteVote && isOwnVote(card, email, nickname))
+          }
+          isEditing={editingVoteId === card.id}
+          editValue={editingVoteId === card.id ? editingVoteValue ?? undefined : undefined}
+          onStartEdit={() => handleStartEdit(card)}
+          onCancelEdit={handleCancelEdit}
+          onChangeEdit={setEditingVoteValue}
+          onSaveEdit={() => handleSaveEdit(card.id)}
+          onDelete={() => handleDelete(card.id)}
         />
       ))}
 

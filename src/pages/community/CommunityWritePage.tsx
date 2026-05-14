@@ -7,6 +7,9 @@ import WriteTopIcon from '../../components/community/communitywritepage/WriteTop
 import {
   emptyWriteFormValues,
   getWritePayload,
+  getUniqueVoteOptions,
+  hasDuplicateVoteOptions,
+  hasTooManyVoteOptions,
   type BoardWriteData,
   type CommunityWriteFormValues,
   type CommunityWritePayload,
@@ -39,7 +42,37 @@ function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: Communit
   }
 
   const handleSubmit = () => {
-    onSubmit(getWritePayload(activeTab, formValues))
+    const payload = getWritePayload(activeTab, formValues)
+
+    if (payload.tab === 'vote') {
+      if (hasDuplicateVoteOptions(payload.data.options)) {
+        window.alert('같은 보기는 추가할 수 없어요.')
+        return
+      }
+
+      if (hasTooManyVoteOptions(payload.data.options)) {
+        window.alert('투표 보기는 최대 5개까지 추가할 수 있어요.')
+        return
+      }
+
+      const uniqueOptions = getUniqueVoteOptions(payload.data.options)
+
+      if (uniqueOptions.length < 2) {
+        window.alert('투표 보기는 2개 이상 필요해요.')
+        return
+      }
+
+      onSubmit({
+        ...payload,
+        data: {
+          ...payload.data,
+          options: uniqueOptions,
+        },
+      })
+      return
+    }
+
+    onSubmit(payload)
   }
 
   return (

@@ -1,3 +1,5 @@
+import type { CommunityMediaAttachment } from '../communitywritepage/writeTypes'
+
 export type BoardDetailPost = {
   id: string
   category: string
@@ -10,6 +12,7 @@ export type BoardDetailPost = {
   comments: number
   paragraphs: string[]
   methods: string[]
+  media?: CommunityMediaAttachment[]
 }
 
 function BoardContentIcon({ kind }: { kind: 'heart' | 'comment' }) {
@@ -28,45 +31,75 @@ function BoardContentIcon({ kind }: { kind: 'heart' | 'comment' }) {
   )
 }
 
-function BoardContent({ post }: { post: BoardDetailPost }) {
+type BoardContentProps = {
+  post: BoardDetailPost
+  isLiked?: boolean
+  onLikeClick?: () => void
+}
+
+function BoardContent({ post, isLiked = false, onLikeClick }: BoardContentProps) {
   return (
     <>
-      <div className="board-detail-badges">
-        <span className="board-detail-badge board-detail-badge--category">{post.category}</span>
-        <span className="board-detail-badge board-detail-badge--trend">↗</span>
-        <span className="board-detail-badge board-detail-badge--reward">{post.reward}</span>
-      </div>
-
       <h1>{post.title}</h1>
-      <p className="board-detail-meta">{post.author} · {post.timeAgo}</p>
 
-      <div className="board-detail-stats">
-        <span>
-          <BoardContentIcon kind="heart" />
-          {post.likes}
-        </span>
-        <span>
-          <BoardContentIcon kind="comment" />
-          {post.comments}
-        </span>
+      <div className="board-detail-meta-row">
+        <p className="board-detail-meta">{post.author} · {post.timeAgo}</p>
+
+        <div className="board-detail-stats">
+          <button
+            type="button"
+            className={`board-detail-stats__item board-detail-stats__heart${isLiked ? ' is-active' : ''}`}
+            aria-label="게시물 좋아요"
+            aria-pressed={isLiked}
+            onClick={onLikeClick}
+          >
+            <BoardContentIcon kind="heart" />
+            {post.likes}
+          </button>
+          <span className="board-detail-stats__item">
+            <BoardContentIcon kind="comment" />
+            {post.comments}
+          </span>
+        </div>
       </div>
 
-      <div className="board-detail-body">
+      <section className="board-detail-body">
         {post.paragraphs.map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>
         ))}
 
         {post.methods.length > 0 && (
-          <section className="board-detail-method-box">
-            <h2>실천 방법</h2>
+          <div className="board-detail-method-box">
             <ol>
               {post.methods.map((method) => (
                 <li key={method}>{method}</li>
               ))}
             </ol>
-          </section>
+          </div>
         )}
-      </div>
+
+        {post.media && post.media.length > 0 && (
+          <div className="board-detail-media-grid" aria-label="첨부 미디어">
+            {post.media.map((attachment) => {
+              if (!attachment.url) {
+                return null
+              }
+
+              const mediaLabel = attachment.name ?? (attachment.kind === 'image' ? '첨부 사진' : '첨부 동영상')
+
+              return (
+                <figure key={attachment.id} className="board-detail-media-item">
+                  {attachment.kind === 'image' ? (
+                    <img src={attachment.url} alt={mediaLabel} />
+                  ) : (
+                    <video src={attachment.url} controls playsInline aria-label={mediaLabel} />
+                  )}
+                </figure>
+              )
+            })}
+          </div>
+        )}
+      </section>
     </>
   )
 }

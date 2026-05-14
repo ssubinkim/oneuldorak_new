@@ -40,7 +40,7 @@ import customBroImage from '../images/custom_bro.png'
 import customCarrotImage from '../images/custom_carrot.png'
 import type { AnswerValue, IngredientOption, OnboardingQuestion } from './onboardingQuestionTypes'
 
-const ingredientOptions: IngredientOption[] = [
+export const ingredientOptions: IngredientOption[] = [
   { label: '양파', icon: onionIcon },
   { label: '당근', icon: carrotIcon },
   { label: '버섯', icon: mushroomIcon },

@@ -6,6 +6,15 @@ import CommentSection from '../../components/community/boarddetailpage/CommentSe
 import BoardWriteForm from '../../components/community/communitywritepage/BoardWriteForm'
 import type { BoardWriteData } from '../../components/community/communitywritepage/writeTypes'
 import { mockBoardComments, mockBoardDetailPosts } from '../../components/community/common/boardMockData'
+import {
+  readPersistedBoardComments,
+  savePersistedBoardComments,
+} from '../../components/community/common/boardCommentPersistence'
+import {
+  getBoardReactionKey,
+  readPersistedBoardLikeKeys,
+  savePersistedBoardLikeKeys,
+} from '../../components/community/common/boardReactionPersistence'
 import RelatedBoards from '../../components/community/boarddetailpage/RelatedBoards'
 import './BoardDetailPage.css'
 
@@ -22,6 +31,7 @@ const emptyBoardEditValue: BoardWriteData = {
   category: '냉장고SOS',
   title: '',
   content: '',
+  media: [],
 }
 
 function createTemporaryCommentId() {
@@ -37,6 +47,7 @@ function getBoardEditValue(post: BoardDetailPost | undefined): BoardWriteData {
     category: post.category,
     title: post.title,
     content: post.paragraphs.join('\n\n'),
+    media: post.media ?? [],
   }
 }
 
@@ -52,7 +63,15 @@ function isOwnBoardPost(post: BoardDetailPost | undefined, currentUserId: string
   return post.id.startsWith('user-board') && post.author === nickname
 }
 
-function BoardDetailIcon({ kind }: { kind: 'share' | 'bookmark' }) {
+function BoardDetailIcon({ kind }: { kind: 'heart' | 'share' | 'bookmark' }) {
+  if (kind === 'heart') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20.8 5.6a5 5 0 0 0-7 0L12 7.4l-1.7-1.8a5 5 0 0 0-7.1 7l1.8 1.8L12 21l7.1-6.6 1.7-1.8a5 5 0 0 0 0-7Z" />
+      </svg>
+    )
+  }
+
   if (kind === 'share') {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -88,10 +107,19 @@ function BoardDetailPage({
   const commentSeed = mockBoardDetailPosts.some((mockPost) => mockPost.id === post?.id)
     ? mockBoardComments
     : []
-  const [commentsByPostId, setCommentsByPostId] = useState<Record<string, BoardComment[]>>({})
+  const [commentsByPostId, setCommentsByPostId] = useState<Record<string, BoardComment[]>>(readPersistedBoardComments)
+  const [likedBoardPostKeys, setLikedBoardPostKeys] = useState<string[]>(readPersistedBoardLikeKeys)
   const [isEditingPost, setIsEditingPost] = useState(false)
   const [postEditValue, setPostEditValue] = useState<BoardWriteData>(() => getBoardEditValue(post))
   const commentList = currentPostId ? commentsByPostId[currentPostId] ?? commentSeed : commentSeed
+  const boardReactionKey = post ? getBoardReactionKey(post.id, email) : ''
+  const isBoardPostLiked = boardReactionKey ? likedBoardPostKeys.includes(boardReactionKey) : false
+  const visiblePost = post
+    ? {
+        ...post,
+        likes: Math.max(0, post.likes + (isBoardPostLiked ? 1 : 0)),
+      }
+    : post
   const canManagePost = Boolean(
     post && onUpdatePost && onDeletePost && isOwnBoardPost(post, email, nickname),
   )
@@ -108,6 +136,26 @@ function BoardDetailPage({
     setIsEditingPost(false)
     setPostEditValue(getBoardEditValue(post))
   }, [currentPostId, post])
+
+  useEffect(() => {
+    savePersistedBoardComments(commentsByPostId)
+  }, [commentsByPostId])
+
+  useEffect(() => {
+    savePersistedBoardLikeKeys(likedBoardPostKeys)
+  }, [likedBoardPostKeys])
+
+  const handleToggleBoardLike = () => {
+    if (!boardReactionKey) {
+      return
+    }
+
+    setLikedBoardPostKeys((previousKeys) =>
+      previousKeys.includes(boardReactionKey)
+        ? previousKeys.filter((key) => key !== boardReactionKey)
+        : [...previousKeys, boardReactionKey],
+    )
+  }
 
   const handleSavePostEdit = () => {
     if (!post || !onUpdatePost) {
@@ -195,6 +243,12 @@ function BoardDetailPage({
       return
     }
 
+    const shouldDelete = window.confirm('댓글을 삭제할까요?')
+
+    if (!shouldDelete) {
+      return
+    }
+
     setCommentsByPostId((prevCommentsByPostId) => {
       const currentComments = prevCommentsByPostId[currentPostId] ?? commentSeed
 
@@ -218,11 +272,20 @@ function BoardDetailPage({
           </svg>
         </button>
         <div className="board-detail-topbar__actions">
-          <button type="button" aria-label="공유하기">
-            <BoardDetailIcon kind="share" />
+          <button
+            type="button"
+            className={isBoardPostLiked ? 'is-active' : undefined}
+            aria-label="좋아요"
+            aria-pressed={isBoardPostLiked}
+            onClick={handleToggleBoardLike}
+          >
+            <BoardDetailIcon kind="heart" />
           </button>
           <button type="button" aria-label="북마크">
             <BoardDetailIcon kind="bookmark" />
+          </button>
+          <button type="button" aria-label="공유하기">
+            <BoardDetailIcon kind="share" />
           </button>
         </div>
       </section>
@@ -239,7 +302,13 @@ function BoardDetailPage({
           </section>
         ) : (
           <>
-            {post ? <BoardContent post={post} /> : null}
+            {visiblePost ? (
+              <BoardContent
+                post={visiblePost}
+                isLiked={isBoardPostLiked}
+                onLikeClick={handleToggleBoardLike}
+              />
+            ) : null}
             {canManagePost && (
               <div className="board-detail-owner-actions">
                 <button type="button" onClick={() => setIsEditingPost(true)}>수정</button>
@@ -252,6 +321,7 @@ function BoardDetailPage({
         <CommentSection
           comments={commentList}
           currentUserId={email}
+          currentUserName={nickname}
           onAddComment={handleAddComment}
           onUpdateComment={handleUpdateComment}
           onDeleteComment={handleDeleteComment}

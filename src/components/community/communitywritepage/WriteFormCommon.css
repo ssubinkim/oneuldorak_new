@@ -90,6 +90,10 @@
   padding: 0 12px;
 }
 
+.community-write-inline-row input[readonly] {
+  cursor: pointer;
+}
+
 .community-write-inline-row button,
 .community-write-option-row button {
   display: grid;
@@ -112,6 +116,100 @@
   stroke-linecap: round;
 }
 
+.community-write-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-left: 64px;
+}
+
+.community-write-ingredient-picker {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  max-height: 188px;
+  margin-left: 64px;
+  padding: 10px;
+  overflow: hidden auto;
+  background: #fffdf7;
+  border: 1px solid #e8e2cf;
+  border-radius: 11px;
+  box-sizing: border-box;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.community-write-ingredient-picker::-webkit-scrollbar {
+  display: none;
+}
+
+.community-write-ingredient-picker button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  height: 58px;
+  padding: 4px;
+  color: #1a1a1a;
+  background: #fff;
+  border: 1px solid #dedede;
+  border-radius: 9px;
+  box-sizing: border-box;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.community-write-ingredient-picker button.is-selected {
+  background: #fff8cf;
+  border-color: var(--color-primary);
+}
+
+.community-write-ingredient-picker img,
+.community-write-ingredient-picker__spacer {
+  display: block;
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.community-write-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  max-width: 100%;
+  padding: 0 8px 0 11px;
+  color: #514229;
+  background: #fff4b7;
+  border: 1px solid #f1de96;
+  border-radius: 999px;
+  box-sizing: border-box;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.community-write-chip button {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  color: #8a6d00;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
 @media (max-width: 360px) {
   .community-write-info-row,
   .community-write-select-row,
@@ -124,5 +222,14 @@
   .community-write-option-row,
   .community-write-option-row--nested {
     grid-template-columns: 48px minmax(0, 1fr) 30px;
+  }
+
+  .community-write-chip-list {
+    padding-left: 60px;
+  }
+
+  .community-write-ingredient-picker {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-left: 60px;
   }
 }

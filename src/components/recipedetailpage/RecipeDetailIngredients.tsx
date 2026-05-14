@@ -24,7 +24,8 @@ function RecipeDetailIngredients({
           <li key={ingredient.id} className={checkedIngredientIds.includes(ingredient.id) ? 'is-checked' : ''}>
             <span className="recipe-detail-ingredient-name">
               <img src={ingredient.icon} alt="" aria-hidden="true" />
-              {ingredient.name} {ingredient.quantity}
+              {ingredient.name}
+              {ingredient.quantity ? ` ${ingredient.quantity}` : ''}
             </span>
             <button
               type="button"

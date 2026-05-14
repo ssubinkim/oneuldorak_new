@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { ingredientOptions } from '../../onbording/onboardingpage/onboardingQuestionData'
 import MediaActions from './MediaActions'
 import { difficultyLevels } from './writeFormData'
 import WriteInlineInputRow from './WriteInlineInputRow'
@@ -13,9 +15,56 @@ type RecipeWriteFormProps = {
   onChange: (value: RecipeWriteData) => void
 }
 
+function getSelectedIngredients(value: string) {
+  return value
+    .split(',')
+    .map((ingredient) => ingredient.trim())
+    .filter(Boolean)
+}
+
 function RecipeWriteForm({ value, onChange }: RecipeWriteFormProps) {
+  const [toolText, setToolText] = useState('')
+  const [isIngredientPickerOpen, setIsIngredientPickerOpen] = useState(false)
+  const selectedIngredients = getSelectedIngredients(value.ingredient)
+
   const updateValue = (nextValue: Partial<RecipeWriteData>) => {
     onChange({ ...value, ...nextValue })
+  }
+
+  const updateIngredients = (nextIngredients: string[]) => {
+    updateValue({ ingredient: nextIngredients.join(', ') })
+  }
+
+  const handleToggleIngredientPicker = () => {
+    setIsIngredientPickerOpen((isOpen) => !isOpen)
+  }
+
+  const handleToggleIngredient = (ingredient: string) => {
+    const nextIngredients = selectedIngredients.includes(ingredient)
+      ? selectedIngredients.filter((item) => item !== ingredient)
+      : [...selectedIngredients, ingredient]
+
+    updateIngredients(nextIngredients)
+  }
+
+  const handleRemoveIngredient = (ingredient: string) => {
+    updateIngredients(selectedIngredients.filter((item) => item !== ingredient))
+  }
+
+  const handleAddTool = () => {
+    const nextTool = toolText.trim()
+
+    if (!nextTool || value.tools.includes(nextTool)) {
+      setToolText('')
+      return
+    }
+
+    updateValue({ tools: [...value.tools, nextTool] })
+    setToolText('')
+  }
+
+  const handleRemoveTool = (tool: string) => {
+    updateValue({ tools: value.tools.filter((item) => item !== tool) })
   }
 
   return (
@@ -70,16 +119,88 @@ function RecipeWriteForm({ value, onChange }: RecipeWriteFormProps) {
 
         <WriteInlineInputRow
           label="재료"
-          placeholder="입력해주세요."
+          placeholder="재료를 선택해주세요."
           addLabel="재료 추가"
           value={value.ingredient}
-          onChange={(event) => updateValue({ ingredient: event.target.value })}
+          readOnly
+          onClick={() => setIsIngredientPickerOpen(true)}
+          onAdd={handleToggleIngredientPicker}
         />
+
+        {isIngredientPickerOpen && (
+          <div className="community-write-ingredient-picker" aria-label="재료 선택">
+            {ingredientOptions.map((ingredient) => {
+              const isSelected = selectedIngredients.includes(ingredient.label)
+
+              return (
+                <button
+                  type="button"
+                  className={isSelected ? 'is-selected' : undefined}
+                  aria-pressed={isSelected}
+                  key={ingredient.label}
+                  onClick={() => handleToggleIngredient(ingredient.label)}
+                >
+                  {ingredient.icon ? (
+                    <img src={ingredient.icon} alt="" aria-hidden="true" />
+                  ) : (
+                    <span className="community-write-ingredient-picker__spacer" aria-hidden="true" />
+                  )}
+                  <span>{ingredient.label}</span>
+                </button>
+              )
+            })}
+          </div>
+        )}
+
+        {selectedIngredients.length > 0 && (
+          <div className="community-write-chip-list" aria-label="선택한 재료">
+            {selectedIngredients.map((ingredient) => (
+              <span key={ingredient} className="community-write-chip">
+                {ingredient}
+                <button
+                  type="button"
+                  aria-label={`${ingredient} 삭제`}
+                  onClick={() => handleRemoveIngredient(ingredient)}
+                >
+                  x
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+
+        <WriteInlineInputRow
+          label="도구"
+          placeholder="예 ) 프라이팬"
+          addLabel="조리 도구 추가"
+          value={toolText}
+          onChange={(event) => setToolText(event.target.value)}
+          onAdd={handleAddTool}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault()
+              handleAddTool()
+            }
+          }}
+        />
+
+        {value.tools.length > 0 && (
+          <div className="community-write-chip-list" aria-label="추가한 조리 도구">
+            {value.tools.map((tool) => (
+              <span key={tool} className="community-write-chip">
+                {tool}
+                <button type="button" aria-label={`${tool} 삭제`} onClick={() => handleRemoveTool(tool)}>
+                  x
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
       </section>
 
       <section className="community-write-section">
         <h2>추가 기능</h2>
-        <MediaActions />
+        <MediaActions value={value.media} onChange={(media) => updateValue({ media })} />
       </section>
     </>
   )

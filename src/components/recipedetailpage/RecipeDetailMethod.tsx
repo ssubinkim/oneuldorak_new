@@ -2,24 +2,32 @@ import type { CookingStep } from './recipeDetailData'
 
 type RecipeDetailMethodProps = {
   heroImage: string
+  videoUrl?: string
+  videoLabel?: string
   stepIcon: string
   steps: CookingStep[]
 }
 
-function RecipeDetailMethod({ heroImage, stepIcon, steps }: RecipeDetailMethodProps) {
+function RecipeDetailMethod({ heroImage, videoUrl, videoLabel, stepIcon, steps }: RecipeDetailMethodProps) {
   return (
     <section className="recipe-detail-section recipe-detail-method">
       <h2>조리 방법</h2>
 
-      <button type="button" className="recipe-detail-video" aria-label="숏츠로 먼저 보기">
-        <img src={heroImage} alt="" aria-hidden="true" />
-        <span className="recipe-detail-video__play" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="m9 7 8 5-8 5V7Z" />
-          </svg>
-        </span>
-        <span>숏츠로 먼저 보기</span>
-      </button>
+      {videoUrl ? (
+        <div className="recipe-detail-video recipe-detail-video--player">
+          <video src={videoUrl} controls playsInline poster={heroImage} aria-label={videoLabel ?? '조리 영상'} />
+        </div>
+      ) : (
+        <button type="button" className="recipe-detail-video" aria-label="숏츠로 먼저 보기">
+          <img src={heroImage} alt="" aria-hidden="true" />
+          <span className="recipe-detail-video__play" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="m9 7 8 5-8 5V7Z" />
+            </svg>
+          </span>
+          <span>숏츠로 먼저 보기</span>
+        </button>
+      )}
 
       <div className="recipe-detail-step-list">
         {steps.map((step, index) => (

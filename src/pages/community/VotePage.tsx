@@ -4,15 +4,23 @@ import useCommunityHeaderCollapse from '../../components/community/common/useCom
 import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
 import VoteFilterTabs from '../../components/community/votepage/VoteFilterTabs'
 import VoteList, { type VoteCardItem, type VoteFilter } from '../../components/community/votepage/VoteList'
+import type { VoteWriteData } from '../../components/community/communitywritepage/writeTypes'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './VotePage.css'
 
 type VotePageProps = {
   onSelectTab: (tab: CommunityTabRoute) => void
   extraVotes?: VoteCardItem[]
+  onUpdateVote?: (voteId: string, data: VoteWriteData) => void
+  onDeleteVote?: (voteId: string) => void
 }
 
-function VotePage({ onSelectTab, extraVotes = [] }: VotePageProps) {
+function VotePage({
+  onSelectTab,
+  extraVotes = [],
+  onUpdateVote,
+  onDeleteVote,
+}: VotePageProps) {
   const [voteFilter, setVoteFilter] = useState<VoteFilter>('active')
   const { isHeaderCompact, handleCommunityScroll } = useCommunityHeaderCollapse()
 
@@ -31,7 +39,12 @@ function VotePage({ onSelectTab, extraVotes = [] }: VotePageProps) {
 
         <VoteFilterTabs activeFilter={voteFilter} onChange={setVoteFilter} />
 
-        <VoteList filter={voteFilter} extraVotes={extraVotes} />
+        <VoteList
+          filter={voteFilter}
+          extraVotes={extraVotes}
+          onUpdateVote={onUpdateVote}
+          onDeleteVote={onDeleteVote}
+        />
       </div>
     </main>
   )

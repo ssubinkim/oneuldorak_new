@@ -4,11 +4,18 @@ type IconButtonProps = {
   label: string
   children: ReactNode
   onClick?: () => void
+  pressed?: boolean
 }
 
-export function IconButton({ label, children, onClick }: IconButtonProps) {
+export function IconButton({ label, children, onClick, pressed }: IconButtonProps) {
   return (
-    <button type="button" className="recipe-detail-icon-button" aria-label={label} onClick={onClick}>
+    <button
+      type="button"
+      className={`recipe-detail-icon-button${pressed ? ' is-active' : ''}`}
+      aria-label={label}
+      aria-pressed={pressed}
+      onClick={onClick}
+    >
       {children}
     </button>
   )

@@ -3,17 +3,30 @@ import { DifficultyStars, StatIcon } from './RecipeDetailIcons'
 
 type RecipeDetailIntroProps = {
   recipe: RecipeDetail
+  isLiked?: boolean
+  isSaved?: boolean
   onLikeClick?: () => void
   onSaveClick?: () => void
 }
 
-function RecipeDetailIntro({ recipe, onLikeClick, onSaveClick }: RecipeDetailIntroProps) {
+function RecipeDetailIntro({
+  recipe,
+  isLiked = false,
+  isSaved = false,
+  onLikeClick,
+  onSaveClick,
+}: RecipeDetailIntroProps) {
   return (
     <section className="recipe-detail-section recipe-detail-intro">
       <h1>{recipe.title}</h1>
 
       <div className="recipe-detail-reactions" aria-label="레시피 반응">
-        <button type="button" className="recipe-detail-reaction is-heart" onClick={onLikeClick}>
+        <button
+          type="button"
+          className={`recipe-detail-reaction is-heart${isLiked ? ' is-active' : ''}`}
+          aria-pressed={isLiked}
+          onClick={onLikeClick}
+        >
           <StatIcon type="heart" />
           {recipe.stats.likeCount}
         </button>
@@ -21,7 +34,12 @@ function RecipeDetailIntro({ recipe, onLikeClick, onSaveClick }: RecipeDetailInt
           <StatIcon type="comment" />
           {recipe.stats.commentCount}
         </span>
-        <button type="button" className="recipe-detail-reaction" onClick={onSaveClick}>
+        <button
+          type="button"
+          className={`recipe-detail-reaction is-bookmark${isSaved ? ' is-active' : ''}`}
+          aria-pressed={isSaved}
+          onClick={onSaveClick}
+        >
           <StatIcon type="bookmark" />
           {recipe.stats.saveCount}
         </button>

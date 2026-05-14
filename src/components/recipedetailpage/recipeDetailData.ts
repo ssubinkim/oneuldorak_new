@@ -6,6 +6,8 @@ import greenOnionIcon from '../../assets/images/food_icon/green_onion.svg'
 import bulgogiImage from '../../assets/images/food_imges/bulgogi.png'
 import tunaMayoImage from '../../assets/images/food_imges/chamchimayo.png'
 import kimchiRiceImage from '../../assets/images/food_imges/kimbok.png'
+import type { CommunityMediaAttachment } from '../community/communitywritepage/writeTypes'
+import { ingredientOptions } from '../onbording/onboardingpage/onboardingQuestionData'
 
 export type RecipeId = 'recipe-1' | 'recipe-2' | 'recipe-3'
 
@@ -17,6 +19,7 @@ export type RecipeStats = {
 
 export type RecipeMeta = {
   authorName: string
+  authorId?: string
   publishedOn: string
 }
 
@@ -33,6 +36,9 @@ export type RecipeDetail = {
   meta: RecipeMeta
   cook: RecipeCookInfo
   stats: RecipeStats
+  ingredients?: Ingredient[]
+  tools?: CookingTool[]
+  media?: CommunityMediaAttachment[]
 }
 
 export type Ingredient = {
@@ -55,6 +61,7 @@ export type CookingStep = {
 export type RecipeComment = {
   id: string
   authorName: string
+  authorId?: string
   publishedOn: string
   content: string
 }
@@ -147,6 +154,27 @@ export const ingredients: Ingredient[] = [
   { id: 'egg', name: '계란', quantity: '1개', icon: eggIcon },
   { id: 'seaweed-flakes', name: '김가루', quantity: '약간', icon: greenOnionIcon },
 ]
+
+function createIngredientId(name: string, index: number) {
+  return `user-ingredient-${index}-${name.replace(/\s+/g, '-')}`
+}
+
+export function getRecipeIngredientsFromText(value: string): Ingredient[] {
+  return value
+    .split(',')
+    .map((ingredient) => ingredient.trim())
+    .filter(Boolean)
+    .map((name, index) => {
+      const matchedIngredient = ingredientOptions.find((ingredient) => ingredient.label === name)
+
+      return {
+        id: createIngredientId(name, index),
+        name,
+        quantity: '',
+        icon: matchedIngredient?.icon ?? carrotIcon,
+      }
+    })
+}
 
 export const cookingTools: CookingTool[] = [
   { id: 'frying-pan', label: '프라이팬' },

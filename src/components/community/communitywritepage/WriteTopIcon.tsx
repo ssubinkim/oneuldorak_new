@@ -1,4 +1,13 @@
-export type WriteTopIconKind = 'back' | 'heart' | 'bookmark' | 'share' | 'image' | 'video' | 'plus' | 'chevron'
+export type WriteTopIconKind =
+  | 'back'
+  | 'heart'
+  | 'bookmark'
+  | 'share'
+  | 'image'
+  | 'video'
+  | 'plus'
+  | 'remove'
+  | 'chevron'
 
 type WriteTopIconProps = {
   kind: WriteTopIconKind
@@ -63,6 +72,14 @@ function WriteTopIcon({ kind }: WriteTopIconProps) {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 5v14M5 12h14" />
+      </svg>
+    )
+  }
+
+  if (kind === 'remove') {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m6.5 6.5 11 11M17.5 6.5l-11 11" />
       </svg>
     )
   }

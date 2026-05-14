@@ -227,6 +227,58 @@ article.vote-result-item {
   letter-spacing: -0.08px;
 }
 
+.vote-card-owner-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.vote-card-owner-actions button {
+  min-width: 48px;
+  height: 30px;
+  padding: 0 12px;
+  color: #5f5f5f;
+  background: #f4f4f4;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  font-family: 'Pretendard Variable', sans-serif;
+  line-height: 1;
+}
+
+.vote-card-owner-actions button:last-child {
+  color: #fff;
+  background: #343434;
+  border-color: #343434;
+}
+
+.vote-card-owner-actions--editing {
+  margin-top: 18px;
+}
+
+.vote-card-owner-actions--editing button {
+  flex: 1;
+  height: 42px;
+  font-size: 14px;
+}
+
+.vote-card-owner-actions--editing button:last-child {
+  color: #1a1a1a;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.vote-card--editing {
+  display: grid;
+  gap: 16px;
+}
+
+.vote-card--editing h2 {
+  font-size: 20px;
+}
+
 @media (max-width: 360px) {
   .vote-card {
     padding: 16px;
