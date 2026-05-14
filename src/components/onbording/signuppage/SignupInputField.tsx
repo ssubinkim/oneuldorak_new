@@ -5,6 +5,9 @@ type SignupInputFieldProps = {
   actionLabel?: string
   label: string
   onChange: (value: string) => void
+  onActionClick?: () => void
+  onShakeEnd?: () => void
+  shouldShakeAction?: boolean
   type: 'email' | 'password' | 'text'
   value: string
 }
@@ -18,10 +21,18 @@ function EyeIcon() {
   )
 }
 
-function SignupInputField({ actionLabel, label, onChange, type, value }: SignupInputFieldProps) {
+function SignupInputField({ actionLabel, label, onChange, onActionClick, onShakeEnd, shouldShakeAction, type, value }: SignupInputFieldProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const [isActionChecked, setIsActionChecked] = useState(false)
   const isPassword = type === 'password'
   const inputType = isPassword && isPasswordVisible ? 'text' : type
+
+  const handleActionClick = () => {
+    if (value.trim()) {
+      setIsActionChecked(true)
+      onActionClick?.()
+    }
+  }
 
   return (
     <label className="signup-input-field">
@@ -31,11 +42,19 @@ function SignupInputField({ actionLabel, label, onChange, type, value }: SignupI
         placeholder={label}
         aria-label={label}
         value={value}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event) => {
+          onChange(event.target.value)
+          setIsActionChecked(false)
+        }}
       />
 
       {actionLabel ? (
-        <button className="signup-input-field__action" type="button">
+        <button
+          className={`signup-input-field__action${isActionChecked ? ' signup-input-field__action--checked' : ''}${shouldShakeAction ? ' signup-input-field__action--shake' : ''}`}
+          type="button"
+          onClick={handleActionClick}
+          onAnimationEnd={onShakeEnd}
+        >
           {actionLabel}
         </button>
       ) : null}

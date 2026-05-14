@@ -25,9 +25,9 @@
 
 .signup-page__header h1 {
   margin: 0;
-  color: #111111;
-  font-family: 'Pretendard', sans-serif;
-  font-size: 25px;
+  color: #1a1a1a;
+  font-family: var(--font-nanum-square-neo);
+  font-size: 24px;
   font-weight: 800;
   line-height: 130%;
   letter-spacing: 0;
@@ -35,17 +35,17 @@
 
 .signup-page__header p {
   margin: 3px 0 0;
-  color: #242424;
+  color: #1a1a1a;
   font-family: 'Pretendard', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 400;
   line-height: 130%;
 }
 
 .signup-page__form {
   display: grid;
   gap: 10px;
-  margin-top: 24px;
+  margin-top: 26px;
 }
 
 .signup-page__dummy-button {

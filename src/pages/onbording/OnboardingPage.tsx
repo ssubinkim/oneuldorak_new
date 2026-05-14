@@ -93,7 +93,7 @@ function OnboardingPage() {
     const questionIndex = activeQuestionIndex ?? 0
     const selectedAnswer = answers[activeQuestion.id]
     const isIngredientsQuestion = activeQuestion.optionLayout === 'ingredients'
-    const hasSelection = isIngredientsQuestion || (Array.isArray(selectedAnswer) ? selectedAnswer.length > 0 : Boolean(selectedAnswer))
+    const hasSelection = Array.isArray(selectedAnswer) ? selectedAnswer.length > 0 : Boolean(selectedAnswer)
     const optionLayout = activeQuestion.optionLayout ?? 'single'
 
     return (

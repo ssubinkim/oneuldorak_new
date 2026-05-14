@@ -17,11 +17,11 @@
   padding: 0;
   border: 0;
   outline: 0;
-  color: #1e1e1e;
+  color: #a3a3a3;
   background: transparent;
   font-family: 'Pretendard', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 400;
   line-height: 130%;
 }
 
@@ -36,10 +36,28 @@
   background: transparent;
   color: #9a9a9a;
   font-family: 'Pretendard', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 400;
   line-height: 130%;
   white-space: nowrap;
+}
+
+.signup-input-field__action--checked {
+  color: #00a652;
+  font-weight: 500;
+}
+
+.signup-input-field__action--shake {
+  animation: action-shake 400ms ease;
+}
+
+@keyframes action-shake {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-4px); }
+  40%  { transform: translateX(4px); }
+  60%  { transform: translateX(-3px); }
+  80%  { transform: translateX(3px); }
+  100% { transform: translateX(0); }
 }
 
 .signup-input-field__toggle {

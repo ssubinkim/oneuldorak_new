@@ -6,7 +6,7 @@
 
 .onboarding-intro-visual img {
   display: block;
-  width: min(79vw, 310px);
+  width: min(76vw, 310px);
   height: auto;
   object-fit: contain;
 }
