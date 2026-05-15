@@ -1,4 +1,4 @@
-import StartLunchboxVisual from '../../components/onbording/startpage/StartLunchboxVisual'
+import StartLunchboxVisual from '../../components/onboarding/startpage/StartLunchboxVisual'
 import '../../styles/Tailwind.css'
 import './StartPage.css'
 

@@ -7,7 +7,7 @@ import bulgogiImage from '../../assets/images/food_imges/bulgogi.png'
 import tunaMayoImage from '../../assets/images/food_imges/chamchimayo.png'
 import kimchiRiceImage from '../../assets/images/food_imges/kimbok.png'
 import type { CommunityMediaAttachment } from '../community/communitywritepage/writeTypes'
-import { ingredientOptions } from '../onbording/onboardingpage/onboardingQuestionData'
+import { ingredientOptions } from '../onboarding/onboardingpage/onboardingQuestionData'
 
 export type RecipeId = 'recipe-1' | 'recipe-2' | 'recipe-3'
 
