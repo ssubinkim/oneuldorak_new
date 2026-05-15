@@ -10,19 +10,20 @@
 
 .store-search__input {
   width: 100%;
-  height: 44px;
-  border: 2px solid #92BA6B;
+  height: 46px;
+  border: 2px solid #FFDB78;
   border-radius: 10px;
   padding: 0 44px 0 18px;
-  font-size: 14px;
-  color: #222;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 15px;
+  color: #3c3c3c;
   outline: none;
   box-sizing: border-box;
-  background: #fff;
+  background: #fffffd;
 }
 
 .store-search__input::placeholder {
-  color: #aaa;
+  color: #d1d1d1;
 }
 
 .store-search__icon {
@@ -30,6 +31,6 @@
   right: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: #4CAF82;
+  color: #FFDB78;
   pointer-events: none;
 }

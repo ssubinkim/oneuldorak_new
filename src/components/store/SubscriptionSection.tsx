@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import './SubscriptionSection.css'
 import { type Product } from './ProductCard'
 import slide1 from './images/slide1.svg'
+import plantIcon from './images/plant.png'
 
 const SUB_TABS = ['전체', '도시락', '밀키트']
 const PAGE_SIZE = 3
@@ -38,11 +39,14 @@ function SubscriptionSection({ products, onSelect }: Props) {
   return (
     <div className="subscription">
       <div className="subscription__header">
-        <div>
-          <p className="subscription__title">🌿 오늘도락 정기식단</p>
+        <p className="subscription__title">
+          <img src={plantIcon} alt="" className="subscription__title-icon" />
+          오늘도락 정기식단
+        </p>
+        <div className="subscription__subrow">
           <p className="subscription__desc">매주 도착하는 건강한 한 끼</p>
+          <button className="subscription__more" type="button">더보기 &gt;</button>
         </div>
-        <button className="subscription__more" type="button">더보기 &gt;</button>
       </div>
 
       <div className="subscription__banner">

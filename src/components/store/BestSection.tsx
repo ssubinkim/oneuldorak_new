@@ -1,4 +1,5 @@
 import './BestSection.css'
+import fireIcon from './images/fire_icon.png'
 import ProductCard, { type Product } from './ProductCard'
 
 type Props = {
@@ -10,11 +11,14 @@ function BestSection({ products, onSelect }: Props) {
   return (
     <div className="best-section">
       <div className="best-section__header">
-        <div>
-          <p className="best-section__title">🔥 이번주 Best</p>
+        <p className="best-section__title">
+          <img src={fireIcon} alt="" className="best-section__title-icon" />
+          이번주 Best
+        </p>
+        <div className="best-section__subrow">
           <p className="best-section__desc">가장 인기있는 상품만 모아보세요</p>
+          <button className="best-section__more" type="button">더보기 &gt;</button>
         </div>
-        <button className="best-section__more" type="button">더보기 &gt;</button>
       </div>
       <div className="best-section__track">
         {products.map((p, i) => (

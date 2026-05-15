@@ -38,8 +38,8 @@
 .store-banner__text {
   position: absolute;
   bottom: 40px;
-  left: 18px;
-  right: 18px;
+  left: 20px;
+  right: 20px;
   color: #fff;
   pointer-events: none;
 }
@@ -61,13 +61,13 @@
   margin: 0 0 6px;
   line-height: 1.35;
   white-space: pre-line;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.08px;
   animation: banner-slide-up-title 0.7s ease 0.8s both;
 }
 
 .store-banner__subtitle {
   font-family: 'Pretendard Variable', sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   margin: 0;
   line-height: 1.4;
   animation: banner-slide-up-subtitle 0.45s ease 1.0s both;

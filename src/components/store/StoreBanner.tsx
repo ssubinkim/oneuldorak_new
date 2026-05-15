@@ -16,16 +16,38 @@ const SLIDES = [
 
 const DURATION = 5000
 const N = SLIDES.length
+const EXTENDED = [SLIDES[N - 1], ...SLIDES, SLIDES[0]]
 
 function StoreBanner() {
+  const [pos, setPos] = useState(1)
   const [current, setCurrent] = useState(0)
   const fillRef = useRef<HTMLDivElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const textRefs = useRef<(HTMLDivElement | null)[]>(new Array(N + 2).fill(null))
+  const posRef = useRef(1)
   const currentRef = useRef(0)
+  const resetTimerRef = useRef<() => void>(() => {})
+  const touchStartX = useRef<number | null>(null)
 
-  // RAF 루프 한 번만 시작 — current 바뀌어도 재시작 안 함
+  // 실제 애니메이션 대상(.store-banner__title, .store-banner__subtitle)을 직접 재실행
+  // instant=true면 딜레이 없이 즉시 재생 (루프백용)
+  function triggerTextAnim(index: number, instant = false) {
+    const container = textRefs.current[index]
+    if (!container) return
+    const title = container.querySelector<HTMLElement>('.store-banner__title')
+    const subtitle = container.querySelector<HTMLElement>('.store-banner__subtitle')
+    if (title) title.style.animation = 'none'
+    if (subtitle) subtitle.style.animation = 'none'
+    container.getBoundingClientRect()
+    if (title) title.style.animation = instant ? 'banner-slide-up-title 0.7s ease 0s both' : ''
+    if (subtitle) subtitle.style.animation = instant ? 'banner-slide-up-subtitle 0.45s ease 0.1s both' : ''
+  }
+
   useEffect(() => {
     let startTime = performance.now()
     let raf: number
+
+    resetTimerRef.current = () => { startTime = performance.now() }
 
     function tick(timestamp: number) {
       const pct = Math.min((timestamp - startTime) / DURATION, 1)
@@ -33,9 +55,14 @@ function StoreBanner() {
       if (fillRef.current) fillRef.current.style.width = `${width}%`
 
       if (pct >= 1) {
+        const nextPos = posRef.current + 1
+        // 클론 위치(N+1)는 애니메이션 트리거 안 함 — 루프백 후 실제 위치에서 재생
+        if (nextPos >= 1 && nextPos <= N) triggerTextAnim(nextPos)
+        posRef.current = nextPos
         currentRef.current = (currentRef.current + 1) % N
-        startTime = timestamp
+        setPos(nextPos)
         setCurrent(currentRef.current)
+        startTime = timestamp
       }
 
       raf = requestAnimationFrame(tick)
@@ -45,19 +72,66 @@ function StoreBanner() {
     return () => cancelAnimationFrame(raf)
   }, [])
 
+  function handleTransitionEnd() {
+    const track = trackRef.current
+    if (!track) return
+
+    let newPos: number | null = null
+    if (posRef.current >= N + 1) newPos = 1
+    else if (posRef.current <= 0) newPos = N
+    if (newPos === null) return
+
+    track.style.transition = 'none'
+    track.style.transform = `translateX(-${newPos * 100}%)`
+    track.getBoundingClientRect()
+    track.style.transition = ''
+
+    posRef.current = newPos
+    currentRef.current = newPos - 1
+    setPos(newPos)
+    setCurrent(newPos - 1)
+    // 딜레이 없이 즉시 텍스트 애니메이션 재생 — 루프백 시 부드럽게
+    triggerTextAnim(newPos, true)
+  }
+
+  function handleTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return
+    const diff = touchStartX.current - e.changedTouches[0].clientX
+    touchStartX.current = null
+    if (Math.abs(diff) < 40) return
+
+    const newPos = diff > 0 ? posRef.current + 1 : posRef.current - 1
+    if (newPos >= 1 && newPos <= N) triggerTextAnim(newPos)
+    posRef.current = newPos
+    currentRef.current = (currentRef.current + (diff > 0 ? 1 : -1) + N) % N
+    setPos(newPos)
+    setCurrent(currentRef.current)
+    resetTimerRef.current()
+  }
+
   return (
     <div className="store-banner">
-      <div className="store-banner__track-outer">
+      <div
+        className="store-banner__track-outer"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <div
+          ref={trackRef}
           className="store-banner__track"
-          style={{ transform: `translateX(-${current * 100}%)` }}
+          style={{ transform: `translateX(-${pos * 100}%)` }}
+          onTransitionEnd={handleTransitionEnd}
         >
-          {SLIDES.map((slide, index) => (
-            <div key={slide.id} className="store-banner__card">
+          {EXTENDED.map((slide, index) => (
+            <div key={index} className="store-banner__card">
               <img className="store-banner__image" src={slide.image} alt={slide.title} />
               <div className="store-banner__overlay" />
               <div
-                key={index === current ? `text-active-${current}` : `text-static-${slide.id}`}
+                ref={el => { textRefs.current[index] = el }}
                 className="store-banner__text"
               >
                 <p className="store-banner__title">{slide.title}</p>

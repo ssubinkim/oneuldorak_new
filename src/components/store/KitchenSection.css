@@ -3,31 +3,45 @@
 }
 
 .kitchen-section__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 20px;
   margin-bottom: 14px;
 }
 
+.kitchen-section__subrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .kitchen-section__title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-family: 'Pretendard Variable', sans-serif;
   font-size: 20px;
   font-weight: 600;
-  color: #111;
-  margin: 0 0 8px;
+  color: #1a1a1a;
+  margin: 0 0 6px;
+}
+
+.kitchen-section__title-icon {
+  height: 24px;
+  width: auto;
+  margin-bottom: 5px;
 }
 
 .kitchen-section__desc {
   font-family: 'Pretendard Variable', sans-serif;
   font-size: 16px;
-  color: #aaa;
-  margin: 0;
+  color: #767676;
+  margin: 0 0 4px;
 }
 
 .kitchen-section__more {
+  font-family: 'Pretendard Variable', sans-serif;
   font-size: 14px;
-  color: #888;
+  font-weight: 500;
+  color: #9e9e9e;
   background: none;
   border: none;
   cursor: pointer;
