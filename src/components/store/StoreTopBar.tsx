@@ -1,9 +1,13 @@
 import './StoreTopBar.css'
+import storeLogo from './images/store_logo.png'
 
 function StoreTopBar() {
   return (
     <div className="store-top-bar">
-      <h1 className="store-top-bar__title">스토어</h1>
+      <h1 className="store-top-bar__title">
+        <img src={storeLogo} alt="도락마켓" className="store-top-bar__logo" />
+        도락마켓
+      </h1>
       <div className="store-top-bar__actions">
         <button className="store-top-bar__icon-btn" type="button" aria-label="장바구니">
           <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">

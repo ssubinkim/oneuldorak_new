@@ -2,20 +2,29 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  background: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
-  border-bottom: 1px solid #f2f2f2;
+  padding: 14px 20px;
+  background: #fffffd;
+  /* border-bottom: 1px solid #f2f2f2; */
 }
 
 .store-top-bar__title {
-  font-size: 20px;
-  font-weight: 800;
-  color: #111;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
   margin: 0;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.08px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.store-top-bar__logo {
+  height: 26px;
+  width: 40px;
+  margin-bottom: 4px;
 }
 
 .store-top-bar__actions {
@@ -29,7 +38,7 @@
   border: none;
   padding: 6px;
   cursor: pointer;
-  color: #111;
+  color: #1a1a1a;
   display: flex;
   align-items: center;
   justify-content: center;

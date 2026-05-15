@@ -58,7 +58,7 @@ function StoreMain({ onSelect }: Props) {
   const [activeTab, setActiveTab] = useState('추천')
 
   return (
-    <div>
+    <div className="store-main">
       <StoreTopBar />
       <StoreBanner />
       <StoreCategoryTabs active={activeTab} onChange={setActiveTab} />
