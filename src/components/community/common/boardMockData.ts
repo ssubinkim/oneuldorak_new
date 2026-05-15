@@ -2,6 +2,13 @@ import type { BoardDetailPost } from '../boarddetailpage/BoardContent'
 import type { BoardComment } from '../boarddetailpage/CommentItem'
 import type { BoardPost } from '../boardpage/BoardList'
 import type { BoardPopularPost } from '../boardpage/BoardPopularPosts'
+import eggMascot from '../../../assets/food_mascot/egg_mascot.svg'
+import strawMascot from '../../../assets/food_mascot/straw_mascot.svg'
+import blueMascot from '../../../assets/food_mascot/blue_mascot.svg'
+import carrotMascot from '../../../assets/food_mascot/carrot_mascot.svg'
+import broMascot from '../../../assets/food_mascot/bro_mascot.svg'
+
+const mascots = [eggMascot, strawMascot, blueMascot, carrotMascot, broMascot]
 
 export const mockBoardPopularPosts: BoardPopularPost[] = [
   { rank: 1, title: '오늘 점심 권태기 어떻게 해결하시나요?', likes: 100, comments: 88 },
@@ -145,12 +152,13 @@ const mockBoardPostSummaries: Record<string, string> = {
   'free-6': '애매하게 남은 반찬을 도시락 메뉴로 바꾸는 팁입니다.',
 }
 
-export const mockBoardPosts: BoardPost[] = mockBoardDetailPosts.map((post) => ({
+export const mockBoardPosts: BoardPost[] = mockBoardDetailPosts.map((post, index) => ({
   id: post.id,
   category: post.category,
   title: post.title,
   body: mockBoardPostSummaries[post.id] ?? post.paragraphs[0] ?? '',
   user: post.author,
+  mascot: mascots[index % mascots.length],
   timeAgo: post.timeAgo,
   likes: post.likes,
   comments: post.comments,

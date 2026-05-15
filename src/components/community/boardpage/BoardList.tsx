@@ -9,6 +9,7 @@ export type BoardPost = {
   body: string
   user: string
   authorId?: string
+  mascot?: string
   timeAgo: string
   likes: number
   comments: number
@@ -76,12 +77,12 @@ function BoardCard({
         <span className="free-post-card__time">{post.timeAgo}</span>
       </div>
 
-      <h2>{post.title}</h2>
+      <h3>{post.title}</h3>
       <p className="free-post-card__body">{post.body}</p>
 
       <div className="free-post-card__bottom">
         <span className="free-post-card__meta">
-          <span aria-hidden="true">🐥</span>
+          {post.mascot && <span aria-hidden="true"><img src={post.mascot} alt="User" /></span>}
           {post.user}
         </span>
         <div className="free-post-card__stats">

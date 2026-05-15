@@ -4,11 +4,17 @@ import bibimbapImage from '../../../assets/images/food_imges/bibimbap.png'
 import kimchiRiceImage from '../../../assets/images/food_imges/kimbok.png'
 import curryRiceImage from '../../../assets/images/food_imges/omurice.png'
 import riceBowlImage from '../../../assets/images/food_imges/today_menu.png'
+import eggFoodImage from '../../../assets/images/food_imges/food_1.png'
+import panFoodImage from '../../../assets/images/food_imges/food_2.png'
+import sandwichFoodImage from '../../../assets/images/food_imges/food_3.png'
 import spamMayoVideo from '../../../assets/food_video/video_sp.mp4'
 import kimchiRiceVideo from '../../../assets/food_video/video_kim.mp4'
 import eggRiceVideo from '../../../assets/food_video/video_rice.mp4'
 import curryRiceVideo from '../../../assets/food_video/video_ca.mp4'
 import riceBowlVideo from '../../../assets/food_video/food_rice.mp4'
+import foodEggVideo from '../../../assets/food_video/video_egg.mp4'
+import foodPanVideo from '../../../assets/food_video/video_pan.MP4'
+import foodSandwichVideo from '../../../assets/food_video/video_sandwich.mp4'
 
 export const hotPosts = [
   {
@@ -76,6 +82,33 @@ export const popularRecipes: RecipeCard[] = [
     likes: 344,
     image: riceBowlImage,
     video: riceBowlVideo,
+  },
+  {
+    id: 'r6',
+    icon: '도락',
+    channel: '계란 한 끼',
+    title: '폭신한 계란 토스트',
+    likes: 318,
+    image: eggFoodImage,
+    video: foodEggVideo,
+  },
+  {
+    id: 'r7',
+    icon: '도락',
+    channel: '프라이팬 레시피',
+    title: '팬 하나로 완성하는 한 끼',
+    likes: 302,
+    image: panFoodImage,
+    video: foodPanVideo,
+  },
+  {
+    id: 'r8',
+    icon: '도락',
+    channel: '샌드위치 연구소',
+    title: '든든한 샌드위치 도시락',
+    likes: 296,
+    image: sandwichFoodImage,
+    video: foodSandwichVideo,
   },
 ]
 
