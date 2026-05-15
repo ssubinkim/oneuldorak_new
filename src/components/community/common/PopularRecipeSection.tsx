@@ -1,3 +1,4 @@
+import heartIcon from '../../../assets/icons/heart.svg'
 import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import './PopularRecipeSection.css'
 
@@ -52,7 +53,10 @@ function PopularRecipeSection({ recipes, showMore = true }: PopularRecipeSection
               </div>
               <div className="popular-recipe-card__title-row">
                 <h3 className="popular-recipe-card__title">{recipe.title}</h3>
-                <span className="popular-recipe-card__likes">♡ {recipe.likes}</span>
+                <span className="popular-recipe-card__likes">
+                  <img className="popular-recipe-card__heart-icon" src={heartIcon} alt="" aria-hidden="true" />
+                  {recipe.likes}
+                </span>
               </div>
             </div>
           </article>
