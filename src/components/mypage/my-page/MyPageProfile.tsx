@@ -6,17 +6,20 @@ type MyPageProfileProps = {
 }
 
 function MyPageProfile({ profileImg }: MyPageProfileProps) {
-  const { email, nickname } = useUserProfile()
+  const { nickname } = useUserProfile()
+  const displayName = nickname.includes('?') ? '도시락 러버' : nickname
 
   return (
     <div className="mypage-profile">
       <div className="mypage-avatar">
         <img src={profileImg} alt="프로필" />
       </div>
-      <div>
-        <div className="mypage-user-level">LV.요리조준</div>
-        <div className="mypage-user-name">{nickname}</div>
-        <div className="mypage-user-email">{email}</div>
+      <div className="mypage-user-summary">
+        <div className="mypage-user-level">
+          <span className="mypage-level-badge" aria-hidden="true" />
+          재료줍줍
+        </div>
+        <div className="mypage-user-name">{displayName}</div>
       </div>
     </div>
   )

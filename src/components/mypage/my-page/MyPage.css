@@ -1,5 +1,61 @@
 .mypage {
-  background: var(--color-bg-sub);
   min-height: 100%;
-  padding-bottom: 32px;
+  padding: 0 20px 32px;
+  box-sizing: border-box;
+  background: #fff;
+  color: #202020;
+  font-family: 'Pretendard Variable', sans-serif;
+  line-height: 130%;
+}
+
+.mypage-topbar {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 28px;
+  align-items: center;
+  min-height: 72px;
+  padding: 18px 0 12px;
+  box-sizing: border-box;
+}
+
+.mypage-topbar h1 {
+  min-width: 0;
+  margin: 0;
+  color: #202020;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: -0.08px;
+}
+
+.mypage-topbar__button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.mypage-topbar__button img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.mypage-profile-card {
+  margin: 0 0 36px;
+  padding: 24px 20px 20px;
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(26, 26, 26, 0.04);
+}
+
+@media (max-width: 360px) {
+  .mypage {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
 }

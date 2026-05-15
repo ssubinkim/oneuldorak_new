@@ -1,56 +1,111 @@
-.mypage-goal-header {
+.mypage-goal-card {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+  min-height: 150px;
+  margin: 0 0 34px;
+  padding: 24px 18px 22px;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 8px;
+  background: #fffdf4;
+  text-align: left;
+}
+
+.mypage-goal-copy {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
 }
 
 .mypage-goal-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--color-text-main);
-}
-
-.mypage-goal-edit {
-  font-size: 13px;
-  color: var(--color-disabled);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 130%;
 }
 
 .mypage-goal-amount {
-  font-size: 14px;
-  color: var(--color-text-sub);
-  margin-bottom: 10px;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px;
+  color: #444;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 130%;
 }
 
 .mypage-goal-amount strong {
-  font-weight: 700;
+  color: #ffd515;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: 0;
 }
 
-.mypage-goal-amount .sub-text {
-  color: var(--color-disabled);
+.mypage-goal-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #333;
   font-size: 13px;
+  font-weight: 500;
+  line-height: 130%;
 }
 
-.mypage-goal-bar-bg {
-  height: 8px;
-  background: #efefef;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 8px;
+.mypage-goal-note-icon {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #9b9b9b;
+  border-radius: 3px;
+  box-sizing: border-box;
 }
 
-.mypage-goal-bar-fill {
-  height: 100%;
-  background: var(--color-primary);
-  border-radius: 4px;
-  transition: width 1.2s ease-out;
+.mypage-goal-donut {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: conic-gradient(#ffd515 var(--goal-pct), #e8e8ea 0);
 }
 
-.mypage-goal-percent-text {
-  font-size: 12px;
-  color: var(--color-disabled);
+.mypage-goal-donut::before {
+  content: '';
+  grid-area: 1 / 1;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #fffdf4;
+}
+
+.mypage-goal-donut span {
+  grid-area: 1 / 1;
+  z-index: 1;
+  color: #3c3c3c;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+@media (max-width: 360px) {
+  .mypage-goal-card {
+    gap: 12px;
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .mypage-goal-donut {
+    width: 84px;
+    height: 84px;
+  }
+
+  .mypage-goal-donut::before {
+    width: 61px;
+    height: 61px;
+  }
 }
