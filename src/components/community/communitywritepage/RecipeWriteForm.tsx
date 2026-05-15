@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import starOffIcon from '../../../assets/icons/star_off.svg'
 import starOnIcon from '../../../assets/icons/star_on.svg'
-import { ingredientOptions } from '../../onbording/onboardingpage/onboardingQuestionData'
+import { ingredientOptions } from '../../onboarding/onboardingpage/onboardingQuestionData'
 import MediaActions from './MediaActions'
 import { difficultyLevels } from './writeFormData'
 import WriteInlineInputRow from './WriteInlineInputRow'

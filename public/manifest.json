@@ -1,0 +1,20 @@
+{
+  "name": "오늘도락",
+  "short_name": "오늘도락",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "합리적인 도시락 소비를 위한 AI 도시락 플랫폼",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
