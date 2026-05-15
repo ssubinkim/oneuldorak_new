@@ -1,38 +1,43 @@
 .mypage-stats {
-  display: flex;
-  margin: 0 20px 24px;
-  border-radius: 14px;
-  background: #fff7d0;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(206, 206, 206, 0.45);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 14px;
 }
 
 .mypage-stat-item {
-  flex: 1;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 0;
+  color: #a3a3a3;
+  background: transparent;
+  border: 0;
   text-align: center;
-  padding: 14px 0;
+  opacity: 1;
 }
 
 .mypage-stat-item + .mypage-stat-item {
-  border-left: 1px solid var(--color-secondary-40);
+  border-left: 1px solid #d1d1d1;
 }
 
 .mypage-stat-item.clickable {
   cursor: pointer;
 }
 
+.mypage-stat-label {
+  color: #8f8f8f;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 130%;
+}
+
 .mypage-stat-num {
+  color: #a3a3a3;
   font-size: 20px;
-  font-weight: 800;
-  color: var(--color-text-main);
+  font-weight: 700;
+  line-height: 130%;
 }
 
 .mypage-stat-num.highlight {
-  color: var(--color-status-emphasis);
-}
-
-.mypage-stat-label {
-  font-size: 12px;
-  color: var(--color-disabled);
-  margin-top: 2px;
+  color: #ff5959;
 }

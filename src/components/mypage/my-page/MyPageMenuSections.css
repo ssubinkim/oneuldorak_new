@@ -1,27 +1,89 @@
 .mypage-menus {
-  margin-top: 20px;
-  background: var(--color-bg-sub);
+  display: grid;
+  gap: 0;
 }
 
 .mypage-menu-section {
-  border-top: 1px solid #faca40;
+  padding: 16px 10px 24px;
+  border-top: 1px solid #d8d8d8;
 }
 
 .mypage-menu-title {
+  margin: 0 0 12px;
+  color: #333;
   font-size: 18px;
-  color: var(--color-disabled);
-  font-weight: 600;
-  padding: 20px 20px 6px;
+  font-weight: 700;
+  line-height: 130%;
+}
+
+.mypage-menu-list {
+  display: grid;
+  gap: 12px;
 }
 
 .mypage-menu-row {
-  display: flex;
-  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto 14px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 24px;
+  padding: 0;
+  color: #555;
+  background: transparent;
+  border: 0;
+  text-align: left;
 }
 
-.mypage-menu-item {
-  flex: 1;
-  font-size: 14px;
-  color: var(--color-text-sub);
-  cursor: pointer;
+.mypage-menu-row.is-muted {
+  color: #a3a3a3;
+}
+
+.mypage-menu-icon-slot {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border: 1.4px solid currentColor;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.mypage-menu-label {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 130%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mypage-menu-aside {
+  color: #a3a3a3;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 130%;
+  white-space: nowrap;
+}
+
+.mypage-menu-chevron {
+  justify-self: end;
+  width: 8px;
+  height: 8px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.mypage-logout {
+  justify-self: center;
+  margin: 0 0 6px;
+  padding: 0;
+  color: #8f8f8f;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 130%;
 }

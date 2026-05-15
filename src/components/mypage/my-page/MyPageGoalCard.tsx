@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import './MyPageCard.css'
 import './MyPageGoalCard.css'
 
@@ -14,25 +15,26 @@ type MyPageGoalCardProps = {
 }
 
 function MyPageGoalCard({ goal, pct, goalBarPct, onEdit }: MyPageGoalCardProps) {
+  const donutStyle = { '--goal-pct': `${goalBarPct}%` } as CSSProperties & { '--goal-pct': string }
+
   return (
-    <div className="mypage-card">
-      <div className="mypage-goal-header">
+    <button type="button" className="mypage-goal-card" onClick={onEdit}>
+      <span className="mypage-goal-copy">
         <span className="mypage-goal-title">이번달 절약 목표</span>
-        <button className="mypage-goal-edit" onClick={onEdit}>
-          수정
-        </button>
-      </div>
-      <div className="mypage-goal-amount">
-        <strong>현재 지출 {goal.current.toLocaleString()}원</strong>
-        <span className="sub-text"> /목표 {goal.target.toLocaleString()}원</span>
-      </div>
-      <div className="mypage-goal-bar-bg">
-        <div className="mypage-goal-bar-fill" style={{ width: `${goalBarPct}%` }} />
-      </div>
-      <div className="mypage-goal-percent-text">
-        목표금액의 {pct}% 소비 하셨어요!
-      </div>
-    </div>
+        <span className="mypage-goal-amount">
+          <strong>{goal.current.toLocaleString()}원</strong>
+          <span> / {goal.target.toLocaleString()}원</span>
+        </span>
+        <span className="mypage-goal-note">
+          <span className="mypage-goal-note-icon" aria-hidden="true" />
+          한끼 한끼 알뜰하게 절약 중!
+        </span>
+      </span>
+
+      <span className="mypage-goal-donut" style={donutStyle}>
+        <span>{pct}%</span>
+      </span>
+    </button>
   )
 }
 
