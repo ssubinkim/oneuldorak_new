@@ -4,7 +4,7 @@ import LikePageContent from '../../components/mypage/like-page/LikePageContent'
 import LikePageHeader from '../../components/mypage/like-page/LikePageHeader'
 import LikePageTabs from '../../components/mypage/like-page/LikePageTabs'
 import type { LikePageTab } from '../../components/mypage/like-page/LikePageTabs'
-import { LIKED_POSTS, SAVED_RECIPES as STATIC_SAVED_RECIPES } from '../../components/mypage/like-page/likePageData'
+import { SAVED_RECIPES as STATIC_SAVED_RECIPES } from '../../components/mypage/like-page/likePageData'
 import {
   getLikedBoardPosts,
   getLikedRecipePosts,
@@ -25,7 +25,6 @@ export default function LikePage({ onBack, initialTab = 'likes' }: Props) {
   const likedPosts = [
     ...getLikedBoardPosts(userProfile.email),
     ...likedRecipePosts,
-    ...LIKED_POSTS,
   ]
   const savedRecipes = [...savedRecipeCards, ...STATIC_SAVED_RECIPES]
 
