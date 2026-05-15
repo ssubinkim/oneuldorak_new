@@ -20,7 +20,7 @@ const EXTENDED = [SLIDES[N - 1], ...SLIDES, SLIDES[0]]
 
 function StoreBanner() {
   const [pos, setPos] = useState(1)
-  const [current, setCurrent] = useState(0)
+  const [, setCurrent] = useState(0)
   const fillRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const textRefs = useRef<(HTMLDivElement | null)[]>(new Array(N + 2).fill(null))
