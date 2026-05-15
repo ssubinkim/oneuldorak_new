@@ -10,6 +10,8 @@ import MyPageShell from '../../components/mypage/my-page/MyPageShell'
 import MyPageStats from '../../components/mypage/my-page/MyPageStats'
 import type { MyPageStatItem } from '../../components/mypage/my-page/MyPageStats'
 import PointBottomSheet from '../../components/mypage/my-page/PointBottomSheet'
+import { useUserProfile } from '../../components/common/useUserProfile'
+import { getMyPageActivityCounts } from '../../components/mypage/mypageReactionData'
 import profileImg from '../../assets/icons/profile 1.svg?url'
 import '../../components/mypage/my-page/MyPage.css'
 
@@ -25,17 +27,18 @@ const ATTENDANCE: DayData[] = [
 
 const GOAL = { current: 72000, target: 100000 }
 
-const STATS: MyPageStatItem[] = [
-  { id: 'likes', value: '9', label: '좋아요', highlight: true, clickable: true },
-  { id: 'posts', value: '6', label: '내 게시글' },
-  { id: 'comments', value: '8', label: '내 댓글' },
-]
-
 export default function MyPage() {
   const [goalOpen, setGoalOpen] = useState(false)
   const [pointOpen, setPointOpen] = useState(false)
   const [pointSheetKey, setPointSheetKey] = useState(0)
+  const { email } = useUserProfile()
   const { totalPoints, monthlyPoints } = usePointBalance()
+  const activityCounts = getMyPageActivityCounts(email)
+  const stats: MyPageStatItem[] = [
+    { id: 'likes', value: String(activityCounts.likes), label: '좋아요', highlight: true, clickable: true },
+    { id: 'posts', value: String(activityCounts.posts), label: '내 게시글' },
+    { id: 'comments', value: String(activityCounts.comments), label: '내 댓글' },
+  ]
 
   const pct = Math.round((GOAL.current / GOAL.target) * 100)
   const [goalBarPct, setGoalBarPct] = useState(0)
@@ -54,7 +57,7 @@ export default function MyPage() {
         <div className="mypage">
           <MyPageProfile profileImg={profileImg} />
           <MyPageStats
-            stats={STATS}
+            stats={stats}
             onStatClick={(stat) => {
               if (stat.id === 'likes') window.location.hash = '#/mypage-likes'
             }}

@@ -2,6 +2,7 @@ import {
   getBoardReactionKey,
   readPersistedBoardLikeKeys,
 } from '../community/common/boardReactionPersistence'
+import { readPersistedBoardComments } from '../community/common/boardCommentPersistence'
 import { mockBoardDetailPosts } from '../community/common/boardMockData'
 import { readPersistedCommunityWriteState } from '../community/common/communityWritePersistence'
 import { getRecipeDetail, type RecipeId } from '../recipedetailpage/recipeDetailData'
@@ -60,6 +61,37 @@ function getRecipeTitleById(recipeId: string) {
   }
 
   return ''
+}
+
+export function getMyPageActivityCounts(currentUserId: string) {
+  const persistedWriteState = readPersistedCommunityWriteState()
+  const persistedRecipeStateMap = getAllPersistedRecipeDetailState()
+  const persistedBoardComments = readPersistedBoardComments()
+
+  const likeCount =
+    getLikedBoardPosts(currentUserId).length +
+    Object.values(persistedRecipeStateMap).filter((state) => state.isLiked).length
+
+  const postCount = [
+    ...persistedWriteState.recipes,
+    ...persistedWriteState.boardPosts,
+    ...persistedWriteState.votes,
+  ].filter((post) => post.authorId === currentUserId).length
+
+  const boardCommentCount = Object.values(persistedBoardComments).reduce(
+    (count, comments) => count + comments.filter((comment) => comment.authorId === currentUserId).length,
+    0,
+  )
+  const recipeCommentCount = Object.values(persistedRecipeStateMap).reduce(
+    (count, state) => count + state.comments.filter((comment) => comment.authorId === currentUserId).length,
+    0,
+  )
+
+  return {
+    likes: likeCount,
+    posts: postCount,
+    comments: boardCommentCount + recipeCommentCount,
+  }
 }
 
 export function getLikedRecipePosts(): LikePost[] {
