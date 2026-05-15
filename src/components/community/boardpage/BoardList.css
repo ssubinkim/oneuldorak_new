@@ -1,7 +1,7 @@
 .free-detail-list {
   display: grid;
   gap: 18px;
-  padding: 30px 0 110px;
+  padding: 30px 0 0;
 }
 
 .free-post-card {
@@ -58,11 +58,11 @@
   line-height: 1;
 }
 
-.free-post-card h2 {
+.free-post-card h3 {
   margin: 12px 0 0;
   color: #1a1a1a;
-  font-size: 22px;
-  font-weight: 800;
+  font-size: 18px;
+  font-weight: 600;
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 130%;
   letter-spacing: 0.08px;
@@ -90,11 +90,19 @@
 .free-post-card__meta {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap:5px;
   min-width: 0;
   color: #555;
   font-size: 12px;
   line-height: 1;
+}
+
+.free-post-card__meta img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border: 1.5px solid var(--color-border);
+  border-radius: 20px;
 }
 
 .free-post-card__stats {
