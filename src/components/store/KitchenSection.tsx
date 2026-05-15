@@ -1,4 +1,5 @@
 import './KitchenSection.css'
+import panIcon from './images/pan.png'
 import ProductCard, { type Product } from './ProductCard'
 
 type Props = {
@@ -10,11 +11,14 @@ function KitchenSection({ products, onSelect }: Props) {
   return (
     <div className="kitchen-section">
       <div className="kitchen-section__header">
-        <div>
-          <p className="kitchen-section__title">🪄 오늘의 키친</p>
+        <p className="kitchen-section__title">
+          <img src={panIcon} alt="" className="kitchen-section__title-icon" />
+          오늘의 키친
+        </p>
+        <div className="kitchen-section__subrow">
           <p className="kitchen-section__desc">한 끼 준비가 쉬워지는 아이템</p>
+          <button className="kitchen-section__more" type="button">더보기 &gt;</button>
         </div>
-        <button className="kitchen-section__more" type="button">더보기 &gt;</button>
       </div>
       <div className="kitchen-section__track">
         {products.map((p, i) => (

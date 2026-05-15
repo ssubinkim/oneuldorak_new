@@ -1,4 +1,5 @@
 import './BrandPickSection.css'
+import starIcon from './images/star.png'
 import logo1 from './images/storelogo_1.png'
 import logo2 from './images/storelogo_2.png'
 import logo3 from './images/storelogo_3.png'
@@ -17,11 +18,14 @@ function BrandPickSection() {
   return (
     <div className="brand-pick">
       <div className="brand-pick__header">
-        <div>
-          <p className="brand-pick__title">✨ 오늘도락 PICK</p>
+        <p className="brand-pick__title">
+          <img src={starIcon} alt="" className="brand-pick__title-icon" />
+          오늘도락 PICK
+        </p>
+        <div className="brand-pick__subrow">
           <p className="brand-pick__desc">오늘도락이 추천하는 브랜드</p>
+          <button className="brand-pick__more" type="button">더보기 &gt;</button>
         </div>
-        <button className="brand-pick__more" type="button">더보기 &gt;</button>
       </div>
       <div className="brand-pick__track">
         {BRANDS.map(brand => (
