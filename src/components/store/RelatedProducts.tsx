@@ -16,17 +16,14 @@ const RELATED: Product[] = [
 
 function RelatedProducts({ onSelect }: { onSelect?: (product: Product) => void }) {
   return (
-    <div style={{ padding: '24px 0 0' }}>
-      <div style={{
-        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-        padding: '0 16px', marginBottom: 16,
-      }}>
-        <span style={{ fontSize: 18, fontWeight: 500, color: '#3c3c3c' }}>이 재료는 어떠세요 ?</span>
-        <span style={{ fontSize: 14, color: '#888', cursor: 'pointer', whiteSpace: 'nowrap' }}>전체보기 &gt;</span>
+    <div className="related-products">
+      <div className="related-products__header">
+        <span className="related-products__title">이 재료는 어떠세요 ?</span>
+        <span className="related-products__more">더보기 &gt;</span>
       </div>
-      <div style={{ display: 'flex', gap: 10, overflowX: 'auto', padding: '0 16px', scrollbarWidth: 'none' }}>
+      <div className="related-products__list">
         {RELATED.map(p => (
-          <div key={p.id} style={{ flex: '0 0 120px' }} className="related-product-item">
+          <div key={p.id} className="related-products__item">
             <ProductCard {...p} onClick={() => onSelect?.(p)} />
           </div>
         ))}

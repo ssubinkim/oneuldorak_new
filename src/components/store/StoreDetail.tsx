@@ -69,7 +69,7 @@ function StoreDetail({ product, onBack, onSelectProduct }: Props) {
       {/* 상단 네비 — sticky */}
       <div className="store-detail__nav">
         <button className="store-detail__nav-btn" onClick={onBack}>
-          <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="#111" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="#3c3c3c" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <path d="m15 18-6-6 6-6" />
           </svg>
         </button>
@@ -79,11 +79,6 @@ function StoreDetail({ product, onBack, onSelectProduct }: Props) {
             <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#111" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
               <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-            </svg>
-          </button>
-          <button className="store-detail__nav-btn" onClick={() => setLiked(v => !v)}>
-            <svg viewBox="0 0 24 24" width={20} height={20} fill={liked ? '#ff4d6d' : 'none'} stroke={liked ? '#ff4d6d' : '#111'} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
             </svg>
           </button>
         </div>
@@ -100,12 +95,12 @@ function StoreDetail({ product, onBack, onSelectProduct }: Props) {
           <button className="store-detail__brand-badge">{product?.brand ?? '브랜드'} &gt;</button>
           <div className="store-detail__product-actions">
             <button className="store-detail__action-btn" onClick={() => setLiked(v => !v)}>
-              <svg viewBox="0 0 24 24" width={22} height={22} fill={liked ? '#ff4d6d' : 'none'} stroke={liked ? '#ff4d6d' : '#888'} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+              <svg viewBox="0 0 24 24" width={19} height={19} fill={liked ? '#ff4d6d' : 'none'} stroke={liked ? '#ff4d6d' : '#767676'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
               </svg>
             </button>
             <button className="store-detail__action-btn">
-              <svg viewBox="0 0 24 24" width={22} height={22} fill="none" stroke="#888" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+              <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#767676" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                 <polyline points="15,3 21,3 21,9" />
                 <line x1="10" y1="14" x2="21" y2="3" />
