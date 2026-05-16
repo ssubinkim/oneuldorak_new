@@ -109,3 +109,71 @@
     height: 61px;
   }
 }
+
+@media (max-width: 320px) {
+  .mypage-goal-card {
+    gap: 8px;
+    min-height: 130px;
+    padding: 16px 12px;
+  }
+
+  .mypage-goal-donut {
+    width: 76px;
+    height: 76px;
+  }
+
+  .mypage-goal-donut::before {
+    width: 55px;
+    height: 55px;
+  }
+
+  .mypage-goal-donut span {
+    font-size: 22px;
+  }
+
+  .mypage-goal-amount strong {
+    font-size: 22px;
+  }
+}
+
+@media (min-width: 768px) {
+  .mypage-goal-card {
+    min-height: 210px;
+    margin-bottom: 52px;
+    padding: 34px 32px;
+    gap: 24px;
+    border-radius: 12px;
+  }
+
+  .mypage-goal-title {
+    font-size: 20px;
+  }
+
+  .mypage-goal-amount {
+    font-size: 20px;
+    gap: 4px;
+  }
+
+  .mypage-goal-amount strong {
+    font-size: 36px;
+  }
+
+  .mypage-goal-note {
+    font-size: 16px;
+    gap: 6px;
+  }
+
+  .mypage-goal-donut {
+    width: 132px;
+    height: 132px;
+  }
+
+  .mypage-goal-donut::before {
+    width: 97px;
+    height: 97px;
+  }
+
+  .mypage-goal-donut span {
+    font-size: 36px;
+  }
+}

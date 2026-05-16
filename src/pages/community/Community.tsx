@@ -74,6 +74,15 @@ function getCommunityInitialTargetFromHash(): CommunityInitialTarget | null {
   return consumeMypageCardTarget()
 }
 
+const VALID_TABS: CommunityTab[] = ['all', 'recipe', 'free', 'vote']
+
+function getInitialTabFromHash(): CommunityTab {
+  if (typeof window === 'undefined') return 'all'
+  const queryString = window.location.hash.split('?')[1] ?? ''
+  const tab = new URLSearchParams(queryString).get('tab') as CommunityTab | null
+  return tab && VALID_TABS.includes(tab) ? tab : 'all'
+}
+
 function getFilledText(value: string, fallback: string) {
   const trimmedValue = value.trim()
 
@@ -303,12 +312,17 @@ function Community() {
   const { email, nickname } = useUserProfile()
   const [initialTarget] = useState(getCommunityInitialTargetFromHash)
   const [persistedWriteState] = useState(readPersistedCommunityWriteState)
-  const [activeTab, setActiveTab] = useState<CommunityTab>(() =>
-    initialTarget?.kind === 'recipe' ? 'recipe' : initialTarget?.kind === 'board' ? 'free' : 'all',
-  )
-  const [view, setView] = useState<CommunityView>(() =>
-    initialTarget?.kind === 'recipe' ? 'detail' : initialTarget?.kind === 'board' ? 'boardDetail' : 'main',
-  )
+  const [activeTab, setActiveTab] = useState<CommunityTab>(() => {
+    if (initialTarget?.kind === 'recipe') return 'recipe'
+    if (initialTarget?.kind === 'board') return 'free'
+    return getInitialTabFromHash()
+  })
+  const [view, setView] = useState<CommunityView>(() => {
+    if (initialTarget?.kind === 'recipe') return 'detail'
+    if (initialTarget?.kind === 'board') return 'boardDetail'
+    const tab = getInitialTabFromHash()
+    return tab !== 'all' ? tabViewMap[tab] : 'main'
+  })
   const [previousView, setPreviousView] = useState<CommunityView>(() =>
     initialTarget?.kind === 'recipe' ? 'recipe' : initialTarget?.kind === 'board' ? 'free' : 'main',
   )

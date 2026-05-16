@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { getIngredientIconClassName, weeklyMenuData } from '../mealData'
 import moneyBagImg from '../../../assets/icons/money_bag.svg'
 import HomeQuickActions from '../../home/HomeQuickActions'
+import MenuAddSheet from './MenuAddSheet'
 import './TodayMenuList.css'
 
 interface Props {
@@ -26,6 +27,7 @@ const monthlySavings = weeklyMenuData.reduce((sum, m) => sum + m.savedAmount, 0)
 
 function TodayMenuList({ selectedDay: _ }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
   const touchStartX = useRef(0)
   const currentMenu = slides[currentIndex]
 
@@ -53,7 +55,7 @@ function TodayMenuList({ selectedDay: _ }: Props) {
       <div className="today-card-header">
         <BellIcon />
         <span className="today-card-title">오늘의 추천 메뉴</span>
-        <button className="today-menu-add-btn">+ 메뉴추가</button>
+        <button className="today-menu-add-btn" onClick={() => setIsSheetOpen(true)}>+ 메뉴추가</button>
       </div>
 
       <div className="today-header">
@@ -123,6 +125,7 @@ function TodayMenuList({ selectedDay: _ }: Props) {
         </div>
       </div>
       <HomeQuickActions />
+      <MenuAddSheet open={isSheetOpen} onClose={() => setIsSheetOpen(false)} />
     </div>
   )
 }

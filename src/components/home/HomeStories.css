@@ -18,6 +18,7 @@
 .stories-section__copy h2 {
   margin: 0;
   color: var(--color-text-main);
+  font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
   font-size: 24px;
   font-weight: 600;
   line-height: 1.08;
@@ -207,5 +208,74 @@
 
   .stories-section__stagger .sequential-highlight-list__title {
     font-size: 13px;
+  }
+}
+
+@media (max-width: 320px) {
+  .stories-section__character {
+    width: 130px;
+  }
+
+  .stories-section__copy h2 {
+    font-size: 21px;
+  }
+}
+
+@media (min-width: 768px) {
+  .stories-section {
+    padding-top: 64px;
+  }
+
+  .stories-section__intro {
+    padding: 0 40px;
+    min-height: 168px;
+  }
+
+  .stories-section__copy h2 {
+    font-size: 34px;
+    line-height: 1.1;
+  }
+
+  .stories-section__link {
+    font-size: 17px;
+    margin-top: 14px;
+  }
+
+  .stories-section__character {
+    width: 240px;
+    right: 8px;
+    bottom: -28px;
+  }
+
+  .story-list {
+    margin: 0 12px;
+    padding: 20px 18px;
+  }
+
+  .stories-section__stagger .sequential-highlight-list__item {
+    min-height: 92px;
+    padding: 0 18px 0 20px;
+    gap: 20px;
+    grid-template-columns: 28px 56px minmax(0, 1fr);
+  }
+
+  .stories-section__stagger .sequential-highlight-list__rank {
+    font-size: 30px;
+  }
+
+  .stories-section__stagger .sequential-highlight-list__thumbnail {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+  }
+
+  .stories-section__stagger .sequential-highlight-list__title {
+    font-size: 20px;
+  }
+
+  .stories-section__stagger .sequential-highlight-list__meta {
+    font-size: 15px;
+    margin-top: 6px;
+    gap: 4px;
   }
 }

@@ -50,3 +50,37 @@
     font-size: 11px;
   }
 }
+
+@media (max-width: 320px) {
+  .quick-card__icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .quick-card {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 768px) {
+  .quick-section {
+    padding: 36px 40px;
+  }
+
+  .quick-card__icon {
+    width: 84px;
+    height: 84px;
+    border-radius: 10px;
+    box-shadow: 4px 4px 0 #ffdb78;
+  }
+
+  .quick-card__icon img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .quick-card {
+    font-size: 17px;
+    gap: 12px;
+  }
+}

@@ -66,3 +66,33 @@
   border-right: 2px solid #8d8d8d;
   transform: rotate(45deg);
 }
+
+@media (min-width: 768px) {
+  .mypage-point-card {
+    grid-template-columns: 76px minmax(0, 1fr) 22px;
+    min-height: 156px;
+    margin-bottom: 52px;
+    padding: 26px 28px 26px 32px;
+    border-radius: 16px;
+    gap: 22px;
+  }
+
+  .mypage-point-icon-slot {
+    width: 76px;
+    height: 76px;
+  }
+
+  .mypage-point-title {
+    font-size: 20px;
+  }
+
+  .mypage-point-amount {
+    font-size: 36px;
+    margin-top: 4px;
+  }
+
+  .mypage-point-desc {
+    font-size: 15px;
+    margin-top: 6px;
+  }
+}

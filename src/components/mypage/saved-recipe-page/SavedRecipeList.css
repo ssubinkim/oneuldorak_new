@@ -2,10 +2,30 @@
   background: var(--color-bg-sub);
   min-height: 100%;
   padding: 16px 20px;
+  padding-top: calc(var(--header-height, 44px) + 16px);
 }
 
 .saved-recipe-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+@media (max-width: 320px) {
+  .saved-recipe-page {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+}
+
+@media (min-width: 768px) {
+  .saved-recipe-page {
+    padding-right: 40px;
+    padding-left: 40px;
+    padding-bottom: 32px;
+  }
+
+  .saved-recipe-list {
+    gap: 16px;
+  }
 }

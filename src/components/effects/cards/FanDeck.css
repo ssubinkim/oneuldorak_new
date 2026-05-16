@@ -78,3 +78,44 @@
   height: 13px;
   color: #686868;
 }
+
+@media (min-width: 768px) {
+  .fan-deck {
+    width: min(100%, 480px);
+    height: 410px;
+  }
+
+  .fan-deck__card {
+    width: 320px;
+    min-height: 368px;
+    padding: 28px 22px 24px;
+    border-radius: 14px;
+  }
+
+  .fan-deck__title {
+    font-size: 21px;
+  }
+
+  .fan-deck__price {
+    font-size: 24px;
+    margin-top: 8px;
+  }
+
+  .fan-deck__image {
+    width: 232px;
+    height: 168px;
+    margin-top: 24px;
+    border-radius: 16px;
+  }
+
+  .fan-deck__meta {
+    font-size: 16px;
+    margin-top: 28px;
+    gap: 6px;
+  }
+
+  .fan-deck__clock-icon {
+    width: 16px;
+    height: 16px;
+  }
+}

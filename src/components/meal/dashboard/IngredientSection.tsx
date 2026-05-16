@@ -1,10 +1,8 @@
-import { useState } from 'react'
 import {
   carrotImg, potatoImg, appleImg, onionImg,
   romainImg, brocollyImg, strawberryImg,
   getIngredientIconClassName,
 } from '../mealData'
-import WeeklyPlanCalendarModal from '../weekly-plan/page/WeeklyPlanCalendarModal'
 import './IngredientSection.css'
 
 interface Ingredient {
@@ -34,9 +32,6 @@ function CalendarIcon() {
 }
 
 function IngredientSection() {
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
-  const today = new Date()
-
   return (
     <section className="ing-section">
       <div className="ing-header">
@@ -44,7 +39,7 @@ function IngredientSection() {
           <h2 className="ing-title">이번주<br />냉털 계획표</h2>
           <p className="ing-subtitle">한 주 도시락을 미리 채워보세요!</p>
         </div>
-        <button className="cal-icon-btn" aria-label="달력 열기" onClick={() => setIsCalendarOpen(true)}>
+        <button className="cal-icon-btn" aria-label="달력 열기" onClick={() => { window.location.hash = '#/meal-weekly-plan' }}>
           <CalendarIcon />
         </button>
       </div>
@@ -71,14 +66,6 @@ function IngredientSection() {
         ))}
       </div>
 
-      {isCalendarOpen && (
-        <WeeklyPlanCalendarModal
-          year={today.getFullYear()}
-          month={today.getMonth() + 1}
-          todayDate={today.getDate()}
-          onClose={() => setIsCalendarOpen(false)}
-        />
-      )}
     </section>
   )
 }

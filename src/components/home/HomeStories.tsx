@@ -26,7 +26,7 @@ function HomeStories() {
             <br />
             생활 이야기 <span aria-hidden="true">👀</span>
           </h2>
-          <a className="stories-section__link" href="#more-stories">
+          <a className="stories-section__link" href="#/community?tab=free" onClick={(e) => { e.preventDefault(); window.location.hash = '#/community?tab=free' }}>
             이번주 인기글 TOP3
             <br />
             보러가기 <ArrowRightIcon />
