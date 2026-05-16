@@ -124,3 +124,60 @@
     padding-left: 15px;
   }
 }
+
+@media (max-width: 320px) {
+  .home-hero {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .home-hero h1,
+  .home-hero__name {
+    font-size: 16px;
+  }
+
+  .home-budget-card {
+    padding: 12px 12px 12px 13px;
+  }
+
+  .home-budget-card__amount {
+    font-size: 22px;
+  }
+}
+
+@media (min-width: 768px) {
+  .home-hero {
+    padding: 28px 40px 44px;
+  }
+
+  .home-hero h1,
+  .home-hero__name {
+    font-size: 28px;
+  }
+
+  .home-hero__chef {
+    flex: 0 0 32px;
+    width: 32px;
+    height: 26px;
+  }
+
+  .home-budget-card {
+    min-height: 150px;
+    margin-top: 32px;
+    padding: 20px 28px;
+  }
+
+  .home-budget-card__label {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .home-budget-card__amount {
+    font-size: 36px;
+  }
+
+  .home-budget-card__meta {
+    font-size: 14px;
+    margin-top: 18px;
+  }
+}

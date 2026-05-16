@@ -59,3 +59,49 @@
     padding-left: 16px;
   }
 }
+
+@media (max-width: 320px) {
+  .mypage {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .mypage-topbar h1 {
+    font-size: 20px;
+  }
+
+  .mypage-profile-card {
+    padding: 18px 14px 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .mypage {
+    padding: 0 40px 56px;
+  }
+
+  .mypage-topbar {
+    min-height: 88px;
+    padding: 24px 0 16px;
+  }
+
+  .mypage-topbar h1 {
+    font-size: 28px;
+  }
+
+  .mypage-topbar__button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .mypage-topbar__button img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .mypage-profile-card {
+    padding: 32px 28px 28px;
+    margin-bottom: 48px;
+    border-radius: 16px;
+  }
+}

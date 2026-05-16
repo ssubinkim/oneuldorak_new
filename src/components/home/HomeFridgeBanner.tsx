@@ -59,7 +59,13 @@ function HomeFridgeBanner() {
       className={`fridge-banner-stage${isOpen ? ' is-open' : ''}`}
       aria-label="메뉴 추천받기"
     >
-      <div className="fridge-banner">
+      <div
+        className="fridge-banner"
+        role="button"
+        tabIndex={0}
+        onClick={() => { window.location.hash = '#/store' }}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') window.location.hash = '#/store' }}
+      >
         <div className="fridge-banner__media" aria-hidden="true">
           <img
             className="fridge-banner__image fridge-banner__image--closed"

@@ -26,6 +26,7 @@
   border: 1px solid #e4e4e4;
   border-radius: 7px;
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .fridge-banner::after {
@@ -118,5 +119,52 @@
 
   .fridge-banner__content h2 {
     font-size: 18px;
+  }
+}
+
+@media (max-width: 320px) {
+  .fridge-banner {
+    min-height: 136px;
+  }
+
+  .fridge-banner__content {
+    padding: 0 10px 0 35%;
+  }
+
+  .fridge-banner__content h2 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .fridge-banner__content p {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 768px) {
+  .fridge-banner-stage {
+    margin-top: 52px;
+  }
+
+  .fridge-banner {
+    min-height: 228px;
+  }
+
+  .fridge-banner__content {
+    padding: 0 0 0 52%;
+  }
+
+  .fridge-banner__content h2 {
+    font-size: 30px;
+    margin-bottom: 18px;
+  }
+
+  .fridge-banner__content p {
+    font-size: 15px;
+  }
+
+  .fridge-banner__arrow {
+    width: 52px;
+    height: 52px;
   }
 }

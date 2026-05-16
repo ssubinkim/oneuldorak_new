@@ -352,3 +352,34 @@
   color: var(--color-disabled);
   margin: 0;
 }
+
+@media (min-width: 768px) {
+  .today-img-wrapper {
+    height: 320px;
+  }
+
+  .today-card-title {
+    font-size: 26px;
+  }
+
+  .today-name {
+    font-size: 26px;
+  }
+
+  .today-desc {
+    font-size: 20px;
+  }
+
+  .today-ingredient {
+    gap: 9px;
+  }
+
+  .ingredient-img {
+    width: 78px;
+    height: 78px;
+  }
+
+  .ingredient-name {
+    font-size: 18px;
+  }
+}

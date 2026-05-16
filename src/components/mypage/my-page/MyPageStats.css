@@ -41,3 +41,21 @@
 .mypage-stat-num.highlight {
   color: #ff5959;
 }
+
+@media (min-width: 768px) {
+  .mypage-stats {
+    margin-top: 20px;
+  }
+
+  .mypage-stat-item {
+    gap: 10px;
+  }
+
+  .mypage-stat-label {
+    font-size: 15px;
+  }
+
+  .mypage-stat-num {
+    font-size: 26px;
+  }
+}

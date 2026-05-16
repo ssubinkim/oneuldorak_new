@@ -1,6 +1,7 @@
 .ing-section {
   margin-bottom: 20px;
   font-family: 'Pretendard Variable', sans-serif;
+  overflow-x: hidden;
 }
 
 .ing-header {
@@ -18,6 +19,7 @@
 }
 
 .ing-title {
+  font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
   font-size: 24px;
   font-weight: 600;
   color: var(--color-text-main);
@@ -242,4 +244,118 @@
 
 .cal-day--empty {
   pointer-events: none;
+}
+
+@media (max-width: 360px) {
+  .ing-header {
+    padding: 0 14px;
+  }
+
+  .ing-scroll {
+    padding: 4px 14px 12px;
+  }
+
+  .ing-actions {
+    padding: 4px 14px 0;
+  }
+}
+
+@media (max-width: 320px) {
+  .ing-header {
+    padding: 0 12px;
+  }
+
+  .ing-scroll {
+    padding: 4px 12px 12px;
+  }
+
+  .ing-actions {
+    padding: 4px 12px 0;
+  }
+
+  .ing-title {
+    font-size: 21px;
+  }
+
+  .cal-overlay {
+    padding: 16px;
+  }
+
+  .cal-day {
+    font-size: 14px;
+    padding: 8px 2px;
+  }
+}
+
+@media (min-width: 768px) {
+  .ing-header {
+    padding: 0 40px;
+    margin-bottom: 24px;
+  }
+
+  .ing-header__text {
+    gap: 10px;
+  }
+
+  .ing-title {
+    font-size: 34px;
+  }
+
+  .ing-subtitle {
+    font-size: 17px;
+  }
+
+  .ing-scroll {
+    padding: 8px 40px 18px;
+    gap: 20px;
+  }
+
+  .ing-circle {
+    width: 88px;
+    height: 88px;
+  }
+
+  .ing-add-btn {
+    width: 92px;
+    height: 92px;
+  }
+
+  .ing-img {
+    width: 66px;
+    height: 66px;
+  }
+
+  .ing-name {
+    font-size: 17px;
+  }
+
+  .ing-urgent-badge {
+    font-size: 14px;
+    padding: 3px 8px;
+  }
+
+  .ing-actions {
+    padding: 8px 40px 0;
+    gap: 14px;
+  }
+
+  .ing-btn {
+    padding: 20px 0;
+    font-size: 20px;
+    border-radius: 16px;
+  }
+
+  .cal-title {
+    font-size: 22px;
+  }
+
+  .cal-label {
+    font-size: 15px;
+    padding: 8px 0 12px;
+  }
+
+  .cal-day {
+    font-size: 18px;
+    padding: 12px 4px;
+  }
 }

@@ -58,3 +58,24 @@
   font-size: 12px;
   color: var(--color-disabled);
 }
+
+@media (min-width: 768px) {
+  .like-card {
+    padding: 20px 24px;
+    border-radius: 18px;
+  }
+
+  .like-card-badge {
+    font-size: 13px;
+    padding: 4px 12px;
+  }
+
+  .like-card-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .like-card-date {
+    font-size: 14px;
+  }
+}

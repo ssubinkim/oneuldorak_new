@@ -24,6 +24,7 @@
 .home-recipe-section__header h2 {
   margin: 0;
   color: var(--color-text-main);
+  font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
   font-size: 24px;
   font-style: normal;
   font-weight: 600;
@@ -238,5 +239,72 @@
   .home-recipe-card__overlay {
     padding-right: 14px;
     padding-left: 14px;
+  }
+}
+
+@media (max-width: 320px) {
+  .home-recipe-section {
+    padding: 32px 14px 0;
+  }
+
+  .home-recipe-section__header h2 {
+    font-size: 21px;
+  }
+
+  .home-recipe-card--wide {
+    height: 136px;
+  }
+
+  .home-recipe-card--small {
+    height: 172px;
+  }
+}
+
+@media (min-width: 768px) {
+  .home-recipe-section {
+    padding: 64px 40px 0;
+    gap: 40px;
+  }
+
+  .home-recipe-section__header h2 {
+    font-size: 34px;
+  }
+
+  .home-recipe-section__header p {
+    font-size: 16px;
+    margin-top: 14px;
+  }
+
+  .home-recipe-section__header a {
+    font-size: 17px;
+  }
+
+  .home-recipe-section__grid {
+    gap: 16px;
+  }
+
+  .home-recipe-card--wide {
+    height: 228px;
+  }
+
+  .home-recipe-card--small {
+    height: 290px;
+  }
+
+  .home-recipe-card__overlay {
+    padding: 20px 28px 22px;
+  }
+
+  .home-recipe-card__title {
+    font-size: 20px;
+  }
+
+  .home-recipe-card__channel {
+    --home-recipe-channel-size: 17px;
+    gap: 6px;
+  }
+
+  .home-recipe-card__likes {
+    font-size: 15px;
   }
 }
