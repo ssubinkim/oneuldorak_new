@@ -8,13 +8,13 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 20px 23px calc(39px + env(safe-area-inset-bottom));
+  padding: clamp(6px, 1.2dvh, 14px) 23px max(16px, calc(10px + env(safe-area-inset-bottom)));
   overflow: hidden;
   background: var(--color-tertiary-90);
 }
 
 .signup-page__header {
-  margin-top: 12px;
+  margin-top: clamp(0px, 1dvh, 8px);
 }
 
 .signup-page__header h1 {
@@ -39,8 +39,9 @@
 .signup-page__form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 16px;
+  flex: 0 1 auto;
+  gap: 8px;
+  margin-top: clamp(8px, 1.8dvh, 16px);
 }
 
 .signup-page__error {
@@ -75,7 +76,7 @@
 }
 
 .signup-page__submit {
-  margin-top: 19px;
+  margin-top: clamp(10px, 1.8dvh, 19px);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -93,5 +94,10 @@
 }
 
 .signup-page .social-login-options {
-  margin-top: 29px;
+  margin-top: auto;
+  padding-top: clamp(10px, 1.8dvh, 16px);
+}
+
+.signup-page .social-login-options__list {
+  margin-top: clamp(12px, 2dvh, 20px);
 }

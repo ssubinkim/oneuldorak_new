@@ -197,30 +197,3 @@ button {
     box-shadow: 0 22px 70px rgba(0, 0, 0, 0.16);
   }
 }
-
-.app-screen:is(
-  .start-page-screen,
-  .login-page-screen,
-  .signup-page-screen,
-  .onboarding-page-screen
-) {
-  height: 100svh;
-  height: 100dvh;
-}
-
-@media (min-width: 1024px) {
-  .app-screen:is(
-    .start-page-screen,
-    .login-page-screen,
-    .signup-page-screen,
-    .onboarding-page-screen
-  ) {
-    width: 100%;
-    max-width: none;
-    height: 100vh;
-    height: 100dvh;
-    min-height: 100dvh;
-    max-height: 100dvh;
-    box-shadow: none;
-  }
-}

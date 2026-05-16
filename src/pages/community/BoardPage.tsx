@@ -24,7 +24,7 @@ function BoardPage({ onSelectTab, onOpenDetail, extraPosts = [] }: BoardPageProp
 
   return (
     <main className="page-scroll free-detail-page" onScroll={handleCommunityScroll}>
-      <CommunityBanner />
+      <CommunityBanner variant="board" />
       <CommunityStickyHeader
         activeTab="free"
         tabsClassName="community-tabs"

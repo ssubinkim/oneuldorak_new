@@ -19,19 +19,19 @@ import foodSandwichVideo from '../../../assets/food_video/video_sandwich.mp4'
 export const hotPosts = [
   {
     rank: 1,
-    title: '다들 도시락 권태기 어떻게 이겨내시나요?',
+    title: '자취생 추천! 가성비 반찬 레시피 모음',
     likes: 100,
     comments: 88,
   },
   {
     rank: 2,
-    title: '일주일 먹어도 안 질리는 레시피 찾음;;',
+    title: '일주일 3만원 식비 도전기',
     likes: 96,
     comments: 65,
   },
   {
     rank: 3,
-    title: '식비 월 20만원으로 줄인 후기',
+    title: '요리 초보 탈출한 계기',
     likes: 65,
     comments: 52,
   },

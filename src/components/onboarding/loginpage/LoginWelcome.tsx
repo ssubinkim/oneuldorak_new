@@ -10,7 +10,13 @@ function LoginWelcome() {
         환영합니다
       </h1>
 
-      <img className="login-welcome__image" src={onboardingSymbolImage} alt="오늘도락 캐릭터 도시락" />
+      <img
+        className="login-welcome__image"
+        src={onboardingSymbolImage}
+        alt="오늘도락 캐릭터 도시락"
+        loading="eager"
+        decoding="async"
+      />
     </div>
   )
 }
