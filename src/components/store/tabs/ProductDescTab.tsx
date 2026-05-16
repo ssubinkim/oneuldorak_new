@@ -88,11 +88,15 @@ function ProductDescTab({ product, reviewCount, onGoToReview, onSelectProduct }:
       <div className="pdesc__review" onClick={onGoToReview}>
         <div className="pdesc__review-header">
           <div>
-            <span className="pdesc__review-title">리뷰 {reviewCount === 0 ? '0' : '999+'}</span>
+            <span className="pdesc__review-title">
+              <span className="pdesc__review-label">리뷰</span>
+              <span className="pdesc__review-count">{reviewCount === 0 ? '0' : '999+'}</span>
+            </span>
             {reviewCount > 0 && (
               <div className="pdesc__review-rating">
                 <span className="pdesc__review-star">★</span>
-                <span>4.8/5</span>
+                <span className="pdesc__review-score">4.8</span>
+                <span className="pdesc__review-total">/5</span>
               </div>
             )}
           </div>
@@ -109,7 +113,6 @@ function ProductDescTab({ product, reviewCount, onGoToReview, onSelectProduct }:
 
       <RelatedRecipes />
       <RelatedProducts onSelect={onSelectProduct} />
-      <div style={{ height: 24 }} />
     </div>
   )
 }

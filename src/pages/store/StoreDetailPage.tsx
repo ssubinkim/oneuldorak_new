@@ -11,11 +11,18 @@ type Props = {
 
 function StoreDetailPage({ product, onBack, onSelectProduct }: Props) {
   const [showTop, setShowTop] = useState(false)
+  const [showActionBar, setShowActionBar] = useState(false)
+  const [liked, setLiked] = useState(false)
   const scrollRef = useRef<HTMLElement>(null)
 
   function handleScroll() {
     if (scrollRef.current) {
-      setShowTop(scrollRef.current.scrollTop > 200)
+      const scrollTop = scrollRef.current.scrollTop
+      setShowTop(scrollTop > 200)
+      const infoEl = scrollRef.current.querySelector('.pdesc__info')
+      if (infoEl) {
+        setShowActionBar(scrollTop >= (infoEl as HTMLElement).offsetTop - 100)
+      }
     }
   }
 
@@ -45,9 +52,9 @@ function StoreDetailPage({ product, onBack, onSelectProduct }: Props) {
         </button>
       )}
 
-      <div className="store-detail-action-bar">
-        <button className="store-detail-action-button" type="button" aria-label="찜하기">
-          <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+      <div className={`store-detail-action-bar${showActionBar ? ' store-detail-action-bar--visible' : ''}`}>
+        <button className="store-detail-action-button" type="button" aria-label="찜하기" onClick={() => setLiked(v => !v)}>
+          <svg viewBox="0 0 24 24" width={20} height={20} fill={liked ? '#EF5246' : 'none'} stroke={liked ? '#EF5246' : 'currentColor'} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
           </svg>
         </button>
