@@ -8,19 +8,13 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  min-height: 100%;
-  padding: 104px 23px calc(39px + env(safe-area-inset-bottom));
-  overflow-y: auto;
+  padding: 20px 23px calc(39px + env(safe-area-inset-bottom));
+  overflow: hidden;
   background: var(--color-tertiary-90);
-  scrollbar-width: none;
-}
-
-.signup-page::-webkit-scrollbar {
-  display: none;
 }
 
 .signup-page__header {
-  margin-top: 49px;
+  margin-top: 12px;
 }
 
 .signup-page__header h1 {
@@ -43,9 +37,19 @@
 }
 
 .signup-page__form {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  margin-top: 26px;
+  margin-top: 16px;
+}
+
+.signup-page__error {
+  margin: 0;
+  color: var(--color-status-emphasis);
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 130%;
 }
 
 .signup-page__dummy-button {
@@ -53,7 +57,7 @@
   align-items: center;
   gap: 4px;
   width: fit-content;
-  margin: 4px 0 18px;
+  margin: 0 0 0 6px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -71,6 +75,7 @@
 }
 
 .signup-page__submit {
+  margin-top: 19px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -87,12 +92,6 @@
   line-height: 130%;
 }
 
-@media (max-height: 780px) {
-  .signup-page {
-    padding-top: 68px;
-  }
-
-  .signup-page__header {
-    margin-top: 34px;
-  }
+.signup-page .social-login-options {
+  margin-top: 29px;
 }

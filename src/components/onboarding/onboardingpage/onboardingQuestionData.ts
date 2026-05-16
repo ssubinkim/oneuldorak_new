@@ -88,7 +88,7 @@ export const ingredientOptions: IngredientOption[] = [
 export const onboardingQuestions: OnboardingQuestion[] = [
   {
     id: 'budget',
-title: '한끼 예산은 어느 정도로 맞출까요?',
+title: '이번 주 예산은 얼마로 할까요?',
     subtitle: '선택한 예산에 맞춰 부담없는 메뉴를 추천해드릴게요.',
     image: customCarrotImage,
     imageAlt: '동전을 들고 있는 당근 캐릭터',

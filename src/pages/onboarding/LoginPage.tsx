@@ -13,29 +13,10 @@ const dummyAccount = {
   password: 'saijohjyo123',
 }
 
-const LOGIN_REQUIRED_MESSAGE = '아이디와 비밀번호를 입력해주세요.'
-
 function LoginPage() {
   const [loginId, setLoginId] = useState('')
   const [password, setPassword] = useState('')
-  const [loginError, setLoginError] = useState('')
   const [showSignupModal, setShowSignupModal] = useState(false)
-
-  const clearLoginError = () => {
-    if (loginError) {
-      setLoginError('')
-    }
-  }
-
-  const handleLoginIdChange = (value: string) => {
-    setLoginId(value)
-    clearLoginError()
-  }
-
-  const handlePasswordChange = (value: string) => {
-    setPassword(value)
-    clearLoginError()
-  }
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -43,15 +24,17 @@ function LoginPage() {
     const trimmedLoginId = loginId.trim()
     const trimmedPassword = password.trim()
 
-    if (!trimmedLoginId || !trimmedPassword) {
-      setLoginError(LOGIN_REQUIRED_MESSAGE)
+    if (!trimmedLoginId || !trimmedPassword) return
+
+    if (trimmedLoginId === dummyAccount.id && trimmedPassword === dummyAccount.password) {
+      saveUserProfile({
+        email: dummyAccount.id,
+        nickname: dummyAccount.nickname,
+      })
+      window.location.hash = '#/home'
       return
     }
 
-    saveUserProfile({
-      email: trimmedLoginId,
-      nickname: dummyAccount.nickname,
-    })
     setShowSignupModal(true)
   }
 
@@ -71,19 +54,29 @@ function LoginPage() {
               icon="mail"
               type="text"
               value={loginId}
-              onChange={handleLoginIdChange}
+              onChange={setLoginId}
             />
             <LoginInputField
               label="비밀번호"
               icon="lock"
               type="password"
               value={password}
-              onChange={handlePasswordChange}
+              onChange={setPassword}
             />
 
-            <p className="login-page__error" role="alert">{loginError}</p>
+            <button
+              className="login-page__dummy-fill"
+              type="button"
+              onClick={() => {
+                setLoginId(dummyAccount.id)
+                setPassword(dummyAccount.password)
+              }}
+            >
+              더미 계정 넣기
+              <span aria-hidden="true">›</span>
+            </button>
 
-            <LoginActionButtons />
+<LoginActionButtons />
           </form>
 
           <SocialLoginOptions />
@@ -103,7 +96,7 @@ function LoginPage() {
             aria-labelledby="signup-modal-title"
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="login-signup-modal__emoji" aria-hidden="true">🎉</p>
+            <p className="login-signup-modal__emoji" aria-hidden="true">🚀</p>
             <h2 id="signup-modal-title" className="login-signup-modal__title">
               아직 도락이가 아니에요!
             </h2>

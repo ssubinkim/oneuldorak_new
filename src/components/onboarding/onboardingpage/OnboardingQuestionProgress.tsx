@@ -2,8 +2,8 @@ import { type CSSProperties } from 'react'
 import { useMemo } from 'react'
 import { BarElement, CategoryScale, Chart as ChartJS, LinearScale, type ChartData, type ChartOptions } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
-import dorak06Image from '../images/dorak06.png'
-import signupDorakImage from '../images/signup_dorak.png'
+import walking01Image from '../images/walking01.gif'
+import yeah02Image from '../images/yeah02.gif'
 import './OnboardingQuestionProgress.css'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement)
@@ -28,14 +28,14 @@ function OnboardingQuestionProgress({ current, mascotType = 'signup', total }: O
       datasets: [
         {
           data: [current],
-          backgroundColor: '#ffd515',
+          backgroundColor: '#FFD515',
           borderRadius: 999,
           borderSkipped: false,
           barThickness: 8,
         },
         {
           data: [remainingProgress],
-          backgroundColor: '#f7dc83',
+          backgroundColor: '#FFF4D6',
           borderRadius: 999,
           borderSkipped: false,
           barThickness: 8,
@@ -84,14 +84,16 @@ function OnboardingQuestionProgress({ current, mascotType = 'signup', total }: O
       <span className="onboarding-question-progress__count">
         <span className="onboarding-question-progress__count--current">{current}</span>/{total}
       </span>
-      <img
-        className="onboarding-question-progress__mascot onboarding-question-progress__mascot--image"
-        src={mascotType === 'dorak06' ? dorak06Image : signupDorakImage}
-        alt=""
-        aria-hidden="true"
-      />
-      <div className="onboarding-question-progress__chart" aria-hidden="true">
-        <Bar data={chartData} options={chartOptions} />
+      <div className="onboarding-question-progress__bar-wrapper">
+        <div className="onboarding-question-progress__chart" aria-hidden="true">
+          <Bar data={chartData} options={chartOptions} />
+        </div>
+        <img
+          className="onboarding-question-progress__mascot"
+          src={mascotType === 'dorak06' ? walking01Image : yeah02Image}
+          alt=""
+          aria-hidden="true"
+        />
       </div>
     </div>
   )

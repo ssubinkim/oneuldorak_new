@@ -10,18 +10,23 @@
 }
 
 .onboarding-complete-screen__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
   margin-top: 7px;
+  gap: 30px;
 }
 
 .onboarding-complete-screen__content h1 {
-  margin: 0 0 30px 45px;
+  width: min(81vw, 249px);
+  margin: 0 auto;
   color: #1a1a1a;
   font-family: 'Pretendard Variable', sans-serif;
   font-size: 22px;
   font-weight: 600;
   line-height: 130%;
-  letter-spacing: 0;
+  letter-spacing: -0.08px;
 }
 
 .onboarding-complete-screen__content img {

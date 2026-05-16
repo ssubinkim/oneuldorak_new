@@ -24,20 +24,23 @@
   margin-right: 4px;
 }
 
+.onboarding-question-progress__bar-wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .onboarding-question-progress__mascot {
   position: absolute;
-  left: clamp(34px, calc(34px + ((100% - 34px) * var(--progress-ratio)) - 43px), calc(100% - 86px));
-  top: -18px;
+  left: calc(var(--progress-ratio) * 100% - 82px);
+  top: -28px;
   width: 86px;
   height: auto;
-  background: #f8f6ec;
+  background: var(--color-tertiary-90);
   mix-blend-mode: multiply;
   pointer-events: none;
   transition: left 180ms ease;
-}
-
-.onboarding-question-progress__mascot--image {
   object-fit: contain;
+  z-index: 1;
 }
 
 .onboarding-question-progress__chart {
@@ -45,7 +48,7 @@
   height: 8px;
   overflow: hidden;
   border-radius: 999px;
-  background: #f7dc83;
+  background: #FFF4D6;
 }
 
 .onboarding-question-progress__chart canvas {
