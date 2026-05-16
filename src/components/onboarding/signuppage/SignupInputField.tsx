@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import eyeIcon from '../../../assets/icons/eye.svg'
+import eyeOffIcon from '../../../assets/icons/eye-off.svg'
 import './SignupInputField.css'
 
 type SignupInputFieldProps = {
@@ -12,14 +14,6 @@ type SignupInputFieldProps = {
   value: string
 }
 
-function EyeIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M2.8 12s3.4-5.5 9.2-5.5 9.2 5.5 9.2 5.5-3.4 5.5-9.2 5.5S2.8 12 2.8 12Z" />
-      <circle cx="12" cy="12" r="2.4" />
-    </svg>
-  )
-}
 
 function SignupInputField({ actionLabel, label, onChange, onActionClick, onShakeEnd, shouldShakeAction, type, value }: SignupInputFieldProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
@@ -66,7 +60,7 @@ function SignupInputField({ actionLabel, label, onChange, onActionClick, onShake
           aria-label={isPasswordVisible ? '비밀번호 숨기기' : '비밀번호 보기'}
           onClick={() => setIsPasswordVisible((currentValue) => !currentValue)}
         >
-          <EyeIcon />
+          <img src={isPasswordVisible ? eyeOffIcon : eyeIcon} alt="" />
         </button>
       ) : null}
     </label>

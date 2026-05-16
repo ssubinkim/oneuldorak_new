@@ -24,6 +24,10 @@ function OnboardingQuestionBody({ children, optionLayout, question }: Onboarding
         </div>
       ) : null}
 
+      {question.selectionType === 'multiple' ? (
+        <p className="onboarding-question__multiple-hint">* 중복 선택 가능</p>
+      ) : null}
+
       {children}
     </div>
   )

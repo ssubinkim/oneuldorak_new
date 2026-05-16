@@ -18,16 +18,27 @@ function SignupPage() {
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [passwordError, setPasswordError] = useState('')
 
   const handleDummyAccountClick = () => {
     setName(dummySignupAccount.name)
     setNickname(dummySignupAccount.nickname)
     setEmail(dummySignupAccount.email)
     setPassword(dummySignupAccount.password)
+    setPasswordConfirm(dummySignupAccount.password)
+    setPasswordError('')
   }
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    if (!name.trim() || !nickname.trim() || !email.trim() || !password.trim() || !passwordConfirm.trim()) return
+    if (password !== passwordConfirm) {
+      setPasswordError('비밀번호가 일치하지 않아요.')
+      return
+    }
+
     saveUserProfile({
       email,
       name,
@@ -51,7 +62,9 @@ function SignupPage() {
             <SignupInputField label="이름" type="text" value={name} onChange={setName} />
             <SignupInputField label="닉네임" type="text" value={nickname} onChange={setNickname} />
             <SignupInputField label="이메일 주소" type="email" value={email} onChange={setEmail} />
-            <SignupInputField label="비밀번호" type="password" value={password} onChange={setPassword} />
+            <SignupInputField label="비밀번호" type="password" value={password} onChange={(v) => { setPassword(v); setPasswordError('') }} />
+            <SignupInputField label="비밀번호 확인" type="password" value={passwordConfirm} onChange={(v) => { setPasswordConfirm(v); setPasswordError('') }} />
+            {passwordError && <p className="signup-page__error">{passwordError}</p>}
 
             <button className="signup-page__dummy-button" type="button" onClick={handleDummyAccountClick}>
               더미 계정 넣기

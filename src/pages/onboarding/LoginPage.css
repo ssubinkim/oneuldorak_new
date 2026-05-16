@@ -8,46 +8,48 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  min-height: 100%;
-  padding: 114px 23px calc(40px + env(safe-area-inset-bottom));
-  overflow-y: auto;
+  padding: 45px 23px calc(45px + env(safe-area-inset-bottom));
+  overflow: hidden;
   background: var(--color-tertiary-90);
-  scrollbar-width: none;
 }
 
-.login-page::-webkit-scrollbar {
-  display: none;
+.login-page .login-welcome {
+  margin-top: 50px;
 }
 
 .login-page__form {
   display: grid;
   gap: 10px;
-  margin-top: 41px;
+  margin-top: auto;
 }
 
-.login-page__error {
-  min-height: 16px;
-  margin: 0;
-  color: var(--color-status-emphasis);
+.login-page__dummy-fill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: fit-content;
+  margin: 0 0 0 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1a1a1a;
   font-family: 'Pretendard Variable', sans-serif;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 130%;
+  cursor: pointer;
+}
+
+.login-page__dummy-fill span {
+  font-size: 18px;
+  line-height: 1;
+  transform: translateY(-1px);
 }
 
 .login-page__form .login-action-buttons {
-  margin-top: 20px;
+  margin-top: 35px;
 }
 
-@media (max-height: 760px) {
-  .login-page {
-    padding-top: 72px;
-  }
-
-  .login-page__form {
-    margin-top: 28px;
-  }
-}
 
 .login-signup-modal {
   position: fixed;

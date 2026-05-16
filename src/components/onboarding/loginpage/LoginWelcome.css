@@ -5,7 +5,7 @@
 }
 
 .login-welcome__title {
-  margin: 0 0 0 20px;
+  margin: 0 0 0 18px;
   color: #1a1a1a;
   font-family: var(--font-nanum-square-neo);
   font-size: 24px;
@@ -21,7 +21,7 @@
 .login-welcome__image {
   display: block;
   align-self: flex-end;
-  width: min(50vw, 190px);
+  width: min(50vw, 160px);
   min-width: 168px;
   height: auto;
   margin: -1px 24px 0 0;
