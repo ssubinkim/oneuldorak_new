@@ -2,7 +2,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 9px;
-  margin-top: 44px;
+  margin-top: auto;
+  padding-top: clamp(20px, 4svh, 44px);
 }
 
 .onboarding-intro-actions__button {

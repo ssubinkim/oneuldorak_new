@@ -11,8 +11,15 @@ import OnboardingQuestionProgress from '../../components/onboarding/onboardingpa
 import { initialOnboardingAnswers, onboardingQuestions } from '../../components/onboarding/onboardingpage/onboardingQuestionData'
 import type { AnswerValue } from '../../components/onboarding/onboardingpage/onboardingQuestionTypes'
 import { saveOnboardingAnswers } from '../../components/common/aiDataHub'
+import customBlueImage from '../../components/onboarding/images/custom_blue.png'
+import customBroImage from '../../components/onboarding/images/custom_bro.png'
+import customCarrotImage from '../../components/onboarding/images/custom_carrot.png'
+import walking01Image from '../../components/onboarding/images/walking01.gif'
+import yeah02Image from '../../components/onboarding/images/yeah02.gif'
 import '../../styles/Tailwind.css'
 import './OnboardingPage.css'
+
+const onboardingWarmupImages = [customCarrotImage, customBlueImage, customBroImage, walking01Image, yeah02Image]
 
 function OnboardingPage() {
   const [activeQuestionIndex, setActiveQuestionIndex] = useState<number | null>(null)
@@ -32,6 +39,31 @@ function OnboardingPage() {
       window.clearTimeout(homeTimer)
     }
   }, [isComplete])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    onboardingWarmupImages.forEach((src) => {
+      const image = new Image()
+      image.decoding = 'async'
+      image.src = src
+    })
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const previousHtmlOverflow = document.documentElement.style.overflow
+    const previousBodyOverflow = document.body.style.overflow
+
+    document.documentElement.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow
+      document.body.style.overflow = previousBodyOverflow
+    }
+  }, [])
 
   const handleGoHome = () => {
     window.location.hash = '#/home'

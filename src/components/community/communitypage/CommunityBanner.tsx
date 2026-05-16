@@ -1,7 +1,23 @@
 import './CommunityBanner.css'
-import dorakImage from '../../../pages/community/images/dorak02.png'
+import defaultBannerImage from '../../../pages/community/images/dorak02.png'
+import recipeBannerImage from '../../../assets/food_mascot_all/dorak18.svg'
+import boardBannerImage from '../../../assets/food_mascot_all/dorak15.svg'
 
-function CommunityBanner() {
+type CommunityBannerVariant = 'default' | 'recipe' | 'board'
+
+type CommunityBannerProps = {
+  variant?: CommunityBannerVariant
+}
+
+const bannerImageByVariant: Record<CommunityBannerVariant, string> = {
+  default: defaultBannerImage,
+  recipe: recipeBannerImage,
+  board: boardBannerImage,
+}
+
+function CommunityBanner({ variant = 'default' }: CommunityBannerProps) {
+  const bannerImage = bannerImageByVariant[variant]
+
   return (
     <section className="community-banner">
       <div className="community-banner__header">
@@ -24,7 +40,7 @@ function CommunityBanner() {
         오늘도 바쁜 도락이들의 도시락 이야기<br />
         도시락도 ROCK이다!
       </p>
-      <img src={dorakImage} alt="" className="community-banner__image" aria-hidden="true" />
+      <img src={bannerImage} alt="" className="community-banner__image" aria-hidden="true" />
     </section>
   )
 }

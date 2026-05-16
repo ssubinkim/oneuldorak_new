@@ -21,7 +21,7 @@ function RecipePage({ onSelectTab, onOpenDetail, extraRecipes = [] }: RecipePage
 
   return (
     <main className="page-scroll recipe-page" onScroll={handleCommunityScroll}>
-      <CommunityBanner />
+      <CommunityBanner variant="recipe" />
       <CommunityStickyHeader
         activeTab="recipe"
         tabsClassName="community-tabs"

@@ -1,5 +1,4 @@
-import { type CSSProperties } from 'react'
-import { useMemo } from 'react'
+import { type CSSProperties, useEffect, useMemo } from 'react'
 import { BarElement, CategoryScale, Chart as ChartJS, LinearScale, type ChartData, type ChartOptions } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
 import walking01Image from '../images/walking01.gif'
@@ -14,7 +13,19 @@ type OnboardingQuestionProgressProps = {
   total: number
 }
 
+const progressMascotImages = [walking01Image, yeah02Image]
+
 function OnboardingQuestionProgress({ current, mascotType = 'signup', total }: OnboardingQuestionProgressProps) {
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    progressMascotImages.forEach((src) => {
+      const image = new Image()
+      image.decoding = 'async'
+      image.src = src
+    })
+  }, [])
+
   const progressPercent = (current / total) * 100
   const progressStyle = {
     '--progress-percent': `${progressPercent}%`,
@@ -93,6 +104,8 @@ function OnboardingQuestionProgress({ current, mascotType = 'signup', total }: O
           src={mascotType === 'dorak06' ? walking01Image : yeah02Image}
           alt=""
           aria-hidden="true"
+          loading="eager"
+          decoding="async"
         />
       </div>
     </div>

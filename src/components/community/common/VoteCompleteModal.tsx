@@ -1,9 +1,37 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import dorakRewardImage from './images/dorak10.png'
 import votePointImage from './images/community_vote_point.png'
 import './VoteCompleteModal.css'
 
 const AUTO_CLOSE_DELAY_MS = 2000
+
+const preloadImage = async (src: string) => {
+  if (typeof window === 'undefined') return
+
+  const image = new Image()
+  image.decoding = 'async'
+  image.src = src
+
+  if (!image.complete) {
+    await new Promise<void>((resolve) => {
+      image.onload = () => resolve()
+      image.onerror = () => resolve()
+    })
+  }
+
+  if (typeof image.decode === 'function') {
+    try {
+      await image.decode()
+    } catch {
+      // decode can fail for cross-browser reasons even when image is usable.
+    }
+  }
+}
+
+const voteModalVisualReadyPromise = Promise.all([
+  preloadImage(votePointImage),
+  preloadImage(dorakRewardImage),
+]).then(() => undefined)
 
 type VoteCompleteModalProps = {
   isOpen: boolean
@@ -20,15 +48,31 @@ function VoteCompleteModal({
   reward,
   onClose,
 }: VoteCompleteModalProps) {
+  const [isVisualReady, setIsVisualReady] = useState(false)
+
   useEffect(() => {
-    if (!isOpen) {
+    let isMounted = true
+
+    void voteModalVisualReadyPromise.then(() => {
+      if (isMounted) {
+        setIsVisualReady(true)
+      }
+    })
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isOpen || !isVisualReady) {
       return undefined
     }
 
     const closeTimer = window.setTimeout(onClose, AUTO_CLOSE_DELAY_MS)
 
     return () => window.clearTimeout(closeTimer)
-  }, [isOpen, onClose])
+  }, [isOpen, isVisualReady, onClose])
 
   if (!isOpen) {
     return null
@@ -37,7 +81,11 @@ function VoteCompleteModal({
   const rewardText = reward?.replace('+', '').replace(/p$/i, 'P') ?? '1P'
 
   return (
-    <div className="vote-complete-modal" role="presentation" onClick={onClose}>
+    <div
+      className={`vote-complete-modal${isVisualReady ? ' vote-complete-modal--visual-ready' : ''}`}
+      role="presentation"
+      onClick={onClose}
+    >
       <section
         className="vote-complete-modal__panel"
         role="dialog"
@@ -51,6 +99,8 @@ function VoteCompleteModal({
             className="vote-complete-modal__burst"
             src={votePointImage}
             alt=""
+            loading="eager"
+            decoding="async"
           />
           <div className="vote-complete-modal__sparks">
             <span />
@@ -68,6 +118,8 @@ function VoteCompleteModal({
             className="vote-complete-modal__image"
             src={dorakRewardImage}
             alt=""
+            loading="eager"
+            decoding="async"
           />
         </div>
         <h2 id="vote-complete-modal-title">{rewardText} 적립 완료!</h2>

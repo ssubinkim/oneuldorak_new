@@ -96,7 +96,11 @@ function OnboardingIngredientGrid({ ingredients, onSelect, selectedAnswer }: Onb
                 data-label={ingredient.label}
                 key={ingredient.label}
               >
-                {ingredient.icon ? <img src={ingredient.icon} alt="" /> : <span className="onboarding-ingredient-card__spacer" />}
+                {ingredient.icon ? (
+                  <img src={ingredient.icon} alt="" loading="lazy" decoding="async" />
+                ) : (
+                  <span className="onboarding-ingredient-card__spacer" />
+                )}
                 <span>{ingredient.label === CUSTOM_LABEL && customText ? customText : ingredient.label}</span>
               </button>
             )

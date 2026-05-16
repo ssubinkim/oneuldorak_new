@@ -20,7 +20,7 @@ function OnboardingQuestionBody({ children, optionLayout, question }: Onboarding
 
       {question.image ? (
         <div className="onboarding-question__media">
-          <img src={question.image} alt={question.imageAlt ?? ''} />
+          <img src={question.image} alt={question.imageAlt ?? ''} loading="eager" decoding="async" />
         </div>
       ) : null}
 

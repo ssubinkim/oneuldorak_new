@@ -2,12 +2,13 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 50px 0 30px;
+  padding: clamp(10px, 2dvh, 24px) 0 clamp(6px, 1.4dvh, 14px);
 }
 
 .signup-character-banner img {
   display: block;
-  width: min(86vw, 339px);
+  width: min(78vw, 290px);
+  max-height: min(18dvh, 120px);
   height: auto;
   object-fit: contain;
 }
