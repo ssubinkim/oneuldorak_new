@@ -86,8 +86,8 @@ export const popularRecipes: RecipeCard[] = [
   {
     id: 'r6',
     icon: '도락',
-    channel: '계란 한 끼',
-    title: '폭신한 계란 토스트',
+    channel: '우석 부인',
+    title: '에그타르트',
     likes: 318,
     image: eggFoodImage,
     video: foodEggVideo,
@@ -95,8 +95,8 @@ export const popularRecipes: RecipeCard[] = [
   {
     id: 'r7',
     icon: '도락',
-    channel: '프라이팬 레시피',
-    title: '팬 하나로 완성하는 한 끼',
+    channel: '디저트 킬러',
+    title: '팬케이크',
     likes: 302,
     image: panFoodImage,
     video: foodPanVideo,
@@ -104,8 +104,8 @@ export const popularRecipes: RecipeCard[] = [
   {
     id: 'r8',
     icon: '도락',
-    channel: '샌드위치 연구소',
-    title: '든든한 샌드위치 도시락',
+    channel: '먹먹한 먹보',
+    title: '샌드위치',
     likes: 296,
     image: sandwichFoodImage,
     video: foodSandwichVideo,

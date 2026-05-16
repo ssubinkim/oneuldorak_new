@@ -36,12 +36,14 @@
   line-height: 1.25;
 }
 
-.recipe-share-card__title {
+.recipe-page .recipe-share-card .recipe-share-card__title {
   margin: 2px 0 0;
-  color: #181818;
+  color: #1a1a1a;
+  font-family: Pretendard;
   font-size: 16px;
-  font-weight: 800;
-  line-height: 1.25;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%;
 }
 
 .recipe-share-card__badges {
@@ -127,7 +129,7 @@
   }
 
   .recipe-share-card__title {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .recipe-share-card__subtitle,

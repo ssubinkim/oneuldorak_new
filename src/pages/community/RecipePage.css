@@ -110,6 +110,45 @@
   border-color: #444;
 }
 
+.recipe-page__tip-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  background: #e9e6d8;
+  border-radius: 10px;
+}
+
+.recipe-page__tip-copy {
+  min-width: 0;
+}
+
+.recipe-page__tip-copy h3 {
+  margin: 0;
+  color: #b7872a;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.recipe-page__tip-copy p {
+  margin: 8px 0 0;
+  color: #1d1d1d;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.recipe-page__tip-card img {
+  display: block;
+  width: 102px;
+  height: auto;
+  flex: 0 0 auto;
+}
+
 @media (max-width: 360px) {
   .recipe-page__body {
     padding-right: 16px;
@@ -126,5 +165,22 @@
   .recipe-page .popular-recipe-card {
     flex-basis: 184px;
     height: 278px;
+  }
+
+  .recipe-page__tip-card {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .recipe-page__tip-copy h3 {
+    font-size: 18px;
+  }
+
+  .recipe-page__tip-copy p {
+    font-size: 13px;
+  }
+
+  .recipe-page__tip-card img {
+    width: 90px;
   }
 }

@@ -42,6 +42,10 @@ type MyPageMenuSectionsProps = {
 }
 
 function MyPageMenuSections({ sections = DEFAULT_MENU_SECTIONS }: MyPageMenuSectionsProps) {
+  const handleLogoutClick = () => {
+    window.location.hash = '#/login'
+  }
+
   return (
     <div className="mypage-menus">
       {sections.map((section) => (
@@ -64,7 +68,7 @@ function MyPageMenuSections({ sections = DEFAULT_MENU_SECTIONS }: MyPageMenuSect
         </section>
       ))}
 
-      <button type="button" className="mypage-logout">
+      <button type="button" className="mypage-logout" onClick={handleLogoutClick}>
         로그아웃
       </button>
     </div>
