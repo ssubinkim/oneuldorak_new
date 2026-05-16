@@ -35,8 +35,8 @@
   top: -28px;
   width: 86px;
   height: auto;
-  background: var(--color-tertiary-90);
-  mix-blend-mode: multiply;
+  background: transparent;
+  mix-blend-mode: normal;
   pointer-events: none;
   transition: left 180ms ease;
   object-fit: contain;
