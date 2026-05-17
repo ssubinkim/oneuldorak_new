@@ -27,6 +27,7 @@
 .onboarding-question-progress__bar-wrapper {
   position: relative;
   width: 100%;
+  isolation: isolate;
 }
 
 .onboarding-question-progress__mascot {
@@ -36,7 +37,7 @@
   width: 86px;
   height: auto;
   background: transparent;
-  mix-blend-mode: normal;
+  mix-blend-mode: multiply;
   pointer-events: none;
   transition: left 180ms ease;
   object-fit: contain;
