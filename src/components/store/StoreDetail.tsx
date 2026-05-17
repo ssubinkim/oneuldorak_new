@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import './StoreDetail.css'
 import ProductDescTab from './tabs/ProductDescTab'
 import ProductInfoTab from './tabs/ProductInfoTab'
@@ -57,11 +57,18 @@ type Props = {
   product: Product | null
   onBack: () => void
   onSelectProduct?: (product: Product) => void
+  onScrollToTop?: (selector?: string) => void
 }
 
-function StoreDetail({ product, onBack, onSelectProduct }: Props) {
+function StoreDetail({ product, onBack, onSelectProduct, onScrollToTop }: Props) {
   const [activeTab, setActiveTab] = useState<Tab>('desc')
   const [liked, setLiked] = useState(false)
+  const tabbarRef = useRef<HTMLDivElement>(null)
+
+  function goToReview() {
+    setActiveTab('info')
+    onScrollToTop?.('.review-banner')
+  }
   const { reviews, inquiries } = getProductData(product?.id ?? null)
 
   return (
@@ -141,7 +148,7 @@ function StoreDetail({ product, onBack, onSelectProduct }: Props) {
       </div>
 
       {/* 탭 바 — sticky */}
-      <div className="store-detail__tabbar">
+      <div className="store-detail__tabbar" ref={tabbarRef}>
         {TABS.map(tab => (
           <div
             key={tab.id}
@@ -158,7 +165,7 @@ function StoreDetail({ product, onBack, onSelectProduct }: Props) {
         <ProductDescTab
           product={product}
           reviewCount={reviews.length}
-          onGoToReview={() => setActiveTab('info')}
+          onGoToReview={goToReview}
           onSelectProduct={onSelectProduct}
         />
       )}

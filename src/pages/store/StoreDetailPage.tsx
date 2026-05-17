@@ -21,7 +21,7 @@ function StoreDetailPage({ product, onBack, onSelectProduct }: Props) {
       setShowTop(scrollTop > 200)
       const infoEl = scrollRef.current.querySelector('.pdesc__info')
       if (infoEl) {
-        setShowActionBar(scrollTop >= (infoEl as HTMLElement).offsetTop - 100)
+        setShowActionBar(scrollTop >= (infoEl as HTMLElement).offsetTop - 200)
       }
     }
   }
@@ -41,6 +41,14 @@ function StoreDetailPage({ product, onBack, onSelectProduct }: Props) {
           product={product}
           onBack={onBack}
           onSelectProduct={onSelectProduct}
+          onScrollToTop={(selector) => {
+            setTimeout(() => {
+              const el = scrollRef.current?.querySelector(selector ?? '')
+              if (el && scrollRef.current) {
+                scrollRef.current.scrollTo({ top: (el as HTMLElement).offsetTop - 130, behavior: 'smooth' })
+              }
+            }, 0)
+          }}
         />
       </main>
 

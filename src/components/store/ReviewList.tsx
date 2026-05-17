@@ -45,7 +45,7 @@ function Stars({ rating, size = 14 }: { rating: number; size?: number }) {
   return (
     <div className="review-card__meta">
       {[1, 2, 3, 4, 5].map(i => (
-        <span key={i} className="review-card__star" style={{ fontSize: size, color: i <= Math.round(rating) ? '#f5a623' : '#ddd' }}>★</span>
+        <span key={i} className="review-card__star" style={{ fontSize: size, color: i <= Math.round(rating) ? '#ffd515' : '#ddd' }}>★</span>
       ))}
     </div>
   )
@@ -88,7 +88,7 @@ function ReviewList({ reviews, totalCount, averageRating }: Props) {
             <p className="review-summary__score">{averageRating}<span>/5</span></p>
             <div className="review-summary__stars">
               {[1, 2, 3, 4, 5].map(i => (
-                <span key={i} className="review-summary__star" style={{ color: i <= Math.round(averageRating) ? '#f5a623' : '#ddd' }}>★</span>
+                <span key={i} className="review-summary__star" style={{ color: i <= Math.round(averageRating) ? '#ffd515' : '#ddd' }}>★</span>
               ))}
             </div>
             <p className="review-summary__count">({totalCount}+)</p>
@@ -119,15 +119,15 @@ function ReviewList({ reviews, totalCount, averageRating }: Props) {
           <span className="review-photos__more">더보기 &gt;</span>
         </div>
         <div className="review-photos__list">
-          <img className="review-photo-thumb" src={subreview1} alt="포토 리뷰 1" style={{ objectFit: 'cover' }} />
-          <img className="review-photo-thumb" src={subreview2} alt="포토 리뷰 2" style={{ objectFit: 'cover' }} />
           <div className="review-photo-write" onClick={() => setShowWriteSheet(true)}>
-            <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#bbb" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#767676" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
               <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
               <circle cx="12" cy="13" r="4"/>
             </svg>
             리뷰쓰기
           </div>
+          <img className="review-photo-thumb" src={subreview1} alt="포토 리뷰 1" style={{ objectFit: 'cover' }} />
+          <img className="review-photo-thumb" src={subreview2} alt="포토 리뷰 2" style={{ objectFit: 'cover' }} />
         </div>
       </div>
 
