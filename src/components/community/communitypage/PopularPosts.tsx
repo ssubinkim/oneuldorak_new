@@ -1,4 +1,8 @@
 import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
+import SequentialHighlightList, { type SequentialHighlightItem } from '../../effects/stagger/SequentialHighlightList'
+import subreview1 from '../../store/images/subreview/subreview_1.png'
+import subreview2 from '../../store/images/subreview/subreview_2.png'
+import subreview3 from '../../store/images/subreview/subreview_3.png'
 import './PopularPosts.css'
 
 type HotPost = {
@@ -13,6 +17,15 @@ type PopularPostsProps = {
 }
 
 function PopularPosts({ posts }: PopularPostsProps) {
+  const thumbnails = [subreview1, subreview2, subreview3]
+  const storyItems: SequentialHighlightItem[] = posts.map((post, index) => ({
+    id: `${post.rank}-${post.title}`,
+    title: post.title,
+    likes: post.likes,
+    comments: post.comments,
+    thumbnailImage: thumbnails[index % thumbnails.length],
+  }))
+
   return (
     <section className="hot-posts" aria-label="실시간 인기글">
       <div className="hot-posts__header">
@@ -20,21 +33,16 @@ function PopularPosts({ posts }: PopularPostsProps) {
         <button type="button">더보기 <ArrowRightIcon /></button>
       </div>
 
-      <ol className="hot-posts__list">
-        {posts.map((post) => (
-          <li key={post.rank} className="hot-post-item">
-            <span className={`hot-post-item__rank${post.rank === 1 ? ' hot-post-item__rank--first' : ''}`}>{post.rank}</span>
-            <div className="hot-post-item__thumb" aria-hidden="true" />
-            <div className="hot-post-item__content">
-              <p className="hot-post-item__title">{post.title}</p>
-              <p className="hot-post-item__meta">
-                <span className="hot-post-item__meta-icon">♡ {post.likes}</span>
-                <span className="hot-post-item__meta-icon">💬 {post.comments}</span>
-              </p>
-            </div>
-          </li>
-        ))}
-      </ol>
+      <div className="story-list">
+        <SequentialHighlightList
+          className="community-hot-posts__stagger"
+          items={storyItems}
+          intervalMs={1200}
+          startIndex={0}
+          loop
+          autoplay
+        />
+      </div>
     </section>
   )
 }

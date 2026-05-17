@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { CommunityTabRoute } from '../../../pages/community/CommunityTabRoute'
 import CommunityStickyHeader from '../common/CommunityStickyHeader'
 import PopularRecipeSection from '../common/PopularRecipeSection'
@@ -15,6 +16,8 @@ type CommunityMainViewProps = {
 }
 
 function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
   const {
     isHeaderCompact,
     pageRef,
@@ -22,19 +25,40 @@ function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
     handleCommunityScroll,
   } = useCommunityHeaderCollapse()
 
+  const handleSearchToggle = () => {
+    setIsSearchOpen((previousValue) => !previousValue)
+  }
+
+  const handleSearchClose = () => {
+    setIsSearchOpen(false)
+    setSearchValue('')
+  }
+
   return (
     <main
       ref={pageRef}
       className="page-scroll community-page"
       onScroll={handleCommunityScroll}
     >
-      <CommunityBanner isCompact={isHeaderCompact} />
+      <CommunityBanner
+        isCompact={isHeaderCompact}
+        isSearchOpen={isSearchOpen}
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+        onSearchToggle={handleSearchToggle}
+        onSearchClose={handleSearchClose}
+      />
       <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
       <CommunityStickyHeader
         activeTab={activeTab}
         tabsClassName="community-tabs"
         isCompact={isHeaderCompact}
         onSelectTab={onSelectTab}
+        isSearchOpen={isSearchOpen}
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+        onSearchToggle={handleSearchToggle}
+        onSearchClose={handleSearchClose}
       />
 
       <div className="community-content">

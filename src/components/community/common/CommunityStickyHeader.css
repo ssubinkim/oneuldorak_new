@@ -32,6 +32,7 @@
 
 .community-sticky-header__actions {
   display: flex;
+  align-items: center;
   gap: 4px;
 }
 
@@ -45,6 +46,11 @@
   cursor: pointer;
 }
 
+.community-sticky-header__search-inline {
+  width: min(189px, 48.5vw);
+  margin-right: 2px;
+}
+
 /* ── 공용 탭바 ─────────────────────────────────────── */
 .community-tabs {
   position: relative;
@@ -56,7 +62,7 @@
   margin-top: -38px;
   padding: 34px 20px 0;
   box-sizing: border-box;
-  background: #fff;
+  background: #FFFFFD;
   border-radius: 22px 22px 0 0;
   border: 0;
   box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.02);
@@ -130,6 +136,10 @@
 
   .community-sticky-header .community-sticky-header__banner-top h1 {
     font-size: 24px;
+  }
+
+  .community-sticky-header__search-inline {
+    width: min(178px, 49.5vw);
   }
 
   .community-tabs {
