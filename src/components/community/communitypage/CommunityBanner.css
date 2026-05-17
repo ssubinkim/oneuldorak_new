@@ -1,6 +1,6 @@
 .community-banner {
   background: var(--color-secondary);
-  padding: 20px 20px 30px;
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 30px;
   overflow: visible;
   position: relative;
 }
@@ -10,6 +10,8 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 4px;
+  position: relative;
+  z-index: 1001;
 }
 
 .community-banner .community-banner__header h1 {
@@ -47,6 +49,8 @@
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+  position: relative;
+  z-index: 1000;
   transition: opacity 200ms ease, transform 220ms ease, visibility 0ms linear;
 }
 

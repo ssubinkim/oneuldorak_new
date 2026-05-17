@@ -31,7 +31,7 @@ function RankingBanner({
         <h2>도락피Pick! 명예의 전당</h2>
         <button type="button">내 순위 보기 ›</button>
       </div>
-      <p className="dorak-ranking__subtitle">이번 주 댓글·저강·좋아요 기준</p>
+      <p className="dorak-ranking__subtitle">이번 주 댓글·저장·좋아요 기준</p>
       <div className="dorak-ranking__cards">
         {rankings.map((item) => (
           <div

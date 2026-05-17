@@ -44,8 +44,9 @@
   padding: 10px 14px;
   list-style: none;
   border-radius: 10px;
-  border: 1px solid #c2c2c2;
-  background: transparent;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-base);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
 .hot-post-item {
@@ -53,27 +54,43 @@
   grid-template-columns: 20px 40px minmax(0, 1fr);
   align-items: center;
   column-gap: 10px;
-  min-height: 74px;
-  padding: 0;
+  min-height: 76px;
+  padding: 6px 2px;
+  border-radius: 8px;
+  transition: background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
 .hot-post-item+.hot-post-item {
-  border-top: 1px solid #d4d4d4;
+  border-top: 1px solid var(--color-divider);
+}
+
+@media (hover: hover) {
+  .hot-post-item:hover {
+    background: var(--color-primary-10);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(26, 26, 26, 0.06);
+  }
+}
+
+.hot-post-item:active {
+  transform: translateY(0);
 }
 
 .hot-post-item__rank {
   color: #343434;
   text-align: center;
   font-family: 'Pretendard', 'Pretendard Variable', sans-serif;
-  font-size: 34px;
+  font-size: 30px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .hot-post-item__rank--first {
-  color: #f41212;
+  color: var(--color-status-emphasis);
   font-weight: 700;
+  text-shadow: 0 1px 6px var(--color-status-emphasis-20);
 }
 
 .hot-post-item__thumb {
@@ -90,30 +107,41 @@
 .hot-post-item__title {
   margin: 0;
   overflow: hidden;
-  color: #3a3a3a;
+  color: var(--color-text-main);
   text-overflow: ellipsis;
   white-space: nowrap;
   font-family: 'Pretendard', 'Pretendard Variable', sans-serif;
-  font-size: 16px;
+  font-size: 17px;
   font-style: normal;
-  font-weight: 500;
-  line-height: 130%;
+  font-weight: 600;
+  line-height: 135%;
   letter-spacing: -0.08px;
 }
 
 .hot-post-item__meta {
   display: flex;
   gap: 8px;
-  margin: 4px 0 0;
-  color: #7b7b7b;
+  margin: 5px 0 0;
+  color: var(--color-text-date);
   font-family: 'Pretendard', 'Pretendard Variable', sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 130%;
 }
 
 .hot-post-item__meta-icon {
   display: inline-flex;
   align-items: center;
+  gap: 2px;
+}
+
+@media (max-width: 360px) {
+  .hot-post-item__rank {
+    font-size: 27px;
+  }
+
+  .hot-post-item__title {
+    font-size: 16px;
+  }
 }

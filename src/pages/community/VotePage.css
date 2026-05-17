@@ -1,10 +1,16 @@
 .vote-page {
   min-height: 100%;
-  background: var(--color-bg-base);
+  background:
+    linear-gradient(
+      to bottom,
+      var(--color-secondary) 0 420px,
+      var(--color-bg-base) 420px 100%
+    );
   color: #1a1a1a;
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 130%;
   letter-spacing: 0.08px;
+  overscroll-behavior-y: contain;
 }
 
 .vote-page h1 {

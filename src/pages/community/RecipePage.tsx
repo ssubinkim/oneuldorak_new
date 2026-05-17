@@ -66,7 +66,7 @@ function RecipePage({
           middleSlot={(
             <section className="recipe-page__tip-card" aria-label="오늘의 냉장고 활용 팁">
               <div className="recipe-page__tip-copy">
-                <h3>오늘의 냉장고 활용 TIP</h3>
+                <h3 className="font-pretendard-variable">오늘의 냉장고 활용 TIP</h3>
                 <p>
                   냉장고 속 재료를 먼저 확인하면
                   <br />

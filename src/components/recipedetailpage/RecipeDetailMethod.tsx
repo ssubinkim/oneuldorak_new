@@ -1,4 +1,10 @@
+import { useMemo } from 'react'
 import type { CookingStep } from './recipeDetailData'
+import blueMascotIcon from '../../assets/food_mascot/blue_mascot.svg'
+import broMascotIcon from '../../assets/food_mascot/bro_mascot.svg'
+import carrotMascotIcon from '../../assets/food_mascot/carrot_mascot.svg'
+import eggMascotIcon from '../../assets/food_mascot/egg_mascot.svg'
+import strawMascotIcon from '../../assets/food_mascot/straw_mascot.svg'
 
 type RecipeDetailMethodProps = {
   heroImage: string
@@ -8,7 +14,20 @@ type RecipeDetailMethodProps = {
   steps: CookingStep[]
 }
 
+const videoPlayMascotIcons = [
+  blueMascotIcon,
+  broMascotIcon,
+  carrotMascotIcon,
+  eggMascotIcon,
+  strawMascotIcon,
+]
+
 function RecipeDetailMethod({ heroImage, videoUrl, videoLabel, stepIcon, steps }: RecipeDetailMethodProps) {
+  const videoPlayMascot = useMemo(() => {
+    const randomIndex = Math.floor(Math.random() * videoPlayMascotIcons.length)
+    return videoPlayMascotIcons[randomIndex]
+  }, [])
+
   return (
     <section className="recipe-detail-section recipe-detail-method">
       <h2>조리 방법</h2>
@@ -21,9 +40,7 @@ function RecipeDetailMethod({ heroImage, videoUrl, videoLabel, stepIcon, steps }
         <button type="button" className="recipe-detail-video" aria-label="숏츠로 먼저 보기">
           <img src={heroImage} alt="" aria-hidden="true" />
           <span className="recipe-detail-video__play" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="m9 7 8 5-8 5V7Z" />
-            </svg>
+            <img src={videoPlayMascot} alt="" />
           </span>
           <span>숏츠로 먼저 보기</span>
         </button>

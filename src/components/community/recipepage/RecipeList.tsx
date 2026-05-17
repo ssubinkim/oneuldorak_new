@@ -6,6 +6,11 @@ import kimbokImage from '../../../assets/images/food_imges/kimbok.png'
 import omuriceImage from '../../../assets/images/food_imges/omurice.png'
 import bulgogiImage from '../../../assets/images/food_imges/bulgogi.png'
 import ssoyaImage from '../../../assets/images/food_imges/ssoya.png'
+import blueMascotIcon from '../../../assets/food_mascot/blue_mascot.svg'
+import broMascotIcon from '../../../assets/food_mascot/bro_mascot.svg'
+import carrotMascotIcon from '../../../assets/food_mascot/carrot_mascot.svg'
+import eggMascotIcon from '../../../assets/food_mascot/egg_mascot.svg'
+import strawMascotIcon from '../../../assets/food_mascot/straw_mascot.svg'
 import type { CommunityMediaAttachment } from '../communitywritepage/writeTypes'
 
 export type RecipeItem = {
@@ -33,6 +38,22 @@ type RecipeListProps = {
   middleSlot?: ReactNode
   focusRecipeId?: string | null
   onFocusHandled?: () => void
+}
+
+const authorMascotIcons = [
+  blueMascotIcon,
+  broMascotIcon,
+  carrotMascotIcon,
+  eggMascotIcon,
+  strawMascotIcon,
+]
+
+function getRandomMascotIcon(seed: string) {
+  const seedValue = seed
+    .split('')
+    .reduce((sum, character, index) => sum + character.charCodeAt(0) * (index + 1), 0)
+
+  return authorMascotIcons[seedValue % authorMascotIcons.length]
 }
 
 const recipeItems: RecipeItem[] = [
@@ -150,6 +171,7 @@ function RecipeCard({
   const handleOpenDetail = () => {
     onOpenDetail(item.id)
   }
+  const authorMascotIcon = getRandomMascotIcon(item.id)
 
   return (
     <article
@@ -179,7 +201,9 @@ function RecipeCard({
 
         <div className="recipe-share-card__meta-row">
           <small>
-            <span aria-hidden="true">🐥</span>
+            <span className="recipe-share-card__author-icon" aria-hidden="true">
+              <img src={authorMascotIcon} alt="" />
+            </span>
             {item.author}
           </small>
           <div className="recipe-share-card__actions" aria-label="반응 통계">

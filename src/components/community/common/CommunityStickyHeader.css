@@ -14,8 +14,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 20px 10px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 20px 10px;
   background: var(--color-secondary);
+  position: relative;
+  z-index: 4;
 }
 
 .community-sticky-header .community-sticky-header__banner-top h1 {
@@ -121,6 +123,7 @@
 
 @media (max-width: 360px) {
   .community-sticky-header__banner-top {
+    padding-top: calc(12px + env(safe-area-inset-top, 0px));
     padding-right: 18px;
     padding-left: 18px;
   }
