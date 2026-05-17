@@ -18,13 +18,54 @@ const ONEULDORAK_SYSTEM_PROMPT = `너는 '오늘도락' 앱의 도시락 추천 
 - 예상 조리 시간:
 - 간단한 조리법:
 - 절약 포인트:
+2-1) 각 항목은 1~2문장으로 매우 짧게 작성해.
 3) 음식 알레르기 유발 가능 재료(예: 우유, 달걀, 땅콩, 갑각류 등)나 위험할 수 있는 재료가 보이면 조심하라고 안내해.
 4) 정보가 부족하거나 확실하지 않으면 지어내지 말고, 필요한 정보를 1~2개만 간단히 물어봐.
 5) 한국어로 답해.
 6) 마크다운 제목 기호(###)는 쓰지 말고, 불릿은 너무 많지 않게 간단히 써.`
 
+function looksLikeVisionFailure(text) {
+  if (!text) return false
+  return /사진.*볼 수 없|이미지.*볼 수 없|사진.*보이지 않|이미지.*보이지 않|재료.*알려주면/i.test(text)
+}
+
+function buildUserInput(message, imageDataUrl) {
+  const userContent = []
+
+  if (message) {
+    userContent.push({
+      type: 'input_text',
+      text: message,
+    })
+  }
+
+  if (imageDataUrl) {
+    userContent.push({
+      type: 'input_image',
+      image_url: imageDataUrl,
+      detail: 'low',
+    })
+  }
+
+  return [
+    {
+      role: 'user',
+      content: userContent,
+    },
+  ]
+}
+
+async function requestMenuRecommendation(client, { message, imageDataUrl, model }) {
+  return await client.responses.create({
+    model,
+    instructions: ONEULDORAK_SYSTEM_PROMPT,
+    input: buildUserInput(message, imageDataUrl),
+    max_output_tokens: 360,
+  })
+}
+
 app.use(cors())
-app.use(express.json({ limit: '1mb' }))
+app.use(express.json({ limit: '8mb' }))
 
 let cachedClient = null
 
@@ -59,10 +100,18 @@ app.get('/health', (_req, res) => {
 
 app.post('/api/chat', async (req, res) => {
   const message = typeof req.body?.message === 'string' ? req.body.message.trim() : ''
+  const imageDataUrl = typeof req.body?.imageDataUrl === 'string' ? req.body.imageDataUrl.trim() : ''
 
-  if (!message) {
+  if (!message && !imageDataUrl) {
     res.status(400).json({
-      error: '메시지를 입력해 주세요. (req.body.message)',
+      error: '메시지(message) 또는 이미지(imageDataUrl)를 입력해 주세요.',
+    })
+    return
+  }
+
+  if (imageDataUrl && !imageDataUrl.startsWith('data:image/')) {
+    res.status(400).json({
+      error: 'imageDataUrl 형식이 올바르지 않습니다. data:image/... 형식으로 보내주세요.',
     })
     return
   }
@@ -78,13 +127,22 @@ app.post('/api/chat', async (req, res) => {
   }
 
   try {
-    const response = await client.responses.create({
+    let response = await requestMenuRecommendation(client, {
+      message,
+      imageDataUrl,
       model: 'gpt-4o-mini',
-      instructions: ONEULDORAK_SYSTEM_PROMPT,
-      input: message,
     })
 
-    const text = response.output_text?.trim() || '추천 결과를 만들지 못했어요. 다시 시도해 주세요.'
+    let text = response.output_text?.trim() || '추천 결과를 만들지 못했어요. 다시 시도해 주세요.'
+
+    if (imageDataUrl && looksLikeVisionFailure(text)) {
+      response = await requestMenuRecommendation(client, {
+        message,
+        imageDataUrl,
+        model: 'gpt-4.1-mini',
+      })
+      text = response.output_text?.trim() || text
+    }
 
     res.json({ text })
   } catch (error) {

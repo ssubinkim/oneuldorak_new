@@ -1,5 +1,5 @@
 .chatbot-camera-screen {
-  background: #1f2933;
+  background: #101722;
 }
 
 .chatbot-camera-page {
@@ -8,7 +8,7 @@
   height: 100%;
   overflow: hidden;
   color: #fff;
-  background: #1f2933;
+  background: #101722;
 }
 
 .chatbot-camera-topbar {
@@ -22,15 +22,7 @@
   height: 72px;
   padding: 24px 16px 0;
   box-sizing: border-box;
-}
-
-.chatbot-camera-topbar h1 {
-  grid-column: 2;
-  margin: 0;
-  font-size: 16px;
-  font-weight: 800;
-  line-height: 1;
-  text-align: center;
+  z-index: 3;
 }
 
 .chatbot-camera-back {
@@ -57,16 +49,9 @@
 
 .chatbot-camera-preview {
   position: absolute;
-  top: 96px;
-  right: clamp(18px, 5vw, 24px);
-  bottom: 142px;
-  left: clamp(18px, 5vw, 24px);
-  display: grid;
-  place-items: center;
+  inset: 0;
   overflow: hidden;
-  background: #111827;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 8px;
+  background: #0a111b;
 }
 
 .chatbot-camera-preview img {
@@ -76,18 +61,22 @@
 }
 
 .chatbot-camera-empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   display: grid;
   place-items: center;
-  width: 82px;
-  height: 82px;
-  color: #d6dee8;
-  background: rgba(255, 255, 255, 0.08);
+  width: 96px;
+  height: 96px;
+  color: #dce3ee;
+  background: rgba(255, 255, 255, 0.14);
   border-radius: 50%;
+  transform: translate(-50%, -56%);
 }
 
 .chatbot-camera-empty svg {
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.9;
@@ -95,14 +84,30 @@
   stroke-linejoin: round;
 }
 
+.chatbot-camera-guide {
+  position: absolute;
+  top: 22%;
+  left: 10%;
+  width: 80%;
+  height: 45%;
+  border: 7px dashed #b3f88e;
+  border-radius: 24px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
 .chatbot-camera-actions {
   position: absolute;
-  right: clamp(18px, 5vw, 24px);
-  bottom: 28px;
-  left: clamp(18px, 5vw, 24px);
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) 96px minmax(0, 1fr);
+  align-items: center;
+  padding: 20px 20px 24px;
+  box-sizing: border-box;
+  background: #dbe2f3;
+  z-index: 3;
 }
 
 .chatbot-camera-input {
@@ -112,44 +117,114 @@
 .chatbot-camera-select,
 .chatbot-camera-submit {
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 52px;
-  padding: 0 18px;
-  box-sizing: border-box;
-  border-radius: 999px;
-  font-size: 15px;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.chatbot-camera-select {
-  color: #111;
-  background: #fff;
+  gap: 6px;
+  min-height: 60px;
+  padding: 0;
+  color: #111827;
+  background: transparent;
   border: 0;
+  font-size: 18px;
+  font-weight: 700;
 }
 
+.chatbot-camera-select span,
 .chatbot-camera-submit {
-  color: #111;
-  background: var(--color-primary-100);
-  border: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.chatbot-camera-select svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chatbot-camera-capture {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  margin: 0 auto;
+  padding: 0;
+  background: #fff;
+  border: 5px solid #3f4650;
+  border-radius: 50%;
+}
+
+.chatbot-camera-capture__inner {
+  width: 58px;
+  height: 58px;
+  background: #3f4650;
+  border-radius: 50%;
 }
 
 .chatbot-camera-submit:disabled {
-  color: #6b7280;
-  background: #d1d5db;
-  cursor: default;
+  color: #8a93a2;
 }
 
-@media (max-width: 360px) {
-  .chatbot-camera-actions {
-    gap: 8px;
-  }
+.chatbot-camera-error {
+  position: absolute;
+  right: 18px;
+  bottom: 124px;
+  left: 18px;
+  margin: 0;
+  padding: 10px 12px;
+  color: #ffe2e2;
+  background: rgba(160, 18, 18, 0.78);
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  z-index: 3;
+}
 
-  .chatbot-camera-select,
-  .chatbot-camera-submit {
-    height: 48px;
-    padding: 0 14px;
-    font-size: 14px;
-  }
+.chatbot-camera-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  padding: 0 24px;
+  background: rgba(7, 12, 20, 0.54);
+  backdrop-filter: blur(4px);
+  z-index: 4;
+}
+
+.chatbot-camera-loading__title {
+  margin: 0;
+  color: #f4f7ff;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.chatbot-camera-loading__bar {
+  width: min(100%, 280px);
+  height: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+}
+
+.chatbot-camera-loading__bar span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #a6f46b 0%, #7fd148 100%);
+  border-radius: inherit;
+  transition: width 0.2s ease;
+}
+
+.chatbot-camera-loading__percent {
+  margin: 0;
+  color: #eef7ff;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
 }
