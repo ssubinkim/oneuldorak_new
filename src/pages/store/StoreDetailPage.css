@@ -44,7 +44,7 @@
   pointer-events: auto;
   z-index: 31;
   transition: opacity 0.08s ease;
-}
+  }
 
 .store-detail-action-button {
   display: flex;
