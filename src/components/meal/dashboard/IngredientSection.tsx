@@ -46,10 +46,10 @@ function IngredientSection() {
 
       <div className="ing-scroll">
         <div className="ing-item">
-          <button className="ing-add-btn" aria-label="재료 추가">
+          <button className="ing-add-btn" aria-label="재료 추가" onClick={() => { window.location.hash = '#/meal-grocery' }}>
             <span className="ing-add-plus">+</span>
           </button>
-          <span className="ing-name"> </span>
+          <span className="ing-name">재료추가</span>
         </div>
         {INGREDIENTS.map((item) => (
           <div key={item.id} className="ing-item">

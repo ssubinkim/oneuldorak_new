@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import './MyPageCard.css'
 import './MyPageGoalCard.css'
 
@@ -15,7 +15,27 @@ type MyPageGoalCardProps = {
 }
 
 function MyPageGoalCard({ goal, pct, goalBarPct, onEdit }: MyPageGoalCardProps) {
-  const donutStyle = { '--goal-pct': `${goalBarPct}%` } as CSSProperties & { '--goal-pct': string }
+  const [animPct, setAnimPct] = useState(0)
+  const [displayPct, setDisplayPct] = useState(0)
+  const rafRef = useRef<number>(0)
+
+  useEffect(() => {
+    const duration = 1200
+    const start = performance.now()
+
+    const tick = (now: number) => {
+      const t = Math.min((now - start) / duration, 1)
+      const eased = 1 - (1 - t) ** 3
+      setAnimPct(eased * goalBarPct)
+      setDisplayPct(Math.round(eased * pct))
+      if (t < 1) rafRef.current = requestAnimationFrame(tick)
+    }
+
+    rafRef.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [pct, goalBarPct])
+
+  const donutStyle = { '--goal-pct': `${animPct}%` } as CSSProperties & { '--goal-pct': string }
 
   return (
     <button type="button" className="mypage-goal-card" onClick={onEdit}>
@@ -32,7 +52,7 @@ function MyPageGoalCard({ goal, pct, goalBarPct, onEdit }: MyPageGoalCardProps) 
       </span>
 
       <span className="mypage-goal-donut" style={donutStyle}>
-        <span>{pct}%</span>
+        <span>{displayPct}%</span>
       </span>
     </button>
   )

@@ -33,9 +33,6 @@ export default function MenuAddSheet({ open, onClose, onMenuAdd }: Props) {
   const [shoppingItems, setShoppingItems] = useState<ShoppingItem[]>(() =>
     readGroceryShoppingItems(INITIAL_ITEMS)
   )
-  const [initialShoppingNames] = useState<Set<string>>(
-    () => new Set(readGroceryShoppingItems(INITIAL_ITEMS).map(i => i.name))
-  )
   const [flyingItem, setFlyingItem] = useState<FlyingItem | null>(null)
   const groceryLinkRef = useRef<HTMLButtonElement>(null)
 
@@ -152,10 +149,9 @@ export default function MenuAddSheet({ open, onClose, onMenuAdd }: Props) {
             <div className="menu-add-ingredients">
               {menuItems[selectedMenuIndex].ingredients.map((ingredient, i) => {
                 const added = isInShoppingList(ingredient.name)
-                const wasAlreadyInList = initialShoppingNames.has(ingredient.name)
                 return (
                   <div key={i} className="menu-add-ingredient">
-                    <div className={`menu-add-ingredient__circle${wasAlreadyInList ? ' no-border' : ''}`}>
+                    <div className={`menu-add-ingredient__circle${added ? ' no-border' : ''}`}>
                       <img src={ingredient.image} alt={ingredient.name} className="menu-add-ingredient__img" />
                       {!added && (
                         <button

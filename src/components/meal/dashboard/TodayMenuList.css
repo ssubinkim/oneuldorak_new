@@ -1,5 +1,6 @@
 .today-card {
   padding: 20px;
+  position: relative;
 }
 
 /* ── 카드 내부 타이틀 ─────────────────────────── */
@@ -18,11 +19,17 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  color: #888;
   padding: 0;
-  flex-shrink: 0;
+  position: absolute;
+  top: -30px;
+  right: 10px;
+  z-index: 10;
+}
+
+.today-menu-add-btn img {
+  width: 110px;
+  height: auto;
+  display: block;
 }
 
 .today-card-title {
@@ -351,6 +358,16 @@
   font-size: 13px;
   color: var(--color-disabled);
   margin: 0;
+}
+
+@media (max-width: 767px) {
+  .today-img-wrapper {
+    height: 230px;
+  }
+
+  .today-img {
+    object-position: top;
+  }
 }
 
 @media (min-width: 768px) {

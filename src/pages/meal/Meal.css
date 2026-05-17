@@ -27,8 +27,7 @@
 /* ── 히어로 영역 ─────────────────────────────── */
 .meal-hero-inner {
   background: #ffdb78;
-  border-radius: 0 0 28px 28px;
-  padding: 20px 20px 28px;
+  padding: 20px 20px 52px;
 }
 
 .meal-hero-top {
@@ -106,6 +105,10 @@
 /* ── 대시보드 섹션 컨테이너 ──────────────────── */
 .meal-dashboard {
   padding: 10px 0 0;
+  border-radius: 28px 28px 0 0;
+  background: var(--color-bg-base);
+  margin-top: -28px;
+  position: relative;
 }
 
 /* ── 공통 섹션 헤더 ────────────────────────────── */
@@ -130,6 +133,6 @@
 
 /* 오늘의 메뉴 카드 좌우 패딩 */
 .dash-today-wrap {
-  padding: 0 10px;
+  padding: 0;
   margin-bottom: 12px;
 }
