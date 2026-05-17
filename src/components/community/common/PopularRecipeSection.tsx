@@ -1,4 +1,9 @@
 import heartIcon from '../../../assets/icons/heart.svg'
+import blueMascotIcon from '../../../assets/food_mascot/blue_mascot.svg'
+import broMascotIcon from '../../../assets/food_mascot/bro_mascot.svg'
+import carrotMascotIcon from '../../../assets/food_mascot/carrot_mascot.svg'
+import eggMascotIcon from '../../../assets/food_mascot/egg_mascot.svg'
+import strawMascotIcon from '../../../assets/food_mascot/straw_mascot.svg'
 import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import './PopularRecipeSection.css'
 
@@ -15,6 +20,22 @@ export type RecipeCard = {
 type PopularRecipeSectionProps = {
   recipes: RecipeCard[]
   showMore?: boolean
+}
+
+const mascotIcons = [
+  blueMascotIcon,
+  broMascotIcon,
+  carrotMascotIcon,
+  eggMascotIcon,
+  strawMascotIcon,
+]
+
+function getRandomMascotIcon(seed: string) {
+  const seedValue = seed
+    .split('')
+    .reduce((sum, character, index) => sum + character.charCodeAt(0) * (index + 1), 0)
+
+  return mascotIcons[seedValue % mascotIcons.length]
 }
 
 function PopularRecipeSection({ recipes, showMore = true }: PopularRecipeSectionProps) {
@@ -48,8 +69,10 @@ function PopularRecipeSection({ recipes, showMore = true }: PopularRecipeSection
             )}
             <div className="popular-recipe-card__overlay">
               <div className="popular-recipe-card__meta">
-                <span>{recipe.icon}</span>
-                <span>{recipe.channel}</span>
+                <span className="popular-recipe-card__meta-mascot" aria-hidden="true">
+                  <img src={getRandomMascotIcon(recipe.id)} alt="" />
+                </span>
+                <span className="popular-recipe-card__meta-channel">{recipe.channel}</span>
               </div>
               <div className="popular-recipe-card__title-row">
                 <h3 className="popular-recipe-card__title">{recipe.title}</h3>

@@ -213,11 +213,13 @@ function VoteResultItem({
   option,
   percent,
   isHighlighted,
+  isDimmed,
   onSelect,
 }: {
   option: VoteOption
   percent: number
   isHighlighted?: boolean
+  isDimmed?: boolean
   onSelect?: (optionLabel: string) => void
 }) {
   const [isGaugeReady, setIsGaugeReady] = useState(false)
@@ -249,7 +251,7 @@ function VoteResultItem({
     return (
       <button
         type="button"
-        className={`vote-result-item${isHighlighted ? ' is-highlighted' : ''}`}
+        className={`vote-result-item${isHighlighted ? ' is-highlighted' : ''}${isDimmed ? ' is-dimmed' : ''}`}
         onClick={() => onSelect(option.label)}
       >
         {content}
@@ -258,7 +260,7 @@ function VoteResultItem({
   }
 
   return (
-    <article className={`vote-result-item${isHighlighted ? ' is-highlighted' : ''}`}>
+    <article className={`vote-result-item${isHighlighted ? ' is-highlighted' : ''}${isDimmed ? ' is-dimmed' : ''}`}>
       {content}
     </article>
   )
@@ -283,6 +285,7 @@ function VoteResultList({
           option={option}
           percent={getVotePercent(option.votes, totalVotes)}
           isHighlighted={option.highlighted || option.label === selectedOption}
+          isDimmed={Boolean(selectedOption) && option.label !== selectedOption}
           onSelect={onSelect}
         />
       ))}

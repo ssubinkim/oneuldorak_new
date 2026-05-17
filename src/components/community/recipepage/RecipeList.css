@@ -86,10 +86,22 @@
 .recipe-share-card__meta-row small {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 5px;
   color: #555;
   font-size: 12px;
   line-height: 1;
+}
+
+.recipe-share-card__author-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+}
+
+.recipe-share-card__author-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .recipe-share-card__actions {

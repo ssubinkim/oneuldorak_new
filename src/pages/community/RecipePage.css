@@ -1,10 +1,16 @@
 .recipe-page {
   min-height: 100%;
-  background: var(--color-bg-base);
+  background:
+    linear-gradient(
+      to bottom,
+      var(--color-secondary) 0 420px,
+      var(--color-bg-base) 420px 100%
+    );
   color: #1a1a1a;
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 130%;
   letter-spacing: 0.08px;
+  overscroll-behavior-y: contain;
 }
 
 .recipe-page h1 {
@@ -119,7 +125,7 @@
   gap: 12px;
   margin-bottom: 18px;
   padding: 16px 18px;
-  background: #e9e6d8;
+  background: #FFFBEA;
   border-radius: 10px;
 }
 
@@ -133,19 +139,17 @@
 
 .recipe-page__tip-copy h3 {
   margin: 0;
-  color: #b7872a;
-  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.2;
+  color: #B99800;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .recipe-page__tip-copy p {
   margin: 8px 0 0;
-  color: #1d1d1d;
+  color: #313131;
   font-size: 14px;
-  font-weight: 500;
-  line-height: 1.35;
+  font-weight: 400;
+  line-height: 130%;
 }
 
 .recipe-page__tip-card img {
