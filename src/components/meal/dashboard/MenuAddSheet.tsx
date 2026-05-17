@@ -1,20 +1,105 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { readGroceryShoppingItems, saveGroceryShoppingItems } from '../../common/aiDataHub'
+import { INITIAL_ITEMS } from '../grocery/groceryData'
+import type { ShoppingItem } from '../grocery/groceryTypes'
 import { weeklyMenuData } from '../mealData'
+import type { DayMenu, MenuIngredient } from '../mealData'
 import carrotMascotImg from './images/addmenu_1.svg'
 import submitMascotImg from './images/addmenu_2.svg'
 import './MenuAddSheet.css'
 
 const menuItems = weeklyMenuData.filter(m => m.image !== null)
 
+type FlyingItem = {
+  image: string
+  startX: number
+  startY: number
+  dx: number
+  dy: number
+  animating: boolean
+  ingredient: MenuIngredient
+}
+
 type Props = {
   open: boolean
   onClose: () => void
+  onMenuAdd?: (dayIndices: number[], menu: DayMenu) => void
 }
 
-export default function MenuAddSheet({ open, onClose }: Props) {
+export default function MenuAddSheet({ open, onClose, onMenuAdd }: Props) {
   const [selectedMenuIndex, setSelectedMenuIndex] = useState<number | null>(null)
   const [selectedDays, setSelectedDays] = useState<number[]>([])
+  const [shoppingItems, setShoppingItems] = useState<ShoppingItem[]>(() =>
+    readGroceryShoppingItems(INITIAL_ITEMS)
+  )
+  const [initialShoppingNames] = useState<Set<string>>(
+    () => new Set(readGroceryShoppingItems(INITIAL_ITEMS).map(i => i.name))
+  )
+  const [flyingItem, setFlyingItem] = useState<FlyingItem | null>(null)
+  const groceryLinkRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (!flyingItem || flyingItem.animating) return
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setFlyingItem(prev => prev ? { ...prev, animating: true } : null)
+      })
+    })
+    return () => cancelAnimationFrame(id)
+  }, [flyingItem])
+
+  const isInShoppingList = (name: string) =>
+    shoppingItems.some(item => item.name === name)
+
+  const addToShoppingList = (ingredient: MenuIngredient) => {
+    if (isInShoppingList(ingredient.name)) return
+    const newId = shoppingItems.reduce((max, item) => Math.max(max, item.id), 0) + 1
+    const newItem: ShoppingItem = {
+      id: newId,
+      name: ingredient.name,
+      image: ingredient.image,
+      checked: false,
+    }
+    const updated = [...shoppingItems, newItem]
+    setShoppingItems(updated)
+    saveGroceryShoppingItems(updated)
+  }
+
+  const handleIngredientAdd = (ingredient: MenuIngredient, e: React.MouseEvent<HTMLButtonElement>) => {
+    const btnRect = e.currentTarget.getBoundingClientRect()
+    const linkRect = groceryLinkRef.current?.getBoundingClientRect()
+    const container = document.querySelector('.app-screen') ?? document.body
+    const containerRect = container.getBoundingClientRect()
+
+    if (!linkRect) {
+      addToShoppingList(ingredient)
+      return
+    }
+
+    const startX = btnRect.left - containerRect.left + btnRect.width / 2
+    const startY = btnRect.top - containerRect.top + btnRect.height / 2
+    const endX = linkRect.left - containerRect.left + linkRect.width / 2
+    const endY = linkRect.top - containerRect.top + linkRect.height / 2
+
+    setFlyingItem({
+      image: ingredient.image,
+      startX,
+      startY,
+      dx: endX - startX,
+      dy: endY - startY,
+      animating: false,
+      ingredient,
+    })
+  }
+
+  const handleFlyEnd = (e: React.TransitionEvent) => {
+    if (e.propertyName !== 'opacity') return
+    if (flyingItem) {
+      addToShoppingList(flyingItem.ingredient)
+      setFlyingItem(null)
+    }
+  }
 
   const toggleDay = (index: number) => {
     setSelectedDays(prev =>
@@ -23,6 +108,9 @@ export default function MenuAddSheet({ open, onClose }: Props) {
   }
 
   const handleAdd = () => {
+    if (selectedMenuIndex !== null) {
+      onMenuAdd?.(selectedDays, menuItems[selectedMenuIndex])
+    }
     onClose()
     setSelectedMenuIndex(null)
     setSelectedDays([])
@@ -57,6 +145,42 @@ export default function MenuAddSheet({ open, onClose }: Props) {
             ))}
           </div>
         </section>
+
+        {selectedMenuIndex !== null && menuItems[selectedMenuIndex].ingredients.length > 0 && (
+          <section className="menu-add-section">
+            <h3 className="menu-add-label">필요한 재료</h3>
+            <div className="menu-add-ingredients">
+              {menuItems[selectedMenuIndex].ingredients.map((ingredient, i) => {
+                const added = isInShoppingList(ingredient.name)
+                const wasAlreadyInList = initialShoppingNames.has(ingredient.name)
+                return (
+                  <div key={i} className="menu-add-ingredient">
+                    <div className={`menu-add-ingredient__circle${wasAlreadyInList ? ' no-border' : ''}`}>
+                      <img src={ingredient.image} alt={ingredient.name} className="menu-add-ingredient__img" />
+                      {!added && (
+                        <button
+                          className="menu-add-ingredient__plus"
+                          onClick={(e) => handleIngredientAdd(ingredient, e)}
+                          aria-label={`${ingredient.name} 장보기에 추가`}
+                        >
+                          +
+                        </button>
+                      )}
+                    </div>
+                    <span className="menu-add-ingredient__name">{ingredient.name}</span>
+                  </div>
+                )
+              })}
+            </div>
+            <button
+              ref={groceryLinkRef}
+              className="menu-add-grocery-link"
+              onClick={() => { window.location.hash = '#/meal-grocery' }}
+            >
+              🛒 장보기 리스트 보기
+            </button>
+          </section>
+        )}
 
         <section className="menu-add-section">
           <h3 className="menu-add-label">
@@ -96,6 +220,21 @@ export default function MenuAddSheet({ open, onClose }: Props) {
           메뉴 추가하기{selectedDays.length > 0 ? ` (${selectedDays.length})` : ''}
         </button>
       </div>
+
+      {flyingItem && (
+        <div
+          className={`menu-add-flying-item${flyingItem.animating ? ' animating' : ''}`}
+          style={{
+            left: flyingItem.startX,
+            top: flyingItem.startY,
+            '--dx': `${flyingItem.dx}px`,
+            '--dy': `${flyingItem.dy}px`,
+          } as React.CSSProperties}
+          onTransitionEnd={handleFlyEnd}
+        >
+          <img src={flyingItem.image} alt="" />
+        </div>
+      )}
     </>,
     target
   )

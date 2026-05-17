@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import Header from '../../components/common/layout/Header'
 import TodayMenuList from '../../components/meal/dashboard/TodayMenuList'
@@ -6,6 +7,7 @@ import IngredientSection from '../../components/meal/dashboard/IngredientSection
 import HomeFridgeBanner from '../../components/home/HomeFridgeBanner'
 import HomeStories from '../../components/home/HomeStories'
 import HomeRecipeSection from '../../components/home/HomeRecipeSection'
+import type { DayMenu } from '../../components/meal/mealData'
 import logoImg from '../../assets/logos/logo.svg'
 import '../../styles/Tailwind.css'
 import './Meal.css'
@@ -20,6 +22,16 @@ function BellIcon() {
 }
 
 function Meal() {
+  const [plannedMenus, setPlannedMenus] = useState<Record<number, DayMenu>>({})
+
+  const handleMenuAdd = (dayIndices: number[], menu: DayMenu) => {
+    setPlannedMenus(prev => {
+      const next = { ...prev }
+      dayIndices.forEach(i => { next[i] = menu })
+      return next
+    })
+  }
+
   return (
     <div className="app-shell">
       <div className="app-screen meal-screen">
@@ -46,10 +58,10 @@ function Meal() {
 
             <div className="meal-dashboard">
               <div className="dash-today-wrap">
-                <TodayMenuList selectedDay={1} />
+                <TodayMenuList selectedDay={1} onMenuAdd={handleMenuAdd} />
               </div>
               <IngredientSection />
-              <WeeklyPlanSection />
+              <WeeklyPlanSection plannedMenus={plannedMenus} />
               <HomeFridgeBanner />
               <HomeStories />
               <HomeRecipeSection />

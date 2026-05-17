@@ -1,29 +1,27 @@
 import './LikePageTabs.css'
 
-export type LikePageTab = 'likes' | 'recipes'
+export type LikePageTab = 'recipe' | 'post'
 
-type LikePageTabsProps = {
+type Props = {
   activeTab: LikePageTab
   onTabChange: (tab: LikePageTab) => void
 }
 
-function LikePageTabs({ activeTab, onTabChange }: LikePageTabsProps) {
+export default function LikePageTabs({ activeTab, onTabChange }: Props) {
   return (
     <div className="like-tabs">
       <button
-        className={`like-tab${activeTab === 'likes' ? ' like-tab--active' : ''}`}
-        onClick={() => onTabChange('likes')}
+        className={`like-tab${activeTab === 'recipe' ? ' like-tab--active' : ''}`}
+        onClick={() => onTabChange('recipe')}
       >
-        좋아요
+        레시피
       </button>
       <button
-        className={`like-tab${activeTab === 'recipes' ? ' like-tab--active' : ''}`}
-        onClick={() => onTabChange('recipes')}
+        className={`like-tab${activeTab === 'post' ? ' like-tab--active' : ''}`}
+        onClick={() => onTabChange('post')}
       >
-        저장한 레시피
+        게시글
       </button>
     </div>
   )
 }
-
-export default LikePageTabs

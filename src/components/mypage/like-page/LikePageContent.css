@@ -1,31 +1,64 @@
-.like-page {
-  background: var(--color-bg-sub);
+.like-content {
+  background: #f7f7f7;
   min-height: 100%;
-  padding: 16px 20px;
-  padding-top: calc(var(--header-height, 44px) + 50px + 16px);
+  padding: 0 16px 32px;
+  padding-top: calc(var(--header-height, 52px) + 50px + 8px);
+}
+
+.like-content-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0 8px;
+}
+
+.like-content-count {
+  font-size: 13px;
+  color: #888;
+}
+
+.like-content-sort {
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: #555;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+}
+
+.like-content-filters {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 12px;
+}
+
+.like-content-filters::-webkit-scrollbar { display: none; }
+
+.like-filter-chip {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #ddd;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.like-filter-chip.active {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #fff;
 }
 
 .like-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-
-@media (max-width: 320px) {
-  .like-page {
-    padding-right: 12px;
-    padding-left: 12px;
-  }
-}
-
-@media (min-width: 768px) {
-  .like-page {
-    padding-right: 40px;
-    padding-left: 40px;
-    padding-bottom: 32px;
-  }
-
-  .like-list {
-    gap: 16px;
-  }
+  gap: 10px;
 }

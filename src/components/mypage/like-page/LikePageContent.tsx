@@ -1,36 +1,56 @@
-import SavedRecipeCard from '../saved-recipe-page/SavedRecipeCard'
-import type { SavedRecipe } from '../saved-recipe-page/SavedRecipeCard'
+import { useState } from 'react'
 import LikePostCard from './LikePostCard'
 import type { LikePost } from './LikePostCard'
+import LikeRecipeCard from './LikeRecipeCard'
 import type { LikePageTab } from './LikePageTabs'
+import type { LikeRecipe } from './likePageData'
 import './LikePageContent.css'
 
-type LikePageContentProps = {
+const RECIPE_FILTERS = ['전체', '가격순', '시간순', '난이도순']
+const POST_FILTERS = ['전체', '냉장고SOS', '꿀팁', '추천', '질문', '고민']
+
+type Props = {
   activeTab: LikePageTab
   likedPosts: LikePost[]
-  savedRecipes: SavedRecipe[]
+  likedRecipes: LikeRecipe[]
 }
 
-function LikePageContent({
-  activeTab,
-  likedPosts,
-  savedRecipes,
-}: LikePageContentProps) {
-  const isLikesTab = activeTab === 'likes'
+export default function LikePageContent({ activeTab, likedPosts, likedRecipes }: Props) {
+  const [activeFilter, setActiveFilter] = useState('전체')
+
+  const isRecipe = activeTab === 'recipe'
+  const filters = isRecipe ? RECIPE_FILTERS : POST_FILTERS
+  const count = isRecipe ? likedRecipes.length : likedPosts.length
+  const unit = isRecipe ? '레시피' : '게시글'
+
+  const handleTabChange = () => setActiveFilter('전체')
+  void handleTabChange
 
   return (
-    <div className="page-scroll">
-      <div className="like-page">
-        <div className="like-list">
-          {isLikesTab
-            ? likedPosts.map((post) => <LikePostCard key={post.id} post={post} />)
-            : savedRecipes.map((recipe) => (
-                <SavedRecipeCard key={recipe.id} recipe={recipe} />
-              ))}
-        </div>
+    <div className="like-content">
+      <div className="like-content-bar">
+        <span className="like-content-count">총 {count}개의 {unit}</span>
+        <button className="like-content-sort">최신순 ∨</button>
+      </div>
+
+      <div className="like-content-filters">
+        {filters.map((f) => (
+          <button
+            key={f}
+            className={`like-filter-chip${activeFilter === f ? ' active' : ''}`}
+            onClick={() => setActiveFilter(f)}
+          >
+            {f}
+          </button>
+        ))}
+      </div>
+
+      <div className="like-list">
+        {isRecipe
+          ? likedRecipes.map((r) => <LikeRecipeCard key={r.id} recipe={r} />)
+          : likedPosts.map((p) => <LikePostCard key={p.id} post={p} />)
+        }
       </div>
     </div>
   )
 }
-
-export default LikePageContent
