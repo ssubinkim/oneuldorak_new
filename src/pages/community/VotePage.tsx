@@ -26,6 +26,8 @@ function VotePage({
   onFocusHandled,
 }: VotePageProps) {
   const [voteFilter, setVoteFilter] = useState<VoteFilter>('active')
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
   const {
     isHeaderCompact,
     pageRef,
@@ -33,19 +35,41 @@ function VotePage({
     handleCommunityScroll,
   } = useCommunityHeaderCollapse()
 
+  const handleSearchToggle = () => {
+    setIsSearchOpen((previousValue) => !previousValue)
+  }
+
+  const handleSearchClose = () => {
+    setIsSearchOpen(false)
+    setSearchValue('')
+  }
+
   return (
     <main
       ref={pageRef}
       className="page-scroll vote-page"
       onScroll={handleCommunityScroll}
     >
-      <CommunityBanner variant="vote" isCompact={isHeaderCompact} />
+      <CommunityBanner
+        variant="vote"
+        isCompact={isHeaderCompact}
+        isSearchOpen={isSearchOpen}
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+        onSearchToggle={handleSearchToggle}
+        onSearchClose={handleSearchClose}
+      />
       <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
       <CommunityStickyHeader
         activeTab="vote"
         tabsClassName="community-tabs"
         isCompact={isHeaderCompact}
         onSelectTab={onSelectTab}
+        isSearchOpen={isSearchOpen}
+        searchValue={searchValue}
+        onSearchChange={setSearchValue}
+        onSearchToggle={handleSearchToggle}
+        onSearchClose={handleSearchClose}
       />
 
       <div className="vote-page__body">

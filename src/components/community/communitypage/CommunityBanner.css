@@ -26,6 +26,7 @@
 
 .community-banner__actions {
   display: flex;
+  align-items: center;
   gap: 4px;
 }
 
@@ -52,6 +53,13 @@
   position: relative;
   z-index: 1000;
   transition: opacity 200ms ease, transform 220ms ease, visibility 0ms linear;
+}
+
+.community-banner__search-inline {
+  width: min(189px, 48.5vw);
+  margin-right: 2px;
+  position: relative;
+  z-index: 1002;
 }
 
 .community-banner__image {

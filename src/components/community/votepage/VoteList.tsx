@@ -48,6 +48,50 @@ type VoteListProps = {
   onFocusHandled?: () => void
 }
 
+const VOTE_MODAL_SHOWN_STORAGE_KEY = 'oneuldorak:vote-modal-shown:v1'
+
+function readShownVoteModalIds() {
+  if (typeof window === 'undefined') {
+    return new Set<string>()
+  }
+
+  try {
+    const rawValue = window.localStorage.getItem(VOTE_MODAL_SHOWN_STORAGE_KEY)
+
+    if (!rawValue) {
+      return new Set<string>()
+    }
+
+    const parsedValue = JSON.parse(rawValue) as unknown
+
+    if (!Array.isArray(parsedValue)) {
+      return new Set<string>()
+    }
+
+    return new Set(parsedValue.filter((voteId): voteId is string => typeof voteId === 'string'))
+  } catch {
+    return new Set<string>()
+  }
+}
+
+let shownVoteModalIds = readShownVoteModalIds()
+
+function hasShownVoteModal(voteId: string) {
+  return shownVoteModalIds.has(voteId)
+}
+
+function markVoteModalShown(voteId: string) {
+  if (!voteId || hasShownVoteModal(voteId)) {
+    return
+  }
+
+  shownVoteModalIds.add(voteId)
+
+  if (typeof window !== 'undefined') {
+    window.localStorage.setItem(VOTE_MODAL_SHOWN_STORAGE_KEY, JSON.stringify([...shownVoteModalIds]))
+  }
+}
+
 function getDeadline(dayOffset: number) {
   if (dayOffset === 0) return 'D-Day'
   return `D-${dayOffset}`
@@ -446,6 +490,12 @@ function VoteList({
 
     if (selectedCard) {
       const isPointAwarded = awardVotePoint(cardId, getRewardPointAmount(selectedCard.reward))
+
+      if (hasShownVoteModal(cardId)) {
+        return
+      }
+
+      markVoteModalShown(cardId)
 
       setVoteModal({
         question: selectedCard.question,
