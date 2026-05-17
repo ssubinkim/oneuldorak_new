@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
+  padding: 20px 16px;
   /* border-bottom: 1px solid #e5e5e5; */
 }
 
@@ -17,6 +17,7 @@
   flex: 1;
   text-align: left;
   margin-left: 8px;
+
 }
 
 .store-detail__nav-actions {
@@ -168,7 +169,7 @@
 /* 탭 바 */
 .store-detail__tabbar {
   position: sticky;
-  top: 52px;
+  top: 62px;
   z-index: 9;
   background: #fffffd;
   display: flex;
