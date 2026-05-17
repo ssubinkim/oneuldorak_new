@@ -40,10 +40,10 @@ function ReviewEmpty() {
 
     <div style={{ padding: '16px 16px 0' }}>
       <div style={{ padding: '60px 0', textAlign: 'center' }}>
-        <div style={{ fontSize: 15, fontWeight: 700, color: '#111', marginBottom: 8 }}>
-          이 재료의 첫번째 리뷰를 작성해 보세요 !
+        <div style={{ fontSize: 18, fontWeight: 600, color: '#1a1a1a', marginBottom: 8 }}>
+          첫번째 리뷰를 작성해 보세요 !
         </div>
-        <div style={{ fontSize: 12, color: '#aaa' }}>처음 리뷰 작성시 10p를 드려요</div>
+        <div style={{ fontSize: 14, color: '#767676' }}>처음 리뷰 작성시 10p를 드려요</div>
       </div>
     </div>
     </div>

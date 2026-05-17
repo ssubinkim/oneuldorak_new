@@ -60,7 +60,7 @@ function ReviewWriteSheet({ onClose, onSubmit }: Props) {
 
         <div className="review-sheet__photos">
           <button className="review-sheet__photo-btn">
-            <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#888" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="#5f5f5f" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
               <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
               <circle cx="12" cy="13" r="4"/>
             </svg>
@@ -70,7 +70,11 @@ function ReviewWriteSheet({ onClose, onSubmit }: Props) {
         </div>
 
         <button className="review-sheet__cta" onClick={onSubmit}>
-          ✏ 리뷰 쓰고 30p 받기
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#3C3C3C" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M0.5 13.5H11.5" strokeWidth={1.8}/>
+            <path d="M6.5 9.99994L3.5 10.5399L4 7.49994L10.73 0.789939C10.823 0.696211 10.9336 0.621816 11.0554 0.571048C11.1773 0.520279 11.308 0.494141 11.44 0.494141C11.572 0.494141 11.7027 0.520279 11.8246 0.571048C11.9464 0.621816 12.057 0.696211 12.15 0.789939L13.21 1.84994C13.3037 1.9429 13.3781 2.0535 13.4289 2.17536C13.4797 2.29722 13.5058 2.42793 13.5058 2.55994C13.5058 2.69195 13.4797 2.82266 13.4289 2.94452C13.3781 3.06637 13.3037 3.17698 13.21 3.26994L6.5 9.99994Z"/>
+          </svg>
+          리뷰 쓰고 30p 받기
         </button>
       </div>
     </>
