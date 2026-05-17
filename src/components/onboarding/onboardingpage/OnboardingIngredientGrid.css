@@ -1,7 +1,7 @@
 .onboarding-ingredient-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 23px 18px;
+  gap: 20px 16px;
   margin-top: 28px;
 }
 
@@ -118,6 +118,6 @@
 
 @media (max-height: 780px) {
   .onboarding-ingredient-grid {
-    gap: 18px 18px;
+    gap: 16px 16px;
   }
 }
