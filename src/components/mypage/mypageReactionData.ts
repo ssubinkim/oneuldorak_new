@@ -8,6 +8,7 @@ import { readPersistedCommunityWriteState } from '../community/common/communityW
 import { getRecipeDetail, type RecipeId } from '../recipedetailpage/recipeDetailData'
 import { getAllPersistedRecipeDetailState } from '../recipedetailpage/recipeDetailPersistence'
 import type { LikePost } from './like-page/LikePostCard'
+import { LIKE_RECIPES, LIKED_POSTS } from './like-page/likePageData'
 import type { SavedRecipe } from './saved-recipe-page/SavedRecipeCard'
 
 const mockRecipeIds = new Set<string>(['recipe-1', 'recipe-2', 'recipe-3'])
@@ -70,7 +71,9 @@ export function getMyPageActivityCounts(currentUserId: string) {
 
   const likeCount =
     getLikedBoardPosts(currentUserId).length +
-    Object.values(persistedRecipeStateMap).filter((state) => state.isLiked).length
+    Object.values(persistedRecipeStateMap).filter((state) => state.isLiked).length +
+    LIKE_RECIPES.length +
+    LIKED_POSTS.length
 
   const postCount = [
     ...persistedWriteState.recipes,

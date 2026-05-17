@@ -1,7 +1,4 @@
 import {
-  chiliImg,
-  sosageImg,
-  meatImg,
   onionImg,
   potatoImg,
   brocollyImg,
@@ -17,15 +14,7 @@ import omuriceImg from '../../../assets/images/food_imges/omurice.png'
 import ssoyaImg from '../../../assets/images/food_imges/ssoya.png'
 import type { GroceryTab, RecommendItem, ShoppingItem, StorageRecipe } from './groceryTypes'
 
-export const INITIAL_ITEMS: ShoppingItem[] = [
-  { id: 1, name: '고추', image: chiliImg, checked: false },
-  { id: 2, name: '소시지', image: sosageImg, checked: true },
-  { id: 3, name: '소고기', image: meatImg, checked: true },
-  { id: 4, name: '양파', image: onionImg, checked: false },
-  { id: 5, name: '감자', image: potatoImg, checked: false },
-  { id: 6, name: '브로콜리', image: brocollyImg, checked: false },
-  { id: 7, name: '두부', image: tofuImg, checked: true },
-]
+export const INITIAL_ITEMS: ShoppingItem[] = []
 
 export const STORAGE_RECIPES: StorageRecipe[] = [
   { id: 1, image: bibimbapImg, channel: '도시락락락', name: '비빔밥', likes: 452 },

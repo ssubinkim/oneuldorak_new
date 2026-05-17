@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { getIngredientIconClassName, weeklyMenuData } from '../mealData'
 import type { DayMenu } from '../mealData'
-import moneyBagImg from '../../../assets/icons/money_bag.svg'
+import menuAddBtnImg from '../images/menu-add-btn.svg'
+import savings1Img from '../images/savings_1.svg'
+import savings2Img from '../images/savings_2.svg'
 import HomeQuickActions from '../../home/HomeQuickActions'
 import MenuAddSheet from './MenuAddSheet'
 import './TodayMenuList.css'
@@ -57,8 +59,10 @@ function TodayMenuList({ selectedDay: _, onMenuAdd }: Props) {
       <div className="today-card-header">
         <BellIcon />
         <span className="today-card-title">오늘의 추천 메뉴</span>
-        <button className="today-menu-add-btn" onClick={() => setIsSheetOpen(true)}>+ 메뉴추가</button>
       </div>
+      <button className="today-menu-add-btn" onClick={() => setIsSheetOpen(true)}>
+        <img src={menuAddBtnImg} alt="메뉴 추가" />
+      </button>
 
       <div className="today-header">
         <div
@@ -112,14 +116,14 @@ function TodayMenuList({ selectedDay: _, onMenuAdd }: Props) {
 
       <div className="today-savings">
         <div className="savings-card">
-          <img src={moneyBagImg} alt="" className="savings-icon" />
+          <img src={savings1Img} alt="" className="savings-icon" />
           <div className="savings-info">
             <p className="savings-label">오늘 예상 절약</p>
             <p className="savings-amount savings-amount--blue">{currentMenu.savedAmount.toLocaleString()}원</p>
           </div>
         </div>
         <div className="savings-card">
-          <span className="savings-icon savings-icon--emoji">🪙</span>
+          <img src={savings2Img} alt="" className="savings-icon" />
           <div className="savings-info">
             <p className="savings-label">이번 달 누적 절약</p>
             <p className="savings-amount savings-amount--yellow">{monthlySavings.toLocaleString()}원</p>

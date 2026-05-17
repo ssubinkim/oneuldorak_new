@@ -21,10 +21,11 @@
   min-width: 0;
   margin: 0;
   color: #202020;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 130%;
   letter-spacing: -0.08px;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
 }
 
 .mypage-topbar__button {
