@@ -1,0 +1,61 @@
+.chatbot-input-bar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr) 50px;
+  gap: 8px;
+}
+
+.chatbot-camera {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 11px;
+  overflow: hidden;
+  z-index: 11;
+}
+
+.chatbot-camera img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+.chatbot-input-bar input {
+  min-width: 0;
+  height: 50px;
+  padding: 0 18px;
+  box-sizing: border-box;
+  color: #222;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1.5px solid #6d92ff;
+  border-radius: 11px;
+  outline: 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.chatbot-input-bar input::placeholder {
+  color: #7e8088;
+  opacity: 1;
+}
+
+.chatbot-submit {
+  display: grid;
+  place-items: center;
+  width: 49px;
+  height: 49px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.chatbot-submit img {
+  width: 49px;
+  height: 49px;
+  object-fit: contain;
+}
