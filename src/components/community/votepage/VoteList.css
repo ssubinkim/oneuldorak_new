@@ -22,6 +22,11 @@
   letter-spacing: -0.08px;
 }
 
+.vote-card.is-newly-created {
+  border-color: #ffd515;
+  box-shadow: 0 0 0 2px rgba(255, 213, 21, 0.34);
+}
+
 .vote-card-title-wrap {
   display: flex;
   align-items: center;

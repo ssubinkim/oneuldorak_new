@@ -15,11 +15,21 @@ type CommunityMainViewProps = {
 }
 
 function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
-  const { isHeaderCompact, handleCommunityScroll } = useCommunityHeaderCollapse()
+  const {
+    isHeaderCompact,
+    pageRef,
+    compactTriggerRef,
+    handleCommunityScroll,
+  } = useCommunityHeaderCollapse()
 
   return (
-    <main className="page-scroll community-page" onScroll={handleCommunityScroll}>
-      <CommunityBanner />
+    <main
+      ref={pageRef}
+      className="page-scroll community-page"
+      onScroll={handleCommunityScroll}
+    >
+      <CommunityBanner isCompact={isHeaderCompact} />
+      <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
       <CommunityStickyHeader
         activeTab={activeTab}
         tabsClassName="community-tabs"

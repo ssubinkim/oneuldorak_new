@@ -10,6 +10,39 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
+.community-sticky-header__banner-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px 10px;
+  background: var(--color-secondary);
+}
+
+.community-sticky-header .community-sticky-header__banner-top h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: #1a1a1a;
+  font-family: 'NanumSquareNeo';
+  line-height: 130%;
+  letter-spacing: 0.08px;
+}
+
+.community-sticky-header__actions {
+  display: flex;
+  gap: 4px;
+}
+
+.community-sticky-header__actions button {
+  padding: 4px;
+  color: #1a1a1a;
+  background: transparent;
+  border: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
 /* ── 공용 탭바 ─────────────────────────────────────── */
 .community-tabs {
   position: relative;
@@ -74,7 +107,28 @@
   background: var(--color-primary);
 }
 
+.community-sticky-header.is-compact .community-tabs {
+  height: 56px;
+  margin-top: 0;
+  padding-top: 8px;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.community-sticky-header.is-compact .community-tabs button {
+  height: 44px;
+}
+
 @media (max-width: 360px) {
+  .community-sticky-header__banner-top {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .community-sticky-header .community-sticky-header__banner-top h1 {
+    font-size: 24px;
+  }
+
   .community-tabs {
     height: 76px;
     margin-top: -34px;
@@ -90,5 +144,18 @@
   .community-tabs button {
     height: 46px;
     font-size: 17px;
+  }
+
+  .community-sticky-header.is-compact .community-tabs {
+    height: 54px;
+    margin-top: 0;
+    padding-top: 8px;
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .community-sticky-header.is-compact .community-tabs button {
+    height: 42px;
+    font-size: 16px;
   }
 }

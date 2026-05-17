@@ -44,13 +44,66 @@
   line-height: 130%;
   letter-spacing: 0.08px;
   font-weight: 400;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 200ms ease, transform 220ms ease, visibility 0ms linear;
 }
 
 .community-banner__image {
+  --banner-image-transform: translateY(0);
   display: block;
-  width: min(70%, 560px);
+  width: auto;
+  height: min(32vw, 200px);
+  max-width: min(70%, 560px);
   margin: 0 auto -10px;
   position: relative;
   z-index: 999;
+  object-fit: contain;
+  object-position: center bottom;
+  transform: var(--banner-image-transform);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 200ms ease, transform 260ms ease, visibility 0ms linear;
   pointer-events: none;
+}
+
+.community-banner.is-compact .community-banner__subtitle {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition-delay: 0ms, 0ms, 200ms;
+}
+
+.community-banner.is-compact .community-banner__image {
+  opacity: 0;
+  visibility: hidden;
+  transform: var(--banner-image-transform) translateY(12px) scale(0.96);
+  transition-delay: 0ms, 0ms, 200ms;
+}
+
+.community-banner--recipe .community-banner__image {
+  --banner-image-transform: translateY(45px) scale(1.40);
+  transform-origin: center bottom;
+}
+
+.community-banner--default .community-banner__image {
+  --banner-image-transform: translateY(8px);
+}
+
+.community-banner--vote .community-banner__image {
+  --banner-image-transform: translateY(20px) scale(1.45);
+}
+
+.community-banner-compact-trigger {
+  height: 1px;
+  margin-top: -1px;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .community-banner__subtitle,
+  .community-banner__image {
+    transition: none;
+  }
 }

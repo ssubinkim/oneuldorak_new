@@ -38,22 +38,6 @@ function CommentSection({
         <span>최신순&nbsp;&nbsp;인기순</span>
       </div>
 
-      <div className="board-detail-comments__list">
-        {comments.map((comment) => (
-          <CommentItem
-            key={comment.id}
-            comment={comment}
-            canManage={
-              comment.authorId
-                ? comment.authorId === currentUserId
-                : comment.id.startsWith('comment-') && comment.user === currentUserName
-            }
-            onUpdate={onUpdateComment}
-            onDelete={onDeleteComment}
-          />
-        ))}
-      </div>
-
       <div className="board-detail-comments__input">
         <span className="board-detail-comment-avatar" aria-hidden="true">
           <svg viewBox="0 0 24 24">
@@ -77,6 +61,22 @@ function CommentSection({
             <path d="M12 19V5M6.5 10.5 12 5l5.5 5.5" />
           </svg>
         </button>
+      </div>
+
+      <div className="board-detail-comments__list">
+        {comments.map((comment) => (
+          <CommentItem
+            key={comment.id}
+            comment={comment}
+            canManage={
+              comment.authorId
+                ? comment.authorId === currentUserId
+                : comment.id.startsWith('comment-') && comment.user === currentUserName
+            }
+            onUpdate={onUpdateComment}
+            onDelete={onDeleteComment}
+          />
+        ))}
       </div>
     </section>
   )

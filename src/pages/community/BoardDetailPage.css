@@ -203,10 +203,13 @@
 }
 
 .board-detail-owner-actions {
-  display: flex;
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
   justify-content: flex-end;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 0;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 
 .board-detail-owner-actions button,
@@ -219,20 +222,37 @@
 }
 
 .board-detail-owner-actions button {
-  min-width: 48px;
-  height: 30px;
-  color: #5f5f5f;
-  background: #f4f4f4;
-  border: 1px solid #e3e3e3;
-  border-radius: 8px;
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  color: #7b7b7b;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.board-detail-owner-actions button + button {
+  position: relative;
+  margin-left: 10px;
+  padding-left: 10px;
+}
+
+.board-detail-owner-actions button + button::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1px;
+  height: 10px;
+  background: #c9c9c9;
+  transform: translateY(-50%);
 }
 
 .board-detail-owner-actions button:last-child {
-  color: #fff;
-  background: #343434;
-  border-color: #343434;
+  color: #5f5f5f;
 }
 
 .board-detail-edit-card {
@@ -431,7 +451,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding-top: 24px;
+  position: sticky;
+  top: calc(110px + 8px);
+  z-index: 3;
+  margin-top: 0;
+  margin-bottom: 14px;
+  padding: 6px 0;
+  background: linear-gradient(180deg, #fff 72%, rgba(255, 255, 255, 0.92));
+  border-bottom: 1px solid var(--board-soft-line);
 }
 
 .board-detail-comments__input input {

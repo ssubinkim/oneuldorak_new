@@ -44,6 +44,8 @@ type VoteListProps = {
   onMoreClick?: () => void
   onUpdateVote?: (voteId: string, data: VoteWriteData) => void
   onDeleteVote?: (voteId: string) => void
+  focusVoteId?: string | null
+  onFocusHandled?: () => void
 }
 
 function getDeadline(dayOffset: number) {
@@ -302,6 +304,7 @@ function VoteCard({
   onChangeEdit,
   onSaveEdit,
   onDelete,
+  dataVoteId,
 }: {
   card: VoteCardItem
   selectedOption?: string
@@ -316,6 +319,7 @@ function VoteCard({
   onChangeEdit?: (value: VoteWriteData) => void
   onSaveEdit?: () => void
   onDelete?: () => void
+  dataVoteId?: string
 }) {
   const isFeatured = Boolean(card.heading)
   const votedOptions = getVotedOptions(card.options, selectedOption)
@@ -376,7 +380,7 @@ function VoteCard({
 
   if (isEditing && editValue && onChangeEdit && onCancelEdit && onSaveEdit) {
     return (
-      <article className="vote-card vote-card--editing" aria-label="투표 수정">
+      <article className="vote-card vote-card--editing" data-vote-id={dataVoteId} aria-label="투표 수정">
         <h2>투표 수정</h2>
         <VoteWriteForm value={editValue} onChange={onChangeEdit} />
         <div className="vote-card-owner-actions vote-card-owner-actions--editing">
@@ -388,7 +392,7 @@ function VoteCard({
   }
 
   return (
-    <article className="vote-card">
+    <article className="vote-card" data-vote-id={dataVoteId}>
       <div className="vote-card-title-wrap">
         <h2>{`Q. ${card.question}`}</h2>
         {card.reward && <span className="vote-card-reward">{card.reward}</span>}
@@ -413,17 +417,20 @@ function VoteList({
   onMoreClick,
   onUpdateVote,
   onDeleteVote,
+  focusVoteId = null,
+  onFocusHandled,
 }: VoteListProps) {
   const { email, nickname } = useUserProfile()
   const { selectedVotes, selectVoteOption } = useVoteSelections()
+  const listRef = useRef<HTMLElement | null>(null)
   const [voteModal, setVoteModal] = useState<{
     question: string
     selectedOption: string
     reward?: string
+    isPointAwarded: boolean
   } | null>(null)
   const [editingVoteId, setEditingVoteId] = useState<string | null>(null)
   const [editingVoteValue, setEditingVoteValue] = useState<VoteWriteData | null>(null)
-  const shownVoteModalIdsRef = useRef<Set<string>>(new Set())
   const activeVoteCards = [...extraVotes, ...voteCards]
 
   const handleVote = (cardId: string, optionLabel: string) => {
@@ -434,16 +441,15 @@ function VoteList({
       return
     }
 
-    if (selectedCard && !shownVoteModalIdsRef.current.has(cardId)) {
-      shownVoteModalIdsRef.current.add(cardId)
+    if (selectedCard) {
+      const isPointAwarded = awardVotePoint(cardId, getRewardPointAmount(selectedCard.reward))
 
-      if (awardVotePoint(cardId, getRewardPointAmount(selectedCard.reward))) {
-        setVoteModal({
-          question: selectedCard.question,
-          selectedOption: optionLabel,
-          reward: selectedCard.reward,
-        })
-      }
+      setVoteModal({
+        question: selectedCard.question,
+        selectedOption: optionLabel,
+        reward: selectedCard.reward,
+        isPointAwarded,
+      })
     }
   }
 
@@ -458,6 +464,35 @@ function VoteList({
 
     return [...extraVotes, ...voteCards.slice(1)]
   })()
+  const hasFocusTarget =
+    variant === 'list' &&
+    filter === 'active' &&
+    Boolean(focusVoteId && cards.some((card) => card.id === focusVoteId))
+
+  useEffect(() => {
+    if (!focusVoteId || !hasFocusTarget) {
+      return
+    }
+
+    const targetCard = listRef.current?.querySelector<HTMLElement>(`[data-vote-id="${focusVoteId}"]`)
+
+    if (!targetCard) {
+      return
+    }
+
+    targetCard.classList.add('is-newly-created')
+    targetCard.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    })
+    onFocusHandled?.()
+
+    const highlightTimer = window.setTimeout(() => {
+      targetCard.classList.remove('is-newly-created')
+    }, 1700)
+
+    return () => window.clearTimeout(highlightTimer)
+  }, [focusVoteId, hasFocusTarget, onFocusHandled])
 
   const handleStartEdit = (card: VoteCardItem) => {
     setEditingVoteId(card.id)
@@ -516,6 +551,7 @@ function VoteList({
 
   return (
     <section
+      ref={listRef}
       className={`vote-page-list vote-page-list--${variant}`}
       aria-label={variant === 'featured' ? '오늘의 투표' : '투표 목록'}
     >
@@ -539,6 +575,7 @@ function VoteList({
           onChangeEdit={setEditingVoteValue}
           onSaveEdit={() => handleSaveEdit(card.id)}
           onDelete={() => handleDelete(card.id)}
+          dataVoteId={variant === 'list' ? card.id : undefined}
         />
       ))}
 
@@ -547,6 +584,7 @@ function VoteList({
         question={voteModal?.question ?? ''}
         selectedOption={voteModal?.selectedOption ?? ''}
         reward={voteModal?.reward}
+        isPointAwarded={voteModal?.isPointAwarded ?? false}
         onClose={() => setVoteModal(null)}
       />
     </section>

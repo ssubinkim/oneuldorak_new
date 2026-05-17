@@ -83,8 +83,10 @@
 .recipe-page__filters {
   display: flex;
   gap: 10px;
-  padding: 14px 0 24px;
+  align-items: center;
+  padding: 8px 0 10px;
   overflow-x: auto;
+  border-bottom: 1px solid #ece7dc;
   scrollbar-width: none;
 }
 
@@ -119,6 +121,10 @@
   padding: 16px 18px;
   background: #e9e6d8;
   border-radius: 10px;
+}
+
+.recipe-page__list .recipe-page__tip-card {
+  margin-bottom: 0;
 }
 
 .recipe-page__tip-copy {

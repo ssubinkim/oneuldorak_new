@@ -1,4 +1,5 @@
 import './BoardList.css'
+import { useEffect, useRef } from 'react'
 import { boardFilters, type BoardFilter } from './BoardCategoryFilters'
 import { mockBoardPosts } from '../common/boardMockData'
 
@@ -20,6 +21,8 @@ type BoardListProps = {
   activeFilter: BoardFilter
   onOpenDetail: (postId: string) => void
   extraPosts?: BoardPost[]
+  focusPostId?: string | null
+  onFocusHandled?: () => void
 }
 
 function BoardActionIcon({ kind }: { kind: 'heart' | 'comment' | 'bookmark' }) {
@@ -60,6 +63,7 @@ function BoardCard({
   return (
     <article
       className="free-post-card"
+      data-post-id={post.id}
       role="button"
       tabIndex={0}
       onClick={handleOpenDetail}
@@ -110,12 +114,45 @@ function shouldShowPost(post: BoardPost, activeFilter: BoardFilter) {
   return true
 }
 
-function BoardList({ activeFilter, onOpenDetail, extraPosts = [] }: BoardListProps) {
+function BoardList({
+  activeFilter,
+  onOpenDetail,
+  extraPosts = [],
+  focusPostId = null,
+  onFocusHandled,
+}: BoardListProps) {
+  const listRef = useRef<HTMLElement | null>(null)
   const sourcePosts = [...extraPosts, ...mockBoardPosts]
   const visiblePosts = sourcePosts.filter((post) => shouldShowPost(post, activeFilter))
+  const hasFocusTarget = focusPostId ? visiblePosts.some((post) => post.id === focusPostId) : false
+
+  useEffect(() => {
+    if (!focusPostId || !hasFocusTarget) {
+      return
+    }
+
+    const targetCard = listRef.current?.querySelector<HTMLElement>(`[data-post-id="${focusPostId}"]`)
+
+    if (!targetCard) {
+      return
+    }
+
+    targetCard.classList.add('is-newly-created')
+    targetCard.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    })
+    onFocusHandled?.()
+
+    const highlightTimer = window.setTimeout(() => {
+      targetCard.classList.remove('is-newly-created')
+    }, 1700)
+
+    return () => window.clearTimeout(highlightTimer)
+  }, [focusPostId, hasFocusTarget, onFocusHandled])
 
   return (
-    <section className="free-detail-list" aria-label="자유게시판 글 목록">
+    <section ref={listRef} className="free-detail-list" aria-label="자유게시판 글 목록">
       {visiblePosts.map((post) => (
         <BoardCard
           key={post.id}
