@@ -1,11 +1,10 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, type ChangeEvent } from 'react'
 import '../../styles/Tailwind.css'
 import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import chatbotHeroImage from '../../components/chatbot/images/ai_main.svg'
 import btnXIcon from '../../components/chatbot/images/btn_x.svg'
 import ChatbotCoachMark from '../../components/chatbot/ChatbotCoachMark'
-import ChatbotCameraSheet from '../../components/chatbot/ChatbotCameraSheet'
 import ChatbotInputBar from '../../components/chatbot/ChatbotInputBar'
 import './Chatbot.css'
 
@@ -28,8 +27,7 @@ function openCameraPage() {
 
 function Chatbot() {
   const [showCoachMark, setShowCoachMark] = useState(true)
-  const [showCameraSheet, setShowCameraSheet] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const cameraInputRef = useRef<HTMLInputElement>(null)
   const { nickname } = useUserProfile()
   const displayName = nickname?.trim() || '도시락러버'
 
@@ -50,14 +48,13 @@ function Chatbot() {
     openChatPage(text, 'input')
   }
 
-  const handleTakePhoto = () => {
-    setShowCameraSheet(false)
-    openCameraPage()
+  const handleCameraClick = () => {
+    cameraInputRef.current?.click()
   }
 
-  const handleSelectFromAlbum = () => {
-    setShowCameraSheet(false)
-    fileInputRef.current?.click()
+  const handleCameraChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // 현재는 이미지 분석 업로드 플로우가 없어서 카메라 오픈 동작만 유지
+    event.currentTarget.value = ''
   }
 
   return (
@@ -99,19 +96,25 @@ function Chatbot() {
             <ChatbotCoachMark onDismiss={() => setShowCoachMark(false)} />
           )}
 
-          {showCameraSheet && (
-            <ChatbotCameraSheet
-              onTakePhoto={handleTakePhoto}
-              onSelectFromAlbum={handleSelectFromAlbum}
-              onClose={() => setShowCameraSheet(false)}
-            />
-          )}
-          <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} />
+          <input
+            ref={cameraInputRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleCameraChange}
+            style={{
+              position: 'absolute',
+              width: 1,
+              height: 1,
+              opacity: 0,
+              pointerEvents: 'none',
+            }}
+          />
 
           <section className="chatbot-bottom">
             <ChatbotInputBar
               onSubmit={handleSubmit}
-              onCameraClick={() => setShowCameraSheet(true)}
+              onCameraClick={handleCameraClick}
             />
           </section>
         </main>

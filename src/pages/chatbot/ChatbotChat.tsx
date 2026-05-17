@@ -1,13 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type ChangeEvent } from 'react'
 import type { ChatMessage } from '../../types/chatbot'
 import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import { askGPT } from '../../api/chatApi'
 import chatbotMascotIcon from '../../components/chatbot/images/chatbot .svg'
-import bubbleIcon from '../../components/chatbot/images/bubble.svg'
 import btnXIcon from '../../components/chatbot/images/btn_x.svg'
 import ChatbotInputBar from '../../components/chatbot/ChatbotInputBar'
-import ChatbotCameraSheet from '../../components/chatbot/ChatbotCameraSheet'
 import '../chatbot/Chatbot.css'
 import './ChatbotChat.css'
 
@@ -31,8 +29,18 @@ function createSuggestionsMessage(): ChatMessage {
   }
 }
 
+function normalizeAiText(text: string) {
+  return text
+    .replace(/\r\n/g, '\n')
+    .replace(/^#{1,6}\s*/gm, '')
+    .replace(/^\s*[-*]\s+/gm, '• ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
 function renderBubbleText(text: string) {
-  return text.split('**').map((part, i) =>
+  const normalizedText = normalizeAiText(text)
+  return normalizedText.split('**').map((part, i) =>
     i % 2 === 1 ? <strong key={i}>{part}</strong> : <span key={i}>{part}</span>,
   )
 }
@@ -41,8 +49,7 @@ function ChatbotChat() {
   const { nickname } = useUserProfile()
   const displayName = nickname?.trim() || '도시락러버'
   const [messages, setMessages] = useState<LocalMessage[]>([])
-  const [showCameraSheet, setShowCameraSheet] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const cameraInputRef = useRef<HTMLInputElement>(null)
   const messagesRef = useRef<HTMLDivElement>(null)
   const hasInitializedRef = useRef(false)
 
@@ -128,14 +135,13 @@ function ChatbotChat() {
     void requestAiResponse(text, pendingId)
   }
 
-  const handleTakePhoto = () => {
-    setShowCameraSheet(false)
-    window.location.hash = '#/chatbot-camera'
+  const handleCameraClick = () => {
+    cameraInputRef.current?.click()
   }
 
-  const handleSelectFromAlbum = () => {
-    setShowCameraSheet(false)
-    fileInputRef.current?.click()
+  const handleCameraChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // 현재는 이미지 분석 업로드 플로우가 없어서 카메라 오픈 동작만 유지
+    event.currentTarget.value = ''
   }
 
   return (
@@ -174,10 +180,9 @@ function ChatbotChat() {
                   <div key={msg.id} className="chatbot-msg chatbot-msg--ai">
                     <img className="chatbot-mascot" src={chatbotMascotIcon} alt="" aria-hidden="true" />
                     <div className="chatbot-ai-bubble">
-                      <img className="chatbot-ai-bubble__bg" src={bubbleIcon} alt="" aria-hidden="true" />
-                      <span className="chatbot-ai-bubble__text chatbot-loading__text">
+                      <div className="chatbot-ai-bubble__text chatbot-loading__text">
                         냠냠크루가 준비 중입니다.
-                      </span>
+                      </div>
                     </div>
                   </div>
                 )
@@ -188,10 +193,9 @@ function ChatbotChat() {
                   <div key={msg.id} className="chatbot-msg chatbot-msg--ai">
                     <img className="chatbot-mascot" src={chatbotMascotIcon} alt="" aria-hidden="true" />
                     <div className="chatbot-ai-bubble">
-                      <img className="chatbot-ai-bubble__bg" src={bubbleIcon} alt="" aria-hidden="true" />
-                      <span className="chatbot-ai-bubble__text">
+                      <div className="chatbot-ai-bubble__text">
                         {renderBubbleText(msg.text)}
-                      </span>
+                      </div>
                     </div>
                   </div>
                 )
@@ -224,19 +228,25 @@ function ChatbotChat() {
             })}
           </div>
 
-          {showCameraSheet && (
-            <ChatbotCameraSheet
-              onTakePhoto={handleTakePhoto}
-              onSelectFromAlbum={handleSelectFromAlbum}
-              onClose={() => setShowCameraSheet(false)}
-            />
-          )}
-          <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} />
+          <input
+            ref={cameraInputRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleCameraChange}
+            style={{
+              position: 'absolute',
+              width: 1,
+              height: 1,
+              opacity: 0,
+              pointerEvents: 'none',
+            }}
+          />
 
           <section className="chatbot-bottom">
             <ChatbotInputBar
               onSubmit={addUserMessage}
-              onCameraClick={() => setShowCameraSheet(true)}
+              onCameraClick={handleCameraClick}
             />
           </section>
         </main>

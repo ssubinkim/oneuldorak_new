@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node --watch index.mjs",
+    "dev": "node index.mjs",
+    "dev:watch": "node --watch index.mjs",
     "start": "node index.mjs"
   },
   "dependencies": {
@@ -12,5 +13,9 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
     "openai": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.8.0",
+    "@vercel/node": "^5.8.2"
   }
 }

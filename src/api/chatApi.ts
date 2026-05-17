@@ -1,6 +1,4 @@
-const DEFAULT_CHAT_API_BASE_URL = 'http://localhost:4242'
-const CHAT_API_BASE_URL = import.meta.env.VITE_CHAT_API_BASE_URL?.trim() || DEFAULT_CHAT_API_BASE_URL
-const CHAT_API_URL = `${CHAT_API_BASE_URL.replace(/\/$/, '')}/api/chat`
+const CHAT_API_URL = '/api/chat'
 
 type ChatApiSuccess = {
   text: string
@@ -25,10 +23,17 @@ export async function askGPT(message: string) {
     body: JSON.stringify({ message: trimmedMessage }),
   })
 
-  const data = (await response.json()) as ChatApiSuccess & ChatApiError
+  const contentType = response.headers.get('content-type') || ''
+  const isJson = contentType.includes('application/json')
+  const data = (isJson
+    ? await response.json()
+    : { error: await response.text() }) as ChatApiSuccess & ChatApiError
 
   if (!response.ok) {
-    throw new Error(data.error || 'GPT 요청 중 문제가 발생했어요.')
+    if (response.status === 404) {
+      throw new Error('API 경로를 찾지 못했어요. 로컬에서는 server를 먼저 실행해 주세요. (`cd server && npm run dev`)')
+    }
+    throw new Error(data.error || `GPT 요청 중 문제가 발생했어요. (status: ${response.status})`)
   }
 
   return data.text || ''
