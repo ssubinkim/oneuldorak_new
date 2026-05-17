@@ -13,6 +13,7 @@ const ONEULDORAK_SYSTEM_PROMPT = `너는 '오늘도락' 앱의 도시락 추천 
 - 예상 조리 시간:
 - 간단한 조리법:
 - 절약 포인트:
+2-1) 각 항목은 1~2문장으로 매우 짧게 작성해.
 3) 음식 알레르기 유발 가능 재료(예: 우유, 달걀, 땅콩, 갑각류 등)나 위험할 수 있는 재료가 보이면 조심하라고 안내해.
 4) 정보가 부족하거나 확실하지 않으면 지어내지 말고, 필요한 정보를 1~2개만 간단히 물어봐.
 5) 한국어로 답해.
@@ -28,6 +29,12 @@ type OpenAIResponseData = JsonRecord & {
   };
 };
 
+function looksLikeVisionFailure(text: string) {
+  return /사진.*볼 수 없|이미지.*볼 수 없|사진.*보이지 않|이미지.*보이지 않|재료.*알려주면/i.test(
+    text
+  );
+}
+
 function readMessageFromBody(body: unknown) {
   if (typeof body === "string") {
     try {
@@ -41,6 +48,24 @@ function readMessageFromBody(body: unknown) {
   if (body && typeof body === "object") {
     const candidate = body as JsonRecord;
     return typeof candidate.message === "string" ? candidate.message.trim() : "";
+  }
+
+  return "";
+}
+
+function readImageDataUrlFromBody(body: unknown) {
+  if (typeof body === "string") {
+    try {
+      const parsed = JSON.parse(body) as JsonRecord;
+      return typeof parsed.imageDataUrl === "string" ? parsed.imageDataUrl.trim() : "";
+    } catch {
+      return "";
+    }
+  }
+
+  if (body && typeof body === "object") {
+    const candidate = body as JsonRecord;
+    return typeof candidate.imageDataUrl === "string" ? candidate.imageDataUrl.trim() : "";
   }
 
   return "";
@@ -80,6 +105,64 @@ function extractTextFromOpenAiResponse(data: OpenAIResponseData) {
   return texts.join("\n").trim();
 }
 
+function buildUserContent(message: string, imageDataUrl: string) {
+  const userContent: Array<Record<string, string>> = [];
+
+  if (message) {
+    userContent.push({
+      type: "input_text",
+      text: message,
+    });
+  }
+
+  if (imageDataUrl) {
+    userContent.push({
+      type: "input_image",
+      image_url: imageDataUrl,
+      detail: "low",
+    });
+  }
+
+  return userContent;
+}
+
+function buildRequestBody(
+  model: string,
+  message: string,
+  imageDataUrl: string
+) {
+  return {
+    model,
+    instructions: ONEULDORAK_SYSTEM_PROMPT,
+    input: [
+      {
+        role: "user",
+        content: buildUserContent(message, imageDataUrl),
+      },
+    ],
+    max_output_tokens: 360,
+  };
+}
+
+async function requestOpenAiResponse(
+  apiKey: string,
+  model: string,
+  message: string,
+  imageDataUrl: string
+) {
+  const openaiResponse = await fetch(OPENAI_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify(buildRequestBody(model, message, imageDataUrl)),
+  });
+
+  const data = (await openaiResponse.json()) as OpenAIResponseData;
+  return { openaiResponse, data };
+}
+
 async function readRawBodyIfNeeded(req: VercelRequest) {
   if (req.body !== undefined && req.body !== null) {
     return req.body;
@@ -116,26 +199,23 @@ export default async function handler(
 
   const rawBody = await readRawBodyIfNeeded(req);
   const message = readMessageFromBody(rawBody);
+  const imageDataUrl = readImageDataUrlFromBody(rawBody);
 
-  if (!message) {
-    return res.status(400).json({ error: "message 값을 입력해 주세요." });
+  if (!message && !imageDataUrl) {
+    return res.status(400).json({ error: "message 또는 imageDataUrl 값을 입력해 주세요." });
+  }
+
+  if (imageDataUrl && !imageDataUrl.startsWith("data:image/")) {
+    return res.status(400).json({ error: "imageDataUrl 형식이 올바르지 않습니다." });
   }
 
   try {
-    const openaiResponse = await fetch(OPENAI_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        instructions: ONEULDORAK_SYSTEM_PROMPT,
-        input: message,
-      }),
-    });
-
-    const data = (await openaiResponse.json()) as OpenAIResponseData;
+    const { openaiResponse, data } = await requestOpenAiResponse(
+      apiKey,
+      "gpt-4o-mini",
+      message,
+      imageDataUrl
+    );
 
     if (!openaiResponse.ok) {
       const openaiErrorMessage =
@@ -148,9 +228,24 @@ export default async function handler(
       });
     }
 
-    const text =
+    let text =
       extractTextFromOpenAiResponse(data) ||
       "추천 결과를 만들지 못했어요. 재료를 조금 더 알려주면 다시 추천해드릴게요!";
+
+    if (imageDataUrl && looksLikeVisionFailure(text)) {
+      const secondTry = await requestOpenAiResponse(
+        apiKey,
+        "gpt-4.1-mini",
+        message,
+        imageDataUrl
+      );
+      if (secondTry.openaiResponse.ok) {
+        const retryText = extractTextFromOpenAiResponse(secondTry.data);
+        if (retryText) {
+          text = retryText;
+        }
+      }
+    }
 
     return res.status(200).json({ text });
   } catch (error) {
