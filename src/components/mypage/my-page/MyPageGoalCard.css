@@ -40,8 +40,8 @@
 
 .mypage-goal-amount strong {
   color: #ffd515;
-  font-size: 25px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 700;
   letter-spacing: 0;
 }
 
@@ -59,9 +59,8 @@
   flex: 0 0 auto;
   width: 12px;
   height: 12px;
-  border: 1px solid #9b9b9b;
-  border-radius: 3px;
   box-sizing: border-box;
+  background: url('../images/goal-note-icon.svg') center / contain no-repeat;
 }
 
 .mypage-goal-donut {

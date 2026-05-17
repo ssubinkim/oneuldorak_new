@@ -11,15 +11,13 @@ import MyPageStats from '../../components/mypage/my-page/MyPageStats'
 import type { MyPageStatItem } from '../../components/mypage/my-page/MyPageStats'
 import PointBottomSheet from '../../components/mypage/my-page/PointBottomSheet'
 import { getMyPageActivityCounts } from '../../components/mypage/mypageReactionData'
-import alarmIcon from '../../assets/icons/alarm.svg'
 import arrowLeftIcon from '../../assets/icons/arrow_left.svg'
 import profileImg from '../../assets/icons/profile 1.svg?url'
 import '../../components/mypage/my-page/MyPage.css'
 
-const GOAL = { current: 72000, target: 100000 }
-
 export default function MyPage() {
   const [goalOpen, setGoalOpen] = useState(false)
+  const [goal, setGoal] = useState({ current: 72000, target: 100000 })
   const [pointOpen, setPointOpen] = useState(false)
   const [pointSheetKey, setPointSheetKey] = useState(0)
   const { email } = useUserProfile()
@@ -31,7 +29,7 @@ export default function MyPage() {
     { id: 'comments', value: String(activityCounts.comments), label: '댓글' },
   ]
 
-  const pct = Math.round((GOAL.current / GOAL.target) * 100)
+  const pct = Math.round((goal.current / goal.target) * 100)
   const [goalBarPct, setGoalBarPct] = useState(0)
 
   useEffect(() => {
@@ -52,7 +50,10 @@ export default function MyPage() {
             </button>
             <h1>마이페이지</h1>
             <button type="button" className="mypage-topbar__button" aria-label="알림">
-              <img src={alarmIcon} alt="" aria-hidden="true" />
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
             </button>
           </header>
 
@@ -67,7 +68,7 @@ export default function MyPage() {
           </section>
 
           <MyPageGoalCard
-            goal={GOAL}
+            goal={goal}
             pct={pct}
             goalBarPct={goalBarPct}
             onEdit={() => setGoalOpen(true)}
@@ -83,7 +84,12 @@ export default function MyPage() {
         </div>
       </div>
 
-      <GoalBottomSheet open={goalOpen} onClose={() => setGoalOpen(false)} />
+      <GoalBottomSheet
+        open={goalOpen}
+        onClose={() => setGoalOpen(false)}
+        goal={goal}
+        onSave={(newGoal) => { setGoal(newGoal); setGoalOpen(false) }}
+      />
       <PointBottomSheet
         key={pointSheetKey}
         open={pointOpen}

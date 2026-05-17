@@ -10,6 +10,8 @@ import StoragePage from './pages/meal/StoragePage'
 import MyPage from './pages/mypage/MyPage'
 import LikePage from './pages/mypage/LikePage'
 import SavedRecipePage from './pages/mypage/SavedRecipePage'
+import PlusPage from './pages/mypage/PlusPage'
+import PlusBenefitPage from './pages/mypage/PlusBenefitPage'
 import LoginPage from './pages/onboarding/LoginPage'
 import OnboardingPage from './pages/onboarding/OnboardingPage'
 import SignupPage from './pages/onboarding/SignupPage'
@@ -26,6 +28,8 @@ type AppRoute =
   | 'chatbot-camera'
   | 'mypage-likes'
   | 'mypage-saved-recipes'
+  | 'mypage-plus'
+  | 'mypage-plus-benefit'
   | 'meal-weekly-plan'
   | 'meal-grocery'
   | 'meal-storage'
@@ -42,6 +46,8 @@ const pages = {
   mypage: MyPage,
   'mypage-likes': () => <LikePage />,
   'mypage-saved-recipes': () => <SavedRecipePage />,
+  'mypage-plus': () => <PlusPage />,
+  'mypage-plus-benefit': () => <PlusBenefitPage />,
   'meal-weekly-plan': () => <WeeklyPlanPage />,
   'meal-grocery': () => <GroceryPage />,
   'meal-storage': () => <StoragePage />,

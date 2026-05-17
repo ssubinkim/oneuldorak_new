@@ -1,46 +1,57 @@
-.goal-sheet {
-  padding: 8px 24px 44px;
+.goal-bs {
+  background: #fff;
 }
 
-.goal-sheet-sub {
-  font-size: 12px;
-  color: var(--color-disabled);
-  margin: 0 0 6px;
+.goal-sheet {
+  padding: 8px 20px 44px;
 }
 
 .goal-sheet-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
-  color: var(--color-text-main);
+  color: #1a1a1a;
+  margin: 0 0 6px;
+}
+
+.goal-sheet-sub {
+  font-size: 13px;
+  color: #aaa;
   margin: 0 0 28px;
 }
 
 .goal-sheet-field {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .goal-sheet-label {
   display: block;
-  font-size: 13px;
-  color: var(--color-text-sub);
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
   margin-bottom: 8px;
-  font-weight: 500;
 }
 
 .goal-sheet-input {
   width: 100%;
-  padding: 15px 16px;
+  padding: 15px 18px;
   box-sizing: border-box;
-  background: #f5f5f5;
-  border: none;
-  border-radius: 10px;
-  font-size: 14px;
-  color: var(--color-text-sub);
+  background: #fff;
+  border: 1.8px solid #f5c842;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1a1a;
   outline: none;
+  transition: border-color 0.15s;
+}
+
+.goal-sheet-input::placeholder {
+  color: #bbb;
+  font-weight: 400;
 }
 
 .goal-sheet-input:focus {
-  background: #f0ede0;
+  border-color: #e6b800;
 }
 
 .goal-sheet-actions {
@@ -52,20 +63,20 @@
 .goal-sheet-btn {
   flex: 1;
   padding: 15px 0;
-  border-radius: 12px;
-  font-size: 15px;
+  border-radius: 14px;
+  font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   border: none;
 }
 
 .goal-sheet-btn.primary {
-  background: var(--color-primary);
-  color: var(--color-text-main);
+  background: #ffd515;
+  color: #1a1a1a;
 }
 
 .goal-sheet-btn.secondary {
   background: #fff;
   border: 1.5px solid #ddd;
-  color: var(--color-text-sub);
+  color: #555;
 }

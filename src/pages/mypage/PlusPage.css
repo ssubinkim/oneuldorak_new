@@ -1,0 +1,247 @@
+.plus-screen {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 헤더 ── */
+.plus-header {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 52px;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.plus-header-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.plus-header-btn--right {
+  margin-left: auto;
+}
+
+.plus-header-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.plus-header-title {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'NanumSquare Neo', sans-serif;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* ── 스크롤 영역 ── */
+.plus-scroll {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding-bottom: 40px;
+}
+
+.plus-scroll::-webkit-scrollbar { display: none; }
+
+/* ── 히어로 ── */
+.plus-hero {
+  padding: 24px 20px 16px;
+}
+
+.plus-hero-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.35;
+  margin: 0 0 8px;
+}
+
+.plus-blue {
+  color: #3a6cff;
+}
+
+.plus-hero-sub {
+  font-size: 16px;
+  color: #888;
+  margin: 0;
+}
+
+/* ── 마스코트 (플랜 섹션 내 절대 위치) ── */
+.plus-mascot-hero {
+  position: absolute;
+  right: 12px;
+  top: -45px;
+  width: 150px;
+  object-fit: contain;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ── 플랜 섹션 ── */
+.plus-plans {
+  position: relative;
+  z-index: 1;
+  padding: 20px 20px 0;
+}
+
+.plus-discount-badge {
+  display: inline-block;
+  background: #3a6cff;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 20px;
+}
+
+.plus-plan-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #e8e8e8;
+  background: #fff;
+  cursor: pointer;
+  margin-bottom: 10px;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.plus-plan-card.selected {
+  border-color: #ffd515;
+  background: #fffbe8;
+}
+
+.plus-plan-radio {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.plus-plan-radio.selected {
+  background: #ffd515;
+  border-color: #ffd515;
+}
+
+.plus-plan-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.plus-plan-name {
+  font-size: 14px;
+  color: #888;
+}
+
+.plus-plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.plus-plan-price strong {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+.plus-plan-unit {
+  font-size: 14px;
+  color: #888;
+}
+
+.plus-plan-original {
+  font-size: 13px;
+  color: #bbb;
+  text-decoration: line-through;
+  margin-left: 4px;
+}
+
+/* ── CTA 버튼 ── */
+.plus-cta {
+  width: 100%;
+  padding: 18px 0;
+  background: #ffd515;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'NanumSquare Neo', sans-serif;
+  color: #1a1a1a;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: opacity 0.15s;
+}
+
+.plus-cta:active { opacity: 0.85; }
+
+/* ── 혜택 미리보기 ── */
+.plus-benefits {
+  padding: 32px 20px 0;
+}
+
+.plus-benefits-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 16px;
+}
+
+.plus-benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.plus-benefit-card {
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plus-benefit-icon {
+  width: 56px;
+  height: 56px;
+}
+
+.plus-benefit-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.plus-benefit-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.plus-benefit-desc {
+  font-size: 12px;
+  color: #888;
+  margin: 0;
+  line-height: 1.5;
+  white-space: pre-line;
+}

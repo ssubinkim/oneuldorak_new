@@ -97,6 +97,15 @@
   line-height: 1;
 }
 
+/* ── Planned menu image ────────────────────────── */
+.wps-card-menu-img {
+  width: 67px;
+  height: 67px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 /* ── Menu name ─────────────────────────────────── */
 .wps-card-name {
   font-size: 16px;
@@ -107,6 +116,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
+}
+
+.wps-card-name--planned {
+  font-weight: 600;
+  color: #222;
 }
 
 /* ── Usage badge ───────────────────────────────── */

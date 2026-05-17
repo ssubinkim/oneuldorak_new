@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { getIngredientIconClassName, weeklyMenuData } from '../mealData'
+import type { DayMenu } from '../mealData'
 import moneyBagImg from '../../../assets/icons/money_bag.svg'
 import HomeQuickActions from '../../home/HomeQuickActions'
 import MenuAddSheet from './MenuAddSheet'
@@ -7,6 +8,7 @@ import './TodayMenuList.css'
 
 interface Props {
   selectedDay: number
+  onMenuAdd?: (dayIndices: number[], menu: DayMenu) => void
 }
 
 function BellIcon() {
@@ -25,7 +27,7 @@ function BellIcon() {
 const slides = weeklyMenuData.filter(m => m.image !== null)
 const monthlySavings = weeklyMenuData.reduce((sum, m) => sum + m.savedAmount, 0)
 
-function TodayMenuList({ selectedDay: _ }: Props) {
+function TodayMenuList({ selectedDay: _, onMenuAdd }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const touchStartX = useRef(0)
@@ -125,7 +127,7 @@ function TodayMenuList({ selectedDay: _ }: Props) {
         </div>
       </div>
       <HomeQuickActions />
-      <MenuAddSheet open={isSheetOpen} onClose={() => setIsSheetOpen(false)} />
+      <MenuAddSheet open={isSheetOpen} onClose={() => setIsSheetOpen(false)} onMenuAdd={onMenuAdd} />
     </div>
   )
 }

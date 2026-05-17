@@ -1,9 +1,19 @@
+import icon1 from '../images/icon-slot-1.svg'
+import icon2 from '../images/icon-slot-2.svg'
+import icon3 from '../images/icon-slot-3.svg'
+import icon4 from '../images/icon-slot-4.svg'
+import icon5 from '../images/icon-slot-5.svg'
+import icon6 from '../images/icon-slot-6.svg'
+import icon7 from '../images/icon-slot-7.svg'
+import icon8 from '../images/icon-slot-8.svg'
 import './MyPageMenuSections.css'
 
 export type MyPageMenuItem = {
   label: string
   aside?: string
   muted?: boolean
+  icon?: string
+  onClick?: () => void
 }
 
 export type MyPageMenuSection = {
@@ -15,24 +25,24 @@ const DEFAULT_MENU_SECTIONS: MyPageMenuSection[] = [
   {
     title: '스토어',
     items: [
-      { label: '주문내역', aside: '장바구니' },
-      { label: '정기배송' },
+      { label: '주문내역', aside: '장바구니', icon: icon1, muted: true },
+      { label: '정기배송', icon: icon2, muted: true },
     ],
   },
   {
     title: '멤버십',
     items: [
-      { label: '구독', aside: '정보' },
-      { label: '혜택' },
-      { label: '쿠폰', muted: true },
+      { label: '구독', aside: '정보', icon: icon3, onClick: () => { window.location.hash = '#/mypage-plus' } },
+      { label: '혜택', icon: icon4, onClick: () => { window.location.hash = '#/mypage-plus-benefit' } },
+      { label: '쿠폰', muted: true, icon: icon5 },
     ],
   },
   {
     title: '설정 / 관리',
     items: [
-      { label: '계정 설정', muted: true },
-      { label: '약관 정책', muted: true },
-      { label: '앱 환경 설정', muted: true },
+      { label: '계정 설정', muted: true, icon: icon6 },
+      { label: '약관 정책', muted: true, icon: icon7 },
+      { label: '앱 환경 설정', muted: true, icon: icon8 },
     ],
   },
 ]
@@ -57,8 +67,11 @@ function MyPageMenuSections({ sections = DEFAULT_MENU_SECTIONS }: MyPageMenuSect
                 key={`${section.title}-${item.label}`}
                 type="button"
                 className={`mypage-menu-row${item.muted ? ' is-muted' : ''}`}
+                onClick={item.onClick}
               >
-                <span className="mypage-menu-icon-slot" aria-label={`${item.label} 아이콘 자리`} />
+                <span className="mypage-menu-icon-slot" aria-hidden="true">
+                  {item.icon && <img src={item.icon} alt="" />}
+                </span>
                 <span className="mypage-menu-label">{item.label}</span>
                 {item.aside && <span className="mypage-menu-aside">{item.aside}</span>}
                 <span className="mypage-menu-chevron" aria-hidden="true" />

@@ -41,10 +41,8 @@
   flex: 0 0 auto;
   width: 16px;
   height: 16px;
-  border: 1px solid #ffbf2f;
-  border-radius: 50%;
   box-sizing: border-box;
-  background: #fff7d5;
+  background: url('../images/level-badge.svg') center / contain no-repeat;
 }
 
 .mypage-user-name {

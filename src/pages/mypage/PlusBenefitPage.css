@@ -1,0 +1,178 @@
+.pb-screen {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 헤더 ── */
+.pb-header {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 52px;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.pb-header-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.pb-header-btn--right {
+  margin-left: auto;
+}
+
+.pb-header-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.pb-header-title {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'NanumSquare Neo', sans-serif;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* ── 스크롤 ── */
+.pb-scroll {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 0 20px 40px;
+}
+
+.pb-scroll::-webkit-scrollbar { display: none; }
+
+/* ── 히어로 ── */
+.pb-hero {
+  padding: 24px 0 20px;
+}
+
+.pb-hero-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.4;
+  margin: 0 0 8px;
+}
+
+.pb-blue {
+  color: #3a6cff;
+}
+
+.pb-hero-sub {
+  font-size: 16px;
+  color: #aaa;
+  margin: 0;
+}
+
+/* ── 혜택 카드 ── */
+.pb-benefits-card {
+  border: 1.5px solid #f5c842;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.pb-benefit-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 16px;
+}
+
+.pb-benefit-row.divider {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.pb-benefit-icon {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.pb-benefit-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pb-benefit-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+  text-align: left;
+}
+
+.pb-benefit-desc {
+  font-size: 12px;
+  color: #888;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.pb-benefit-check {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffd515;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── 쿠폰 버튼 ── */
+.pb-coupon-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 18px;
+  background: #FFFDF6;
+  border: 1.5px solid #FFD515;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-disabled);
+  cursor: pointer;
+  margin-bottom: 32px;
+}
+
+.pb-coupon-btn__icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.pb-coupon-btn__arrow {
+  margin-left: auto;
+}
+
+/* ── 해지 섹션 ── */
+.pb-cancel-section {
+  text-align: center;
+}
+
+.pb-cancel-notice {
+  font-size: 12px;
+  color: #aaa;
+  margin: 0 0 8px;
+}
+
+.pb-cancel-btn {
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: #aaa;
+  text-decoration: underline;
+  cursor: pointer;
+}

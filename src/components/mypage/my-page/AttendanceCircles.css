@@ -8,18 +8,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
 .attendance-day-label {
-  font-size: 16px;
-  color: var(--color-disabled);
+  font-size: 14px;
+  color: #555;
   font-weight: 500;
 }
 
 .attendance-circle {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -28,18 +28,20 @@
   font-weight: 700;
 }
 
+/* 오늘 출석한 날 */
 .attendance-circle.filled {
-  background: var(--color-primary);
-  color: #444;
+  background: #ffd515;
+  color: #1a1a1a;
 }
 
+/* 보상 기준일 (4일차, 7일차) */
 .attendance-circle.milestone {
-  background: var(--color-secondary-20);
-  color: var(--color-disabled);
-  border: 1.5px solid var(--color-secondary-50);
+  background: #ffd515;
+  color: #1a1a1a;
 }
 
+/* 빈 날 */
 .attendance-circle.empty {
-  background: var(--color-secondary-20);
-  border: 1.5px solid var(--color-secondary-50);
+  background: #fff;
+  border: 1.5px solid #f5c842;
 }
