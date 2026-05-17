@@ -186,7 +186,7 @@ function OnboardingPage() {
   return (
     <div className="app-shell">
       <main className="app-screen onboarding-page-screen">
-        <section className="onboarding-page" aria-label="도시락 기준 설정 안내">
+        <section className="onboarding-page onboarding-page--intro" aria-label="도시락 기준 설정 안내">
           <OnboardingIntroVisual />
           <OnboardingIntroCopy />
           <OnboardingIntroActions onSkip={handleGoHome} onStart={handleStartQuestions} />

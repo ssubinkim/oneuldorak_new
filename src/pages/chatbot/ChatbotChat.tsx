@@ -1,17 +1,13 @@
-import { useEffect, useRef, useState } from 'react'
-import type { ChatMessage, RecipeData } from '../../types/chatbot'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type { ChatMessage } from '../../types/chatbot'
 import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
+import { askGPT } from '../../api/chatApi'
 import chatbotMascotIcon from '../../components/chatbot/images/chatbot .svg'
 import bubbleIcon from '../../components/chatbot/images/bubble.svg'
-import tunamayoImage from '../../components/chatbot/images/tunamayo.svg'
-import chamchimayoImage from '../../assets/images/food_imges/chamchimayo.png'
-import kimchiRiceImage from '../../assets/images/food_imges/kimbok.png'
-import bulgogiImage from '../../assets/images/food_imges/bulgogi.png'
 import btnXIcon from '../../components/chatbot/images/btn_x.svg'
 import ChatbotInputBar from '../../components/chatbot/ChatbotInputBar'
 import ChatbotCameraSheet from '../../components/chatbot/ChatbotCameraSheet'
-import ChatbotRecipeCard from '../../components/chatbot/ChatbotRecipeCard'
 import '../chatbot/Chatbot.css'
 import './ChatbotChat.css'
 
@@ -25,75 +21,14 @@ function getInitialQuery() {
   return decodeURIComponent(hash.slice(qIndex + 3))
 }
 
-const MOCK_RECIPES: { recipe: RecipeData; text: string }[] = [
-  {
-    recipe: {
-      title: '참치마요 주먹밥 도시락',
-      subtitle: '간단한 아침 · 냄새 부담 적음',
-      imageUrl: tunamayoImage,
-      cookTime: '15분',
-      estimatedCost: '약 2,500원',
-      reason: '보유 재료인 밥, 김, 참치를 활용할 수 있고\n준비시간이 짧아 바쁜 아침에 좋아요.',
-    },
-    text: '마이도락 정보를 기준으로\n오늘 먹기 좋은 도시락을 골라봤어요.\n오늘은 **참치마요 주먹밥 도시락** 어때요?',
-  },
-  {
-    recipe: {
-      title: '깍두기 볶음밥 도시락',
-      subtitle: '든든한 한 끼 · 재료 활용 최고',
-      imageUrl: kimchiRiceImage,
-      cookTime: '10분',
-      estimatedCost: '약 1,800원',
-      reason: '냉장고 속 깍두기와 밥만 있으면 뚝딱!\n기름진 맛이 입맛 없을 때도 잘 어울려요.',
-    },
-    text: '마이도락 정보를 기준으로\n오늘 먹기 좋은 도시락을 골라봤어요.\n오늘은 **깍두기 볶음밥 도시락** 어때요?',
-  },
-  {
-    recipe: {
-      title: '불고기 도시락',
-      subtitle: '달콤한 양념 · 밥도둑',
-      imageUrl: bulgogiImage,
-      cookTime: '20분',
-      estimatedCost: '약 4,000원',
-      reason: '미리 재워둔 불고기를 활용하면\n바쁜 아침에도 근사한 도시락이 완성돼요.',
-    },
-    text: '마이도락 정보를 기준으로\n오늘 먹기 좋은 도시락을 골라봤어요.\n오늘은 **불고기 도시락** 어때요?',
-  },
-  {
-    recipe: {
-      title: '참치마요 덮밥 도시락',
-      subtitle: '고소한 맛 · 간단 조리',
-      imageUrl: chamchimayoImage,
-      cookTime: '10분',
-      estimatedCost: '약 2,000원',
-      reason: '참치캔과 마요네즈로 빠르게 만들 수 있고\n고소해서 남녀노소 누구나 좋아해요.',
-    },
-    text: '마이도락 정보를 기준으로\n오늘 먹기 좋은 도시락을 골라봤어요.\n오늘은 **참치마요 덮밥 도시락** 어때요?',
-  },
-]
+const FOLLOW_UP_SUGGESTIONS = ['좋아. 레시피 볼래.', '더 가벼운 메뉴 추천해줘.', '더 든든한 메뉴로 추천해줘', '다른 메뉴 보여줘.']
 
-const MOCK_SUGGESTIONS = ['좋아. 레시피 볼래.', '더 가벼운 메뉴 추천해줘.', '더 든든한 메뉴로 추천해줘', '다른 메뉴 보여줘.']
-
-function getMockAiResponse(pendingId: string): ChatMessage[] {
-  const ts = Date.now()
-  const { recipe, text } = MOCK_RECIPES[Math.floor(Math.random() * MOCK_RECIPES.length)]
-  return [
-    {
-      id: pendingId,
-      type: 'ai-text',
-      text,
-    },
-    {
-      id: `ai-recipe-${ts}`,
-      type: 'ai-recipe',
-      recipe,
-    },
-    {
-      id: `ai-suggestions-${ts}`,
-      type: 'suggestions',
-      items: MOCK_SUGGESTIONS,
-    },
-  ]
+function createSuggestionsMessage(): ChatMessage {
+  return {
+    id: `ai-suggestions-${Date.now()}`,
+    type: 'suggestions',
+    items: FOLLOW_UP_SUGGESTIONS,
+  }
 }
 
 function renderBubbleText(text: string) {
@@ -109,8 +44,41 @@ function ChatbotChat() {
   const [showCameraSheet, setShowCameraSheet] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const messagesRef = useRef<HTMLDivElement>(null)
+  const hasInitializedRef = useRef(false)
+
+  const requestAiResponse = useCallback(async (userText: string, pendingId: string) => {
+    try {
+      const responseText = await askGPT(userText)
+      const nextTextMessage: ChatMessage = {
+        id: pendingId,
+        type: 'ai-text',
+        text: responseText.trim() || '추천 결과를 만들지 못했어요. 다시 시도해 주세요.',
+      }
+
+      setMessages((previousMessages) => [
+        ...previousMessages.map((message) => (message.id === pendingId ? nextTextMessage : message)),
+        createSuggestionsMessage(),
+      ])
+    } catch (error) {
+      const errorText = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.'
+      const nextErrorMessage: ChatMessage = {
+        id: pendingId,
+        type: 'ai-text',
+        text: `앗, 지금 추천을 준비하지 못했어요.\n${errorText}`,
+      }
+
+      setMessages((previousMessages) => [
+        ...previousMessages.map((message) => (message.id === pendingId ? nextErrorMessage : message)),
+      ])
+    }
+  }, [])
 
   useEffect(() => {
+    if (hasInitializedRef.current) {
+      return
+    }
+    hasInitializedRef.current = true
+
     const q = getInitialQuery()
     if (!q) return
 
@@ -118,17 +86,8 @@ function ChatbotChat() {
     const pendingId = `pending-${Date.now()}`
     setMessages([userMsg, { id: pendingId, type: 'ai-loading' }])
     appendChatbotHistoryMessage(q, 'quick')
-
-    const timer = setTimeout(() => {
-      const [aiText, ...rest] = getMockAiResponse(pendingId)
-      setMessages(prev => [
-        ...prev.map(m => m.id === pendingId ? aiText : m),
-        ...rest,
-      ])
-    }, 1200)
-
-    return () => clearTimeout(timer)
-  }, [])
+    void requestAiResponse(q, pendingId)
+  }, [requestAiResponse])
 
   useEffect(() => {
     const len = messages.length
@@ -166,14 +125,7 @@ function ChatbotChat() {
     const pendingId = `pending-${Date.now()}`
     setMessages(prev => [...prev, userMsg, { id: pendingId, type: 'ai-loading' }])
     appendChatbotHistoryMessage(text, 'input')
-
-    setTimeout(() => {
-      const [aiText, ...rest] = getMockAiResponse(pendingId)
-      setMessages(prev => [
-        ...prev.map(m => m.id === pendingId ? aiText : m),
-        ...rest,
-      ])
-    }, 1200)
+    void requestAiResponse(text, pendingId)
   }
 
   const handleTakePhoto = () => {
@@ -243,10 +195,6 @@ function ChatbotChat() {
                     </div>
                   </div>
                 )
-              }
-
-              if (msg.type === 'ai-recipe') {
-                return <ChatbotRecipeCard key={msg.id} recipe={msg.recipe} />
               }
 
               if (msg.type === 'suggestions') {
