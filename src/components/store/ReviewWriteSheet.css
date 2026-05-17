@@ -11,7 +11,7 @@
   right: 0;
   bottom: 0;
   z-index: 201;
-  background: #fff;
+  background: #fffffd;
   border-radius: 20px 20px 0 0;
   max-height: 90vh;
   overflow-y: auto;
@@ -29,15 +29,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px 16px;
+  padding: 20px 18px;
   position: relative;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #e9e9e9;
 }
 
 .review-sheet__title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #111;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
 }
 
 .review-sheet__close {
@@ -46,7 +46,7 @@
   background: none;
   border: none;
   font-size: 18px;
-  color: #555;
+  color: #3c3c3c;
   cursor: pointer;
   padding: 4px;
 }
@@ -54,17 +54,17 @@
 /* 상품 카드 */
 .review-sheet__product {
   display: flex;
-  gap: 12px;
-  padding: 16px;
-  border-bottom: 1px solid #f0f0f0;
+  gap: 10px;
+  padding: 18px;
+  border-bottom: 1px solid #e9e9e9;
   align-items: center;
 }
 
 .review-sheet__product-img {
-  width: 72px;
-  height: 72px;
-  border-radius: 8px;
-  background: #e8e8e8;
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  /* background: #e8e8e8; */
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
@@ -74,26 +74,27 @@
   position: absolute;
   bottom: 6px;
   right: 6px;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   background: rgba(255,255,255,0.85);
-  border-radius: 50%;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .review-sheet__brand {
-  font-size: 12px;
-  font-weight: 700;
-  color: #333;
-  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #767676;
+  margin: 0 0 6px;
 }
 
 .review-sheet__name {
-  font-size: 13px;
-  color: #444;
-  margin: 0 0 4px;
+  font-size: 18px;
+  color: #3c3c3c;
+  margin: 0 0 6px;
+  font-weight: 600;
 }
 
 .review-sheet__price-row {
@@ -104,37 +105,38 @@
 }
 
 .review-sheet__price {
-  font-size: 13px;
-  font-weight: 700;
-  color: #111;
+  font-size: 14px;
+  font-weight: 500;
+  color: #3c3c3c;
 }
 
 .review-sheet__original-price {
   font-size: 11px;
-  color: #888888;
+  color: #8d8d8d;
   text-decoration: line-through;
   white-space: nowrap;
 }
 
 .review-sheet__option {
-  font-size: 11px;
+  font-size: 12px;
   color: #aaa;
   margin: 0;
+  display: none;
 }
 
 /* 별점 */
 .review-sheet__rating-section {
-  padding: 24px 16px 16px;
+  padding: 24px 20px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #e9e9e9;
 }
 
 .review-sheet__rating-title {
   font-size: 18px;
   font-weight: 700;
-  color: #111;
+  color: #1a1a1a;
   margin: 0 0 16px;
 }
 
@@ -145,14 +147,14 @@
 
 .review-sheet__star {
   font-size: 36px;
-  color: #ddd;
+  color: #d1d1d1;
   cursor: pointer;
   transition: color 0.1s;
   line-height: 1;
 }
 
 .review-sheet__star--active {
-  color: #f5a623;
+  color: #ffd515;
 }
 
 /* 리뷰 내용 */
@@ -161,30 +163,30 @@
 }
 
 .review-sheet__content-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: #111;
-  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #3c3c3c;
+  margin: 0 0 2px;
 }
 
 .review-sheet__content-desc {
   font-size: 13px;
-  color: #888;
+  color: #8d8d8d;
   margin: 0 0 14px;
 }
 
 .review-sheet__textarea {
   width: 100%;
   height: 120px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e9e9e9;
   border-radius: 10px;
   padding: 12px;
-  font-size: 13px;
-  color: #333;
+  font-size: 14px;
+  color: #d1d1d1;
   resize: none;
   outline: none;
   box-sizing: border-box;
-  line-height: 1.6;
+  line-height: 1.3;
 }
 
 .review-sheet__textarea::placeholder {
