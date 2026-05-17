@@ -1,0 +1,114 @@
+.chatbot-recipe-card {
+  background: #fff;
+  border: 1px solid #dde3f0;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 4px 0 12px;
+}
+
+.chatbot-recipe-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.chatbot-recipe-card__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.3;
+}
+
+.chatbot-recipe-card__subtitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #8d8d8d;
+  line-height: 1.3;
+}
+
+.chatbot-recipe-card__body {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.chatbot-recipe-card__image {
+  width: 55%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.chatbot-recipe-card__image-placeholder {
+  width: 55%;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  flex-shrink: 0;
+  background: #eef1fb;
+}
+
+.chatbot-recipe-card__stats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chatbot-recipe-card__stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background: var(--color-status-success-10);
+  border-radius: 10px;
+}
+
+.chatbot-recipe-card__stat-label {
+  font-size: 13px;
+  font-weight: 400;
+  color: #8d8d8d;
+  line-height: 1.3;
+}
+
+.chatbot-recipe-card__stat-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #3c3c3c;
+  line-height: 1.3;
+}
+
+.chatbot-recipe-card__divider {
+  border: none;
+  border-top: 1px dashed #cdd3e8;
+  margin-bottom: 14px;
+}
+
+.chatbot-recipe-card__reason {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chatbot-recipe-card__reason-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4E7FFF;
+  line-height: 1.3;
+}
+
+.chatbot-recipe-card__reason-text {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: #8d8d8d;
+  line-height: 1.3;
+  white-space: pre-line;
+}

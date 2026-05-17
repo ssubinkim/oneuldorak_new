@@ -3,6 +3,7 @@ import type { BottomNavRoute } from './components/common/layout/BottomNav'
 import Community from './pages/community/Community'
 import Chatbot from './pages/chatbot/Chatbot'
 import ChatbotCamera from './pages/chatbot/ChatbotCamera'
+import ChatbotChat from './pages/chatbot/ChatbotChat'
 import Meal from './pages/meal/Meal'
 import WeeklyPlanPage from './pages/meal/WeeklyPlanPage'
 import GroceryPage from './pages/meal/GroceryPage'
@@ -24,6 +25,7 @@ type AppRoute =
   | 'onboarding'
   | 'chatbot'
   | 'chatbot-camera'
+  | 'chatbot-chat'
   | 'mypage-likes'
   | 'mypage-saved-recipes'
   | 'meal-weekly-plan'
@@ -47,6 +49,7 @@ const pages = {
   'meal-storage': () => <StoragePage />,
   chatbot: Chatbot,
   'chatbot-camera': ChatbotCamera,
+  'chatbot-chat': ChatbotChat,
 } satisfies Record<AppRoute, () => React.JSX.Element>
 
 function getRouteFromHash(): AppRoute {
