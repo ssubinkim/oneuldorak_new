@@ -307,14 +307,16 @@ function BoardDetailPage({
                 post={visiblePost}
                 isLiked={isBoardPostLiked}
                 onLikeClick={handleToggleBoardLike}
+                ownerActions={
+                  canManagePost ? (
+                    <>
+                      <button type="button" onClick={() => setIsEditingPost(true)}>수정</button>
+                      <button type="button" onClick={handleDeletePost}>삭제</button>
+                    </>
+                  ) : null
+                }
               />
             ) : null}
-            {canManagePost && (
-              <div className="board-detail-owner-actions">
-                <button type="button" onClick={() => setIsEditingPost(true)}>수정</button>
-                <button type="button" onClick={handleDeletePost}>삭제</button>
-              </div>
-            )}
           </>
         )}
 

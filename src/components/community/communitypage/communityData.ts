@@ -115,5 +115,5 @@ export const popularRecipes: RecipeCard[] = [
 export const dorakRankings = [
   { rank: 1, name: '도시락락락' },
   { rank: 2, name: '냉털전문가' },
-  { rank: 3, name: '지쳤나요?네니오' },
+  { rank: 3, name: '도락쿵야' },
 ]

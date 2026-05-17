@@ -36,7 +36,14 @@ import './Community.css'
 type CommunityTab = CommunityTabRoute
 type CommunityView = 'main' | 'recipe' | 'free' | 'vote' | 'detail' | 'boardDetail' | 'write'
 type CommunityInitialTarget = { kind: 'recipe' | 'board'; id: string }
-type RegistrationToast = { id: number; message: string } | null
+type CommunityContentTab = 'recipe' | 'free' | 'vote'
+type RegistrationModalState = {
+  id: number
+  message: string
+  tab: CommunityContentTab
+  targetId: string
+} | null
+type FocusTarget = { tab: CommunityContentTab; targetId: string } | null
 
 const DAY_MS = 24 * 60 * 60 * 1000
 
@@ -338,7 +345,8 @@ function Community() {
     persistedWriteState.boardDetailPosts,
   )
   const [registeredVotes, setRegisteredVotes] = useState<VoteCardItem[]>(persistedWriteState.votes)
-  const [registrationToast, setRegistrationToast] = useState<RegistrationToast>(null)
+  const [registrationModal, setRegistrationModal] = useState<RegistrationModalState>(null)
+  const [focusTarget, setFocusTarget] = useState<FocusTarget>(null)
   const selectedRegisteredRecipe = selectedRecipeId
     ? registeredRecipes.find((recipe) => recipe.id === selectedRecipeId) ?? null
     : null
@@ -364,18 +372,6 @@ function Community() {
       votes: registeredVotes,
     })
   }, [registeredBoardDetailPosts, registeredBoardPosts, registeredRecipes, registeredVotes])
-
-  useEffect(() => {
-    if (!registrationToast) {
-      return
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      setRegistrationToast(null)
-    }, 2200)
-
-    return () => window.clearTimeout(timeoutId)
-  }, [registrationToast])
 
   const handleTabClick = (tab: CommunityTab) => {
     setActiveTab(tab)
@@ -507,15 +503,45 @@ function Community() {
     setView('write')
   }
 
+  const handleRegistrationModalClose = () => {
+    if (!registrationModal) {
+      return
+    }
+
+    setFocusTarget({
+      tab: registrationModal.tab,
+      targetId: registrationModal.targetId,
+    })
+    setRegistrationModal(null)
+  }
+
+  const handleRecipeFocusConsumed = () => {
+    setFocusTarget((previousTarget) => (previousTarget?.tab === 'recipe' ? null : previousTarget))
+  }
+
+  const handleBoardFocusConsumed = () => {
+    setFocusTarget((previousTarget) => (previousTarget?.tab === 'free' ? null : previousTarget))
+  }
+
+  const handleVoteFocusConsumed = () => {
+    setFocusTarget((previousTarget) => (previousTarget?.tab === 'vote' ? null : previousTarget))
+  }
+
   const handleWriteSubmit = (payload: CommunityWritePayload) => {
+    let nextTarget: FocusTarget = null
+
     if (payload.tab === 'recipe') {
-      setRegisteredRecipes((prevRecipes) => [createRegisteredRecipe(payload, nickname, email), ...prevRecipes])
+      const nextRecipe = createRegisteredRecipe(payload, nickname, email)
+      setRegisteredRecipes((prevRecipes) => [nextRecipe, ...prevRecipes])
       setActiveTab('recipe')
       setView('recipe')
+      nextTarget = { tab: 'recipe', targetId: nextRecipe.id }
     } else if (payload.tab === 'vote') {
-      setRegisteredVotes((prevVotes) => [createRegisteredVote(payload, nickname, email), ...prevVotes])
+      const nextVote = createRegisteredVote(payload, nickname, email)
+      setRegisteredVotes((prevVotes) => [nextVote, ...prevVotes])
       setActiveTab('vote')
       setView('vote')
+      nextTarget = { tab: 'vote', targetId: nextVote.id }
     } else {
       const nextListPost = createRegisteredBoardPost(payload, nickname, email)
       const nextDetailPost = createRegisteredBoardDetailPost(payload, nickname, email)
@@ -524,9 +550,17 @@ function Community() {
       setRegisteredBoardDetailPosts((prevPosts) => [{ ...nextDetailPost, id: nextListPost.id }, ...prevPosts])
       setActiveTab('free')
       setView('free')
+      nextTarget = { tab: 'free', targetId: nextListPost.id }
     }
 
-    setRegistrationToast({ id: Date.now(), message: '등록 되었습니다.' })
+    if (nextTarget) {
+      setRegistrationModal({
+        id: Date.now(),
+        message: '등록이 완료되었어요. 내 글로 이동할까요?',
+        tab: nextTarget.tab,
+        targetId: nextTarget.targetId,
+      })
+    }
   }
 
   return (
@@ -534,9 +568,25 @@ function Community() {
       <div className="app-screen">
         <Header />
 
-        {registrationToast && (
-          <div key={registrationToast.id} className="community-toast" role="status" aria-live="polite">
-            {registrationToast.message}
+        {registrationModal && (
+          <div
+            key={registrationModal.id}
+            className="community-registration-modal"
+            role="presentation"
+            onClick={handleRegistrationModalClose}
+          >
+            <section
+              className="community-registration-modal__panel"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="community-registration-modal-title"
+              aria-describedby="community-registration-modal-description"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <h2 id="community-registration-modal-title">등록 완료</h2>
+              <p id="community-registration-modal-description">{registrationModal.message}</p>
+              <button type="button" onClick={handleRegistrationModalClose}>작성한 글 보기</button>
+            </section>
           </div>
         )}
 
@@ -549,6 +599,8 @@ function Community() {
             onSelectTab={handleTabClick}
             onOpenDetail={handleOpenRecipeDetail}
             extraRecipes={registeredRecipes}
+            focusRecipeId={focusTarget?.tab === 'recipe' ? focusTarget.targetId : null}
+            onFocusHandled={handleRecipeFocusConsumed}
           />
         )}
 
@@ -557,6 +609,8 @@ function Community() {
             onSelectTab={handleTabClick}
             onOpenDetail={handleOpenBoardDetail}
             extraPosts={registeredBoardPosts}
+            focusPostId={focusTarget?.tab === 'free' ? focusTarget.targetId : null}
+            onFocusHandled={handleBoardFocusConsumed}
           />
         )}
 
@@ -587,6 +641,8 @@ function Community() {
             extraVotes={registeredVotes}
             onUpdateVote={handleUpdateVote}
             onDeleteVote={handleDeleteVote}
+            focusVoteId={focusTarget?.tab === 'vote' ? focusTarget.targetId : null}
+            onFocusHandled={handleVoteFocusConsumed}
           />
         )}
 

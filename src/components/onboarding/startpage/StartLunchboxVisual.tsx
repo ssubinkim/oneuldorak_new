@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import openingGif from '../images/opening04.gif'
+import openingGif from '../images/opening05.gif'
 import './StartLunchboxVisual.css'
 
-const OPENING_DURATION = 3910
+const OPENING_DURATION = 3500
 
 type StartLunchboxVisualProps = {
   onEnded?: () => void

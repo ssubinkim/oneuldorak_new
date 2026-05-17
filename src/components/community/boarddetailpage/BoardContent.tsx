@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import type { CommunityMediaAttachment } from '../communitywritepage/writeTypes'
 
 export type BoardDetailPost = {
@@ -35,9 +36,15 @@ type BoardContentProps = {
   post: BoardDetailPost
   isLiked?: boolean
   onLikeClick?: () => void
+  ownerActions?: ReactNode
 }
 
-function BoardContent({ post, isLiked = false, onLikeClick }: BoardContentProps) {
+function BoardContent({
+  post,
+  isLiked = false,
+  onLikeClick,
+  ownerActions,
+}: BoardContentProps) {
   return (
     <>
       <h1>{post.title}</h1>
@@ -62,6 +69,8 @@ function BoardContent({ post, isLiked = false, onLikeClick }: BoardContentProps)
           </span>
         </div>
       </div>
+
+      {ownerActions ? <div className="board-detail-owner-actions">{ownerActions}</div> : null}
 
       <section className="board-detail-body">
         {post.paragraphs.map((paragraph) => (

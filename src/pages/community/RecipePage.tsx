@@ -12,16 +12,34 @@ type RecipePageProps = {
   onSelectTab: (tab: CommunityTabRoute) => void
   onOpenDetail: (recipeId: string) => void
   extraRecipes?: RecipeItem[]
+  focusRecipeId?: string | null
+  onFocusHandled?: () => void
 }
 
 const filters = ['인기순', '최신순', '가격순', '시간순', '난이도순']
 
-function RecipePage({ onSelectTab, onOpenDetail, extraRecipes = [] }: RecipePageProps) {
-  const { isHeaderCompact, handleCommunityScroll } = useCommunityHeaderCollapse()
+function RecipePage({
+  onSelectTab,
+  onOpenDetail,
+  extraRecipes = [],
+  focusRecipeId = null,
+  onFocusHandled,
+}: RecipePageProps) {
+  const {
+    isHeaderCompact,
+    pageRef,
+    compactTriggerRef,
+    handleCommunityScroll,
+  } = useCommunityHeaderCollapse()
 
   return (
-    <main className="page-scroll recipe-page" onScroll={handleCommunityScroll}>
-      <CommunityBanner variant="recipe" />
+    <main
+      ref={pageRef}
+      className="page-scroll recipe-page"
+      onScroll={handleCommunityScroll}
+    >
+      <CommunityBanner variant="recipe" isCompact={isHeaderCompact} />
+      <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
       <CommunityStickyHeader
         activeTab="recipe"
         tabsClassName="community-tabs"
@@ -40,19 +58,25 @@ function RecipePage({ onSelectTab, onOpenDetail, extraRecipes = [] }: RecipePage
           ))}
         </div>
 
-        <section className="recipe-page__tip-card" aria-label="오늘의 냉장고 활용 팁">
-          <div className="recipe-page__tip-copy">
-            <h3>오늘의 냉장고 활용 TIP</h3>
-            <p>
-              냉장고 속 재료를 먼저 확인하면
-              <br />
-              장보기 횟수를 줄일 수 있어요!
-            </p>
-          </div>
-          <img src={dorakTipMascot} alt="" aria-hidden="true" />
-        </section>
-
-        <RecipeList onOpenDetail={onOpenDetail} extraItems={extraRecipes} />
+        <RecipeList
+          onOpenDetail={onOpenDetail}
+          extraItems={extraRecipes}
+          focusRecipeId={focusRecipeId}
+          onFocusHandled={onFocusHandled}
+          middleSlot={(
+            <section className="recipe-page__tip-card" aria-label="오늘의 냉장고 활용 팁">
+              <div className="recipe-page__tip-copy">
+                <h3>오늘의 냉장고 활용 TIP</h3>
+                <p>
+                  냉장고 속 재료를 먼저 확인하면
+                  <br />
+                  장보기 횟수를 줄일 수 있어요!
+                </p>
+              </div>
+              <img src={dorakTipMascot} alt="" aria-hidden="true" />
+            </section>
+          )}
+        />
       </div>
     </main>
   )

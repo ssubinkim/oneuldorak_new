@@ -1,6 +1,19 @@
 .dorak-ranking {
   margin-top: 20px;
-  
+  --rank-scale: 1;
+  --rank-inner-scale: 1;
+  --rank-card-1-width: calc(140px * var(--rank-scale));
+  --rank-card-1-height: calc(150px * var(--rank-scale));
+  --rank-card-2-width: calc(110px * var(--rank-scale));
+  --rank-card-2-height: calc(120px * var(--rank-scale));
+  --rank-card-3-width: calc(80px * var(--rank-scale));
+  --rank-card-3-height: calc(90px * var(--rank-scale));
+  --rank-num-1-size: calc(36px * var(--rank-inner-scale));
+  --rank-num-2-size: calc(30px * var(--rank-inner-scale));
+  --rank-num-3-size: calc(24px * var(--rank-inner-scale));
+  --rank-name-1-size: 20px;
+  --rank-name-2-size: 16px;
+  --rank-name-3-size: 14px;
 }
 
 .dorak-ranking__header {
@@ -45,47 +58,155 @@
 
 .dorak-ranking__cards {
   display: flex;
-  gap: 10px;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .dorak-ranking__card {
-  flex: 1;
+  position: relative;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 12px 8px;
-  background: #fff;
-  border: 1.5px solid #e8eaf0;
-  border-radius: 14px;
+  gap: 4px;
+  min-width: 0;
+  padding: 8px 6px;
+  background: #f6f6f6;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-.dorak-ranking__card--first {
-  background: #FFFBE8;
-  border-color: #FFD740;
+.dorak-ranking__cards .dorak-ranking__card:nth-child(1) {
+  width: var(--rank-card-1-width);
+  height: var(--rank-card-1-height);
+  padding: 10px 8px 12px;
+  background: #FFF1C9;
+  border-color: #FFD515;
 }
 
 .dorak-ranking__rank {
-  align-self: flex-start;
-  font-size: 12px;
-  font-weight: 800;
-  color: #bbb;
-}
-
-.dorak-ranking__card--first .dorak-ranking__rank {
-  color: #FF9800;
-}
-
-.dorak-ranking__avatar {
-  font-size: 28px;
+  align-self: center;
+  color: #2f2f2f;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: calc(28px * var(--rank-inner-scale));
+  font-weight: 600;
   line-height: 1;
 }
 
+.dorak-ranking__cards .dorak-ranking__card:nth-child(1) .dorak-ranking__rank {
+  color: #e11212;
+  font-size: var(--rank-num-1-size);
+  font-weight: 700;
+}
+
+.dorak-ranking__cards .dorak-ranking__card:nth-child(2) .dorak-ranking__rank {
+  font-size: var(--rank-num-2-size);
+}
+
+.dorak-ranking__cards .dorak-ranking__card:nth-child(3) .dorak-ranking__rank {
+  font-size: var(--rank-num-3-size);
+}
+
+.dorak-ranking__cards .dorak-ranking__card:nth-child(2) {
+  width: var(--rank-card-2-width);
+  height: var(--rank-card-2-height);
+  padding: 8px 8px 10px;
+  background: #FFFDF5;
+  border-color: #FFE6A1;
+}
+
+.dorak-ranking__cards .dorak-ranking__card:nth-child(3) {
+  width: var(--rank-card-3-width);
+  height: var(--rank-card-3-height);
+  padding: 6px 6px 8px;
+  background: #ffffff;
+  border-color: #d1d1d1;
+}
+
+.dorak-ranking__avatar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 40px;
+}
+
+.dorak-ranking__avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dorak-ranking__cards .dorak-ranking__card:nth-child(1) .dorak-ranking__avatar {
+  width: calc(70px * var(--rank-inner-scale));
+  height: calc(56px * var(--rank-inner-scale));
+}
+
+.dorak-ranking__cards .dorak-ranking__card:nth-child(2) .dorak-ranking__avatar {
+  width: calc(50px * var(--rank-inner-scale));
+  height: calc(40px * var(--rank-inner-scale));
+}
+
+.dorak-ranking__cards .dorak-ranking__card:nth-child(3) .dorak-ranking__avatar {
+  width: calc(30px * var(--rank-inner-scale));
+  height: calc(24px * var(--rank-inner-scale));
+}
+
 .dorak-ranking__name {
+  margin-top: auto;
+  font-family: 'Pretendard Variable', sans-serif;
   font-size: 11px;
   font-weight: 600;
   color: #333;
   text-align: center;
-  line-height: 1.3;
+  line-height: 1.25;
   word-break: keep-all;
+}
+
+.dorak-ranking__cards .dorak-ranking__card:nth-child(1) .dorak-ranking__name {
+  color: #1A1A1A;
+  font-family: 'Pretendard', 'Pretendard Variable', sans-serif;
+  font-size: var(--rank-name-1-size);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
+  letter-spacing: -0.08px;
+}
+
+.dorak-ranking__cards .dorak-ranking__card:nth-child(2) .dorak-ranking__name,
+.dorak-ranking__cards .dorak-ranking__card:nth-child(3) .dorak-ranking__name {
+  color: #1A1A1A;
+  font-family: 'Pretendard', 'Pretendard Variable', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
+  letter-spacing: -0.08px;
+}
+
+.dorak-ranking__cards .dorak-ranking__card:nth-child(2) .dorak-ranking__name {
+  font-size: var(--rank-name-2-size);
+}
+
+.dorak-ranking__cards .dorak-ranking__card:nth-child(3) .dorak-ranking__name {
+  font-size: var(--rank-name-3-size);
+}
+
+@media (min-width: 600px) {
+  .dorak-ranking {
+    --rank-scale: 1.25;
+    --rank-inner-scale: 1.15;
+  }
+}
+
+@media (min-width: 720px) {
+  .dorak-ranking {
+    --rank-scale: 1.4;
+    --rank-inner-scale: 1.25;
+  }
 }

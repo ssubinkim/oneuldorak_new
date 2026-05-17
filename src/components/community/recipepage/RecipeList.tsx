@@ -1,5 +1,11 @@
 import './RecipeList.css'
-import recipeThumbImage from '../../../assets/images/food_imges/chamchimayo.png'
+import { Fragment, type ReactNode, useEffect, useRef } from 'react'
+import chamchimayoImage from '../../../assets/images/food_imges/chamchimayo.png'
+import bibimbapImage from '../../../assets/images/food_imges/bibimbap.png'
+import kimbokImage from '../../../assets/images/food_imges/kimbok.png'
+import omuriceImage from '../../../assets/images/food_imges/omurice.png'
+import bulgogiImage from '../../../assets/images/food_imges/bulgogi.png'
+import ssoyaImage from '../../../assets/images/food_imges/ssoya.png'
 import type { CommunityMediaAttachment } from '../communitywritepage/writeTypes'
 
 export type RecipeItem = {
@@ -24,86 +30,89 @@ export type RecipeItem = {
 type RecipeListProps = {
   onOpenDetail: (recipeId: string) => void
   extraItems?: RecipeItem[]
+  middleSlot?: ReactNode
+  focusRecipeId?: string | null
+  onFocusHandled?: () => void
 }
 
 const recipeItems: RecipeItem[] = [
   {
     id: 'recipe-1',
-    title: '3000원으로 만드는 도시락',
-    subtitle: '저렴한 재료로 든든하게',
-    price: '3,000원',
-    time: '15분',
+    title: '참치마요 덮밥',
+    subtitle: 'chamchimayo',
+    price: '3,500원',
+    time: '10분',
     level: '쉬움',
-    author: '절약왕',
-    likes: 88,
-    comments: 12,
-    saves: 24,
-    image: recipeThumbImage,
+    author: '한끼도락',
+    likes: 124,
+    comments: 19,
+    saves: 41,
+    image: chamchimayoImage,
   },
   {
     id: 'recipe-2',
-    title: '3000원으로 만드는 도시락',
-    subtitle: '저렴한 재료로 든든하게',
-    price: '3,000원',
-    time: '15분',
+    title: '비빔밥',
+    subtitle: 'bibimbap',
+    price: '4,500원',
+    time: '18분',
     level: '쉬움',
-    author: '절약왕',
-    likes: 88,
-    comments: 12,
-    saves: 24,
-    image: recipeThumbImage,
+    author: '집밥메이트',
+    likes: 108,
+    comments: 15,
+    saves: 37,
+    image: bibimbapImage,
   },
   {
     id: 'recipe-3',
-    title: '3000원으로 만드는 도시락',
-    subtitle: '저렴한 재료로 든든하게',
-    price: '3,000원',
-    time: '15분',
+    title: '김치볶음밥',
+    subtitle: 'kimbok',
+    price: '3,800원',
+    time: '12분',
     level: '쉬움',
-    author: '절약왕',
-    likes: 88,
-    comments: 12,
-    saves: 24,
-    image: recipeThumbImage,
+    author: '볶음밥연구소',
+    likes: 132,
+    comments: 21,
+    saves: 45,
+    image: kimbokImage,
   },
   {
     id: 'recipe-4',
-    title: '3000원으로 만드는 도시락',
-    subtitle: '저렴한 재료로 든든하게',
-    price: '3,000원',
-    time: '15분',
+    title: '오므라이스',
+    subtitle: 'omurice',
+    price: '4,200원',
+    time: '20분',
     level: '쉬움',
-    author: '절약왕',
-    likes: 88,
-    comments: 12,
-    saves: 24,
-    image: recipeThumbImage,
+    author: '계란한판',
+    likes: 97,
+    comments: 11,
+    saves: 33,
+    image: omuriceImage,
   },
   {
     id: 'recipe-5',
-    title: '3000원으로 만드는 도시락',
-    subtitle: '저렴한 재료로 든든하게',
-    price: '3,000원',
-    time: '15분',
-    level: '쉬움',
-    author: '절약왕',
-    likes: 88,
-    comments: 12,
-    saves: 24,
-    image: recipeThumbImage,
+    title: '불고기 덮밥',
+    subtitle: 'bulgogi',
+    price: '5,000원',
+    time: '25분',
+    level: '보통',
+    author: '고기좋아',
+    likes: 143,
+    comments: 26,
+    saves: 52,
+    image: bulgogiImage,
   },
   {
     id: 'recipe-6',
-    title: '3000원으로 만드는 도시락',
-    subtitle: '저렴한 재료로 든든하게',
-    price: '3,000원',
-    time: '15분',
+    title: '쏘야볶음',
+    subtitle: 'ssoya',
+    price: '4,000원',
+    time: '14분',
     level: '쉬움',
-    author: '절약왕',
-    likes: 88,
-    comments: 12,
-    saves: 24,
-    image: recipeThumbImage,
+    author: '도시락천재',
+    likes: 111,
+    comments: 18,
+    saves: 39,
+    image: ssoyaImage,
   },
 ]
 
@@ -145,6 +154,7 @@ function RecipeCard({
   return (
     <article
       className="recipe-share-card"
+      data-recipe-id={item.id}
       role="button"
       tabIndex={0}
       onClick={handleOpenDetail}
@@ -155,7 +165,7 @@ function RecipeCard({
         }
       }}
     >
-      <img className="recipe-share-card__thumb" src={item.image ?? recipeThumbImage} alt="" aria-hidden="true" />
+      <img className="recipe-share-card__thumb" src={item.image ?? chamchimayoImage} alt="" aria-hidden="true" />
 
       <div className="recipe-share-card__content">
         <p className="recipe-share-card__subtitle">{item.subtitle}</p>
@@ -192,17 +202,50 @@ function RecipeCard({
   )
 }
 
-function RecipeList({ onOpenDetail, extraItems = [] }: RecipeListProps) {
+function RecipeList({
+  onOpenDetail,
+  extraItems = [],
+  middleSlot,
+  focusRecipeId = null,
+  onFocusHandled,
+}: RecipeListProps) {
+  const listRef = useRef<HTMLElement | null>(null)
   const items = [...extraItems, ...recipeItems]
+  const middleInsertIndex = extraItems.length + Math.ceil(recipeItems.length / 2)
+  const hasFocusTarget = focusRecipeId ? items.some((item) => item.id === focusRecipeId) : false
+
+  useEffect(() => {
+    if (!focusRecipeId || !hasFocusTarget) {
+      return
+    }
+
+    const targetCard = listRef.current?.querySelector<HTMLElement>(`[data-recipe-id="${focusRecipeId}"]`)
+
+    if (!targetCard) {
+      return
+    }
+
+    targetCard.classList.add('is-newly-created')
+    targetCard.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    })
+    onFocusHandled?.()
+
+    const highlightTimer = window.setTimeout(() => {
+      targetCard.classList.remove('is-newly-created')
+    }, 1700)
+
+    return () => window.clearTimeout(highlightTimer)
+  }, [focusRecipeId, hasFocusTarget, onFocusHandled])
 
   return (
-    <section className="recipe-page__list" aria-label="레시피 목록">
-      {items.map((item) => (
-        <RecipeCard
-          key={item.id}
-          item={item}
-          onOpenDetail={onOpenDetail}
-        />
+    <section ref={listRef} className="recipe-page__list" aria-label="레시피 목록">
+      {items.map((item, index) => (
+        <Fragment key={item.id}>
+          <RecipeCard item={item} onOpenDetail={onOpenDetail} />
+          {middleSlot && index === middleInsertIndex - 1 ? middleSlot : null}
+        </Fragment>
       ))}
     </section>
   )

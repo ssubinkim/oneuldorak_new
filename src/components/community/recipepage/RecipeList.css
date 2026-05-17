@@ -16,6 +16,11 @@
   box-sizing: border-box;
 }
 
+.recipe-share-card.is-newly-created {
+  border-color: #ffd515;
+  box-shadow: 0 0 0 2px rgba(255, 213, 21, 0.34);
+}
+
 .recipe-share-card__thumb {
   display: block;
   width: 116px;

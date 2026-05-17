@@ -2,24 +2,27 @@ import './CommunityBanner.css'
 import defaultBannerImage from '../../../pages/community/images/dorak02.png'
 import recipeBannerImage from '../../../assets/food_mascot_all/dorak18.svg'
 import boardBannerImage from '../../../assets/food_mascot_all/dorak15.svg'
+import voteBannerImage from '../../../assets/food_mascot_all/dorak11.svg'
 
-type CommunityBannerVariant = 'default' | 'recipe' | 'board'
+type CommunityBannerVariant = 'default' | 'recipe' | 'board' | 'vote'
 
 type CommunityBannerProps = {
   variant?: CommunityBannerVariant
+  isCompact?: boolean
 }
 
 const bannerImageByVariant: Record<CommunityBannerVariant, string> = {
   default: defaultBannerImage,
   recipe: recipeBannerImage,
   board: boardBannerImage,
+  vote: voteBannerImage,
 }
 
-function CommunityBanner({ variant = 'default' }: CommunityBannerProps) {
+function CommunityBanner({ variant = 'default', isCompact = false }: CommunityBannerProps) {
   const bannerImage = bannerImageByVariant[variant]
 
   return (
-    <section className="community-banner">
+    <section className={`community-banner community-banner--${variant}${isCompact ? ' is-compact' : ''}`}>
       <div className="community-banner__header">
         <h1>커뮤니티</h1>
         <div className="community-banner__actions">

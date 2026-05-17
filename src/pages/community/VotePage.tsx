@@ -13,6 +13,8 @@ type VotePageProps = {
   extraVotes?: VoteCardItem[]
   onUpdateVote?: (voteId: string, data: VoteWriteData) => void
   onDeleteVote?: (voteId: string) => void
+  focusVoteId?: string | null
+  onFocusHandled?: () => void
 }
 
 function VotePage({
@@ -20,13 +22,25 @@ function VotePage({
   extraVotes = [],
   onUpdateVote,
   onDeleteVote,
+  focusVoteId = null,
+  onFocusHandled,
 }: VotePageProps) {
   const [voteFilter, setVoteFilter] = useState<VoteFilter>('active')
-  const { isHeaderCompact, handleCommunityScroll } = useCommunityHeaderCollapse()
+  const {
+    isHeaderCompact,
+    pageRef,
+    compactTriggerRef,
+    handleCommunityScroll,
+  } = useCommunityHeaderCollapse()
 
   return (
-    <main className="page-scroll vote-page" onScroll={handleCommunityScroll}>
-      <CommunityBanner />
+    <main
+      ref={pageRef}
+      className="page-scroll vote-page"
+      onScroll={handleCommunityScroll}
+    >
+      <CommunityBanner variant="vote" isCompact={isHeaderCompact} />
+      <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
       <CommunityStickyHeader
         activeTab="vote"
         tabsClassName="community-tabs"
@@ -44,6 +58,8 @@ function VotePage({
           extraVotes={extraVotes}
           onUpdateVote={onUpdateVote}
           onDeleteVote={onDeleteVote}
+          focusVoteId={focusVoteId}
+          onFocusHandled={onFocusHandled}
         />
       </div>
     </main>

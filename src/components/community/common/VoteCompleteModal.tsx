@@ -38,6 +38,7 @@ type VoteCompleteModalProps = {
   question: string
   selectedOption: string
   reward?: string
+  isPointAwarded?: boolean
   onClose: () => void
 }
 
@@ -46,6 +47,7 @@ function VoteCompleteModal({
   question,
   selectedOption,
   reward,
+  isPointAwarded = true,
   onClose,
 }: VoteCompleteModalProps) {
   const [isVisualReady, setIsVisualReady] = useState(false)
@@ -79,6 +81,10 @@ function VoteCompleteModal({
   }
 
   const rewardText = reward?.replace('+', '').replace(/p$/i, 'P') ?? '1P'
+  const titleText = isPointAwarded ? `${rewardText} 적립 완료!` : '투표 참여 완료!'
+  const descriptionText = isPointAwarded
+    ? '다른 투표도 참여해보세요'
+    : '이미 참여한 투표는 포인트가 중복 지급되지 않아요'
 
   return (
     <div
@@ -122,8 +128,8 @@ function VoteCompleteModal({
             decoding="async"
           />
         </div>
-        <h2 id="vote-complete-modal-title">{rewardText} 적립 완료!</h2>
-        <p id="vote-complete-modal-description">다른 투표도 참여해보세요</p>
+        <h2 id="vote-complete-modal-title">{titleText}</h2>
+        <p id="vote-complete-modal-description">{descriptionText}</p>
         <p className="vote-complete-modal__sr-only">
           {question} 투표에서 {selectedOption} 항목을 선택했습니다.
         </p>

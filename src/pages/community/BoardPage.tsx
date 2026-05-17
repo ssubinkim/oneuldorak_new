@@ -16,15 +16,33 @@ type BoardPageProps = {
   onSelectTab: (tab: CommunityTabRoute) => void
   onOpenDetail: (postId: string) => void
   extraPosts?: BoardPost[]
+  focusPostId?: string | null
+  onFocusHandled?: () => void
 }
 
-function BoardPage({ onSelectTab, onOpenDetail, extraPosts = [] }: BoardPageProps) {
+function BoardPage({
+  onSelectTab,
+  onOpenDetail,
+  extraPosts = [],
+  focusPostId = null,
+  onFocusHandled,
+}: BoardPageProps) {
   const [activeFilter, setActiveFilter] = useState<BoardFilter>(boardFilters[0])
-  const { isHeaderCompact, handleCommunityScroll } = useCommunityHeaderCollapse()
+  const {
+    isHeaderCompact,
+    pageRef,
+    compactTriggerRef,
+    handleCommunityScroll,
+  } = useCommunityHeaderCollapse()
 
   return (
-    <main className="page-scroll free-detail-page" onScroll={handleCommunityScroll}>
-      <CommunityBanner variant="board" />
+    <main
+      ref={pageRef}
+      className="page-scroll free-detail-page"
+      onScroll={handleCommunityScroll}
+    >
+      <CommunityBanner variant="board" isCompact={isHeaderCompact} />
+      <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
       <CommunityStickyHeader
         activeTab="free"
         tabsClassName="community-tabs"
@@ -35,7 +53,13 @@ function BoardPage({ onSelectTab, onOpenDetail, extraPosts = [] }: BoardPageProp
       <div className="free-detail-body">
         <BoardPopularPosts posts={mockBoardPopularPosts} />
         <BoardCategoryFilters activeFilter={activeFilter} onChange={setActiveFilter} />
-        <BoardList activeFilter={activeFilter} onOpenDetail={onOpenDetail} extraPosts={extraPosts} />
+        <BoardList
+          activeFilter={activeFilter}
+          onOpenDetail={onOpenDetail}
+          extraPosts={extraPosts}
+          focusPostId={focusPostId}
+          onFocusHandled={onFocusHandled}
+        />
       </div>
     </main>
   )
