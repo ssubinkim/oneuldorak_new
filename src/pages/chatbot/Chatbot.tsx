@@ -1,10 +1,11 @@
-import { useRef, useState, type ChangeEvent } from 'react'
+import { useState } from 'react'
 import '../../styles/Tailwind.css'
 import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import chatbotHeroImage from '../../components/chatbot/images/ai_main.svg'
 import btnXIcon from '../../components/chatbot/images/btn_x.svg'
 import ChatbotCoachMark from '../../components/chatbot/ChatbotCoachMark'
+import ChatbotCameraSheet from '../../components/chatbot/ChatbotCameraSheet'
 import ChatbotInputBar from '../../components/chatbot/ChatbotInputBar'
 import './Chatbot.css'
 
@@ -21,40 +22,74 @@ function closeChatbot() {
   window.location.hash = '#/home'
 }
 
-function openCameraPage() {
-  window.location.hash = '#/chatbot-camera'
+type CameraPickMode = 'camera' | 'album'
+type JudgeMode = 'text' | 'photo'
+
+type OpenChatOptions = {
+  useApi?: boolean
+  judgeMode?: JudgeMode
+  openPicker?: boolean
+  pick?: CameraPickMode
 }
+
+const JUDGE_TEXT_QUERY = '살까말까 고민 중이야. 오늘 도시락 기준으로 사도 될지 판단해줘.'
+const JUDGE_PHOTO_QUERY = '사진으로 살까말까 판단받고 싶어.'
+const CAMERA_ANALYZE_QUERY = '사진 속 재료를 분석해서 도시락 추천해줘.'
 
 function Chatbot() {
   const [showCoachMark, setShowCoachMark] = useState(true)
-  const cameraInputRef = useRef<HTMLInputElement>(null)
+  const [showJudgeModeSheet, setShowJudgeModeSheet] = useState(false)
+  const [showCameraSheet, setShowCameraSheet] = useState(false)
   const { nickname } = useUserProfile()
   const displayName = nickname?.trim() || '도시락러버'
 
-  const openChatPage = (text: string, source: 'quick' | 'input') => {
+  const openChatPage = (text: string, source: 'quick' | 'input', options?: OpenChatOptions) => {
+    const params = new URLSearchParams()
+    params.set('q', text)
+    if (options?.useApi) params.set('api', '1')
+    if (options?.judgeMode) {
+      params.set('judge', '1')
+      params.set('mode', options.judgeMode)
+    }
+    if (options?.openPicker) params.set('openPicker', '1')
+    if (options?.pick) params.set('pick', options.pick)
+
     appendChatbotHistoryMessage(text, source)
-    window.location.hash = `#/chatbot-chat?q=${encodeURIComponent(text)}`
+    window.location.hash = `#/chatbot-chat?${params.toString()}`
   }
 
   const handleSuggestionClick = (suggestion: string) => {
+    setShowCoachMark(false)
     if (suggestion === '살까말까') {
-      openCameraPage()
+      setShowJudgeModeSheet(true)
       return
     }
     openChatPage(suggestion, 'quick')
   }
 
   const handleSubmit = (text: string) => {
+    setShowCoachMark(false)
     openChatPage(text, 'input')
   }
 
-  const handleCameraClick = () => {
-    cameraInputRef.current?.click()
+  const handleTakePhoto = () => {
+    setShowCameraSheet(false)
+    openChatPage(CAMERA_ANALYZE_QUERY, 'quick', { useApi: true, openPicker: true, pick: 'camera' })
   }
 
-  const handleCameraChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // 현재는 이미지 분석 업로드 플로우가 없어서 카메라 오픈 동작만 유지
-    event.currentTarget.value = ''
+  const handleSelectFromAlbum = () => {
+    setShowCameraSheet(false)
+    openChatPage(CAMERA_ANALYZE_QUERY, 'quick', { useApi: true, openPicker: true, pick: 'album' })
+  }
+
+  const handleJudgeByText = () => {
+    setShowJudgeModeSheet(false)
+    openChatPage(JUDGE_TEXT_QUERY, 'quick', { useApi: true, judgeMode: 'text' })
+  }
+
+  const handleJudgeByPhoto = () => {
+    setShowJudgeModeSheet(false)
+    openChatPage(JUDGE_PHOTO_QUERY, 'quick', { useApi: true, judgeMode: 'photo', openPicker: true })
   }
 
   return (
@@ -92,29 +127,36 @@ function Chatbot() {
             </div>
           </section>
 
-          {showCoachMark && (
+          {showCoachMark && !showJudgeModeSheet && !showCameraSheet && (
             <ChatbotCoachMark onDismiss={() => setShowCoachMark(false)} />
           )}
 
-          <input
-            ref={cameraInputRef}
-            type="file"
-            accept="image/*"
-            capture="environment"
-            onChange={handleCameraChange}
-            style={{
-              position: 'absolute',
-              width: 1,
-              height: 1,
-              opacity: 0,
-              pointerEvents: 'none',
-            }}
-          />
+          {showJudgeModeSheet && (
+            <ChatbotCameraSheet
+              title="어떻게 판단해볼까요?"
+              takePhotoLabel="대화로 판단받기"
+              selectFromAlbumLabel="사진으로 판단받기"
+              onTakePhoto={handleJudgeByText}
+              onSelectFromAlbum={handleJudgeByPhoto}
+              onClose={() => setShowJudgeModeSheet(false)}
+            />
+          )}
+
+          {showCameraSheet && (
+            <ChatbotCameraSheet
+              onTakePhoto={handleTakePhoto}
+              onSelectFromAlbum={handleSelectFromAlbum}
+              onClose={() => setShowCameraSheet(false)}
+            />
+          )}
 
           <section className="chatbot-bottom">
             <ChatbotInputBar
               onSubmit={handleSubmit}
-              onCameraClick={handleCameraClick}
+              onCameraClick={() => {
+                setShowCoachMark(false)
+                setShowCameraSheet(true)
+              }}
             />
           </section>
         </main>
