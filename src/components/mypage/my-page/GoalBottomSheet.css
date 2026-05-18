@@ -8,14 +8,14 @@
 
 .goal-sheet-title {
   font-size: 22px;
-  font-weight: 800;
+  font-weight: 600;
   color: #1a1a1a;
   margin: 0 0 6px;
 }
 
 .goal-sheet-sub {
-  font-size: 13px;
-  color: #aaa;
+  font-size: 14px;
+  color: #767676;
   margin: 0 0 28px;
 }
 
@@ -65,18 +65,18 @@
   padding: 15px 0;
   border-radius: 14px;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   border: none;
 }
 
 .goal-sheet-btn.primary {
   background: #ffd515;
-  color: #1a1a1a;
+  color: #3c3c3c;
 }
 
 .goal-sheet-btn.secondary {
   background: #fff;
   border: 1.5px solid #ddd;
-  color: #555;
+  color: #3c3c3c;
 }

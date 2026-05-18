@@ -11,6 +11,7 @@ import './MyPageMenuSections.css'
 export type MyPageMenuItem = {
   label: string
   aside?: string
+  asideColor?: string
   muted?: boolean
   icon?: string
   onClick?: () => void
@@ -32,7 +33,7 @@ const DEFAULT_MENU_SECTIONS: MyPageMenuSection[] = [
   {
     title: '멤버십',
     items: [
-      { label: '구독', aside: '정보', icon: icon3, onClick: () => { window.location.hash = '#/mypage-plus' } },
+      { label: '구독', aside: '정보', asideColor: '#1a1a1a', icon: icon3, onClick: () => { window.location.hash = '#/mypage-plus' } },
       { label: '혜택', icon: icon4, onClick: () => { window.location.hash = '#/mypage-plus-benefit' } },
       { label: '쿠폰', muted: true, icon: icon5 },
     ],
@@ -73,8 +74,10 @@ function MyPageMenuSections({ sections = DEFAULT_MENU_SECTIONS }: MyPageMenuSect
                   {item.icon && <img src={item.icon} alt="" />}
                 </span>
                 <span className="mypage-menu-label">{item.label}</span>
-                {item.aside && <span className="mypage-menu-aside">{item.aside}</span>}
-                <span className="mypage-menu-chevron" aria-hidden="true" />
+                <span className="mypage-menu-right">
+                  {item.aside && <span className="mypage-menu-aside" style={item.asideColor ? { color: item.asideColor } : undefined}>{item.aside}</span>}
+                  <span className="mypage-menu-chevron" aria-hidden="true" />
+                </span>
               </button>
             ))}
           </div>
