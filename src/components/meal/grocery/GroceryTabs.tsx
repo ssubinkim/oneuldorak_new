@@ -10,11 +10,10 @@ function GroceryTabs({ activeTab, checkedShoppingCount, onTabChange }: GroceryTa
   return (
     <div className="gp-tabs">
       <button
-        className={`gp-tab${activeTab === 'shopping' ? ' gp-tab--active' : ''}`}
-        onClick={() => onTabChange('shopping')}
+        className={`gp-tab${activeTab === 'recommend' ? ' gp-tab--active' : ''}`}
+        onClick={() => onTabChange('recommend')}
       >
-        장보기
-        <span className="gp-tab-badge">{checkedShoppingCount}</span>
+        추천재료
       </button>
       <button
         className={`gp-tab${activeTab === 'storage' ? ' gp-tab--active' : ''}`}
@@ -23,10 +22,12 @@ function GroceryTabs({ activeTab, checkedShoppingCount, onTabChange }: GroceryTa
         보관함
       </button>
       <button
-        className={`gp-tab${activeTab === 'recommend' ? ' gp-tab--active' : ''}`}
-        onClick={() => onTabChange('recommend')}
+        className={`gp-tab${activeTab === 'shopping' ? ' gp-tab--active' : ''}`}
+        onClick={() => onTabChange('shopping')}
+        data-tab="shopping"
       >
-        추천재료
+        장보기
+        <span className="gp-tab-badge">{checkedShoppingCount}</span>
       </button>
     </div>
   )

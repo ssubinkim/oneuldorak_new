@@ -1,4 +1,4 @@
-import BottomNav from '../../components/common/layout/BottomNav'
+// import BottomNav from '../../components/common/layout/BottomNav'
 import Header from '../../components/common/layout/Header'
 import ChatBotbtn from '../../components/chatbot/ChatBotbtn'
 import HomeBudgetHero from '../../components/home/HomeBudgetHero'
@@ -33,7 +33,7 @@ function Home() {
         </div>
 
         <ChatBotbtn />
-        <BottomNav />
+        {/* <BottomNav /> */}
       </div>
     </div>
   )

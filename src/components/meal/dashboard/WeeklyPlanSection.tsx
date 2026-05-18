@@ -6,9 +6,10 @@ const TODAY_DATE = 1
 
 type Props = {
   plannedMenus?: Record<number, DayMenu>
+  onAddClick?: () => void
 }
 
-function WeeklyPlanSection({ plannedMenus = {} }: Props) {
+function WeeklyPlanSection({ plannedMenus = {}, onAddClick }: Props) {
   return (
     <section className="wps-section">
       <div className="wps-scroll">
@@ -36,7 +37,7 @@ function WeeklyPlanSection({ plannedMenus = {} }: Props) {
               ) : (
                 <>
                   <span className="wps-card-name">메뉴 추가</span>
-                  <button className="wps-card-add-btn" aria-label="메뉴 추가">
+                  <button className="wps-card-add-btn" aria-label="메뉴 추가" onClick={onAddClick}>
                     <span className="wps-card-add">+</span>
                   </button>
                 </>
