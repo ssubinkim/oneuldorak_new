@@ -50,7 +50,7 @@ const ONEULDORAK_SYSTEM_PROMPT = `
 영수증의 금액이나 품목이 흐릿해서 확실하지 않으면 추측하지 말고 안내해.
 
 [3. 살까 말까 판단]
-사용자가 상품 사진이나 구매 고민을 입력하면 아래 형식으로 답해.
+사용자가 도시락 관련 용품(예: 도시락통, 젓가락, 보냉백)이나 식재료 구매 고민을 입력하면 아래 형식으로 답해.
 
 - 판단:
 - 이유:
@@ -59,6 +59,7 @@ const ONEULDORAK_SYSTEM_PROMPT = `
 - 추천 행동:
 
 판단은 "사도 좋아요", "보류해도 좋아요", "사지 않는 걸 추천해요" 중 하나로 말해.
+반드시 오늘 도시락 준비 기준(활용도, 보관성, 가격 대비 효율)으로 판단해.
 단, 가격이나 용량 정보가 없으면 가성비를 단정하지 마.
 
 [기타]
@@ -71,8 +72,69 @@ function looksLikeVisionFailure(text) {
   return /사진.*볼 수 없|이미지.*볼 수 없|사진.*보이지 않|이미지.*보이지 않|재료.*알려주면/i.test(text)
 }
 
-function buildUserInput(message, imageDataUrl) {
+function normalizeAnalysisType(value) {
+  if (value === 'menu' || value === 'receipt' || value === 'judge') {
+    return value
+  }
+  return ''
+}
+
+function inferAnalysisType(message, explicitType) {
+  if (explicitType) return explicitType
+
+  const normalized = (message || '').replace(/\s+/g, '')
+
+  if (/(영수증|지출|결제|구매내역|구매목록|합계|금액|마트)/.test(normalized)) {
+    return 'receipt'
+  }
+
+  if (/(살까말까|살까|사지말|보류|가성비|판단)/.test(normalized)) {
+    return 'judge'
+  }
+
+  return 'menu'
+}
+
+function getAnalysisTypeInstruction(analysisType) {
+  if (analysisType === 'receipt') {
+    return `
+[현재 분석 유형: 영수증 분석]
+영수증(구매내역) 분석 형식으로만 답해.
+- 총평:
+- 지출이 큰 항목:
+- 절약할 수 있는 항목:
+- 도시락에 활용하기 좋은 재료:
+- 다음 장보기 팁:
+`
+  }
+
+  if (analysisType === 'judge') {
+    return `
+[현재 분석 유형: 살까 말까 판단]
+살까 말까 판단 형식으로만 답해.
+- 판단:
+- 이유:
+- 도시락 활용도:
+- 가격/가성비 체크:
+- 추천 행동:
+`
+  }
+
+  return `
+[현재 분석 유형: 가진 재료 메뉴 추천]
+메뉴 추천 형식으로만 답해.
+- 추천 메뉴:
+- 활용 재료:
+- 추가로 있으면 좋은 재료:
+- 예상 조리 시간:
+- 간단한 조리법:
+- 절약 포인트:
+`
+}
+
+function buildUserInput(message, imageDataUrl, analysisType) {
   const userContent = []
+  const modeInstruction = getAnalysisTypeInstruction(analysisType)
 
   if (imageDataUrl) {
     userContent.push({
@@ -85,6 +147,11 @@ function buildUserInput(message, imageDataUrl) {
       text: '중요: 위 이미지를 실제로 분석해서 답변해. 보이지 않는다고 단정하지 말고, 정말 식별이 어려운 경우에만 그렇게 말해.',
     })
   }
+
+  userContent.push({
+    type: 'input_text',
+    text: modeInstruction,
+  })
 
   if (message) {
     userContent.push({
@@ -101,11 +168,11 @@ function buildUserInput(message, imageDataUrl) {
   ]
 }
 
-async function requestMenuRecommendation(client, { message, imageDataUrl, model }) {
+async function requestMenuRecommendation(client, { message, imageDataUrl, analysisType, model }) {
   return await client.responses.create({
     model,
     instructions: ONEULDORAK_SYSTEM_PROMPT,
-    input: buildUserInput(message, imageDataUrl),
+    input: buildUserInput(message, imageDataUrl, analysisType),
     max_output_tokens: 360,
   })
 }
@@ -147,6 +214,8 @@ app.get('/health', (_req, res) => {
 app.post('/api/chat', async (req, res) => {
   const message = typeof req.body?.message === 'string' ? req.body.message.trim() : ''
   const imageDataUrl = typeof req.body?.imageDataUrl === 'string' ? req.body.imageDataUrl.trim() : ''
+  const analysisTypeRaw = typeof req.body?.analysisType === 'string' ? req.body.analysisType.trim() : ''
+  const analysisType = inferAnalysisType(message, normalizeAnalysisType(analysisTypeRaw))
 
   if (!message && !imageDataUrl) {
     res.status(400).json({
@@ -178,6 +247,7 @@ app.post('/api/chat', async (req, res) => {
     let response = await requestMenuRecommendation(client, {
       message,
       imageDataUrl,
+      analysisType,
       model: primaryModel,
     })
 
@@ -187,6 +257,7 @@ app.post('/api/chat', async (req, res) => {
       response = await requestMenuRecommendation(client, {
         message,
         imageDataUrl,
+        analysisType,
         model: 'gpt-4.1-mini',
       })
       text = response.output_text?.trim() || text

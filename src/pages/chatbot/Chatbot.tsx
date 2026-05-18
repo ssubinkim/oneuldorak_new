@@ -24,17 +24,19 @@ function closeChatbot() {
 
 type CameraPickMode = 'camera' | 'album'
 type JudgeMode = 'text' | 'photo'
+type AnalysisType = 'judge'
 
 type OpenChatOptions = {
   useApi?: boolean
   judgeMode?: JudgeMode
   openPicker?: boolean
   pick?: CameraPickMode
+  analysisType?: AnalysisType
 }
 
 const JUDGE_TEXT_QUERY = '살까말까 고민 중이야. 오늘 도시락 기준으로 사도 될지 판단해줘.'
 const JUDGE_PHOTO_QUERY = '사진으로 살까말까 판단받고 싶어.'
-const CAMERA_ANALYZE_QUERY = '사진 속 재료를 분석해서 도시락 추천해줘.'
+const CAMERA_ANALYZE_QUERY = '사진으로 살까말까 판단받고 싶어.'
 
 function Chatbot() {
   const [showCoachMark, setShowCoachMark] = useState(true)
@@ -47,6 +49,7 @@ function Chatbot() {
     const params = new URLSearchParams()
     params.set('q', text)
     if (options?.useApi) params.set('api', '1')
+    if (options?.analysisType) params.set('analysis', options.analysisType)
     if (options?.judgeMode) {
       params.set('judge', '1')
       params.set('mode', options.judgeMode)
@@ -74,22 +77,39 @@ function Chatbot() {
 
   const handleTakePhoto = () => {
     setShowCameraSheet(false)
-    openChatPage(CAMERA_ANALYZE_QUERY, 'quick', { useApi: true, openPicker: true, pick: 'camera' })
+    openChatPage(CAMERA_ANALYZE_QUERY, 'quick', {
+      useApi: true,
+      openPicker: true,
+      pick: 'camera',
+      analysisType: 'judge',
+      judgeMode: 'photo',
+    })
   }
 
   const handleSelectFromAlbum = () => {
     setShowCameraSheet(false)
-    openChatPage(CAMERA_ANALYZE_QUERY, 'quick', { useApi: true, openPicker: true, pick: 'album' })
+    openChatPage(CAMERA_ANALYZE_QUERY, 'quick', {
+      useApi: true,
+      openPicker: true,
+      pick: 'album',
+      analysisType: 'judge',
+      judgeMode: 'photo',
+    })
   }
 
   const handleJudgeByText = () => {
     setShowJudgeModeSheet(false)
-    openChatPage(JUDGE_TEXT_QUERY, 'quick', { useApi: true, judgeMode: 'text' })
+    openChatPage(JUDGE_TEXT_QUERY, 'quick', { useApi: true, judgeMode: 'text', analysisType: 'judge' })
   }
 
   const handleJudgeByPhoto = () => {
     setShowJudgeModeSheet(false)
-    openChatPage(JUDGE_PHOTO_QUERY, 'quick', { useApi: true, judgeMode: 'photo', openPicker: true })
+    openChatPage(JUDGE_PHOTO_QUERY, 'quick', {
+      useApi: true,
+      judgeMode: 'photo',
+      openPicker: true,
+      analysisType: 'judge',
+    })
   }
 
   return (

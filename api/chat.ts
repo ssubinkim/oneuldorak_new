@@ -45,7 +45,7 @@ const ONEULDORAK_SYSTEM_PROMPT = `
 영수증의 금액이나 품목이 흐릿해서 확실하지 않으면 추측하지 말고 안내해.
 
 [3. 살까 말까 판단]
-사용자가 상품 사진이나 구매 고민을 입력하면 아래 형식으로 답해.
+사용자가 도시락 관련 용품(예: 도시락통, 젓가락, 보냉백)이나 식재료 구매 고민을 입력하면 아래 형식으로 답해.
 
 - 판단:
 - 이유:
@@ -54,6 +54,7 @@ const ONEULDORAK_SYSTEM_PROMPT = `
 - 추천 행동:
 
 판단은 "사도 좋아요", "보류해도 좋아요", "사지 않는 걸 추천해요" 중 하나로 말해.
+반드시 오늘 도시락 준비 기준(활용도, 보관성, 가격 대비 효율)으로 판단해.
 단, 가격이나 용량 정보가 없으면 가성비를 단정하지 마.
 
 [기타]
@@ -62,6 +63,7 @@ const ONEULDORAK_SYSTEM_PROMPT = `
 `;
 
 type JsonRecord = Record<string, unknown>;
+type AnalysisType = "menu" | "receipt" | "judge";
 
 type OpenAIResponseData = JsonRecord & {
   output_text?: string;
@@ -113,6 +115,86 @@ function readImageDataUrlFromBody(body: unknown) {
   return "";
 }
 
+function readAnalysisTypeFromBody(body: unknown) {
+  if (typeof body === "string") {
+    try {
+      const parsed = JSON.parse(body) as JsonRecord;
+      return typeof parsed.analysisType === "string" ? parsed.analysisType.trim() : "";
+    } catch {
+      return "";
+    }
+  }
+
+  if (body && typeof body === "object") {
+    const candidate = body as JsonRecord;
+    return typeof candidate.analysisType === "string" ? candidate.analysisType.trim() : "";
+  }
+
+  return "";
+}
+
+function normalizeAnalysisType(value: string): AnalysisType | "" {
+  if (value === "menu" || value === "receipt" || value === "judge") {
+    return value;
+  }
+  return "";
+}
+
+function inferAnalysisType(message: string, explicitType: AnalysisType | ""): AnalysisType {
+  if (explicitType) {
+    return explicitType;
+  }
+
+  const normalized = message.replace(/\s+/g, "");
+
+  if (/(영수증|지출|결제|구매내역|구매목록|합계|금액|마트)/.test(normalized)) {
+    return "receipt";
+  }
+
+  if (/(살까말까|살까|사지말|보류|가성비|판단)/.test(normalized)) {
+    return "judge";
+  }
+
+  return "menu";
+}
+
+function getAnalysisTypeInstruction(analysisType: AnalysisType) {
+  if (analysisType === "receipt") {
+    return `
+[현재 분석 유형: 영수증 분석]
+영수증(구매내역) 분석 형식으로만 답해.
+- 총평:
+- 지출이 큰 항목:
+- 절약할 수 있는 항목:
+- 도시락에 활용하기 좋은 재료:
+- 다음 장보기 팁:
+`;
+  }
+
+  if (analysisType === "judge") {
+    return `
+[현재 분석 유형: 살까 말까 판단]
+살까 말까 판단 형식으로만 답해.
+- 판단:
+- 이유:
+- 도시락 활용도:
+- 가격/가성비 체크:
+- 추천 행동:
+`;
+  }
+
+  return `
+[현재 분석 유형: 가진 재료 메뉴 추천]
+메뉴 추천 형식으로만 답해.
+- 추천 메뉴:
+- 활용 재료:
+- 추가로 있으면 좋은 재료:
+- 예상 조리 시간:
+- 간단한 조리법:
+- 절약 포인트:
+`;
+}
+
 function extractTextFromOpenAiResponse(data: OpenAIResponseData) {
   if (typeof data.output_text === "string" && data.output_text.trim().length > 0) {
     return data.output_text.trim();
@@ -147,8 +229,13 @@ function extractTextFromOpenAiResponse(data: OpenAIResponseData) {
   return texts.join("\n").trim();
 }
 
-function buildUserContent(message: string, imageDataUrl: string) {
+function buildUserContent(
+  message: string,
+  imageDataUrl: string,
+  analysisType: AnalysisType
+) {
   const userContent: Array<Record<string, string>> = [];
+  const modeInstruction = getAnalysisTypeInstruction(analysisType);
 
   if (imageDataUrl) {
     userContent.push({
@@ -161,6 +248,11 @@ function buildUserContent(message: string, imageDataUrl: string) {
       text: "중요: 위 이미지를 실제로 분석해서 답변해. 보이지 않는다고 단정하지 말고, 정말 식별이 어려운 경우에만 그렇게 말해.",
     });
   }
+
+  userContent.push({
+    type: "input_text",
+    text: modeInstruction,
+  });
 
   if (message) {
     userContent.push({
@@ -175,7 +267,8 @@ function buildUserContent(message: string, imageDataUrl: string) {
 function buildRequestBody(
   model: string,
   message: string,
-  imageDataUrl: string
+  imageDataUrl: string,
+  analysisType: AnalysisType
 ) {
   return {
     model,
@@ -183,7 +276,7 @@ function buildRequestBody(
     input: [
       {
         role: "user",
-        content: buildUserContent(message, imageDataUrl),
+        content: buildUserContent(message, imageDataUrl, analysisType),
       },
     ],
     max_output_tokens: 360,
@@ -194,7 +287,8 @@ async function requestOpenAiResponse(
   apiKey: string,
   model: string,
   message: string,
-  imageDataUrl: string
+  imageDataUrl: string,
+  analysisType: AnalysisType
 ) {
   const openaiResponse = await fetch(OPENAI_API_URL, {
     method: "POST",
@@ -202,7 +296,7 @@ async function requestOpenAiResponse(
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
-    body: JSON.stringify(buildRequestBody(model, message, imageDataUrl)),
+    body: JSON.stringify(buildRequestBody(model, message, imageDataUrl, analysisType)),
   });
 
   const data = (await openaiResponse.json()) as OpenAIResponseData;
@@ -246,6 +340,11 @@ export default async function handler(
   const rawBody = await readRawBodyIfNeeded(req);
   const message = readMessageFromBody(rawBody);
   const imageDataUrl = readImageDataUrlFromBody(rawBody);
+  const analysisTypeRaw = readAnalysisTypeFromBody(rawBody);
+  const analysisType = inferAnalysisType(
+    message,
+    normalizeAnalysisType(analysisTypeRaw)
+  );
 
   if (!message && !imageDataUrl) {
     return res.status(400).json({ error: "message 또는 imageDataUrl 값을 입력해 주세요." });
@@ -262,7 +361,8 @@ export default async function handler(
       apiKey,
       primaryModel,
       message,
-      imageDataUrl
+      imageDataUrl,
+      analysisType
     );
 
     if (!openaiResponse.ok) {
@@ -285,7 +385,8 @@ export default async function handler(
         apiKey,
         "gpt-4.1-mini",
         message,
-        imageDataUrl
+        imageDataUrl,
+        analysisType
       );
       if (secondTry.openaiResponse.ok) {
         const retryText = extractTextFromOpenAiResponse(secondTry.data);
