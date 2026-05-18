@@ -146,13 +146,13 @@ button {
   --screen-max-width: 768px;
   --header-height: 44px;
   --bottom-nav-height: calc(
-    clamp(104px, 28vw, 112px) + env(safe-area-inset-bottom)
+    clamp(104px, 28vw, 112px) + env(safe-area-inset-bottom, 0px)
   );
 
   display: flex;
   justify-content: center;
   width: 100%;
-  min-height: 100svh;
+  min-height: 100dvh;
   color: var(--color-text-main);
   background: var(--color-bg);
   font-family: var(--font-pretendard-variable);
@@ -162,7 +162,7 @@ button {
   position: relative;
   width: min(100vw, var(--screen-max-width));
   min-width: var(--screen-min-width);
-  height: 100svh;
+  height: 100dvh;
   overflow: hidden;
   background: #fff;
 }
@@ -184,6 +184,16 @@ button {
   display: none;
 }
 
+@supports not (height: 100dvh) {
+  .app-shell {
+    min-height: 100svh;
+  }
+
+  .app-screen {
+    height: 100svh;
+  }
+}
+
 @media (min-width: 1024px) {
   .app-shell {
     align-items: flex-start;
@@ -193,7 +203,7 @@ button {
 
   .app-screen {
     width: min(calc(100vw - 48px), var(--screen-max-width));
-    height: calc(100svh - 48px);
+    height: calc(100dvh - 48px);
     box-shadow: 0 22px 70px rgba(0, 0, 0, 0.16);
   }
 }

@@ -186,6 +186,28 @@ function renderBubbleText(text: string) {
   )
 }
 
+function isJudgeSuggestionText(text: string) {
+  return JUDGE_SUGGESTIONS.includes(text)
+}
+
+function buildJudgeFollowupPrompt(requestText: string, subjectHint: string) {
+  const subjectLine = subjectHint
+    ? `직전 판단 대상 정보: ${subjectHint}`
+    : '직전 판단 대상 정보가 부족하면, 어떤 상품/재료인지 1문장으로 먼저 물어봐.'
+
+  return [
+    '이전 살까말까 판단을 이어서 답해줘. 대상은 직전과 동일해.',
+    subjectLine,
+    `추가 요청: ${requestText}`,
+    '반드시 아래 형식을 유지해:',
+    '- 판단:',
+    '- 이유:',
+    '- 도시락 활용도:',
+    '- 가격/가성비 체크:',
+    '- 추천 행동:',
+  ].join('\n')
+}
+
 async function loadImageFromUrl(url: string) {
   return await new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image()
@@ -284,6 +306,8 @@ function ChatbotChat() {
   const desktopVideoRef = useRef<HTMLVideoElement>(null)
   const desktopCameraStreamRef = useRef<MediaStream | null>(null)
   const messagesRef = useRef<HTMLDivElement>(null)
+  const lastJudgeSubjectRef = useRef('')
+  const lastJudgeImageDataUrlRef = useRef<string | null>(null)
   const hasInitializedRef = useRef(false)
 
   const stopDesktopCamera = useCallback(() => {
@@ -408,6 +432,9 @@ function ChatbotChat() {
       isJudgeRoute
         ? 'judge'
         : (context.analysisType ?? inferAnalysisTypeFromText(context.query, 'menu'))
+    if (isJudgeRoute && context.query) {
+      lastJudgeSubjectRef.current = context.query
+    }
     setIsJudgeFlow(isJudgeRoute)
     setJudgeMode(context.judgeMode ?? (inferredType === 'judge' ? 'photo' : 'text'))
 
@@ -511,14 +538,25 @@ function ChatbotChat() {
   }, [stopDesktopCamera])
 
   const addUserMessage = (text: string) => {
-    const useApiForText = isJudgeFlow || initialContext.useApi
-    const analysisType = isJudgeFlow
-      ? 'judge'
-      : inferAnalysisTypeFromText(text, 'judge')
+    if (isJudgeFlow) {
+      if (!isJudgeSuggestionText(text)) {
+        lastJudgeSubjectRef.current = text
+      }
+
+      queueUserRequest(text, 'input', {
+        useApi: true,
+        analysisType: 'judge',
+        judgeFlow: true,
+        requestText: buildJudgeFollowupPrompt(text, lastJudgeSubjectRef.current),
+        imageDataUrl: judgeMode === 'photo' ? (lastJudgeImageDataUrlRef.current ?? undefined) : undefined,
+      })
+      return
+    }
+
     queueUserRequest(text, 'input', {
-      useApi: useApiForText,
-      analysisType,
-      judgeFlow: isJudgeFlow,
+      useApi: initialContext.useApi,
+      analysisType: inferAnalysisTypeFromText(text, 'judge'),
+      judgeFlow: false,
     })
   }
 
@@ -565,6 +603,8 @@ function ChatbotChat() {
       const analysisType: AnalysisType = 'judge'
       const promptText = JUDGE_PHOTO_PROMPT
       const judgeFlow = true
+      lastJudgeImageDataUrlRef.current = imageDataUrl
+      lastJudgeSubjectRef.current = displayText
 
       queueUserRequest(displayText, 'input', {
         useApi: true,
@@ -588,8 +628,8 @@ function ChatbotChat() {
 
   const handleJudgeModeSelect = (mode: JudgeMode) => {
     setJudgeMode(mode)
+    setIsJudgeFlow(true)
     if (mode === 'photo') {
-      setIsJudgeFlow(true)
       setShowCameraSheet(true)
     }
   }
@@ -637,6 +677,8 @@ function ChatbotChat() {
     const analysisType: AnalysisType = 'judge'
     const promptText = JUDGE_PHOTO_PROMPT
     const judgeFlow = true
+    lastJudgeImageDataUrlRef.current = imageDataUrl
+    lastJudgeSubjectRef.current = '촬영 사진 첨부했어. 분석해줘.'
 
     queueUserRequest('촬영 사진 첨부했어. 분석해줘.', 'input', {
       useApi: true,
@@ -650,7 +692,7 @@ function ChatbotChat() {
   return (
     <div className="app-shell">
       <div className="app-screen chatbot-screen">
-        <main className="chatbot-page" aria-label="챗봇 대화">
+        <main className="chatbot-page chatbot-page--chat" aria-label="챗봇 대화">
           <header className="chatbot-topbar">
             <button
               className="chatbot-close"
@@ -828,16 +870,18 @@ function ChatbotChat() {
             }}
           />
 
-          <section className="chatbot-bottom">
-            <ChatbotInputBar
-              onSubmit={addUserMessage}
-              onCameraClick={() => {
-                setJudgeMode('photo')
-                setIsJudgeFlow(true)
-                setShowCameraSheet(true)
-              }}
-            />
-          </section>
+          {!showCameraSheet && !showDesktopCamera ? (
+            <section className="chatbot-bottom">
+              <ChatbotInputBar
+                onSubmit={addUserMessage}
+                onCameraClick={() => {
+                  setJudgeMode('photo')
+                  setIsJudgeFlow(true)
+                  setShowCameraSheet(true)
+                }}
+              />
+            </section>
+          ) : null}
         </main>
       </div>
     </div>
