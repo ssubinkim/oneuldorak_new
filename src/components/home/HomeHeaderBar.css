@@ -12,7 +12,7 @@
 .home-header-bar__title {
   color: var(--color-text-main);
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 120%;
   white-space: nowrap;
 }

@@ -15,19 +15,24 @@
   flex: 1;
 }
 
+.meal-bell-icon--inactive {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
 .today-menu-add-btn {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
   position: absolute;
-  top: 3px;
-  right: 10px;
+  top: 4px;
+  right: 22px;
   z-index: 10;
 }
 
 .today-menu-add-btn img {
-  width: 75px;
+  width: 80px;
   height: auto;
   display: block;
 }
@@ -35,7 +40,7 @@
 .today-card-title {
   font-size: 22px;
   font-weight: 600;
-  color: var(--color-text-main);
+  color: #1a1a1a;
   font-family: 'NanumSquareNeo', sans-serif;
 }
 
@@ -48,9 +53,9 @@
   position: relative;
   width: 100%;
   height: 210px;
-  border-radius: 16px;
+  border-radius: 10px;
   overflow: hidden;
-  background: #e0e0e0;
+  background: #fffffd;
 }
 
 .today-slides-track {
@@ -222,8 +227,8 @@
 
 .today-ingredients-title {
   font-family: 'Pretendard Variable', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
+  font-size: 18px;
+  font-weight: 500;
   margin: 0 0 14px;
   color: var(--color-text-main);
 }
@@ -249,8 +254,9 @@
 }
 
 .ingredient-name {
-  font-size: 12px;
-  color: var(--color-text-sub);
+  font-size: 14px;
+  color: #3c3c3c;
+  font-weight: 500;
 }
 
 /* ── 레시피 버튼 ─────────────────────────────── */
@@ -323,7 +329,7 @@
 .savings-label {
   margin: 0;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   color: #1a1a1a;
 }
 
@@ -338,7 +344,7 @@
 
 .savings-suffix {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   color: #1a1a1a;
 }
 
