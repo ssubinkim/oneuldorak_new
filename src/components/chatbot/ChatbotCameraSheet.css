@@ -38,6 +38,10 @@
   width: 100%;
 }
 
+.chatbot-sheet__tabs.is-triple {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
 .chatbot-sheet__tab {
   height: 44px;
   border: 1px solid #cfd6ea;

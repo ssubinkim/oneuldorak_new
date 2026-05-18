@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState, type ChangeEvent } from 'reac
 import type { ChatMessage, RecipeData } from '../../types/chatbot'
 import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
-import { askGPT } from '../../api/chatApi'
+import { askGPT, type AnalysisType } from '../../api/chatApi'
 import chatbotMascotIcon from '../../components/chatbot/images/chatbot .svg'
 import bubbleIcon from '../../components/chatbot/images/bubble.svg'
 import tunamayoImage from '../../components/chatbot/images/tunamayo.svg'
@@ -25,6 +25,7 @@ type ChatRouteContext = {
   query: string
   useApi: boolean
   judgeMode: JudgeMode | null
+  analysisType: AnalysisType | null
   openPicker: boolean
   pick: PickerMode | null
 }
@@ -33,11 +34,17 @@ type RequestOptions = {
   useApi: boolean
   requestText?: string
   imageDataUrl?: string
+  analysisType?: AnalysisType
   judgeFlow?: boolean
 }
 
 function shouldUseDesktopWebcam() {
   if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+    return false
+  }
+
+  const isSecure = window.isSecureContext
+  if (!isSecure) {
     return false
   }
 
@@ -47,21 +54,44 @@ function shouldUseDesktopWebcam() {
   }
 
   const ua = navigator.userAgent.toLowerCase()
-  const isMobileUa = /iphone|ipad|ipod|android|mobile/.test(ua)
+  const isMobileUa = /iphone|ipad|ipod|android|mobile|tablet/.test(ua)
   const isCoarsePointer = window.matchMedia?.('(pointer: coarse)').matches ?? false
+  const hasFinePointer = window.matchMedia?.('(pointer: fine)').matches ?? false
 
-  return !isMobileUa && !isCoarsePointer
+  return !isMobileUa && (!isCoarsePointer || hasFinePointer)
 }
 
-const CAMERA_RECIPE_PROMPT = '사진 속 재료를 분석해서 간단하고 실용적인 도시락 메뉴를 추천해줘.'
-const JUDGE_PHOTO_PROMPT = '사진 속 식재료를 도시락 관점에서 살까말까 판단해줘. 사야 하는지/보류인지와 이유, 대체 선택지를 간단히 알려줘.'
+const JUDGE_PHOTO_PROMPT = '사진 속 도시락 관련 용품이나 식재료를 오늘 도시락 기준으로 살까말까 판단해줘. 사야 하는지/보류인지와 이유, 대체 선택지를 간단히 알려줘.'
 
 const MOCK_SUGGESTIONS = ['좋아. 레시피 볼래.', '더 가벼운 메뉴 추천해줘.', '더 든든한 메뉴로 추천해줘', '다른 메뉴 보여줘.']
 const JUDGE_SUGGESTIONS = ['더 저렴한 대안도 알려줘.', '영양 기준으로 다시 판단해줘.', '사진 다시 분석할래.']
 
-const MAX_CAMERA_IMAGE_SIZE = 2_800_000
+const MAX_INPUT_IMAGE_FILE_SIZE = 20_000_000
 const MAX_IMAGE_DATA_URL_LENGTH = 3_600_000
 const MAX_IMAGE_EDGE = 1400
+const IMAGE_EDGE_CANDIDATES = [1400, 1200, 1000, 900, 800, 700, 600]
+const JPEG_QUALITY_CANDIDATES = [0.84, 0.72, 0.62, 0.52, 0.44]
+
+function readAnalysisType(value: string | null): AnalysisType | null {
+  if (value === 'menu' || value === 'receipt' || value === 'judge') {
+    return value
+  }
+  return null
+}
+
+function inferAnalysisTypeFromText(text: string, fallback: AnalysisType = 'menu'): AnalysisType {
+  const normalized = text.replace(/\s+/g, '')
+
+  if (/(영수증|지출|결제|구매내역|구매목록|합계|금액|마트)/.test(normalized)) {
+    return 'receipt'
+  }
+
+  if (/(살까말까|살까|사지말|보류|가성비|판단)/.test(normalized)) {
+    return 'judge'
+  }
+
+  return fallback
+}
 
 function getRouteContext(): ChatRouteContext {
   const [, queryString = ''] = window.location.hash.split('?')
@@ -79,6 +109,7 @@ function getRouteContext(): ChatRouteContext {
     query: (params.get('q') || '').trim(),
     useApi: params.get('api') === '1',
     judgeMode,
+    analysisType: readAnalysisType(params.get('analysis')),
     openPicker: params.get('openPicker') === '1',
     pick: routePick === 'camera' || routePick === 'album' ? routePick : null,
   }
@@ -164,34 +195,70 @@ async function loadImageFromUrl(url: string) {
   })
 }
 
+function renderSourceToCanvas(
+  source: CanvasImageSource,
+  sourceWidth: number,
+  sourceHeight: number,
+  maxEdge: number,
+) {
+  const ratio = Math.min(1, maxEdge / Math.max(sourceWidth, sourceHeight))
+  const targetWidth = Math.max(1, Math.round(sourceWidth * ratio))
+  const targetHeight = Math.max(1, Math.round(sourceHeight * ratio))
+
+  const canvas = document.createElement('canvas')
+  canvas.width = targetWidth
+  canvas.height = targetHeight
+
+  const context = canvas.getContext('2d')
+  if (!context) {
+    throw new Error('이미지 변환을 시작할 수 없어요.')
+  }
+
+  context.drawImage(source, 0, 0, targetWidth, targetHeight)
+  return canvas
+}
+
+function encodeCanvasToJpegWithinLimit(
+  canvas: HTMLCanvasElement,
+  maxDataUrlLength: number,
+) {
+  let fallback = ''
+
+  for (const quality of JPEG_QUALITY_CANDIDATES) {
+    const dataUrl = canvas.toDataURL('image/jpeg', quality)
+    if (!dataUrl.startsWith('data:image/jpeg')) {
+      continue
+    }
+    fallback = dataUrl
+    if (dataUrl.length <= maxDataUrlLength) {
+      return dataUrl
+    }
+  }
+
+  return fallback
+}
+
 async function convertImageToJpegDataUrl(file: File) {
+  if (file.size > MAX_INPUT_IMAGE_FILE_SIZE) {
+    throw new Error('사진 파일이 너무 커요. 20MB 이하 이미지로 다시 시도해 주세요.')
+  }
+
   const objectUrl = URL.createObjectURL(file)
 
   try {
     const image = await loadImageFromUrl(objectUrl)
     const width = image.naturalWidth || image.width
     const height = image.naturalHeight || image.height
-    const ratio = Math.min(1, MAX_IMAGE_EDGE / Math.max(width, height))
-    const targetWidth = Math.max(1, Math.round(width * ratio))
-    const targetHeight = Math.max(1, Math.round(height * ratio))
 
-    const canvas = document.createElement('canvas')
-    canvas.width = targetWidth
-    canvas.height = targetHeight
-
-    const context = canvas.getContext('2d')
-    if (!context) {
-      throw new Error('이미지 변환을 시작할 수 없어요.')
+    for (const edge of IMAGE_EDGE_CANDIDATES) {
+      const canvas = renderSourceToCanvas(image, width, height, edge)
+      const jpegDataUrl = encodeCanvasToJpegWithinLimit(canvas, MAX_IMAGE_DATA_URL_LENGTH)
+      if (jpegDataUrl && jpegDataUrl.length <= MAX_IMAGE_DATA_URL_LENGTH) {
+        return jpegDataUrl
+      }
     }
 
-    context.drawImage(image, 0, 0, targetWidth, targetHeight)
-    const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.84)
-
-    if (!jpegDataUrl.startsWith('data:image/jpeg')) {
-      throw new Error('이미지 변환에 실패했어요.')
-    }
-
-    return jpegDataUrl
+    throw new Error('사진 용량이 커서 분석이 어려워요. 조금 더 가까이 찍거나 해상도를 낮춰서 다시 시도해 주세요.')
   } finally {
     URL.revokeObjectURL(objectUrl)
   }
@@ -200,6 +267,9 @@ async function convertImageToJpegDataUrl(file: File) {
 function ChatbotChat() {
   const routeContextRef = useRef<ChatRouteContext>(getRouteContext())
   const initialContext = routeContextRef.current
+  const initialAnalysisType =
+    initialContext.analysisType
+    ?? (initialContext.judgeMode ? 'judge' : inferAnalysisTypeFromText(initialContext.query, 'menu'))
 
   const { nickname } = useUserProfile()
   const displayName = nickname?.trim() || '도시락러버'
@@ -207,7 +277,7 @@ function ChatbotChat() {
   const [showCameraSheet, setShowCameraSheet] = useState(false)
   const [showDesktopCamera, setShowDesktopCamera] = useState(false)
   const [desktopCameraError, setDesktopCameraError] = useState('')
-  const [isJudgeFlow, setIsJudgeFlow] = useState(initialContext.judgeMode !== null)
+  const [isJudgeFlow, setIsJudgeFlow] = useState(initialAnalysisType === 'judge')
   const [judgeMode, setJudgeMode] = useState<JudgeMode>(initialContext.judgeMode ?? 'text')
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const albumInputRef = useRef<HTMLInputElement>(null)
@@ -250,9 +320,11 @@ function ChatbotChat() {
         video.srcObject = stream
         void video.play().catch(() => {})
       })
+      return true
     } catch {
       setDesktopCameraError('카메라 권한을 확인해 주세요. 브라우저 설정에서 카메라 접근을 허용하면 촬영할 수 있어요.')
       setShowDesktopCamera(false)
+      return false
     }
   }, [stopDesktopCamera])
 
@@ -263,7 +335,10 @@ function ChatbotChat() {
   ) => {
     try {
       if (options.useApi) {
-        const responseText = await askGPT(userText, { imageDataUrl: options.imageDataUrl })
+        const responseText = await askGPT(userText, {
+          imageDataUrl: options.imageDataUrl,
+          analysisType: options.analysisType,
+        })
         const aiMessage: ChatMessage = {
           id: pendingId,
           type: 'ai-text',
@@ -324,8 +399,17 @@ function ChatbotChat() {
     hasInitializedRef.current = true
 
     const context = routeContextRef.current
-    setIsJudgeFlow(context.judgeMode !== null)
-    setJudgeMode(context.judgeMode ?? 'text')
+    const normalizedQuery = context.query.replace(/\s+/g, '')
+    const isJudgeRoute =
+      context.judgeMode !== null
+      || context.analysisType === 'judge'
+      || /(살까말까|살까|판단|가성비)/.test(normalizedQuery)
+    const inferredType =
+      isJudgeRoute
+        ? 'judge'
+        : (context.analysisType ?? inferAnalysisTypeFromText(context.query, 'menu'))
+    setIsJudgeFlow(isJudgeRoute)
+    setJudgeMode(context.judgeMode ?? (inferredType === 'judge' ? 'photo' : 'text'))
 
     if (context.openPicker && context.judgeMode === null) {
       const introMessages: LocalMessage[] = []
@@ -384,7 +468,8 @@ function ChatbotChat() {
     const shouldUseApi = context.useApi || context.judgeMode === 'text'
     queueUserRequest(context.query, 'quick', {
       useApi: shouldUseApi,
-      judgeFlow: context.judgeMode !== null,
+      analysisType: isJudgeRoute ? 'judge' : (context.analysisType ?? inferAnalysisTypeFromText(context.query, 'menu')),
+      judgeFlow: isJudgeRoute,
     })
   }, [queueUserRequest])
 
@@ -427,16 +512,37 @@ function ChatbotChat() {
 
   const addUserMessage = (text: string) => {
     const useApiForText = isJudgeFlow || initialContext.useApi
-    queueUserRequest(text, 'input', { useApi: useApiForText, judgeFlow: isJudgeFlow })
+    const analysisType = isJudgeFlow
+      ? 'judge'
+      : inferAnalysisTypeFromText(text, 'judge')
+    queueUserRequest(text, 'input', {
+      useApi: useApiForText,
+      analysisType,
+      judgeFlow: isJudgeFlow,
+    })
   }
 
   const handleTakePhoto = () => {
     setShowCameraSheet(false)
-    if (shouldUseDesktopWebcam()) {
-      void openDesktopCamera()
-      return
-    }
-    cameraInputRef.current?.click()
+    void (async () => {
+      if (shouldUseDesktopWebcam()) {
+        const opened = await openDesktopCamera()
+        if (!opened) {
+          cameraInputRef.current?.click()
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `ai-error-${Date.now()}`,
+              type: 'ai-text',
+              text: '카메라 권한이 막혀 있어 앨범 선택으로 전환했어요. 브라우저에서 카메라 권한을 허용하면 바로 촬영할 수 있어요.',
+            },
+          ])
+        }
+        return
+      }
+
+      cameraInputRef.current?.click()
+    })()
   }
 
   const handleSelectFromAlbum = () => {
@@ -450,33 +556,22 @@ function ChatbotChat() {
 
     event.currentTarget.value = ''
 
-    if (photo.size > MAX_CAMERA_IMAGE_SIZE) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `ai-error-${Date.now()}`,
-          type: 'ai-text',
-          text: '사진 용량이 커서 분석이 어려워요. 조금 더 작은 사진으로 다시 찍어주세요.',
-        },
-      ])
-      return
-    }
-
     try {
       const imageDataUrl = await convertImageToJpegDataUrl(photo)
 
-      if (imageDataUrl.length > MAX_IMAGE_DATA_URL_LENGTH) {
-        throw new Error('사진 용량이 너무 커요. 조금 더 가까이 찍거나 해상도를 낮춰서 다시 시도해 주세요.')
-      }
-
-      const displayText = mode === 'camera' ? '방금 찍은 사진으로 분석해줘.' : '앨범 사진으로 분석해줘.'
-      const promptText = isJudgeFlow ? JUDGE_PHOTO_PROMPT : CAMERA_RECIPE_PROMPT
+      const displayText = mode === 'camera'
+        ? '촬영 사진 첨부했어. 분석해줘.'
+        : '앨범 사진 첨부했어. 분석해줘.'
+      const analysisType: AnalysisType = 'judge'
+      const promptText = JUDGE_PHOTO_PROMPT
+      const judgeFlow = true
 
       queueUserRequest(displayText, 'input', {
         useApi: true,
         requestText: promptText,
         imageDataUrl,
-        judgeFlow: isJudgeFlow,
+        analysisType,
+        judgeFlow,
       })
     } catch (error) {
       const message = error instanceof Error ? error.message : '사진 분석 중 오류가 발생했어요.'
@@ -494,6 +589,7 @@ function ChatbotChat() {
   const handleJudgeModeSelect = (mode: JudgeMode) => {
     setJudgeMode(mode)
     if (mode === 'photo') {
+      setIsJudgeFlow(true)
       setShowCameraSheet(true)
     }
   }
@@ -525,9 +621,9 @@ function ChatbotChat() {
     }
 
     context.drawImage(video, 0, 0, targetWidth, targetHeight)
-    const imageDataUrl = canvas.toDataURL('image/jpeg', 0.84)
+    const imageDataUrl = encodeCanvasToJpegWithinLimit(canvas, MAX_IMAGE_DATA_URL_LENGTH)
 
-    if (!imageDataUrl.startsWith('data:image/jpeg')) {
+    if (!imageDataUrl) {
       setDesktopCameraError('촬영 이미지를 읽지 못했어요. 다시 시도해 주세요.')
       return
     }
@@ -538,13 +634,16 @@ function ChatbotChat() {
     }
 
     handleDesktopCameraClose()
-    const promptText = isJudgeFlow ? JUDGE_PHOTO_PROMPT : CAMERA_RECIPE_PROMPT
+    const analysisType: AnalysisType = 'judge'
+    const promptText = JUDGE_PHOTO_PROMPT
+    const judgeFlow = true
 
-    queueUserRequest('방금 찍은 사진으로 분석해줘.', 'input', {
+    queueUserRequest('촬영 사진 첨부했어. 분석해줘.', 'input', {
       useApi: true,
       requestText: promptText,
       imageDataUrl,
-      judgeFlow: isJudgeFlow,
+      analysisType,
+      judgeFlow,
     })
   }
 
@@ -649,6 +748,7 @@ function ChatbotChat() {
                           }
                           if (item === '사진 다시 분석할래.') {
                             setJudgeMode('photo')
+                            setIsJudgeFlow(true)
                             setShowCameraSheet(true)
                             return
                           }
@@ -732,9 +832,8 @@ function ChatbotChat() {
             <ChatbotInputBar
               onSubmit={addUserMessage}
               onCameraClick={() => {
-                if (isJudgeFlow) {
-                  setJudgeMode('photo')
-                }
+                setJudgeMode('photo')
+                setIsJudgeFlow(true)
                 setShowCameraSheet(true)
               }}
             />

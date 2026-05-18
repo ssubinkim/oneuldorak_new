@@ -8,13 +8,17 @@ type ChatApiError = {
   error?: string
 }
 
+export type AnalysisType = 'menu' | 'receipt' | 'judge'
+
 type AskGptOptions = {
   imageDataUrl?: string
+  analysisType?: AnalysisType
 }
 
 export async function askGPT(message: string, options?: AskGptOptions) {
   const trimmedMessage = message.trim()
   const imageDataUrl = options?.imageDataUrl?.trim()
+  const analysisType = options?.analysisType
 
   if (!trimmedMessage && !imageDataUrl) {
     throw new Error('질문 또는 이미지를 입력해 주세요.')
@@ -28,6 +32,7 @@ export async function askGPT(message: string, options?: AskGptOptions) {
     body: JSON.stringify({
       message: trimmedMessage,
       imageDataUrl,
+      analysisType,
     }),
   })
 
