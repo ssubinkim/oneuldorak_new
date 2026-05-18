@@ -35,25 +35,14 @@
 }
 
 .dorak-ranking__header button {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  padding: 0;
-  color: #767676;
-  background: transparent;
-  border: 0;
-  font-size: 14px;
-  font-weight: 500;
-  font-family: 'Pretendard Variable', sans-serif;
-  line-height: 130%;
-  letter-spacing: -0.08px;
-  cursor: pointer;
+  display: none;
 }
 
 .dorak-ranking__subtitle {
   margin: 0;
   color: #636363;
-  font-size: 14px;
+  font-size: 16px;
+  padding-bottom: 20px;
 }
 
 .dorak-ranking__cards {
@@ -74,7 +63,7 @@
   min-width: 0;
   padding: 8px 6px;
   background: #f6f6f6;
-  border: 1px solid #d9d9d9;
+  border: 1px solid #e9e9e9;
   border-radius: 10px;
   box-sizing: border-box;
   overflow: hidden;
