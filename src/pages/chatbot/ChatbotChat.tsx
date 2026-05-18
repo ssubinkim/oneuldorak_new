@@ -186,6 +186,67 @@ function renderBubbleText(text: string) {
   )
 }
 
+type AiTextDisplay = {
+  bubbleText: string
+  detailText: string | null
+}
+
+function summarizeAiText(text: string) {
+  const normalized = text.replace(/\s+/g, '')
+
+  if (/(사도좋아요|구매추천|구매를추천)/.test(normalized)) {
+    return '오늘 기준으로는 구매해도 괜찮아요.'
+  }
+
+  if (/(보류해도좋아요|보류)/.test(normalized)) {
+    return '오늘 기준으로는 보류해도 괜찮아요.'
+  }
+
+  if (/(사지않는걸추천|사지않|비추천)/.test(normalized)) {
+    return '오늘 기준으로는 구매를 보류하는 게 좋아요.'
+  }
+
+  if (/(추천메뉴|활용재료|예상조리시간|간단한조리법|절약포인트)/.test(normalized)) {
+    return '도시락 추천 결과를 정리해봤어요.'
+  }
+
+  if (/(총평|지출이큰항목|절약할수있는항목|장보기팁)/.test(normalized)) {
+    return '영수증 분석 결과를 정리해봤어요.'
+  }
+
+  return '요청하신 내용을 보기 쉽게 정리해봤어요.'
+}
+
+function getAiTextDisplay(text: string): AiTextDisplay {
+  const trimmed = text.trim()
+
+  if (!trimmed) {
+    return {
+      bubbleText: '잠깐만요, 다시 정리해볼게요.',
+      detailText: null,
+    }
+  }
+
+  const lines = trimmed
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean)
+  const structured = lines.length >= 2 && lines.some((line) => /^[-•]/.test(line) || /^\d+\./.test(line))
+  const longText = trimmed.length > 84
+
+  if (structured || longText) {
+    return {
+      bubbleText: summarizeAiText(trimmed),
+      detailText: trimmed,
+    }
+  }
+
+  return {
+    bubbleText: trimmed,
+    detailText: null,
+  }
+}
+
 function isJudgeSuggestionText(text: string) {
   return JUDGE_SUGGESTIONS.includes(text)
 }
@@ -758,14 +819,22 @@ function ChatbotChat() {
               }
 
               if (msg.type === 'ai-text') {
+                const display = getAiTextDisplay(msg.text)
                 return (
                   <div key={msg.id} className="chatbot-msg chatbot-msg--ai">
                     <img className="chatbot-mascot" src={chatbotMascotIcon} alt="" aria-hidden="true" />
-                    <div className="chatbot-ai-bubble">
-                      <img className="chatbot-ai-bubble__bg" src={bubbleIcon} alt="" aria-hidden="true" />
-                      <span className="chatbot-ai-bubble__text">
-                        {renderBubbleText(msg.text)}
-                      </span>
+                    <div className="chatbot-ai-stack">
+                      <div className="chatbot-ai-bubble">
+                        <img className="chatbot-ai-bubble__bg" src={bubbleIcon} alt="" aria-hidden="true" />
+                        <span className="chatbot-ai-bubble__text">
+                          {renderBubbleText(display.bubbleText)}
+                        </span>
+                      </div>
+                      {display.detailText ? (
+                        <article className="chatbot-ai-detail-card">
+                          <p className="chatbot-ai-detail-card__text">{renderBubbleText(display.detailText)}</p>
+                        </article>
+                      ) : null}
                     </div>
                   </div>
                 )

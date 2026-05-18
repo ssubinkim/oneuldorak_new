@@ -12,7 +12,7 @@
   --bottom-nav-center-column: clamp(76px, 22.5641vw, 88px);
   --bottom-nav-bg-inset: 0px;
   --bottom-nav-bg-radius: 10px;
-  --bottom-nav-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --bottom-nav-safe-bottom: env(safe-area-inset-bottom);
 
   position: fixed;
   right: auto;
@@ -329,11 +329,5 @@
   .bottom-nav {
     width: min(100vw, var(--screen-max-width));
     bottom: 0;
-  }
-}
-
-@media (pointer: coarse) {
-  .bottom-nav {
-    --bottom-nav-safe-bottom: max(env(safe-area-inset-bottom, 0px), 8px);
   }
 }
