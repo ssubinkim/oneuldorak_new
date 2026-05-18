@@ -65,11 +65,17 @@
   align-items: center;
 }
 
+.meal-hero-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
 .meal-tagline {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  margin-top: 14px;
 }
 
 .meal-tagline-name {

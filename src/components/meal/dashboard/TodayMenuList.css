@@ -1,5 +1,5 @@
 .today-card {
-  padding: 20px;
+  padding: 30px 20px 20px;
   position: relative;
 }
 
@@ -21,13 +21,13 @@
   cursor: pointer;
   padding: 0;
   position: absolute;
-  top: -30px;
+  top: 3px;
   right: 10px;
   z-index: 10;
 }
 
 .today-menu-add-btn img {
-  width: 110px;
+  width: 75px;
   height: auto;
   display: block;
 }
@@ -293,7 +293,7 @@
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
   background: #fffbe8;
   border: 1px solid #ffe673;
   border-radius: 10px;
@@ -301,8 +301,8 @@
 }
 
 .savings-icon {
-  width: 36px;
-  height: 36px;
+  width: 68px;
+  height: 68px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -322,19 +322,30 @@
 
 .savings-label {
   margin: 0;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 400;
-  color: #999;
+  color: #1a1a1a;
 }
 
 .savings-amount {
   margin: 0;
-  font-size: 16px;
-  font-weight: 700;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.savings-suffix {
+  font-size: 14px;
+  font-weight: 400;
+  color: #1a1a1a;
 }
 
 .savings-amount--blue {
   color: #ff6a00;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .savings-amount--yellow {

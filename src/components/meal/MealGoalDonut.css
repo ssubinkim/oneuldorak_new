@@ -1,0 +1,71 @@
+.meal-goal-donut {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: conic-gradient(#EF5246 var(--goal-pct), rgba(255, 255, 255, 0.5) 0);
+}
+
+.meal-goal-donut::before {
+  content: '';
+  grid-area: 1 / 1;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #ffdb78;
+}
+
+.meal-goal-donut span {
+  grid-area: 1 / 1;
+  z-index: 1;
+  color: #3c3c3c;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+@media (max-width: 360px) {
+  .meal-goal-donut {
+    width: 84px;
+    height: 84px;
+  }
+
+  .meal-goal-donut::before {
+    width: 61px;
+    height: 61px;
+  }
+}
+
+@media (max-width: 320px) {
+  .meal-goal-donut {
+    width: 76px;
+    height: 76px;
+  }
+
+  .meal-goal-donut::before {
+    width: 55px;
+    height: 55px;
+  }
+
+  .meal-goal-donut span {
+    font-size: 22px;
+  }
+}
+
+@media (min-width: 768px) {
+  .meal-goal-donut {
+    width: 132px;
+    height: 132px;
+  }
+
+  .meal-goal-donut::before {
+    width: 97px;
+    height: 97px;
+  }
+
+  .meal-goal-donut span {
+    font-size: 36px;
+  }
+}
