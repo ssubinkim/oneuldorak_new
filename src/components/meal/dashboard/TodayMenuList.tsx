@@ -10,16 +10,6 @@ interface Props {
   onAddClick?: () => void
 }
 
-function BellIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0.786133 16.1071C0.786133 13.3981 1.86228 10.8001 3.77783 8.88455C5.69338 6.969 8.29142 5.89285 11.0004 5.89285C13.7094 5.89285 16.3075 6.969 18.223 8.88455C20.1386 10.8001 21.2147 13.3981 21.2147 16.1071H0.786133Z" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M0.786133 20.0357H21.2147" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M11 5.89287V1.96429" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M8.64355 1.96429H13.3578" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  )
-}
 
 const slides = weeklyMenuData.filter(m => m.image !== null)
 
@@ -50,7 +40,12 @@ function TodayMenuList({ selectedDay: _, onAddClick }: Props) {
   return (
     <div className="today-card">
       <div className="today-card-header">
-        <BellIcon />
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.786133 16.1071C0.786133 13.3981 1.86228 10.8001 3.77783 8.88455C5.69338 6.969 8.29142 5.89285 11.0004 5.89285C13.7094 5.89285 16.3075 6.969 18.223 8.88455C20.1386 10.8001 21.2147 13.3981 21.2147 16.1071H0.786133Z" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M0.786133 20.0357H21.2147" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M11 5.89287V1.96429" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M8.64355 1.96429H13.3578" stroke="#555" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
         <span className="today-card-title">오늘의 추천 메뉴</span>
       </div>
       <button className="today-menu-add-btn" onClick={onAddClick}>

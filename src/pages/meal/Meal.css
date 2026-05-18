@@ -58,11 +58,12 @@
 .meal-bell-btn {
   background: none;
   border: none;
-  cursor: pointer;
+  cursor: default;
   padding: 4px;
-  color: var(--color-text-main);
   display: flex;
   align-items: center;
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 .meal-hero-body {
@@ -70,12 +71,14 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 14px;
+  padding-right: 10px;
 }
 
 .meal-tagline {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  padding: 10px;
 }
 
 .meal-tagline-name {
@@ -87,14 +90,14 @@
 }
 
 .meal-tagline-name strong {
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .meal-tagline-sub {
   margin: 0;
-  font-size: 16px;
-  font-weight: 400;
-  color: var(--color-text-main);
+  font-size: 18px;
+  font-weight: 500;
+  color: #3c3c3c;
   line-height: 1.3;
 }
 
