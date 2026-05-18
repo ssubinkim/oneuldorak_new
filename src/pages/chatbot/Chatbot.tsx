@@ -170,15 +170,17 @@ function Chatbot() {
             />
           )}
 
-          <section className="chatbot-bottom">
-            <ChatbotInputBar
-              onSubmit={handleSubmit}
-              onCameraClick={() => {
-                setShowCoachMark(false)
-                setShowCameraSheet(true)
-              }}
-            />
-          </section>
+          {!showCameraSheet && !showJudgeModeSheet ? (
+            <section className="chatbot-bottom">
+              <ChatbotInputBar
+                onSubmit={handleSubmit}
+                onCameraClick={() => {
+                  setShowCoachMark(false)
+                  setShowCameraSheet(true)
+                }}
+              />
+            </section>
+          ) : null}
         </main>
       </div>
     </div>
