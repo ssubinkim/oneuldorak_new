@@ -1,16 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { getIngredientIconClassName, weeklyMenuData } from '../mealData'
-import type { DayMenu } from '../mealData'
 import menuAddBtnImg from '../images/menu-add-btn.svg'
 import savings1Img from '../images/savings_1.svg'
-import savings2Img from '../images/savings_2.svg'
 import HomeQuickActions from '../../home/HomeQuickActions'
-import MenuAddSheet from './MenuAddSheet'
 import './TodayMenuList.css'
 
 interface Props {
   selectedDay: number
-  onMenuAdd?: (dayIndices: number[], menu: DayMenu) => void
+  onAddClick?: () => void
 }
 
 function BellIcon() {
@@ -24,14 +21,10 @@ function BellIcon() {
   )
 }
 
-
-
 const slides = weeklyMenuData.filter(m => m.image !== null)
-const monthlySavings = weeklyMenuData.reduce((sum, m) => sum + m.savedAmount, 0)
 
-function TodayMenuList({ selectedDay: _, onMenuAdd }: Props) {
+function TodayMenuList({ selectedDay: _, onAddClick }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isSheetOpen, setIsSheetOpen] = useState(false)
   const touchStartX = useRef(0)
   const currentMenu = slides[currentIndex]
 
@@ -60,7 +53,7 @@ function TodayMenuList({ selectedDay: _, onMenuAdd }: Props) {
         <BellIcon />
         <span className="today-card-title">오늘의 추천 메뉴</span>
       </div>
-      <button className="today-menu-add-btn" onClick={() => setIsSheetOpen(true)}>
+      <button className="today-menu-add-btn" onClick={onAddClick}>
         <img src={menuAddBtnImg} alt="메뉴 추가" />
       </button>
 
@@ -118,20 +111,15 @@ function TodayMenuList({ selectedDay: _, onMenuAdd }: Props) {
         <div className="savings-card">
           <img src={savings1Img} alt="" className="savings-icon" />
           <div className="savings-info">
-            <p className="savings-label">오늘 예상 절약</p>
-            <p className="savings-amount savings-amount--blue">{currentMenu.savedAmount.toLocaleString()}원</p>
-          </div>
-        </div>
-        <div className="savings-card">
-          <img src={savings2Img} alt="" className="savings-icon" />
-          <div className="savings-info">
-            <p className="savings-label">이번 달 누적 절약</p>
-            <p className="savings-amount savings-amount--yellow">{monthlySavings.toLocaleString()}원</p>
+            <p className="savings-label">오늘 메뉴로</p>
+            <p className="savings-amount savings-amount--blue">
+              {currentMenu.savedAmount.toLocaleString()}원
+              <span className="savings-suffix">절약할수있어요!</span>
+            </p>
           </div>
         </div>
       </div>
       <HomeQuickActions />
-      <MenuAddSheet open={isSheetOpen} onClose={() => setIsSheetOpen(false)} onMenuAdd={onMenuAdd} />
     </div>
   )
 }
