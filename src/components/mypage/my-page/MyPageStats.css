@@ -1,7 +1,7 @@
 .mypage-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 14px;
+  margin-top: 22px;
 }
 
 .mypage-stat-item {

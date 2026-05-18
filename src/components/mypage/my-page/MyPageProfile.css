@@ -47,9 +47,9 @@
 
 .mypage-user-name {
   overflow: hidden;
-  color: #202020;
+  color: #1a1a1a;
   font-size: 21px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 130%;
   text-overflow: ellipsis;
   white-space: nowrap;

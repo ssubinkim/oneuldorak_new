@@ -1,8 +1,8 @@
 .like-content {
   background: #f7f7f7;
   min-height: 100%;
-  padding: 0 16px 32px;
-  padding-top: calc(var(--header-height, 52px) + 50px + 8px);
+  padding: 18px 16px 18px;
+  padding-top: calc(var(--header-height, 52px) + 50px + 8px + 18px);
 }
 
 .like-content-bar {
