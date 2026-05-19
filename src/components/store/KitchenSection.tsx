@@ -12,7 +12,7 @@ function KitchenSection({ products, onSelect }: Props) {
     <div className="kitchen-section">
       <div className="kitchen-section__header">
         <p className="kitchen-section__title">
-          <img src={panIcon} alt="" className="kitchen-section__title-icon" />
+          <img src={panIcon} alt="" className="kitchen-section__title-icon" width={24} height={24} loading="lazy" decoding="async" fetchPriority="low" />
           오늘의 키친
         </p>
         <div className="kitchen-section__subrow">

@@ -24,7 +24,7 @@ function RelatedRecipes() {
       <div className="related-recipes__list">
         {RECIPES.map(r => (
           <div key={r.id} className="related-recipes__item">
-            <img src={r.image} alt={r.text} className="related-recipes__img" />
+            <img src={r.image} alt={r.text} className="related-recipes__img" width={72} height={72} loading="lazy" decoding="async" fetchPriority="low" />
             <div className="related-recipes__text">{r.text}</div>
           </div>
         ))}

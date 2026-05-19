@@ -54,7 +54,16 @@ function Meal() {
             <div className="meal-hero-inner">
               <div className="meal-hero-top">
                 <div className="meal-brand">
-                  <img src={logoImg} alt="오늘도락" className="meal-brand-logo" />
+                  <img
+                    src={logoImg}
+                    alt="오늘도락"
+                    className="meal-brand-logo"
+                    width={90}
+                    height={30}
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="sync"
+                  />
                 </div>
                 <button className="meal-bell-btn" aria-label="알림">
                   <BellIcon />

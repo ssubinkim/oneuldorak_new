@@ -104,7 +104,16 @@ function SequentialHighlightList({
                 aria-hidden="true"
               >
                 {item.thumbnailImage && (
-                  <img src={item.thumbnailImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }} />
+                  <img
+                    src={item.thumbnailImage}
+                    alt=""
+                    width={40}
+                    height={40}
+                    loading="lazy"
+                    decoding="async"
+                    fetchPriority="low"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit' }}
+                  />
                 )}
               </span>
               <div className="sequential-highlight-list__content">
