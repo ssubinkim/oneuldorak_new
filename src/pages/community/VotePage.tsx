@@ -53,11 +53,6 @@ function VotePage({
       <CommunityBanner
         variant="vote"
         isCompact={isHeaderCompact}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
       />
       <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
       <CommunityStickyHeader
@@ -65,11 +60,6 @@ function VotePage({
         tabsClassName="community-tabs"
         isCompact={isHeaderCompact}
         onSelectTab={onSelectTab}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
       />
 
       <div className="vote-page__body">
