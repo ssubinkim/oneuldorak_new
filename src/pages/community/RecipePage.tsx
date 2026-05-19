@@ -5,7 +5,7 @@ import useCommunityHeaderCollapse from '../../components/community/common/useCom
 import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
 import { popularRecipes } from '../../components/community/communitypage/communityData'
 import RecipeList, { type RecipeItem } from '../../components/community/recipepage/RecipeList'
-import dorakTipMascot from '../../assets/food_mascot_all/dorak07.svg'
+import dorakTipMascot from '../../assets/food_mascot_all/dorak07.png'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './RecipePage.css'
 

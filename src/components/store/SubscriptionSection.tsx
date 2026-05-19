@@ -50,7 +50,23 @@ function SubscriptionSection({ products, onSelect }: Props) {
       </div>
 
       <div className="subscription__banner">
-        <img className="subscription__banner-img" src={slide1} alt="정기식단 배너" width={360} height={202} loading="lazy" decoding="async" fetchPriority="low" />
+        <img
+          className="subscription__banner-img store-img-fade"
+          src={slide1}
+          alt="정기식단 배너"
+          width={360}
+          height={202}
+          loading="lazy"
+          decoding="async"
+          fetchPriority="low"
+          data-loaded="false"
+          onLoad={(event) => {
+            event.currentTarget.dataset.loaded = 'true'
+          }}
+          onError={(event) => {
+            event.currentTarget.dataset.loaded = 'true'
+          }}
+        />
         <div className="subscription__banner-overlay" />
         <div className="subscription__banner-text">
           <p className="store-banner__title subscription__banner-title">식단 고민 없는 한 주</p>
@@ -78,7 +94,25 @@ function SubscriptionSection({ products, onSelect }: Props) {
             {page.map((p, i) => (
               <div key={`${p.id}-${i}`} className="subscription__item" onClick={() => onSelect?.(p)}>
                 <div className="subscription__item-img-wrap">
-                  {p.image && <img className="subscription__item-img" src={p.image} alt={p.name} width={110} height={110} loading="lazy" decoding="async" fetchPriority="low" />}
+                  {p.image && (
+                    <img
+                      className="subscription__item-img store-img-fade"
+                      src={p.image}
+                      alt={p.name}
+                      width={110}
+                      height={110}
+                      loading="lazy"
+                      decoding="async"
+                      fetchPriority="low"
+                      data-loaded="false"
+                      onLoad={(event) => {
+                        event.currentTarget.dataset.loaded = 'true'
+                      }}
+                      onError={(event) => {
+                        event.currentTarget.dataset.loaded = 'true'
+                      }}
+                    />
+                  )}
                   <button
                     className="subscription__item-cart"
                     type="button"
