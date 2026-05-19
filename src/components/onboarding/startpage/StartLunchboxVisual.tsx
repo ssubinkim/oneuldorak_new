@@ -24,7 +24,8 @@ function StartLunchboxVisual({ onEnded }: StartLunchboxVisualProps) {
         src={openingGif}
         alt=""
         loading="eager"
-        decoding="sync"
+        decoding="async"
+        fetchPriority="high"
         onLoad={() => setIsGifReady(true)}
         onError={() => setIsGifReady(true)}
       />
