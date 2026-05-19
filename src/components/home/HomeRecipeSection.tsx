@@ -1,5 +1,5 @@
-import broThinkIcon from '../../assets/food_mascot/bro_think.svg'
-import eggThinkIcon from '../../assets/food_mascot/egg_think.svg'
+import broThinkIcon from '../../assets/food_mascot/bro_think.png'
+import eggThinkIcon from '../../assets/food_mascot/egg_think.png'
 import heartIcon from '../../assets/icons/heart.svg'
 import kimchiRiceImage from '../../assets/images/food_imges/kimbok.png'
 import spamMayoImage from '../../assets/images/food_imges/chamchimayo.png'

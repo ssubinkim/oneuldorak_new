@@ -23,7 +23,7 @@ function BestSection({ products, onSelect }: Props) {
       <div className="best-section__track">
         {products.map((p, i) => (
           <div key={`${p.id}-${i}`} className="best-section__item">
-            <ProductCard {...p} rank={i + 1} onClick={() => onSelect?.(p)} />
+            <ProductCard {...p} rank={i + 1} prioritizeImage={i < 2} onClick={() => onSelect?.(p)} />
           </div>
         ))}
       </div>

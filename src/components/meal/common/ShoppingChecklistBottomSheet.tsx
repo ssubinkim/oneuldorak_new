@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import bananaIcon from '../../../assets/images/food_icon/banana.svg'
-import beefIcon from '../../../assets/images/food_icon/beef.svg'
-import broccoliIcon from '../../../assets/images/food_icon/broccoli.svg'
-import chiliPepperIcon from '../../../assets/images/food_icon/chili_pepper.svg'
-import daikonRadishIcon from '../../../assets/images/food_icon/daikon_radish.svg'
-import eggIcon from '../../../assets/images/food_icon/egg.svg'
-import pepperIcon from '../../../assets/images/food_icon/pepper.svg'
+import bananaIcon from '../../../assets/images/food_icon/banana.png'
+import beefIcon from '../../../assets/images/food_icon/beef.png'
+import broccoliIcon from '../../../assets/images/food_icon/broccoli.png'
+import chiliPepperIcon from '../../../assets/images/food_icon/chili_pepper.png'
+import daikonRadishIcon from '../../../assets/images/food_icon/daikon_radish.png'
+import eggIcon from '../../../assets/images/food_icon/egg.png'
+import pepperIcon from '../../../assets/images/food_icon/pepper.png'
 import './ShoppingChecklistBottomSheet.css'
 
 export type ShoppingChecklistItem = {

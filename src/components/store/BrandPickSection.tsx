@@ -31,7 +31,23 @@ function BrandPickSection() {
         {BRANDS.map(brand => (
           <div key={brand.id} className="brand-pick__item">
             <div className="brand-pick__circle">
-              <img className="brand-pick__logo" src={brand.logo} alt={brand.name} width={70} height={70} loading="lazy" decoding="async" fetchPriority="low" />
+              <img
+                className="brand-pick__logo store-img-fade"
+                src={brand.logo}
+                alt={brand.name}
+                width={70}
+                height={70}
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+                data-loaded="false"
+                onLoad={(event) => {
+                  event.currentTarget.dataset.loaded = 'true'
+                }}
+                onError={(event) => {
+                  event.currentTarget.dataset.loaded = 'true'
+                }}
+              />
             </div>
             <p className="brand-pick__name">{brand.name}</p>
           </div>

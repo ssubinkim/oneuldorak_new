@@ -15,22 +15,30 @@ export type Product = {
 type Props = Product & {
   rank?: number
   onClick?: () => void
+  prioritizeImage?: boolean
 }
 
-function ProductCard({ name, price, originalPrice, brand, image, rating, reviewCount, rank, onClick }: Props) {
+function ProductCard({ name, price, originalPrice, brand, image, rating, reviewCount, rank, onClick, prioritizeImage = false }: Props) {
   return (
     <div className="product-card" onClick={onClick}>
       <div className="product-card__image-wrap">
         {image && (
           <img
-            className="product-card__image"
+            className="product-card__image store-img-fade"
             src={image}
             alt={name}
             width={130}
             height={130}
-            loading="lazy"
-            decoding="async"
-            fetchPriority="low"
+            loading={prioritizeImage ? 'eager' : 'lazy'}
+            decoding={prioritizeImage ? 'sync' : 'async'}
+            fetchPriority={prioritizeImage ? 'high' : 'low'}
+            data-loaded="false"
+            onLoad={(event) => {
+              event.currentTarget.dataset.loaded = 'true'
+            }}
+            onError={(event) => {
+              event.currentTarget.dataset.loaded = 'true'
+            }}
           />
         )}
         {rank !== undefined && (

@@ -2,11 +2,11 @@ import type { BoardDetailPost } from '../boarddetailpage/BoardContent'
 import type { BoardComment } from '../boarddetailpage/CommentItem'
 import type { BoardPost } from '../boardpage/BoardList'
 import type { BoardPopularPost } from '../boardpage/BoardPopularPosts'
-import eggMascot from '../../../assets/food_mascot/egg_mascot.svg'
-import strawMascot from '../../../assets/food_mascot/straw_mascot.svg'
-import blueMascot from '../../../assets/food_mascot/blue_mascot.svg'
-import carrotMascot from '../../../assets/food_mascot/carrot_mascot.svg'
-import broMascot from '../../../assets/food_mascot/bro_mascot.svg'
+import eggMascot from '../../../assets/food_mascot/egg_mascot.png'
+import strawMascot from '../../../assets/food_mascot/straw_mascot.png'
+import blueMascot from '../../../assets/food_mascot/blue_mascot.png'
+import carrotMascot from '../../../assets/food_mascot/carrot_mascot.png'
+import broMascot from '../../../assets/food_mascot/bro_mascot.png'
 
 const mascots = [eggMascot, strawMascot, blueMascot, carrotMascot, broMascot]
 
