@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import type React from 'react'
 import type { CommunityTabRoute } from '../../../pages/community/CommunityTabRoute'
 import CommunityStickyHeader from '../common/CommunityStickyHeader'
+import CommunitySearchBar from '../common/CommunitySearchBar'
 import PopularRecipeSection from '../common/PopularRecipeSection'
 import useCommunityHeaderCollapse from '../common/useCommunityHeaderCollapse'
 import VoteList from '../votepage/VoteList'
@@ -22,6 +24,7 @@ function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
     isHeaderCompact,
     pageRef,
     compactTriggerRef,
+    stickyHeaderRef,
     handleCommunityScroll,
   } = useCommunityHeaderCollapse()
 
@@ -40,32 +43,63 @@ function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
       className="page-scroll community-page"
       onScroll={handleCommunityScroll}
     >
+      {/* 커뮤니티 헤더 row - sticky, 항상 카드 위에 */}
+      <div ref={stickyHeaderRef as React.RefObject<HTMLDivElement>} className="community-banner-header">
+        <h1>커뮤니티</h1>
+        <div className="community-banner-header__actions">
+          {isSearchOpen ? (
+            <CommunitySearchBar
+              className="community-banner-header__search-inline"
+              value={searchValue}
+              onChange={setSearchValue}
+              onClose={handleSearchClose}
+              onBlur={handleSearchClose}
+              showCloseButton={false}
+              autoFocus
+            />
+          ) : (
+            <button
+              type="button"
+              aria-label="검색"
+              aria-expanded={isSearchOpen}
+              onClick={handleSearchToggle}
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </button>
+          )}
+          <button type="button" aria-label="저장">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* 배너 body만 (subtitle + 마스코트) - 카드가 위로 덮으며 올라옴 */}
       <CommunityBanner
+        hideHeader
         isCompact={isHeaderCompact}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
-      />
-      <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
-      <CommunityStickyHeader
-        activeTab={activeTab}
-        tabsClassName="community-tabs"
-        isCompact={isHeaderCompact}
-        onSelectTab={onSelectTab}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
       />
 
-      <div className="community-content">
-        <VoteList filter="active" variant="featured" onMoreClick={() => onSelectTab('vote')} />
-        <PopularRecipeSection recipes={popularRecipes} onMoreClick={() => onSelectTab('recipe')} />
-        <PopularPosts posts={hotPosts} onMoreClick={() => onSelectTab('free')} />
-        <RankingBanner rankings={dorakRankings} />
+      <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
+
+      {/* 흰 카드 - 배너 body 위로 슬라이드, 커뮤니티 헤더 아래에 멈춤 */}
+      <div className="community-card-sheet">
+        <CommunityStickyHeader
+          activeTab={activeTab}
+          tabsClassName="community-tabs"
+          isCompact={isHeaderCompact}
+          onSelectTab={onSelectTab}
+        />
+        <div className="community-content">
+          <VoteList filter="active" variant="featured" onMoreClick={() => onSelectTab('vote')} />
+          <PopularRecipeSection recipes={popularRecipes} />
+          <PopularPosts posts={hotPosts} />
+          <RankingBanner rankings={dorakRankings} />
+        </div>
       </div>
     </main>
   )
