@@ -18,7 +18,7 @@ const topStories = stories.slice(0, 3)
 
 function HomeStories() {
   return (
-    <section className="stories-section font-pretendard-variable" aria-labelledby="storiesTitle">
+    <section className="stories-section font-pretendard-variable font-line-height-default font-letter-spacing-default" aria-labelledby="storiesTitle">
       <div className="stories-section__intro">
         <div className="stories-section__copy">
           <h2 id="storiesTitle">

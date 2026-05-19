@@ -2,6 +2,7 @@ import { useState } from 'react'
 import '../../styles/Tailwind.css'
 import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
+import { type AnalysisType } from '../../api/chatApi'
 import chatbotHeroImage from '../../components/chatbot/images/ai_main.svg'
 import btnXIcon from '../../components/chatbot/images/btn_x.svg'
 import ChatbotCoachMark from '../../components/chatbot/ChatbotCoachMark'
@@ -9,13 +10,19 @@ import ChatbotCameraSheet from '../../components/chatbot/ChatbotCameraSheet'
 import ChatbotInputBar from '../../components/chatbot/ChatbotInputBar'
 import './Chatbot.css'
 
-const quickSuggestions = [
-  '오늘 도시락 추천',
-  '주간 도시락 플랜',
-  '재료별 레시피',
-  '오늘 추천 재료',
-  '남은 재료 활용',
-  '살까말까',
+type QuickSuggestion = {
+  label: string
+  useApi?: boolean
+  analysisType?: AnalysisType
+}
+
+const quickSuggestions: QuickSuggestion[] = [
+  { label: '오늘 도시락 추천', useApi: true, analysisType: 'menu' },
+  { label: '주간 도시락 플랜', useApi: true, analysisType: 'menu' },
+  { label: '재료별 레시피', useApi: true, analysisType: 'menu' },
+  { label: '오늘 추천 재료', useApi: true, analysisType: 'menu' },
+  { label: '남은 재료 활용', useApi: true, analysisType: 'menu' },
+  { label: '살까말까', useApi: true, analysisType: 'judge' },
 ]
 
 function closeChatbot() {
@@ -28,7 +35,6 @@ function navigateToHash(hash: string) {
 
 type CameraPickMode = 'camera' | 'album'
 type JudgeMode = 'text' | 'photo'
-type AnalysisType = 'judge'
 
 type OpenChatOptions = {
   useApi?: boolean
@@ -71,7 +77,11 @@ function Chatbot() {
       setShowJudgeModeSheet(true)
       return
     }
-    openChatPage(suggestion, 'quick')
+    const suggestionConfig = quickSuggestions.find((item) => item.label === suggestion)
+    openChatPage(suggestion, 'quick', {
+      useApi: suggestionConfig?.useApi,
+      analysisType: suggestionConfig?.analysisType,
+    })
   }
 
   const handleSubmit = (text: string) => {
@@ -134,14 +144,14 @@ function Chatbot() {
             </p>
 
             <div className="chatbot-suggestions" aria-label="추천 질문">
-              {quickSuggestions.map((suggestion) => (
+              {quickSuggestions.map(({ label }) => (
                 <button
-                  key={suggestion}
+                  key={label}
                   className="chatbot-chip"
                   type="button"
-                  onClick={() => handleSuggestionClick(suggestion)}
+                  onClick={() => handleSuggestionClick(label)}
                 >
-                  {suggestion}
+                  {label}
                 </button>
               ))}
             </div>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import type { AnswerValue, IngredientOption } from './onboardingQuestionTypes'
 import OnboardingCustomInputModal from './OnboardingCustomInputModal'
 import './OnboardingIngredientGrid.css'
@@ -91,19 +92,28 @@ function OnboardingIngredientGrid({ ingredients, onSelect, selectedAnswer }: Onb
 
             return (
               <button
-                className={`onboarding-ingredient-card${isSelected ? ' onboarding-ingredient-card--selected' : ''}`}
+                className={`onboarding-ingredient-card onboarding-ingredient-card--stagger${isSelected ? ' onboarding-ingredient-card--selected' : ''}`}
                 type="button"
                 onClick={() => handleIngredientClick(ingredient.label)}
                 data-label={ingredient.label}
                 key={ingredient.label}
+                style={{ '--stagger-index': index } as CSSProperties}
               >
                 {ingredient.icon ? (
                   <img
+                    className="onboarding-ingredient-card__icon"
                     src={ingredient.icon}
                     alt=""
                     loading={prioritize ? 'eager' : 'lazy'}
                     decoding="async"
                     fetchPriority={prioritize ? 'high' : 'auto'}
+                    data-loaded="false"
+                    onLoad={(event) => {
+                      event.currentTarget.dataset.loaded = 'true'
+                    }}
+                    onError={(event) => {
+                      event.currentTarget.dataset.loaded = 'true'
+                    }}
                   />
                 ) : (
                   <span className="onboarding-ingredient-card__spacer" />
