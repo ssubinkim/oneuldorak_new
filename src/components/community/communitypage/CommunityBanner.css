@@ -104,7 +104,8 @@
 }
 
 .community-banner--vote .community-banner__image {
-  --banner-image-transform: translateY(20px) scale(1.45);
+  --banner-image-transform: translateY(-5px) scale(1.2);
+  z-index: 10;
 }
 
 .community-banner-compact-trigger {

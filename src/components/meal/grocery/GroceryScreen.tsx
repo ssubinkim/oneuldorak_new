@@ -14,9 +14,9 @@ type GroceryScreenProps = {
 }
 
 function GroceryScreen({ onBack }: GroceryScreenProps) {
-  const [activeTab, setActiveTab] = useState<GroceryTab>('shopping')
+  const [activeTab, setActiveTab] = useState<GroceryTab>('recommend')
   const [shoppingItems, setShoppingItems] = useState<ShoppingItem[]>(() => readGroceryShoppingItems(INITIAL_ITEMS))
-  const checkedShoppingCount = shoppingItems.filter((item) => item.checked).length
+  const checkedShoppingCount = shoppingItems.length
 
   useEffect(() => {
     saveGroceryShoppingItems(shoppingItems)
@@ -39,7 +39,17 @@ function GroceryScreen({ onBack }: GroceryScreenProps) {
               <GroceryShoppingTab items={shoppingItems} setItems={setShoppingItems} />
             )}
             {activeTab === 'storage' && <GroceryStorageTab />}
-            {activeTab === 'recommend' && <GroceryRecommendTab />}
+            {activeTab === 'recommend' && (
+              <GroceryRecommendTab
+                onAddItem={(item) =>
+                  setShoppingItems(prev =>
+                    prev.some(s => s.name === item.name)
+                      ? prev
+                      : [...prev, { id: Date.now(), name: item.name, image: item.image, checked: false }]
+                  )
+                }
+              />
+            )}
           </div>
         </div>
 

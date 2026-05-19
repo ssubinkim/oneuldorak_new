@@ -27,7 +27,7 @@ function CommentIcon() {
         d="M2.5 2.5h11v7.5h-4.8L5.3 13.2v-3.2H2.5z"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.3"
+        strokeWidth="1.4"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

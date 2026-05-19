@@ -3,7 +3,7 @@ import './CommunityBanner.css'
 import defaultBannerImage from '../../../pages/community/images/dorak02.png'
 import recipeBannerImage from '../../../assets/food_mascot_all/dorak18.svg'
 import boardBannerImage from '../../../assets/food_mascot_all/dorak15.svg'
-import voteBannerImage from '../../../assets/food_mascot_all/dorak11.svg'
+import voteBannerImage from '../../../assets/food_mascot_all/dorak20.png'
 
 type CommunityBannerVariant = 'default' | 'recipe' | 'board' | 'vote'
 

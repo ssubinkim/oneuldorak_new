@@ -29,7 +29,7 @@
 .home-hero h1 {
   margin: 0;
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 140%;
 }
 
@@ -63,8 +63,8 @@
 
 .home-budget-card__label {
   margin: 0 0 6px;
-  color: #707070;
-  font-size: 13px;
+  color: #3c3c3c;
+  font-size: 16px;
   font-weight: 700;
   line-height: 120%;
 }

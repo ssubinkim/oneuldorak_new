@@ -27,18 +27,20 @@
   font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
   font-size: 24px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0;
 }
 
 .home-recipe-section__header p {
-  margin: 12px 0 0;
-  color: #888;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.2;
+  margin: 0;
+  color: #636363;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: 'Pretendard Variable', sans-serif;
+  line-height: 130%;
+  letter-spacing: -0.08px;
+  padding-top: 4px;
 }
 
 .home-recipe-section__header a {

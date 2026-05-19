@@ -1,6 +1,6 @@
 import './BoardList.css'
 import { useEffect, useRef } from 'react'
-import { boardFilters, type BoardFilter } from './BoardCategoryFilters'
+import { boardFilters, type BoardFilter } from './boardCategoryFilterData'
 import { mockBoardPosts } from '../common/boardMockData'
 
 export type BoardPost = {

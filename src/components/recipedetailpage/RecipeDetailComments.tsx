@@ -1,6 +1,18 @@
 import { useState, type FormEvent } from 'react'
 import type { RecipeComment } from './recipeDetailData'
 import { StatIcon } from './RecipeDetailIcons'
+import blueMascotIcon from '../../assets/food_mascot/blue_mascot.svg'
+import broMascotIcon from '../../assets/food_mascot/bro_mascot.svg'
+import carrotMascotIcon from '../../assets/food_mascot/carrot_mascot.svg'
+import eggMascotIcon from '../../assets/food_mascot/egg_mascot.svg'
+import strawMascotIcon from '../../assets/food_mascot/straw_mascot.svg'
+
+const mascotIcons = [blueMascotIcon, broMascotIcon, carrotMascotIcon, eggMascotIcon, strawMascotIcon]
+
+function getMascotIcon(seed: string) {
+  const value = seed.split('').reduce((sum, ch, i) => sum + ch.charCodeAt(0) * (i + 1), 0)
+  return mascotIcons[value % mascotIcons.length]
+}
 
 type RecipeDetailCommentsProps = {
   comments: RecipeComment[]
@@ -95,6 +107,9 @@ function RecipeDetailComments({
           return (
             <article key={comment.id}>
               <div className="recipe-detail-comment-head">
+                <span className="recipe-detail-comment-mascot" aria-hidden="true">
+                  <img src={getMascotIcon(comment.authorName)} alt="" />
+                </span>
                 <h3>
                   {comment.authorName}
                   <span>{comment.publishedOn}</span>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import BottomSheet from '../common/BottomSheet'
 import './GoalBottomSheet.css'
 
@@ -17,9 +17,8 @@ function formatAmount(raw: string) {
   return num.toLocaleString() + '원'
 }
 
-function useAmountInput(initial: number) {
+function useAmountInput() {
   const [raw, setRaw] = useState('')
-  void initial
   const [focused, setFocused] = useState(false)
 
   const value = focused ? raw : (raw ? formatAmount(raw) : '')
@@ -27,22 +26,24 @@ function useAmountInput(initial: number) {
     setRaw(e.target.value.replace(/[^0-9]/g, ''))
   const onFocus = () => setFocused(true)
   const onBlur = () => setFocused(false)
-  const reset = () => setRaw('')
+  const reset = useCallback(() => setRaw(''), [])
   const parsed = parseInt(raw, 10) || 0
 
   return { value, onChange, onFocus, onBlur, reset, parsed }
 }
 
-export default function GoalBottomSheet({ open, onClose, goal, onSave }: Props) {
-  const target = useAmountInput(goal.target)
-  const current = useAmountInput(goal.current)
+export default function GoalBottomSheet({ open, onClose, onSave }: Props) {
+  const target = useAmountInput()
+  const current = useAmountInput()
+  const resetTarget = target.reset
+  const resetCurrent = current.reset
 
   useEffect(() => {
     if (open) {
-      target.reset()
-      current.reset()
+      resetTarget()
+      resetCurrent()
     }
-  }, [open])
+  }, [open, resetCurrent, resetTarget])
 
   const handleSave = () => {
     onSave({ target: target.parsed, current: current.parsed })

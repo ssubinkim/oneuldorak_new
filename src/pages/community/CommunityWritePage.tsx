@@ -22,7 +22,7 @@ import './CommunityWritePage.css'
 type CommunityWritePageProps = {
   initialTab?: WriteTab
   onBack: () => void
-  onSubmit: (payload: CommunityWritePayload) => void
+  onSubmit: (payload: CommunityWritePayload) => void | Promise<void>
 }
 
 const writeHeroDescriptions: Record<WriteTab, string> = {
@@ -34,6 +34,7 @@ const writeHeroDescriptions: Record<WriteTab, string> = {
 function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: CommunityWritePageProps) {
   const [activeTab, setActiveTab] = useState<WriteTab>(initialTab)
   const [formValues, setFormValues] = useState<CommunityWriteFormValues>(emptyWriteFormValues)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const updateRecipeData = (recipe: RecipeWriteData) => {
     setFormValues((prevValues) => ({ ...prevValues, recipe }))
@@ -45,6 +46,20 @@ function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: Communit
 
   const updateVoteData = (vote: VoteWriteData) => {
     setFormValues((prevValues) => ({ ...prevValues, vote }))
+  }
+
+  const submitPayload = async (payload: CommunityWritePayload) => {
+    if (isSubmitting) {
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      await onSubmit(payload)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleSubmit = () => {
@@ -68,7 +83,7 @@ function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: Communit
         return
       }
 
-      onSubmit({
+      void submitPayload({
         ...payload,
         data: {
           ...payload.data,
@@ -78,7 +93,7 @@ function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: Communit
       return
     }
 
-    onSubmit(payload)
+    void submitPayload(payload)
   }
 
   return (
@@ -110,7 +125,7 @@ function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: Communit
           )}
         </div>
 
-        <button className="community-write-submit" type="button" onClick={handleSubmit}>
+        <button className="community-write-submit" type="button" disabled={isSubmitting} onClick={handleSubmit}>
           등록하기
         </button>
       </section>
