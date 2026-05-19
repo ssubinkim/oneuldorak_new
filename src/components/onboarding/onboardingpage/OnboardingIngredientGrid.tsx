@@ -80,13 +80,14 @@ function OnboardingIngredientGrid({ ingredients, onSelect, selectedAnswer }: Onb
     <>
       <div className="onboarding-ingredient-scroll">
         <div className="onboarding-ingredient-grid" ref={scrollRef}>
-          {ingredients.map((ingredient) => {
+          {ingredients.map((ingredient, index) => {
             const isSelected =
               ingredient.label === CUSTOM_LABEL
                 ? isCustomActive
                 : Array.isArray(selectedAnswer)
                   ? selectedAnswer.includes(ingredient.label)
                   : selectedAnswer === ingredient.label
+            const prioritize = index < 16
 
             return (
               <button
@@ -97,7 +98,13 @@ function OnboardingIngredientGrid({ ingredients, onSelect, selectedAnswer }: Onb
                 key={ingredient.label}
               >
                 {ingredient.icon ? (
-                  <img src={ingredient.icon} alt="" loading="lazy" decoding="async" />
+                  <img
+                    src={ingredient.icon}
+                    alt=""
+                    loading={prioritize ? 'eager' : 'lazy'}
+                    decoding="async"
+                    fetchPriority={prioritize ? 'high' : 'auto'}
+                  />
                 ) : (
                   <span className="onboarding-ingredient-card__spacer" />
                 )}
