@@ -85,7 +85,7 @@ function HomeRecipeCardItem({ recipe }: { recipe: HomeRecipeCard }) {
 
 function HomeRecipeSection() {
   return (
-    <section className="home-recipe-section font-pretendard-variable" aria-labelledby="recipeTitle">
+    <section className="home-recipe-section font-pretendard-variable font-line-height-default font-letter-spacing-default" aria-labelledby="recipeTitle">
       <div className="home-recipe-section__header">
         <div>
           <h2 id="recipeTitle">
