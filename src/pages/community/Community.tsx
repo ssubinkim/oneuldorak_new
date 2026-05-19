@@ -58,6 +58,27 @@ function createTemporaryId(prefix: string) {
   return `${prefix}-${Date.now()}`
 }
 
+function readFileAsDataUrl(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result)
+        return
+      }
+
+      reject(new Error('Failed to read media file.'))
+    }
+    reader.onerror = () => reject(new Error('Failed to read media file.'))
+    reader.readAsDataURL(file)
+  })
+}
+
+function isPersistableMediaUrl(url: string) {
+  return Boolean(url) && !url.startsWith('blob:')
+}
+
 function getCommunityInitialTargetFromHash(): CommunityInitialTarget | null {
   if (typeof window === 'undefined') {
     return null
@@ -142,50 +163,56 @@ function getVoteDeadlineText(duration: string) {
   return `~ ${getSeoulDate(getVoteDurationDayOffset(duration))} 18:00`
 }
 
-function getMediaAttachmentUrl(attachment: CommunityMediaAttachment) {
-  if (attachment.url) {
-    return attachment.url
+async function normalizeCommunityMediaAttachment(
+  attachment: CommunityMediaAttachment,
+): Promise<CommunityMediaAttachment | null> {
+  const name = attachment.name ?? attachment.file?.name
+  const size = attachment.size ?? attachment.file?.size
+  const persistableAttachment: CommunityMediaAttachment = {
+    id: attachment.id,
+    kind: attachment.kind,
+    name,
+    size,
   }
 
-  if (attachment.file && typeof URL !== 'undefined') {
-    return URL.createObjectURL(attachment.file)
+  if (attachment.file && attachment.kind === 'image') {
+    return {
+      ...persistableAttachment,
+      url: await readFileAsDataUrl(attachment.file),
+      name,
+      size,
+    }
   }
 
-  return ''
+  if (attachment.url && isPersistableMediaUrl(attachment.url)) {
+    return {
+      ...persistableAttachment,
+      url: attachment.url,
+      name,
+      size,
+    }
+  }
+
+  return null
 }
 
-function mapCommunityMediaAttachments(media: CommunityMediaAttachment[]) {
-  const nextAttachments: CommunityMediaAttachment[] = []
+async function mapCommunityMediaAttachments(media: CommunityMediaAttachment[]): Promise<CommunityMediaAttachment[]> {
+  const nextAttachments = await Promise.all(media.map(normalizeCommunityMediaAttachment))
 
-  media.forEach((attachment) => {
-    const url = getMediaAttachmentUrl(attachment)
-
-    if (!url) {
-      return
-    }
-
-    nextAttachments.push({
-      ...attachment,
-      url,
-      name: attachment.name ?? attachment.file?.name,
-      size: attachment.size ?? attachment.file?.size,
-    })
-  })
-
-  return nextAttachments
+  return nextAttachments.filter((attachment): attachment is CommunityMediaAttachment => Boolean(attachment))
 }
 
 function getFirstMediaUrl(media: CommunityMediaAttachment[], kind: CommunityMediaAttachment['kind']) {
   return media.find((attachment) => attachment.kind === kind && attachment.url)?.url
 }
 
-function createRegisteredRecipe(
+async function createRegisteredRecipe(
   payload: Extract<CommunityWritePayload, { tab: 'recipe' }>,
   author: string,
   authorId: string,
-): RecipeItem {
+): Promise<RecipeItem> {
   const { data } = payload
-  const media = mapCommunityMediaAttachments(data.media)
+  const media = await mapCommunityMediaAttachments(data.media)
 
   return {
     id: createTemporaryId('user-recipe'),
@@ -266,11 +293,11 @@ function createRegisteredBoardPost(
   }
 }
 
-function createRegisteredBoardDetailPost(
+async function createRegisteredBoardDetailPost(
   payload: Extract<CommunityWritePayload, { tab: 'board' }>,
   author: string,
   authorId: string,
-): BoardDetailPost {
+): Promise<BoardDetailPost> {
   const { data } = payload
   const trimmedParagraphs = data.content
     .split(/\n+/)
@@ -289,7 +316,7 @@ function createRegisteredBoardDetailPost(
     comments: 0,
     paragraphs: trimmedParagraphs.length > 0 ? trimmedParagraphs : ['방금 등록한 게시글입니다.'],
     methods: [],
-    media: mapCommunityMediaAttachments(data.media),
+    media: await mapCommunityMediaAttachments(data.media),
   }
 }
 
@@ -313,6 +340,17 @@ function createRegisteredVote(
     deadline: getVoteDeadlineText(data.duration),
     options: getTemporaryVoteOptions(data.options),
   }
+}
+
+function normalizeRegisteredBoardDetailPosts(posts: BoardDetailPost[]) {
+  return posts.map((post) =>
+    post.id.startsWith('user-board')
+      ? {
+          ...post,
+          methods: [],
+        }
+      : post,
+  )
 }
 
 function Community() {
@@ -342,7 +380,7 @@ function Community() {
   const [registeredRecipes, setRegisteredRecipes] = useState<RecipeItem[]>(persistedWriteState.recipes)
   const [registeredBoardPosts, setRegisteredBoardPosts] = useState<BoardPost[]>(persistedWriteState.boardPosts)
   const [registeredBoardDetailPosts, setRegisteredBoardDetailPosts] = useState<BoardDetailPost[]>(
-    persistedWriteState.boardDetailPosts,
+    () => normalizeRegisteredBoardDetailPosts(persistedWriteState.boardDetailPosts),
   )
   const [registeredVotes, setRegisteredVotes] = useState<VoteCardItem[]>(persistedWriteState.votes)
   const [registrationModal, setRegistrationModal] = useState<RegistrationModalState>(null)
@@ -350,19 +388,6 @@ function Community() {
   const selectedRegisteredRecipe = selectedRecipeId
     ? registeredRecipes.find((recipe) => recipe.id === selectedRecipeId) ?? null
     : null
-
-  useEffect(() => {
-    setRegisteredBoardDetailPosts((previousPosts) =>
-      previousPosts.map((post) =>
-        post.id.startsWith('user-board')
-          ? {
-              ...post,
-              methods: [],
-            }
-          : post,
-      ),
-    )
-  }, [])
 
   useEffect(() => {
     savePersistedCommunityWriteState({
@@ -383,8 +408,8 @@ function Community() {
     setView('detail')
   }
 
-  const handleUpdateRecipe = (recipeId: string, data: Extract<CommunityWritePayload, { tab: 'recipe' }>['data']) => {
-    const nextMedia = mapCommunityMediaAttachments(data.media)
+  const handleUpdateRecipe = async (recipeId: string, data: Extract<CommunityWritePayload, { tab: 'recipe' }>['data']) => {
+    const nextMedia = await mapCommunityMediaAttachments(data.media)
 
     setRegisteredRecipes((prevRecipes) =>
       prevRecipes.map((recipe) =>
@@ -405,6 +430,11 @@ function Community() {
           : recipe,
       ),
     )
+
+    return {
+      ...data,
+      media: nextMedia,
+    }
   }
 
   const handleDeleteRecipe = (recipeId: string) => {
@@ -419,7 +449,8 @@ function Community() {
     setView('boardDetail')
   }
 
-  const handleUpdateBoardPost = (postId: string, data: Extract<CommunityWritePayload, { tab: 'board' }>['data']) => {
+  const handleUpdateBoardPost = async (postId: string, data: Extract<CommunityWritePayload, { tab: 'board' }>['data']) => {
+    const nextMedia = await mapCommunityMediaAttachments(data.media)
     const nextTitle = getFilledText(data.title, '새 게시글')
     const nextBody = getSummaryText(data.content, '방금 등록한 게시글입니다.')
     const nextParagraphs = data.content
@@ -448,11 +479,16 @@ function Community() {
               title: nextTitle,
               paragraphs: nextParagraphs.length > 0 ? nextParagraphs : ['방금 등록한 게시글입니다.'],
               methods: [],
-              media: mapCommunityMediaAttachments(data.media),
+              media: nextMedia,
             }
           : post,
       ),
     )
+
+    return {
+      ...data,
+      media: nextMedia,
+    }
   }
 
   const handleDeleteBoardPost = (postId: string) => {
@@ -527,11 +563,11 @@ function Community() {
     setFocusTarget((previousTarget) => (previousTarget?.tab === 'vote' ? null : previousTarget))
   }
 
-  const handleWriteSubmit = (payload: CommunityWritePayload) => {
-    let nextTarget: FocusTarget = null
+  const handleWriteSubmit = async (payload: CommunityWritePayload) => {
+    let nextTarget: NonNullable<FocusTarget>
 
     if (payload.tab === 'recipe') {
-      const nextRecipe = createRegisteredRecipe(payload, nickname, email)
+      const nextRecipe = await createRegisteredRecipe(payload, nickname, email)
       setRegisteredRecipes((prevRecipes) => [nextRecipe, ...prevRecipes])
       setActiveTab('recipe')
       setView('recipe')
@@ -544,7 +580,7 @@ function Community() {
       nextTarget = { tab: 'vote', targetId: nextVote.id }
     } else {
       const nextListPost = createRegisteredBoardPost(payload, nickname, email)
-      const nextDetailPost = createRegisteredBoardDetailPost(payload, nickname, email)
+      const nextDetailPost = await createRegisteredBoardDetailPost(payload, nickname, email)
 
       setRegisteredBoardPosts((prevPosts) => [nextListPost, ...prevPosts])
       setRegisteredBoardDetailPosts((prevPosts) => [{ ...nextDetailPost, id: nextListPost.id }, ...prevPosts])

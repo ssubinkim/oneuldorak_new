@@ -28,6 +28,51 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object'
 }
 
+function isPersistableMediaUrl(url: string | undefined) {
+  return Boolean(url) && !url?.startsWith('blob:')
+}
+
+function sanitizeMediaAttachment(attachment: CommunityMediaAttachment): CommunityMediaAttachment | null {
+  if (!isPersistableMediaUrl(attachment.url)) {
+    return null
+  }
+
+  return {
+    id: attachment.id,
+    kind: attachment.kind,
+    url: attachment.url,
+    name: attachment.name,
+    size: attachment.size,
+  }
+}
+
+function sanitizeMediaAttachments(media: CommunityMediaAttachment[] | undefined) {
+  return (media ?? [])
+    .map(sanitizeMediaAttachment)
+    .filter((attachment): attachment is CommunityMediaAttachment => Boolean(attachment))
+}
+
+function sanitizeRecipeItem(recipe: RecipeItem): RecipeItem {
+  const media = sanitizeMediaAttachments(recipe.media)
+  const firstImageUrl = media.find((attachment) => attachment.kind === 'image')?.url
+  const image = isPersistableMediaUrl(recipe.image) ? recipe.image : firstImageUrl
+
+  return {
+    ...recipe,
+    image,
+    media: media.length > 0 ? media : undefined,
+  }
+}
+
+function sanitizeBoardDetailPost(post: BoardDetailPost): BoardDetailPost {
+  const media = sanitizeMediaAttachments(post.media)
+
+  return {
+    ...post,
+    media: media.length > 0 ? media : undefined,
+  }
+}
+
 function readJsonStorage<T>(key: string, fallbackValue: T): T {
   if (!isBrowser()) {
     return fallbackValue
@@ -147,13 +192,13 @@ export function readPersistedCommunityWriteState(): PersistedCommunityWriteState
   }
 
   const recipes = Array.isArray(parsedValue.recipes)
-    ? parsedValue.recipes.filter(isRecipeItem)
+    ? parsedValue.recipes.filter(isRecipeItem).map(sanitizeRecipeItem)
     : []
   const boardPosts = Array.isArray(parsedValue.boardPosts)
     ? parsedValue.boardPosts.filter(isBoardPost)
     : []
   const boardDetailPosts = Array.isArray(parsedValue.boardDetailPosts)
-    ? parsedValue.boardDetailPosts.filter(isBoardDetailPost)
+    ? parsedValue.boardDetailPosts.filter(isBoardDetailPost).map(sanitizeBoardDetailPost)
     : []
   const votes = Array.isArray(parsedValue.votes)
     ? parsedValue.votes.filter(isVoteCardItem)

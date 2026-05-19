@@ -24,7 +24,11 @@ function Meal() {
   const [goalBarPct, setGoalBarPct] = useState(0)
 
   useEffect(() => {
-    setGoalBarPct(pct)
+    const animationFrame = window.requestAnimationFrame(() => {
+      setGoalBarPct(pct)
+    })
+
+    return () => window.cancelAnimationFrame(animationFrame)
   }, [pct])
 
   const handleMenuAdd = (dayIndices: number[], menu: DayMenu) => {

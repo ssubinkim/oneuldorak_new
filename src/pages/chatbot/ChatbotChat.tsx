@@ -348,11 +348,12 @@ async function convertImageToJpegDataUrl(file: File) {
 }
 
 function ChatbotChat() {
-  const routeContextRef = useRef<ChatRouteContext>(getRouteContext())
-  const initialContext = routeContextRef.current
-  const initialAnalysisType =
+  const [initialContext] = useState<ChatRouteContext>(getRouteContext)
+  const [initialAnalysisType] = useState<AnalysisType>(() =>
     initialContext.analysisType
-    ?? (initialContext.judgeMode ? 'judge' : inferAnalysisTypeFromText(initialContext.query, 'menu'))
+    ?? (initialContext.judgeMode ? 'judge' : inferAnalysisTypeFromText(initialContext.query, 'menu')),
+  )
+  const routeContextRef = useRef<ChatRouteContext>(initialContext)
 
   const { nickname } = useUserProfile()
   const displayName = nickname?.trim() || '도시락러버'
@@ -504,7 +505,7 @@ function ChatbotChat() {
 
       if (context.query) {
         introMessages.push({
-          id: `user-${Date.now()}`,
+          id: 'route-user-open-picker',
           type: 'user',
           text: context.query,
         })
@@ -512,7 +513,7 @@ function ChatbotChat() {
       }
 
       introMessages.push({
-        id: `ai-${Date.now()}`,
+        id: 'route-ai-open-picker',
         type: 'ai-text',
         text: '좋아요! 사진을 올려주시면 바로 분석해서 추천해드릴게요.',
       })
@@ -530,7 +531,7 @@ function ChatbotChat() {
 
       if (context.query) {
         introMessages.push({
-          id: `user-${Date.now()}`,
+          id: 'route-user-photo',
           type: 'user',
           text: context.query,
         })
@@ -538,7 +539,7 @@ function ChatbotChat() {
       }
 
       introMessages.push({
-        id: `ai-${Date.now()}`,
+        id: 'route-ai-photo',
         type: 'ai-text',
         text: '좋아요! 사진을 올려주면 살까말까를 바로 판단해드릴게요.',
       })

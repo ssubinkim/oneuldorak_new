@@ -42,8 +42,8 @@ function CameraIcon() {
 
 function ChatbotCamera() {
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const hasAutoOpenedPickerRef = useRef(false)
   const [previewUrl, setPreviewUrl] = useState('')
-  const [hasAutoOpenedPicker, setHasAutoOpenedPicker] = useState(false)
   const [pickMode] = useState<CameraPickMode | null>(readPickModeFromRoute)
 
   useEffect(() => {
@@ -55,14 +55,14 @@ function ChatbotCamera() {
   }, [previewUrl])
 
   useEffect(() => {
-    if (hasAutoOpenedPicker || !pickMode) {
+    if (hasAutoOpenedPickerRef.current || !pickMode) {
       return
     }
-    setHasAutoOpenedPicker(true)
+    hasAutoOpenedPickerRef.current = true
     requestAnimationFrame(() => {
       fileInputRef.current?.click()
     })
-  }, [hasAutoOpenedPicker, pickMode])
+  }, [pickMode])
 
   const handleSelectPhoto = () => {
     fileInputRef.current?.click()

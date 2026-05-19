@@ -24,7 +24,8 @@ export function selectVoteOption(cardId: string, optionLabel: string) {
   }
 
   if (currentVoteSelections[cardId] === optionLabel) {
-    const { [cardId]: _removedOption, ...restSelections } = currentVoteSelections
+    const restSelections = { ...currentVoteSelections }
+    delete restSelections[cardId]
     writeVoteSelections(restSelections)
     return false
   }

@@ -13,7 +13,7 @@ interface Props {
 
 const slides = weeklyMenuData.filter(m => m.image !== null)
 
-function TodayMenuList({ selectedDay: _, onAddClick }: Props) {
+function TodayMenuList({ onAddClick }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const touchStartX = useRef(0)
   const currentMenu = slides[currentIndex]
