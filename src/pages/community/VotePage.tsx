@@ -26,23 +26,12 @@ function VotePage({
   onFocusHandled,
 }: VotePageProps) {
   const [voteFilter, setVoteFilter] = useState<VoteFilter>('active')
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
   const {
     isHeaderCompact,
     pageRef,
     compactTriggerRef,
     handleCommunityScroll,
   } = useCommunityHeaderCollapse()
-
-  const handleSearchToggle = () => {
-    setIsSearchOpen((previousValue) => !previousValue)
-  }
-
-  const handleSearchClose = () => {
-    setIsSearchOpen(false)
-    setSearchValue('')
-  }
 
   return (
     <main

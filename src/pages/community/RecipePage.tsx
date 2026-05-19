@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import CommunityStickyHeader from '../../components/community/common/CommunityStickyHeader'
 import PopularRecipeSection from '../../components/community/common/PopularRecipeSection'
 import useCommunityHeaderCollapse from '../../components/community/common/useCommunityHeaderCollapse'
@@ -26,23 +25,12 @@ function RecipePage({
   focusRecipeId = null,
   onFocusHandled,
 }: RecipePageProps) {
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
   const {
     isHeaderCompact,
     pageRef,
     compactTriggerRef,
     handleCommunityScroll,
   } = useCommunityHeaderCollapse()
-
-  const handleSearchToggle = () => {
-    setIsSearchOpen((previousValue) => !previousValue)
-  }
-
-  const handleSearchClose = () => {
-    setIsSearchOpen(false)
-    setSearchValue('')
-  }
 
   return (
     <main
