@@ -32,7 +32,17 @@ function HomeStories() {
             보러가기 <ArrowRightIcon />
           </a>
         </div>
-        <img className="stories-section__character" src={chatImage} alt="" aria-hidden="true" />
+        <img
+          className="stories-section__character"
+          src={chatImage}
+          alt=""
+          aria-hidden="true"
+          width={174}
+          height={174}
+          loading="lazy"
+          decoding="async"
+          fetchPriority="low"
+        />
       </div>
 
       <div className="story-list">

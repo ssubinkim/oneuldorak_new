@@ -49,7 +49,7 @@ function TodayMenuList({ onAddClick }: Props) {
         <span className="today-card-title">오늘의 추천 메뉴</span>
       </div>
       <button className="today-menu-add-btn" onClick={onAddClick}>
-        <img src={menuAddBtnImg} alt="메뉴 추가" />
+        <img src={menuAddBtnImg} alt="메뉴 추가" width={75} height={36} loading="lazy" decoding="async" fetchPriority="low" />
       </button>
 
       <div className="today-header">
@@ -64,7 +64,16 @@ function TodayMenuList({ onAddClick }: Props) {
           >
             {slides.map((slide, i) => (
               <div key={i} className="today-slide">
-                <img className="today-img" src={slide.image!} alt={slide.name} />
+                <img
+                  className="today-img"
+                  src={slide.image!}
+                  alt={slide.name}
+                  width={360}
+                  height={210}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={i === 0 ? 'high' : 'low'}
+                  decoding={i === 0 ? 'sync' : 'async'}
+                />
                 <div className="today-img-gradient" />
                 <div className="today-img-overlay">
                   {slide.time && <span className="today-time-badge">{slide.time}</span>}
@@ -94,7 +103,16 @@ function TodayMenuList({ onAddClick }: Props) {
           <div className="today-ingredients-list">
             {currentMenu.ingredients.map(ing => (
               <div key={ing.name} className="today-ingredient">
-                <img className={`ingredient-img ${getIngredientIconClassName(ing.image)}`} src={ing.image} alt={ing.name} />
+                <img
+                  className={`ingredient-img ${getIngredientIconClassName(ing.image)}`}
+                  src={ing.image}
+                  alt={ing.name}
+                  width={52}
+                  height={52}
+                  loading="lazy"
+                  decoding="async"
+                  fetchPriority="low"
+                />
                 <span className="ingredient-name">{ing.name}</span>
               </div>
             ))}
@@ -104,7 +122,7 @@ function TodayMenuList({ onAddClick }: Props) {
 
       <div className="today-savings">
         <div className="savings-card">
-          <img src={savings1Img} alt="" className="savings-icon" />
+          <img src={savings1Img} alt="" className="savings-icon" width={68} height={68} loading="lazy" decoding="async" fetchPriority="low" />
           <div className="savings-info">
             <p className="savings-label">오늘 메뉴로</p>
             <p className="savings-amount savings-amount--blue">

@@ -105,29 +105,32 @@ const pageImporters = {
 } satisfies Record<AppRoute, RouteImporter>
 
 const prefetchTargets = {
-  start: ['login', 'signup'],
-  login: ['signup', 'home'],
+  start: ['login'],
+  login: ['signup'],
   signup: ['onboarding'],
-  onboarding: ['home', 'meal'],
-  home: ['community', 'store', 'mypage', 'chatbot'],
-  meal: ['community', 'store', 'mypage', 'chatbot'],
-  community: ['meal', 'store', 'mypage'],
-  store: ['meal', 'community', 'mypage'],
-  mypage: ['mypage-likes', 'mypage-plus', 'mypage-plus-benefit', 'meal'],
+  onboarding: ['home'],
+  home: ['community', 'store'],
+  meal: ['community', 'store'],
+  community: ['home', 'store'],
+  store: ['home', 'community'],
+  mypage: ['mypage-likes', 'mypage-plus'],
   'mypage-likes': ['mypage'],
   'mypage-saved-recipes': ['mypage'],
-  'mypage-plus': ['mypage-plus-benefit', 'mypage'],
+  'mypage-plus': ['mypage-plus-benefit'],
   'mypage-plus-benefit': ['mypage-plus', 'mypage'],
-  'meal-weekly-plan': ['meal-grocery', 'meal'],
-  'meal-grocery': ['meal-weekly-plan', 'meal-storage', 'meal'],
-  'meal-storage': ['meal-grocery', 'meal'],
-  chatbot: ['chatbot-chat', 'chatbot-camera', 'home'],
+  'meal-weekly-plan': ['meal-grocery'],
+  'meal-grocery': ['meal-storage'],
+  'meal-storage': ['meal'],
+  chatbot: ['chatbot-chat', 'chatbot-camera'],
   'chatbot-camera': ['chatbot', 'chatbot-chat'],
-  'chatbot-chat': ['chatbot', 'community'],
+  'chatbot-chat': ['chatbot'],
 } satisfies Record<AppRoute, AppRoute[]>
 
 const ONBOARDING_ROUTES = new Set<AppRoute>(['start', 'login', 'signup', 'onboarding'])
 const prefetchedRoutes = new Set<AppRoute>()
+const warmedImageUrls = new Set<string>()
+const PREFETCH_DELAY_MS = 700
+const PREFETCH_GAP_MS = 500
 
 const prefetchRoute = (route: AppRoute) => {
   if (prefetchedRoutes.has(route)) return
@@ -136,6 +139,61 @@ const prefetchRoute = (route: AppRoute) => {
   void pageImporters[route]().catch(() => {
     prefetchedRoutes.delete(route)
   })
+}
+
+const warmImage = (url: string) => {
+  if (!url || warmedImageUrls.has(url)) return
+  warmedImageUrls.add(url)
+
+  const image = new Image()
+  image.decoding = 'async'
+  image.loading = 'eager'
+  image.fetchPriority = 'low'
+  image.src = url
+}
+
+const routeImageWarmups: Partial<Record<AppRoute, () => Promise<string[]>>> = {
+  home: async () => {
+    const [logoModule] = await Promise.all([
+      import('./assets/logos/logo.svg'),
+    ])
+    return [logoModule.default]
+  },
+  meal: async () => {
+    const [logoModule] = await Promise.all([
+      import('./assets/logos/logo.svg'),
+    ])
+    return [logoModule.default]
+  },
+  community: async () => {
+    const [bannerModule] = await Promise.all([
+      import('./pages/community/images/dorak02.png'),
+    ])
+    return [bannerModule.default]
+  },
+  store: async () => {
+    const [tabIconModule] = await Promise.all([
+      import('./components/store/images/storecall_1.svg'),
+    ])
+    return [tabIconModule.default]
+  },
+  mypage: async () => {
+    const [profileModule] = await Promise.all([
+      import('./assets/icons/profile 1.svg?url'),
+    ])
+    return [profileModule.default]
+  },
+}
+
+const warmRouteImages = (route: AppRoute) => {
+  const warmup = routeImageWarmups[route]
+  if (!warmup) return
+
+  void warmup()
+    .then((urls) => {
+      urls.slice(0, 2).forEach((url) => warmImage(url))
+    })
+    .catch(() => {})
 }
 
 function RouteFallback({ route }: { route: AppRoute }) {
@@ -174,8 +232,30 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const nextRoutes = prefetchTargets[route]
-    nextRoutes.forEach((nextRoute) => prefetchRoute(nextRoute))
+    const connection = (navigator as Navigator & {
+      connection?: { saveData?: boolean; effectiveType?: string }
+    }).connection
+    const isSlowNetwork = connection?.saveData || /2g/.test(connection?.effectiveType ?? '')
+    if (isSlowNetwork) return
+
+    const nextRoutes = prefetchTargets[route].slice(0, 2)
+    if (nextRoutes.length === 0) return
+
+    const timers = nextRoutes.map((nextRoute, index) => (
+      window.setTimeout(
+        () => {
+          prefetchRoute(nextRoute)
+          if (index === 0) {
+            warmRouteImages(nextRoute)
+          }
+        },
+        PREFETCH_DELAY_MS + PREFETCH_GAP_MS * index,
+      )
+    ))
+
+    return () => {
+      timers.forEach((timerId) => window.clearTimeout(timerId))
+    }
   }, [route])
 
   return (

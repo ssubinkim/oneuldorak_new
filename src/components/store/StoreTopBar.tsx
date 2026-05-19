@@ -5,7 +5,16 @@ function StoreTopBar() {
   return (
     <div className="store-top-bar">
       <h1 className="store-top-bar__title">
-        <img src={storeLogo} alt="도락마켓" className="store-top-bar__logo" />
+        <img
+          src={storeLogo}
+          alt="도락마켓"
+          className="store-top-bar__logo"
+          width={40}
+          height={26}
+          loading="eager"
+          fetchPriority="high"
+          decoding="sync"
+        />
         도락마켓
       </h1>
       <div className="store-top-bar__actions">

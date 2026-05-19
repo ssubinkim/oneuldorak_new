@@ -47,11 +47,11 @@ export default function MyPage() {
         <div className="mypage">
           <header className="mypage-topbar">
             <button type="button" className="mypage-topbar__button" aria-label="뒤로가기" onClick={() => window.history.back()}>
-              <img src={arrowLeftIcon} alt="" aria-hidden="true" />
+              <img src={arrowLeftIcon} alt="" aria-hidden="true" width={22} height={22} loading="eager" decoding="sync" fetchPriority="high" />
             </button>
             <h1>마이페이지</h1>
             <button type="button" className="mypage-topbar__button" aria-label="알림">
-              <img src={bellIcon} alt="" aria-hidden="true" />
+              <img src={bellIcon} alt="" aria-hidden="true" width={22} height={22} loading="eager" decoding="sync" fetchPriority="high" />
             </button>
           </header>
 

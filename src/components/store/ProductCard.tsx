@@ -21,7 +21,18 @@ function ProductCard({ name, price, originalPrice, brand, image, rating, reviewC
   return (
     <div className="product-card" onClick={onClick}>
       <div className="product-card__image-wrap">
-        {image && <img className="product-card__image" src={image} alt={name} />}
+        {image && (
+          <img
+            className="product-card__image"
+            src={image}
+            alt={name}
+            width={130}
+            height={130}
+            loading="lazy"
+            decoding="async"
+            fetchPriority="low"
+          />
+        )}
         {rank !== undefined && (
           <span className="product-card__rank">{rank}</span>
         )}

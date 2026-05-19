@@ -12,7 +12,7 @@ function MyPageProfile({ profileImg }: MyPageProfileProps) {
   return (
     <div className="mypage-profile">
       <div className="mypage-avatar">
-        <img src={profileImg} alt="프로필" />
+        <img src={profileImg} alt="프로필" width={58} height={58} loading="eager" fetchPriority="high" decoding="sync" />
       </div>
       <div className="mypage-user-summary">
         <div className="mypage-user-level">
