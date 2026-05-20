@@ -19,19 +19,19 @@ import foodSandwichVideo from '../../../assets/food_video/video_sandwich.mp4'
 export const hotPosts = [
   {
     rank: 1,
-    title: '자취생 추천! 가성비 반찬 레시피 모음',
+    title: '도시락 싸기 전후 식비 비교해봤어요',
     likes: 100,
     comments: 88,
   },
   {
     rank: 2,
-    title: '일주일 3만원 식비 도전기',
+    title: '오늘의 도시락 대실패 인증합니다',
     likes: 96,
     comments: 65,
   },
   {
     rank: 3,
-    title: '요리 초보 탈출한 계기',
+    title: '저는 일요일 밤에 3일치만 준비해요',
     likes: 65,
     comments: 52,
   },
@@ -113,7 +113,7 @@ export const popularRecipes: RecipeCard[] = [
 ]
 
 export const dorakRankings = [
-  { rank: 1, name: '도시락락락' },
-  { rank: 2, name: '냉털전문가' },
-  { rank: 3, name: '도락쿵야' },
+  { rank: 1, name: '도시락락락', likes: 88 },
+  { rank: 2, name: '냉털전문가', likes: 72 },
+  { rank: 3, name: '도락쿵야', likes: 45 },
 ]

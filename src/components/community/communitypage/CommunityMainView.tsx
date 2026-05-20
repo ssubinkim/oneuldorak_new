@@ -3,13 +3,13 @@ import type React from 'react'
 import type { CommunityTabRoute } from '../../../pages/community/CommunityTabRoute'
 import CommunityStickyHeader from '../common/CommunityStickyHeader'
 import CommunitySearchBar from '../common/CommunitySearchBar'
-import PopularRecipeSection from '../common/PopularRecipeSection'
 import useCommunityHeaderCollapse from '../common/useCommunityHeaderCollapse'
 import VoteList from '../votepage/VoteList'
 import CommunityBanner from './CommunityBanner'
 import PopularPosts from './PopularPosts'
-import RankingBanner from './RankingBanner'
-import { dorakRankings, hotPosts, popularRecipes } from './communityData'
+import BattleBanner from './BattleBanner'
+import Ranking from './Ranking'
+import { dorakRankings, hotPosts } from './communityData'
 import './CommunityMainView.css'
 
 type CommunityMainViewProps = {
@@ -95,10 +95,10 @@ function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
           onSelectTab={onSelectTab}
         />
         <div className="community-content">
+          <Ranking rankings={dorakRankings} />
+          <BattleBanner />
           <VoteList filter="active" variant="featured" onMoreClick={() => onSelectTab('vote')} />
-          <PopularRecipeSection recipes={popularRecipes} />
           <PopularPosts posts={hotPosts} />
-          <RankingBanner rankings={dorakRankings} />
         </div>
       </div>
     </main>
