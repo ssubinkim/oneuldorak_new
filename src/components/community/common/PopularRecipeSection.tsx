@@ -45,7 +45,7 @@ function PopularRecipeSection({ recipes, showMore = true, title = '인기 레시
       <div className="recipe-section__header">
         <h2>{title}</h2>
         {showMore && (
-          <button type="button" className="recipe-section__more" onClick={onMoreClick}>
+          <button type="button" className="recipe-section__more">
             더보기 <ArrowRightIcon />
           </button>
         )}

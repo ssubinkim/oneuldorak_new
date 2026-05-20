@@ -1,24 +1,5 @@
 import { Suspense, lazy, startTransition, useEffect, useState, type ComponentType } from 'react'
 import type { BottomNavRoute } from './components/common/layout/BottomNav'
-import Community from './pages/community/Community'
-import Chatbot from './pages/chatbot/Chatbot'
-import ChatbotCamera from './pages/chatbot/ChatbotCamera'
-import ChatbotChat from './pages/chatbot/ChatbotChat'
-import Meal from './pages/meal/Meal'
-import WeeklyPlanPage from './pages/meal/WeeklyPlanPage'
-import GroceryPage from './pages/meal/GroceryPage'
-import StoragePage from './pages/meal/StoragePage'
-import MyPage from './pages/mypage/MyPage'
-import LikePage from './pages/mypage/LikePage'
-import SavedRecipePage from './pages/mypage/SavedRecipePage'
-import PlusPage from './pages/mypage/PlusPage'
-import PlusBenefitPage from './pages/mypage/PlusBenefitPage'
-import LoginPage from './pages/onboarding/LoginPage'
-import OnboardingPage from './pages/onboarding/OnboardingPage'
-import SignupPage from './pages/onboarding/SignupPage'
-import StartPage from './pages/onboarding/StartPage'
-import Store from './pages/store/Store'
-import Recipe from './pages/recipe/Recipe'
 
 type AppRoute =
   | BottomNavRoute
@@ -60,6 +41,7 @@ const importStoragePage: RouteImporter = () => import('./pages/meal/StoragePage'
 const importChatbotPage: RouteImporter = () => import('./pages/chatbot/Chatbot')
 const importChatbotCameraPage: RouteImporter = () => import('./pages/chatbot/ChatbotCamera')
 const importChatbotChatPage: RouteImporter = () => import('./pages/chatbot/ChatbotChat')
+const importRecipePage: RouteImporter = () => import('./pages/recipe/Recipe')
 
 const StartPage = lazy(importStartPage)
 const LoginPage = lazy(importLoginPage)
@@ -79,6 +61,7 @@ const StoragePage = lazy(importStoragePage)
 const Chatbot = lazy(importChatbotPage)
 const ChatbotCamera = lazy(importChatbotCameraPage)
 const ChatbotChat = lazy(importChatbotChatPage)
+const Recipe = lazy(importRecipePage)
 
 const pages = {
   start: StartPage,
@@ -123,6 +106,7 @@ const pageImporters = {
   chatbot: importChatbotPage,
   'chatbot-camera': importChatbotCameraPage,
   'chatbot-chat': importChatbotChatPage,
+  recipe: importRecipePage,
 } satisfies Record<AppRoute, RouteImporter>
 
 const prefetchTargets = {
@@ -145,6 +129,7 @@ const prefetchTargets = {
   chatbot: ['chatbot-chat', 'chatbot-camera'],
   'chatbot-camera': ['chatbot', 'chatbot-chat'],
   'chatbot-chat': ['chatbot'],
+  recipe: [],
 } satisfies Record<AppRoute, AppRoute[]>
 
 const ONBOARDING_ROUTES = new Set<AppRoute>(['start', 'login', 'signup', 'onboarding'])
