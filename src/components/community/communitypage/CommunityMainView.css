@@ -71,19 +71,20 @@
 .community-page h1 {
   font-size: 24px;
   color: #1a1a1a;
-  font-family: 'Pretendard Variable', sans-serif;
-  line-height: 130%;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
+  line-height: 120%;
   letter-spacing: -0.08px;
 }
 
 .community-page h2 {
-  color: #1a1a1a;
+  color: #3c3c3c;
   font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
-  font-size: 22px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
-  line-height: 130%;
+  line-height: 120%;
   letter-spacing: -0.08px;
+  margin-bottom: 4px;
 }
 
 
@@ -95,7 +96,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  gap: 30px;
+  gap: 40px;
   background: var(--color-bg-base);
 }
 

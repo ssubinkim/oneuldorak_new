@@ -1,0 +1,185 @@
+.dorak-ranking {
+  padding: 0;
+  background: #fff;
+}
+
+.dorak-ranking__badge {
+  display: inline-block;
+  padding: 3px 10px;
+  background: #f2756b;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  font-family: "NanumSquareNeo", "Pretendard Variable";
+  line-height: 130%;
+  letter-spacing: -0.08px;
+}
+
+.dorak-ranking__header {
+  margin: 0;
+  color: #3c3c3c;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "NanumSquare Neo", "NanumSquareNeo", sans-serif;
+  line-height: 120%;
+  letter-spacing: -0.08px;
+}
+
+.dorak-ranking__subtitle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.dorak-ranking__subtitle {
+  margin: 0;
+  color: #5f5f5f;
+  font-size: 16px;
+  line-height: 120%;
+  letter-spacing: -0.08px;
+}
+
+.dorak-ranking__more {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #a3a3a3;
+  font-size: 14px;
+  padding: 0;
+  font-family: "Pretendard Variable", sans-serif;
+  flex-shrink: 0;
+}
+
+.dorak-ranking__podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 14px;
+}
+
+.dorak-ranking__podium-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dorak-ranking__mascot {
+  width: 65px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: -10px;
+  margin-right: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+.dorak-ranking__podium-item--rank1 .dorak-ranking__mascot {
+  width: 65px;
+}
+
+.dorak-ranking__cylinder {
+  display: block;
+  width: 90px;
+  height: auto;
+  object-fit: contain;
+  transform-origin: bottom center;
+  animation: podium-rise 1.2s cubic-bezier(0.34, 1.1, 0.64, 1) both;
+  filter: drop-shadow(0px 5px 8px rgba(0, 0, 0, 0.18));
+}
+
+.dorak-ranking__mascot {
+  animation: mascot-rise-rank2 1.2s cubic-bezier(0.34, 1.1, 0.64, 1) both;
+}
+
+.dorak-ranking__podium-item--rank1 .dorak-ranking__mascot {
+  animation:
+    mascot-rise-rank1 1.2s cubic-bezier(0.34, 1.1, 0.64, 1) both,
+    mascot-bounce 0.55s ease-out 1.2s forwards;
+}
+
+.dorak-ranking__podium-item--rank2 .dorak-ranking__mascot {
+  animation: mascot-rise-rank2 1.2s cubic-bezier(0.34, 1.1, 0.64, 1) both;
+}
+
+.dorak-ranking__podium-item--rank3 .dorak-ranking__mascot {
+  animation: mascot-rise-rank3 1.2s cubic-bezier(0.34, 1.1, 0.64, 1) both;
+}
+
+@keyframes podium-rise {
+  from {
+    transform: scaleY(0.08);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes mascot-rise-rank1 {
+  from {
+    transform: translateY(127px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes mascot-rise-rank2 {
+  from {
+    transform: translateY(97px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes mascot-rise-rank3 {
+  from {
+    transform: translateY(70px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes mascot-bounce {
+  0% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(-7px);
+  }
+  65% {
+    transform: translateY(-2px);
+  }
+  85% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.dorak-ranking__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 12px;
+  gap: 3px;
+}
+
+.dorak-ranking__name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #3c3c3c;
+  font-family: "Pretendard Variable", sans-serif;
+  text-align: center;
+}
+
+.dorak-ranking__likes {
+  font-size: 12px;
+  color: #5f5f5f;
+  font-family: "Pretendard Variable", sans-serif;
+}
