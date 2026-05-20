@@ -1,0 +1,41 @@
+.recipe-screen {
+  overflow-x: hidden;
+}
+
+.recipe-scroll {
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden auto;
+  background: #fff;
+  scrollbar-width: none;
+}
+
+.recipe-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.recipe-main h2,
+.recipe-main h3 {
+  color: #3c3c3c;
+}
+
+.recipe-fan-card__overlay h3 {
+  color: #fff;
+}
+
+.recipe-main {
+  padding: 0 0 var(--bottom-nav-height, 104px);
+}
+
+.recipe-main .recipe-section {
+  padding: 0 20px;
+}
+
+.fresh-video-section {
+  padding: 20px;
+}
+
+.recipe-main .recipe-section__scroll {
+  margin: 0 -20px;
+  padding: 0 20px 4px;
+}

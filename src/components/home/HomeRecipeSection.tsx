@@ -95,7 +95,7 @@ function HomeRecipeSection() {
           </h2>
           <p>제일 많이 본 인기있는 레시피 모음</p>
         </div>
-        <a href="#/community?tab=recipe" onClick={(e) => { e.preventDefault(); window.location.hash = '#/community?tab=recipe' }}>더보기 <ArrowRightIcon /></a>
+        <a href="#/recipe" onClick={(e) => { e.preventDefault(); window.location.hash = '#/recipe' }}>더보기 <ArrowRightIcon /></a>
       </div>
 
       <div className="home-recipe-section__grid">
