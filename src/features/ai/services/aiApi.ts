@@ -11,6 +11,7 @@ import {
 } from '../types/ai.types'
 
 const CHAT_API_URL = '/api/chat'
+const AI_DEBUG_PREFIX = '[oneuldorak-ai]'
 
 type LegacyChatApiSuccess = {
   text?: string
@@ -39,6 +40,37 @@ function readMockStatus() {
 
 function shouldUseMockAi() {
   return import.meta.env.VITE_USE_MOCK_AI === 'true'
+}
+
+function shouldLogAiDebug() {
+  return import.meta.env.DEV || import.meta.env.VITE_DEBUG_AI === 'true'
+}
+
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : 'Unknown AI API failure'
+}
+
+function getMessagePreview(message: string) {
+  return message.length > 80 ? `${message.slice(0, 80)}...` : message
+}
+
+function logAiDebug(
+  label: string,
+  request: AiChatRequest,
+  details: Record<string, unknown> = {},
+) {
+  if (!shouldLogAiDebug()) return
+
+  console.info(`${AI_DEBUG_PREFIX} ${label}`, {
+    source: details.source,
+    feature: details.feature ?? request.feature ?? inferAiFeature(request),
+    analysisType: request.analysisType,
+    hasImage: Boolean(request.imageDataUrl),
+    forceMock: Boolean(request.forceMock),
+    mockEnv: shouldUseMockAi(),
+    messagePreview: getMessagePreview(request.message),
+    ...details,
+  })
 }
 
 function createMockAiChatResponse(
@@ -76,16 +108,16 @@ export function inferAiFeature(request: AiChatRequest): AiFeature {
     return 'weekly-lunchbox-plan'
   }
 
-  if (/ingredient|recipe|재료별|레시피/.test(normalizedMessage)) {
-    return 'ingredient-recipes'
-  }
-
   if (/recommendedingredients|추천재료|오늘추천재료/.test(normalizedMessage)) {
     return 'today-recommended-ingredients'
   }
 
   if (/leftover|남은재료|활용|자투리/.test(normalizedMessage)) {
     return 'leftover-ingredients'
+  }
+
+  if (/ingredient|recipe|재료별|레시피/.test(normalizedMessage)) {
+    return 'ingredient-recipes'
   }
 
   if (/fridge|냉장고|사진분석/.test(normalizedMessage)) {
@@ -98,7 +130,7 @@ export function inferAiFeature(request: AiChatRequest): AiFeature {
 function createFallbackResponse(request: AiChatRequest, error: unknown): AiChatResponse {
   const feature = inferAiFeature(request)
   const fallbackResponse = createMockAiChatResponse(request, feature, 'success')
-  const fallbackReason = error instanceof Error ? error.message : 'Unknown AI API failure'
+  const fallbackReason = getErrorMessage(error)
 
   return {
     ...fallbackResponse,
@@ -195,10 +227,21 @@ export async function requestAiChat(request: AiChatRequest): Promise<AiChatRespo
   }
 
   if (normalizedRequest.forceMock || shouldUseMockAi()) {
+    logAiDebug('mock response', normalizedRequest, {
+      source: 'mock',
+      feature,
+      mockStatus,
+      reason: normalizedRequest.forceMock ? 'forceMock' : 'VITE_USE_MOCK_AI=true',
+    })
     return createMockAiChatResponse(normalizedRequest, feature, mockStatus)
   }
 
   try {
+    logAiDebug('api request', normalizedRequest, {
+      source: 'api',
+      feature,
+    })
+
     // Keep provider secrets on the backend. The browser only calls this proxy route.
     const response = await fetch(CHAT_API_URL, {
       method: 'POST',
@@ -223,18 +266,41 @@ export async function requestAiChat(request: AiChatRequest): Promise<AiChatRespo
       const error = createHttpError(response.status, data)
 
       if (import.meta.env.DEV) {
+        logAiDebug('fallback response', normalizedRequest, {
+          source: 'fallback',
+          feature,
+          status: response.status,
+          reason: getErrorMessage(error),
+        })
         return createFallbackResponse(normalizedRequest, error)
       }
 
       throw error
     }
 
-    return normalizeApiResponse(data, normalizedRequest)
+    const apiResponse = normalizeApiResponse(data, normalizedRequest)
+    logAiDebug('api response', normalizedRequest, {
+      source: apiResponse.source,
+      feature: apiResponse.feature,
+      status: apiResponse.status,
+      suggestionCount: apiResponse.suggestions.length,
+    })
+    return apiResponse
   } catch (error) {
     if (import.meta.env.DEV) {
+      logAiDebug('fallback response', normalizedRequest, {
+        source: 'fallback',
+        feature,
+        reason: getErrorMessage(error),
+      })
       return createFallbackResponse(normalizedRequest, error)
     }
 
+    logAiDebug('api error', normalizedRequest, {
+      source: 'api',
+      feature,
+      reason: getErrorMessage(error),
+    })
     throw error
   }
 }
