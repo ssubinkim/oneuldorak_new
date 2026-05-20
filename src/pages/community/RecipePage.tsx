@@ -1,11 +1,10 @@
-import { useState } from 'react'
 import CommunityStickyHeader from '../../components/community/common/CommunityStickyHeader'
 import PopularRecipeSection from '../../components/community/common/PopularRecipeSection'
 import useCommunityHeaderCollapse from '../../components/community/common/useCommunityHeaderCollapse'
 import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
 import { popularRecipes } from '../../components/community/communitypage/communityData'
 import RecipeList, { type RecipeItem } from '../../components/community/recipepage/RecipeList'
-import dorakTipMascot from '../../assets/food_mascot_all/dorak07.svg'
+import dorakTipMascot from '../../assets/food_mascot_all/dorak07.png'
 import type { CommunityTabRoute } from './CommunityTabRoute'
 import './RecipePage.css'
 
@@ -26,23 +25,12 @@ function RecipePage({
   focusRecipeId = null,
   onFocusHandled,
 }: RecipePageProps) {
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
   const {
     isHeaderCompact,
     pageRef,
     compactTriggerRef,
     handleCommunityScroll,
   } = useCommunityHeaderCollapse()
-
-  const handleSearchToggle = () => {
-    setIsSearchOpen((previousValue) => !previousValue)
-  }
-
-  const handleSearchClose = () => {
-    setIsSearchOpen(false)
-    setSearchValue('')
-  }
 
   return (
     <main
@@ -53,11 +41,6 @@ function RecipePage({
       <CommunityBanner
         variant="recipe"
         isCompact={isHeaderCompact}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
       />
       <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
       <CommunityStickyHeader
@@ -65,11 +48,6 @@ function RecipePage({
         tabsClassName="community-tabs"
         isCompact={isHeaderCompact}
         onSelectTab={onSelectTab}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
       />
 
       <div className="recipe-page__body">
@@ -91,7 +69,7 @@ function RecipePage({
           middleSlot={(
             <section className="recipe-page__tip-card" aria-label="오늘의 냉장고 활용 팁">
               <div className="recipe-page__tip-copy">
-                <h3 className="font-pretendard-variable">오늘의 냉장고 활용 TIP</h3>
+                <h3 className="font-pretendard-variable font-line-height-default font-letter-spacing-default">오늘의 냉장고 활용 TIP</h3>
                 <p>
                   냉장고 속 재료를 먼저 확인하면
                   <br />

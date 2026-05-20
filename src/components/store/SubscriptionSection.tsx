@@ -40,7 +40,7 @@ function SubscriptionSection({ products, onSelect }: Props) {
     <div className="subscription">
       <div className="subscription__header">
         <p className="subscription__title">
-          <img src={plantIcon} alt="" className="subscription__title-icon" />
+          <img src={plantIcon} alt="" className="subscription__title-icon" width={26} height={24} loading="lazy" decoding="async" fetchPriority="low" />
           오늘도락 정기식단
         </p>
         <div className="subscription__subrow">
@@ -50,7 +50,23 @@ function SubscriptionSection({ products, onSelect }: Props) {
       </div>
 
       <div className="subscription__banner">
-        <img className="subscription__banner-img" src={slide1} alt="정기식단 배너" />
+        <img
+          className="subscription__banner-img store-img-fade"
+          src={slide1}
+          alt="정기식단 배너"
+          width={360}
+          height={202}
+          loading="lazy"
+          decoding="async"
+          fetchPriority="low"
+          data-loaded="false"
+          onLoad={(event) => {
+            event.currentTarget.dataset.loaded = 'true'
+          }}
+          onError={(event) => {
+            event.currentTarget.dataset.loaded = 'true'
+          }}
+        />
         <div className="subscription__banner-overlay" />
         <div className="subscription__banner-text">
           <p className="store-banner__title subscription__banner-title">식단 고민 없는 한 주</p>
@@ -78,7 +94,25 @@ function SubscriptionSection({ products, onSelect }: Props) {
             {page.map((p, i) => (
               <div key={`${p.id}-${i}`} className="subscription__item" onClick={() => onSelect?.(p)}>
                 <div className="subscription__item-img-wrap">
-                  {p.image && <img className="subscription__item-img" src={p.image} alt={p.name} />}
+                  {p.image && (
+                    <img
+                      className="subscription__item-img store-img-fade"
+                      src={p.image}
+                      alt={p.name}
+                      width={110}
+                      height={110}
+                      loading="lazy"
+                      decoding="async"
+                      fetchPriority="low"
+                      data-loaded="false"
+                      onLoad={(event) => {
+                        event.currentTarget.dataset.loaded = 'true'
+                      }}
+                      onError={(event) => {
+                        event.currentTarget.dataset.loaded = 'true'
+                      }}
+                    />
+                  )}
                   <button
                     className="subscription__item-cart"
                     type="button"

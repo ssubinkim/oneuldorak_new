@@ -4,7 +4,7 @@
 }
 
 .mypage-menu-section {
-  padding: 16px 10px 24px;
+  padding: 16px 0 24px;
   border-top: 1px solid #d8d8d8;
 }
 
@@ -23,16 +23,22 @@
 
 .mypage-menu-row {
   display: grid;
-  grid-template-columns: 22px minmax(0, 1fr) auto 14px;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
   align-items: center;
   gap: 8px;
   width: 100%;
   min-height: 24px;
   padding: 0;
-  color: #555;
+  color: #1a1a1a;
   background: transparent;
   border: 0;
   text-align: left;
+}
+
+.mypage-menu-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .mypage-menu-row.is-muted {
@@ -71,7 +77,7 @@
 }
 
 .mypage-menu-chevron {
-  justify-self: end;
+  flex-shrink: 0;
   width: 8px;
   height: 8px;
   border-top: 1.5px solid currentColor;
@@ -94,7 +100,7 @@
 
 @media (min-width: 768px) {
   .mypage-menu-section {
-    padding: 24px 16px 36px;
+    padding: 24px 0 36px;
   }
 
   .mypage-menu-title {
@@ -109,7 +115,7 @@
   .mypage-menu-row {
     min-height: 34px;
     gap: 12px;
-    grid-template-columns: 24px minmax(0, 1fr) auto 16px;
+    grid-template-columns: 24px minmax(0, 1fr) auto;
   }
 
   .mypage-menu-icon-slot {

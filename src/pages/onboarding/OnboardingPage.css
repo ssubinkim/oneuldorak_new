@@ -43,6 +43,23 @@
   padding-bottom: max(120px, calc(104px + env(safe-area-inset-bottom)));
 }
 
+@media (min-width: 768px) {
+  .onboarding-page--intro {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+
+  .onboarding-page--intro .onboarding-intro-copy {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .onboarding-page--question {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+
 @media (max-height: 780px) {
   .onboarding-page {
     padding-top: clamp(40px, 8dvh, 74px);

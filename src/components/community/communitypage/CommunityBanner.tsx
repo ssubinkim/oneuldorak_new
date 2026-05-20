@@ -1,15 +1,16 @@
 import CommunitySearchBar from '../common/CommunitySearchBar'
 import './CommunityBanner.css'
 import defaultBannerImage from '../../../pages/community/images/dorak02.png'
-import recipeBannerImage from '../../../assets/food_mascot_all/dorak18.svg'
-import boardBannerImage from '../../../assets/food_mascot_all/dorak15.svg'
-import voteBannerImage from '../../../assets/food_mascot_all/dorak11.svg'
+import recipeBannerImage from '../../../assets/food_mascot_all/dorak18.png'
+import boardBannerImage from '../../../assets/food_mascot_all/dorak15.png'
+import voteBannerImage from '../../../assets/food_mascot_all/dorak20.png'
 
 type CommunityBannerVariant = 'default' | 'recipe' | 'board' | 'vote'
 
 type CommunityBannerProps = {
   variant?: CommunityBannerVariant
   isCompact?: boolean
+  hideHeader?: boolean
   isSearchOpen?: boolean
   searchValue?: string
   onSearchChange?: (value: string) => void
@@ -27,6 +28,7 @@ const bannerImageByVariant: Record<CommunityBannerVariant, string> = {
 function CommunityBanner({
   variant = 'default',
   isCompact = false,
+  hideHeader = false,
   isSearchOpen = false,
   searchValue = '',
   onSearchChange,
@@ -37,39 +39,41 @@ function CommunityBanner({
 
   return (
     <section className={`community-banner community-banner--${variant}${isCompact ? ' is-compact' : ''}`}>
-      <div className="community-banner__header">
-        <h1>커뮤니티</h1>
-        <div className="community-banner__actions">
-          {isSearchOpen && onSearchChange && onSearchClose ? (
-            <CommunitySearchBar
-              className="community-banner__search-inline"
-              value={searchValue}
-              onChange={onSearchChange}
-              onClose={onSearchClose}
-              onBlur={onSearchClose}
-              showCloseButton={false}
-              autoFocus={!isCompact}
-            />
-          ) : (
-            <button
-              type="button"
-              aria-label="검색"
-              aria-expanded={isSearchOpen}
-              onClick={onSearchToggle}
-            >
+      {!hideHeader && (
+        <div className="community-banner__header">
+          <h1>커뮤니티</h1>
+          <div className="community-banner__actions">
+            {isSearchOpen && onSearchChange && onSearchClose ? (
+              <CommunitySearchBar
+                className="community-banner__search-inline"
+                value={searchValue}
+                onChange={onSearchChange}
+                onClose={onSearchClose}
+                onBlur={onSearchClose}
+                showCloseButton={false}
+                autoFocus={!isCompact}
+              />
+            ) : (
+              <button
+                type="button"
+                aria-label="검색"
+                aria-expanded={isSearchOpen}
+                onClick={onSearchToggle}
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </button>
+            )}
+            <button type="button" aria-label="저장">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
               </svg>
             </button>
-          )}
-          <button type="button" aria-label="저장">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-            </svg>
-          </button>
+          </div>
         </div>
-      </div>
+      )}
 
       <p className="community-banner__subtitle">
         오늘도 바쁜 도락이들의 도시락 이야기<br />

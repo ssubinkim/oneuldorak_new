@@ -22,7 +22,7 @@ type BoardDetailPageProps = {
   postId: string | null
   onBack: () => void
   onOpenPost: (postId: string) => void
-  onUpdatePost?: (postId: string, data: BoardWriteData) => void
+  onUpdatePost?: (postId: string, data: BoardWriteData) => void | Promise<BoardWriteData | void>
   onDeletePost?: (postId: string) => void
   extraPosts?: BoardDetailPost[]
 }
@@ -133,8 +133,10 @@ function BoardDetailPage({
 
   useEffect(() => {
     pageRef.current?.scrollTo({ top: 0, behavior: 'auto' })
-    setIsEditingPost(false)
-    setPostEditValue(getBoardEditValue(post))
+    queueMicrotask(() => {
+      setIsEditingPost(false)
+      setPostEditValue(getBoardEditValue(post))
+    })
   }, [currentPostId, post])
 
   useEffect(() => {
@@ -157,7 +159,7 @@ function BoardDetailPage({
     )
   }
 
-  const handleSavePostEdit = () => {
+  const handleSavePostEdit = async () => {
     if (!post || !onUpdatePost) {
       return
     }
@@ -169,7 +171,7 @@ function BoardDetailPage({
       return
     }
 
-    onUpdatePost(post.id, {
+    await onUpdatePost(post.id, {
       ...postEditValue,
       title: nextTitle,
       content: nextContent,

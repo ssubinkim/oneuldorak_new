@@ -1,5 +1,5 @@
-import broThinkIcon from '../../assets/food_mascot/bro_think.svg'
-import eggThinkIcon from '../../assets/food_mascot/egg_think.svg'
+import broThinkIcon from '../../assets/food_mascot/bro_think.png'
+import eggThinkIcon from '../../assets/food_mascot/egg_think.png'
 import heartIcon from '../../assets/icons/heart.svg'
 import kimchiRiceImage from '../../assets/images/food_imges/kimbok.png'
 import spamMayoImage from '../../assets/images/food_imges/chamchimayo.png'
@@ -48,22 +48,33 @@ const recipes: HomeRecipeCard[] = [
 ]
 
 function HomeRecipeCardItem({ recipe }: { recipe: HomeRecipeCard }) {
+  const isWide = recipe.size === 'wide'
+
   return (
     <article className={`home-recipe-card home-recipe-card--${recipe.size}`}>
-      <img className="home-recipe-card__image" src={recipe.image} alt={recipe.title} />
+      <img
+        className="home-recipe-card__image"
+        src={recipe.image}
+        alt={recipe.title}
+        width={isWide ? 360 : 172}
+        height={isWide ? 160 : 200}
+        loading="lazy"
+        decoding="async"
+        fetchPriority="low"
+      />
       <div className="home-recipe-card__overlay">
         <div className="home-recipe-card__bottom">
           <div className="home-recipe-card__text">
             <p className="home-recipe-card__channel">
               <span className="home-recipe-card__mascot" aria-hidden="true">
-                <img className="home-recipe-card__mascot-image" src={recipe.icon} alt="" />
+                <img className="home-recipe-card__mascot-image" src={recipe.icon} alt="" width={14} height={14} loading="lazy" decoding="async" fetchPriority="low" />
               </span>
               {recipe.channel}
             </p>
             <h3 className="home-recipe-card__title">{recipe.title}</h3>
           </div>
           <span className="home-recipe-card__likes">
-            <img className="home-recipe-card__heart-icon" src={heartIcon} alt="" aria-hidden="true" />
+            <img className="home-recipe-card__heart-icon" src={heartIcon} alt="" aria-hidden="true" width={12} height={11} loading="lazy" decoding="async" fetchPriority="low" />
             {recipe.likes}
           </span>
         </div>
@@ -74,7 +85,7 @@ function HomeRecipeCardItem({ recipe }: { recipe: HomeRecipeCard }) {
 
 function HomeRecipeSection() {
   return (
-    <section className="home-recipe-section font-pretendard-variable" aria-labelledby="recipeTitle">
+    <section className="home-recipe-section font-pretendard-variable font-line-height-default font-letter-spacing-default" aria-labelledby="recipeTitle">
       <div className="home-recipe-section__header">
         <div>
           <h2 id="recipeTitle">

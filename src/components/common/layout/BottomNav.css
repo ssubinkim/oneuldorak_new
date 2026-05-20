@@ -14,26 +14,26 @@
   --bottom-nav-bg-radius: 10px;
   --bottom-nav-safe-bottom: env(safe-area-inset-bottom);
 
-  position: fixed;
-  right: auto;
+  position: absolute;
+  right: 0;
   bottom: 0;
-  left: 50%;
+  left: 0;
   z-index: 30;
   display: grid;
   grid-template-columns:
     minmax(0, 1fr) minmax(0, 1fr) var(--bottom-nav-center-column)
     minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
-  width: min(100vw, var(--screen-max-width));
-  min-width: var(--screen-min-width);
+  width: 100%;
   height: calc(var(--bottom-nav-bg-height) + var(--bottom-nav-safe-bottom));
   padding: 0;
+  margin: 0 auto;
   box-sizing: border-box;
   background: transparent;
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  transform: translateX(-50%);
+  transform: none;
 }
 
 .bottom-nav__shape {
@@ -327,7 +327,7 @@
 
 @media (min-width: 1024px) {
   .bottom-nav {
-    width: min(100vw, var(--screen-max-width));
+    width: 100%;
     bottom: 0;
   }
 }

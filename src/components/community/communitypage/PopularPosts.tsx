@@ -14,9 +14,10 @@ type HotPost = {
 
 type PopularPostsProps = {
   posts: HotPost[]
+  onMoreClick?: () => void
 }
 
-function PopularPosts({ posts }: PopularPostsProps) {
+function PopularPosts({ posts, onMoreClick }: PopularPostsProps) {
   const thumbnails = [subreview1, subreview2, subreview3]
   const storyItems: SequentialHighlightItem[] = posts.map((post, index) => ({
     id: `${post.rank}-${post.title}`,
@@ -30,7 +31,7 @@ function PopularPosts({ posts }: PopularPostsProps) {
     <section className="hot-posts" aria-label="실시간 인기글">
       <div className="hot-posts__header">
         <h2>실시간 인기글</h2>
-        <button type="button">더보기 <ArrowRightIcon /></button>
+        <button type="button" onClick={onMoreClick}>더보기 <ArrowRightIcon /></button>
       </div>
 
       <div className="story-list">

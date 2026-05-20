@@ -1,7 +1,5 @@
 .hot-posts {
   margin-top: 20px;
-  padding: 14px 12px 12px;
-  border-radius: 10px;
 }
 
 .hot-posts__header {
@@ -32,7 +30,6 @@
   border: 0;
   font-family: 'Pretendard', 'Pretendard Variable', sans-serif;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
   line-height: 130%;
   letter-spacing: -0.08px;
@@ -60,16 +57,19 @@
   display: grid;
   grid-template-columns: 20px 40px minmax(0, 1fr);
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   min-height: 72px;
-  padding: 0 10px 0 12px;
+  padding: 0 10px 4px 8px;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #e9e9e9;
   border-radius: 0;
   box-shadow: none;
   opacity: 1;
   transform: none;
+  transform-origin: center;
+  perspective: 720px;
+  will-change: transform, opacity;
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__item:last-child {
@@ -79,24 +79,29 @@
 .community-hot-posts__stagger .sequential-highlight-list__item.is-active {
   background: #fff;
   border-radius: 10px;
-  box-shadow: none;
   outline: none;
-  transform: none;
   animation: none;
+}
+
+.community-hot-posts__stagger .sequential-highlight-list__item.is-active .sequential-highlight-list__rank {
+  color: #1a1a1a;
+}
+
+.community-hot-posts__stagger .sequential-highlight-list__item:first-child.is-active .sequential-highlight-list__rank {
+  color: #EF5246;
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__rank {
   color: #555;
   font-size: 24px;
-  font-weight: 800;
-  line-height: 1;
+  font-weight: 700;
+  line-height: 1.3;
   text-align: center;
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__item:first-child .sequential-highlight-list__rank {
-  color: #ff1f34;
+  color: #EF5246;
   font-size: 26px;
-  font-weight: 700;
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__item:not(:first-child) .sequential-highlight-list__rank {
@@ -104,23 +109,31 @@
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__thumbnail {
-  width: 40px;
-  height: 40px;
-  background: #d9d9d9;
-  border-radius: 9px;
+  width: 50px;
+  height: 50px;
+  background: #fffffd;
+  border-radius: 6px;
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__content {
   min-width: 0;
+  transform-style: preserve-3d;
+  transform-origin: center bottom;
+  backface-visibility: hidden;
+  padding-left: 8px;
+}
+
+.community-hot-posts__stagger .sequential-highlight-list__item.is-active .sequential-highlight-list__content {
+  animation: hot-posts-text-3d-flip 560ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__title {
   margin: 0;
   overflow: hidden;
-  color: #555;
+  color: #3c3c3c;
   font-size: 16px;
-  font-weight: 400;
-  line-height: 1.25;
+  font-weight: 500;
+  line-height: 1.3;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -130,14 +143,14 @@
   align-items: center;
   gap: 2px;
   margin: 4px 0 0;
-  color: #737373;
+  color: #8a8a8a;
   font-size: 12px;
-  font-weight: 700;
-  line-height: 1;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__heart {
-  color: #ff1f34;
+  color: #EF5246;
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__dot {
@@ -145,9 +158,24 @@
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__comment-icon {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   margin-top: 0;
+}
+
+@keyframes hot-posts-text-3d-flip {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) rotateX(-88deg) scale(0.96);
+  }
+  58% {
+    opacity: 1;
+    transform: translateY(-2px) rotateX(12deg) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg) scale(1);
+  }
 }
 
 @media (max-width: 360px) {

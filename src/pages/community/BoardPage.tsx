@@ -1,8 +1,6 @@
 import { useState } from 'react'
-import BoardCategoryFilters, {
-  boardFilters,
-  type BoardFilter,
-} from '../../components/community/boardpage/BoardCategoryFilters'
+import BoardCategoryFilters from '../../components/community/boardpage/BoardCategoryFilters'
+import { boardFilters, type BoardFilter } from '../../components/community/boardpage/boardCategoryFilterData'
 import BoardList, { type BoardPost } from '../../components/community/boardpage/BoardList'
 import BoardPopularPosts from '../../components/community/boardpage/BoardPopularPosts'
 import { mockBoardPopularPosts } from '../../components/community/common/boardMockData'
@@ -28,23 +26,12 @@ function BoardPage({
   onFocusHandled,
 }: BoardPageProps) {
   const [activeFilter, setActiveFilter] = useState<BoardFilter>(boardFilters[0])
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
   const {
     isHeaderCompact,
     pageRef,
     compactTriggerRef,
     handleCommunityScroll,
   } = useCommunityHeaderCollapse()
-
-  const handleSearchToggle = () => {
-    setIsSearchOpen((previousValue) => !previousValue)
-  }
-
-  const handleSearchClose = () => {
-    setIsSearchOpen(false)
-    setSearchValue('')
-  }
 
   return (
     <main
@@ -55,11 +42,6 @@ function BoardPage({
       <CommunityBanner
         variant="board"
         isCompact={isHeaderCompact}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
       />
       <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
       <CommunityStickyHeader
@@ -67,11 +49,6 @@ function BoardPage({
         tabsClassName="community-tabs"
         isCompact={isHeaderCompact}
         onSelectTab={onSelectTab}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
       />
 
       <div className="free-detail-body">

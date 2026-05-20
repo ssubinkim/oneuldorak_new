@@ -74,7 +74,7 @@ function ProductDescTab({ product, reviewCount, onGoToReview, onSelectProduct }:
       {detailImages
         ? detailImages.map((src, i) => (
             <div key={i} className="pdesc__product-img pdesc__product-img--filled">
-              <img src={src} alt={`상품소개 이미지 ${i + 1}`} />
+              <img src={src} alt={`상품소개 이미지 ${i + 1}`} width={360} height={360} loading={i === 0 ? 'eager' : 'lazy'} fetchPriority={i === 0 ? 'high' : 'low'} decoding={i === 0 ? 'sync' : 'async'} />
             </div>
           ))
         : [1, 2, 3, 4].map(i => (
@@ -105,7 +105,7 @@ function ProductDescTab({ product, reviewCount, onGoToReview, onSelectProduct }:
         {reviewCount > 0 && (
           <div className="pdesc__review-thumbs">
             {[subreview1, subreview2, subreview3, subreview4].map((src, i) => (
-              <img key={i} src={src} alt={`리뷰 이미지 ${i + 1}`} className="pdesc__review-thumb" style={{ objectFit: 'cover' }} />
+              <img key={i} src={src} alt={`리뷰 이미지 ${i + 1}`} className="pdesc__review-thumb" width={72} height={72} loading="lazy" decoding="async" fetchPriority="low" style={{ objectFit: 'cover' }} />
             ))}
           </div>
         )}

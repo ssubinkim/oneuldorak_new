@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export type BoardComment = {
   id: string
@@ -18,10 +18,6 @@ type CommentItemProps = {
 function CommentItem({ comment, canManage, onUpdate, onDelete }: CommentItemProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [draftText, setDraftText] = useState(comment.text)
-
-  useEffect(() => {
-    setDraftText(comment.text)
-  }, [comment.text])
 
   const handleCancelEdit = () => {
     setDraftText(comment.text)
@@ -89,7 +85,10 @@ function CommentItem({ comment, canManage, onUpdate, onDelete }: CommentItemProp
                   <button
                     type="button"
                     className="board-detail-comment__manage-action"
-                    onClick={() => setIsEditing(true)}
+                    onClick={() => {
+                      setDraftText(comment.text)
+                      setIsEditing(true)
+                    }}
                   >
                     수정
                   </button>

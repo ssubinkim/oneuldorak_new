@@ -1,21 +1,10 @@
 import './BoardCategoryFilters.css'
-
-export type BoardFilter = '인기순' | '최신순' | '냉장고SOS' | '꿀팁' | '추천' | '질문' | '고민'
+import { boardFilters, type BoardFilter } from './boardCategoryFilterData'
 
 type BoardCategoryFiltersProps = {
   activeFilter: BoardFilter
   onChange: (filter: BoardFilter) => void
 }
-
-export const boardFilters: BoardFilter[] = [
-  '인기순',
-  '최신순',
-  '냉장고SOS',
-  '꿀팁',
-  '추천',
-  '질문',
-  '고민',
-]
 
 function BoardCategoryFilters({ activeFilter, onChange }: BoardCategoryFiltersProps) {
   return (

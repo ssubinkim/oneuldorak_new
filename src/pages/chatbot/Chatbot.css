@@ -1,5 +1,14 @@
 .chatbot-screen {
+  min-height: 100dvh;
+  height: 100dvh;
   background: linear-gradient(180deg, #f4f4f5 0%, #edf1fb 80%, #E6EDFF 100%);
+}
+
+@supports not (height: 100dvh) {
+  .chatbot-screen {
+    min-height: 100svh;
+    height: 100svh;
+  }
 }
 
 .chatbot-page {

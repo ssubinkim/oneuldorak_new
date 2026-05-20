@@ -11,17 +11,10 @@ import HomeStories from '../../components/home/HomeStories'
 import HomeRecipeSection from '../../components/home/HomeRecipeSection'
 import type { DayMenu } from '../../components/meal/mealData'
 import logoImg from '../../assets/logos/logo.svg'
+import bellIcon from '../../assets/icons/bell_icon.svg'
 import '../../styles/Tailwind.css'
 import './Meal.css'
 
-function BellIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-    </svg>
-  )
-}
 
 function Meal() {
   const [plannedMenus, setPlannedMenus] = useState<Record<number, DayMenu>>({})
@@ -31,7 +24,11 @@ function Meal() {
   const [goalBarPct, setGoalBarPct] = useState(0)
 
   useEffect(() => {
-    setGoalBarPct(pct)
+    const animationFrame = window.requestAnimationFrame(() => {
+      setGoalBarPct(pct)
+    })
+
+    return () => window.cancelAnimationFrame(animationFrame)
   }, [pct])
 
   const handleMenuAdd = (dayIndices: number[], menu: DayMenu) => {
@@ -54,10 +51,19 @@ function Meal() {
             <div className="meal-hero-inner">
               <div className="meal-hero-top">
                 <div className="meal-brand">
-                  <img src={logoImg} alt="오늘도락" className="meal-brand-logo" />
+                  <img
+                    src={logoImg}
+                    alt="오늘도락"
+                    className="meal-brand-logo"
+                    width={90}
+                    height={30}
+                    loading="eager"
+                    fetchPriority="high"
+                    decoding="sync"
+                  />
                 </div>
-                <button className="meal-bell-btn" aria-label="알림">
-                  <BellIcon />
+                <button className="meal-bell-btn" aria-label="알림" disabled>
+                  <img src={bellIcon} alt="" width="22" height="22" />
                 </button>
               </div>
               <div className="meal-hero-body">

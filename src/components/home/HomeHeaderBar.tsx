@@ -2,7 +2,7 @@ import './HomeHeaderBar.css'
 
 function HomeHeaderBar() {
   return (
-    <div className="home-header-bar font-pretendard-variable">
+    <div className="home-header-bar font-pretendard-variable font-line-height-default font-letter-spacing-default">
       <span className="home-header-bar__title">오늘도락</span>
       <button className="home-header-bar__notification" type="button" aria-label="알림 열기">
         <svg className="home-header-bar__notification-icon" viewBox="0 0 20 20" aria-hidden="true">

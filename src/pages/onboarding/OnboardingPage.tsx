@@ -20,6 +20,9 @@ import '../../styles/Tailwind.css'
 import './OnboardingPage.css'
 
 const onboardingWarmupImages = [customCarrotImage, customBlueImage, customBroImage, walking01Image, yeah02Image]
+const onboardingPriorityIngredientIcons = (onboardingQuestions.find((question) => question.id === 'ingredients')?.ingredients ?? [])
+  .slice(0, 16)
+  .flatMap((ingredient) => (ingredient.icon ? [ingredient.icon] : []))
 
 function OnboardingPage() {
   const [activeQuestionIndex, setActiveQuestionIndex] = useState<number | null>(null)
@@ -46,6 +49,14 @@ function OnboardingPage() {
     onboardingWarmupImages.forEach((src) => {
       const image = new Image()
       image.decoding = 'async'
+      image.fetchPriority = 'high'
+      image.src = src
+    })
+
+    onboardingPriorityIngredientIcons.forEach((src) => {
+      const image = new Image()
+      image.decoding = 'async'
+      image.fetchPriority = 'high'
       image.src = src
     })
   }, [])

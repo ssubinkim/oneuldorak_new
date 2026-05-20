@@ -12,7 +12,7 @@ function BestSection({ products, onSelect }: Props) {
     <div className="best-section">
       <div className="best-section__header">
         <p className="best-section__title">
-          <img src={fireIcon} alt="" className="best-section__title-icon" />
+          <img src={fireIcon} alt="" className="best-section__title-icon" width={22} height={22} loading="lazy" decoding="async" fetchPriority="low" />
           이번주 Best
         </p>
         <div className="best-section__subrow">
@@ -23,7 +23,7 @@ function BestSection({ products, onSelect }: Props) {
       <div className="best-section__track">
         {products.map((p, i) => (
           <div key={`${p.id}-${i}`} className="best-section__item">
-            <ProductCard {...p} rank={i + 1} onClick={() => onSelect?.(p)} />
+            <ProductCard {...p} rank={i + 1} prioritizeImage={i < 2} onClick={() => onSelect?.(p)} />
           </div>
         ))}
       </div>

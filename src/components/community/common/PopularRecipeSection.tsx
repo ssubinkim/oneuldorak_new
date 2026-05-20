@@ -1,9 +1,9 @@
 import heartIcon from '../../../assets/icons/heart.svg'
-import blueMascotIcon from '../../../assets/food_mascot/blue_mascot.svg'
-import broMascotIcon from '../../../assets/food_mascot/bro_mascot.svg'
-import carrotMascotIcon from '../../../assets/food_mascot/carrot_mascot.svg'
-import eggMascotIcon from '../../../assets/food_mascot/egg_mascot.svg'
-import strawMascotIcon from '../../../assets/food_mascot/straw_mascot.svg'
+import blueMascotIcon from '../../../assets/food_mascot/blue_mascot.png'
+import broMascotIcon from '../../../assets/food_mascot/bro_mascot.png'
+import carrotMascotIcon from '../../../assets/food_mascot/carrot_mascot.png'
+import eggMascotIcon from '../../../assets/food_mascot/egg_mascot.png'
+import strawMascotIcon from '../../../assets/food_mascot/straw_mascot.png'
 import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import './PopularRecipeSection.css'
 
@@ -45,7 +45,7 @@ function PopularRecipeSection({ recipes, showMore = true, title = '인기 레시
       <div className="recipe-section__header">
         <h2>{title}</h2>
         {showMore && (
-          <button type="button" className="recipe-section__more">
+          <button type="button" className="recipe-section__more" onClick={onMoreClick}>
             더보기 <ArrowRightIcon />
           </button>
         )}
