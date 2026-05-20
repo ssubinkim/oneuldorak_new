@@ -1,3 +1,31 @@
+.community-banner-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-secondary);
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 14px;
+  box-sizing: border-box;
+}
+
+.community-banner-header h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: #1a1a1a;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
+  line-height: 130%;
+  letter-spacing: 0.08px;
+}
+
+.community-card-sheet {
+  position: relative;
+  z-index: 10;
+  background: var(--color-bg-base);
+}
+
 .community-sticky-header {
   position: relative;
   z-index: 30;
@@ -56,6 +84,7 @@
   letter-spacing: -0.08px;
 }
 
+.community-tabs button:nth-child(1),
 .community-tabs button:nth-child(3),
 .community-tabs button:nth-child(4) {
   color: #5f5f5f;

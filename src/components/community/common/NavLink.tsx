@@ -3,9 +3,10 @@ type NavLinkProps = {
   isActive: boolean
   onClick: () => void
   className?: string
+  disabled?: boolean
 }
 
-function NavLink({ label, isActive, onClick, className }: NavLinkProps) {
+function NavLink({ label, isActive, onClick, className, disabled }: NavLinkProps) {
   return (
     <button
       type="button"
@@ -13,6 +14,7 @@ function NavLink({ label, isActive, onClick, className }: NavLinkProps) {
       className={className}
       aria-selected={isActive}
       onClick={onClick}
+      disabled={disabled}
     >
       {label}
     </button>

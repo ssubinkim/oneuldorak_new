@@ -81,7 +81,7 @@
 
 .community-hot-posts__stagger .sequential-highlight-list__item {
   display: grid;
-  grid-template-columns: 20px 100px minmax(0, 1fr);
+  grid-template-columns: 20px 90px minmax(0, 1fr);
   align-items: center;
   gap: 12px;
   min-height: 72px;
@@ -137,8 +137,8 @@
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__thumbnail {
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   background: #fffffd;
   border-radius: 6px;
 }

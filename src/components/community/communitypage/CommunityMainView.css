@@ -12,28 +12,6 @@
   overscroll-behavior-y: contain;
 }
 
-/* 커뮤니티 헤더 row: 항상 최상단에 sticky */
-.community-banner-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--color-secondary);
-  padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 14px;
-  box-sizing: border-box;
-}
-
-.community-banner-header h1 {
-  margin: 0;
-  font-size: 26px;
-  font-weight: 800;
-  color: #1a1a1a;
-  font-family: 'NanumSquareNeo';
-  line-height: 130%;
-  letter-spacing: 0.08px;
-}
 
 .community-banner-header__actions {
   display: flex;
@@ -61,12 +39,6 @@
   position: relative;
 }
 
-/* 흰 카드: 배너 body 위로 슬라이드, 커뮤니티 헤더 아래에서 sticky */
-.community-card-sheet {
-  position: relative;
-  z-index: 10;
-  background: var(--color-bg-base);
-}
 
 .community-page h1 {
   font-size: 24px;

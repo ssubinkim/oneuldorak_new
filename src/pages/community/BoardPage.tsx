@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type React from 'react'
 import BoardCategoryFilters from '../../components/community/boardpage/BoardCategoryFilters'
 import { boardFilters, type BoardFilter } from '../../components/community/boardpage/boardCategoryFilterData'
 import BoardList, { type BoardPost } from '../../components/community/boardpage/BoardList'
@@ -30,6 +31,7 @@ function BoardPage({
     isHeaderCompact,
     pageRef,
     compactTriggerRef,
+    stickyHeaderRef,
     handleCommunityScroll,
   } = useCommunityHeaderCollapse()
 
@@ -39,28 +41,33 @@ function BoardPage({
       className="page-scroll free-detail-page"
       onScroll={handleCommunityScroll}
     >
+      <div ref={stickyHeaderRef as React.RefObject<HTMLDivElement>} className="community-banner-header">
+        <h1>커뮤니티</h1>
+      </div>
       <CommunityBanner
         variant="board"
+        hideHeader
         isCompact={isHeaderCompact}
       />
       <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
-      <CommunityStickyHeader
-        activeTab="free"
-        tabsClassName="community-tabs"
-        isCompact={isHeaderCompact}
-        onSelectTab={onSelectTab}
-      />
-
-      <div className="free-detail-body">
-        <BoardPopularPosts posts={mockBoardPopularPosts} />
-        <BoardCategoryFilters activeFilter={activeFilter} onChange={setActiveFilter} />
-        <BoardList
-          activeFilter={activeFilter}
-          onOpenDetail={onOpenDetail}
-          extraPosts={extraPosts}
-          focusPostId={focusPostId}
-          onFocusHandled={onFocusHandled}
+      <div className="community-card-sheet">
+        <CommunityStickyHeader
+          activeTab="free"
+          tabsClassName="community-tabs"
+          isCompact={isHeaderCompact}
+          onSelectTab={onSelectTab}
         />
+        <div className="free-detail-body">
+          <BoardPopularPosts posts={mockBoardPopularPosts} />
+          <BoardCategoryFilters activeFilter={activeFilter} onChange={setActiveFilter} />
+          <BoardList
+            activeFilter={activeFilter}
+            onOpenDetail={onOpenDetail}
+            extraPosts={extraPosts}
+            focusPostId={focusPostId}
+            onFocusHandled={onFocusHandled}
+          />
+        </div>
       </div>
     </main>
   )
