@@ -1,18 +1,31 @@
-import { useState } from 'react'
-import AttendanceCircles from './AttendanceCircles'
-import type { DayData } from './AttendanceCircles'
+import { useState, useEffect } from 'react'
 import BottomSheet from '../common/BottomSheet'
+import { getUserProfile } from '../../common/useUserProfile'
 import pointIconImg from '../images/point-icon.svg'
+import day1Off from '../images/day1_off.png'
+import day1On from '../images/day1_on.png'
+import day2Off from '../images/day2_off.png'
+import day2On from '../images/day2_on.png'
+import day3Off from '../images/day3_off.png'
+import day3On from '../images/day3_on.png'
+import day4Off from '../images/day4_off.png'
+import day4On from '../images/day4_on.png'
+import day5Off from '../images/day5_off.png'
+import day5On from '../images/day5_on.png'
+import day6Off from '../images/day6_off.png'
+import day6On from '../images/day6_on.png'
+import day7Off from '../images/day7_off.png'
+import day7On from '../images/day7_on.png'
 import './PointBottomSheet.css'
 
-const GUIDE_ATTENDANCE: DayData[] = [
-  { filled: true, label: '1P' },
-  { filled: false },
-  { filled: false },
-  { filled: false, label: '3P' },
-  { filled: false },
-  { filled: false },
-  { filled: false, label: '10P' },
+const DAY_IMAGES = [
+  { off: day1Off, on: day1On },
+  { off: day2Off, on: day2On },
+  { off: day3Off, on: day3On },
+  { off: day4Off, on: day4On },
+  { off: day5Off, on: day5On },
+  { off: day6Off, on: day6On },
+  { off: day7Off, on: day7On },
 ]
 
 const ACTIVITY_POINTS = [
@@ -26,12 +39,46 @@ const ACTIVITY_POINTS = [
 
 const HISTORY = [
   { label: '게시글 작성', point: '+3P' },
-  { label: '댓글 작성', point: '+3P' },
+  { label: '댓글 작성', point: '+1P' },
+  { label: '출석 완료 보상', point: '+10P' },
+  { label: '쇼핑 후 리뷰 작성', point: '+10P' },
+  { label: '인기글 등록', point: '+5P' },
+  { label: '댓글 작성', point: '+1P' },
+  { label: '카카오톡 공유', point: '+10P' },
+  { label: '게시글 작성', point: '+3P' },
   { label: '선착순 투표 작성', point: '+3P' },
-  { label: '댓글 작성', point: '+3P' },
+  { label: '댓글 작성', point: '+1P' },
 ]
 
-type Tab = 'guide' | 'history'
+const ATTENDANCE_KEY = 'mypage_attendance_dates'
+
+function getTodayStr() {
+  return new Date().toISOString().slice(0, 10)
+}
+
+function loadAttendanceDates(): string[] {
+  try {
+    return JSON.parse(localStorage.getItem(ATTENDANCE_KEY) ?? '[]')
+  } catch {
+    return []
+  }
+}
+
+function calcStreak(dates: string[]): number {
+  if (dates.length === 0) return 0
+  const today = getTodayStr()
+  let streak = 0
+  let checkDate = today
+  while (dates.includes(checkDate)) {
+    streak++
+    const d = new Date(checkDate)
+    d.setDate(d.getDate() - 1)
+    checkDate = d.toISOString().slice(0, 10)
+  }
+  return streak
+}
+
+type Tab = 'history' | 'attendance'
 
 type Props = {
   open: boolean
@@ -41,55 +88,100 @@ type Props = {
 }
 
 export default function PointBottomSheet({ open, onClose, totalPoints = 245, monthlyPoints = 133 }: Props) {
-  const [tab, setTab] = useState<Tab>('guide')
+  const [tab, setTab] = useState<Tab>('history')
+  const [attendanceDates, setAttendanceDates] = useState<string[]>([])
+  const [showActivityInfo, setShowActivityInfo] = useState(false)
   const currentMonth = new Date().getMonth() + 1
+
+  useEffect(() => {
+    if (!open) {
+      setShowActivityInfo(false)
+      setTab('history')
+      return
+    }
+    const { isNew } = getUserProfile()
+    const today = getTodayStr()
+
+    if (isNew === false) {
+      // 로그인: 7일치 연속 출석 데이터 세팅
+      const sevenDays = Array.from({ length: 7 }, (_, i) => {
+        const d = new Date()
+        d.setDate(d.getDate() - (6 - i))
+        return d.toISOString().slice(0, 10)
+      })
+      localStorage.setItem(ATTENDANCE_KEY, JSON.stringify(sevenDays))
+      setAttendanceDates(sevenDays)
+      return
+    }
+
+    if (isNew === true) {
+      // 회원가입: 오늘 1일차만
+      const newDates = [today]
+      localStorage.setItem(ATTENDANCE_KEY, JSON.stringify(newDates))
+      setAttendanceDates(newDates)
+      return
+    }
+
+    const dates = loadAttendanceDates()
+    if (!dates.includes(today)) {
+      const updated = [...dates, today]
+      localStorage.setItem(ATTENDANCE_KEY, JSON.stringify(updated))
+      setAttendanceDates(updated)
+    } else {
+      setAttendanceDates(dates)
+    }
+  }, [open])
+
+  const streak = calcStreak(attendanceDates)
+  const daysInCycle = streak === 0 ? 0 : streak % 7 === 0 ? 7 : streak % 7
 
   return (
     <BottomSheet open={open} onClose={onClose} className="point-bs">
       <div className="point-sheet">
         <h2 className="point-sheet-title">
-          {tab === 'guide' ? '포인트 적립 가이드' : '포인트 적립 내역'}
+          {tab === 'history' ? '포인트 적립 내역' : '출석체크'}
         </h2>
         <p className="point-sheet-sub">
-          {tab === 'guide' ? '출석활동으로 포인트를 모아요.' : '포인트 내역을 정리해서 보여드려요.'}
+          {tab === 'history' ? '포인트 내역을 정리해서 보여드려요.' : '출석활동으로 포인트를 모아요.'}
         </p>
 
         <div className="point-sheet-tabs">
-          {(['guide', 'history'] as Tab[]).map((t) => (
-            <button
-              key={t}
-              className={`point-sheet-tab${tab === t ? ' active' : ''}`}
-              onClick={() => setTab(t)}
-            >
-              {t === 'guide' ? '포인트 가이드' : '적립내역'}
-            </button>
-          ))}
+          <button
+            className={`point-sheet-tab${tab === 'history' ? ' active' : ''}`}
+            onClick={() => setTab('history')}
+          >
+            적립내역
+          </button>
+          <button
+            className={`point-sheet-tab${tab === 'attendance' ? ' active' : ''}`}
+            onClick={() => setTab('attendance')}
+          >
+            출석체크
+          </button>
         </div>
 
         <div className="point-tab-container">
-          <div className={`point-guide${tab === 'guide' ? '' : ' hidden'}`}>
-            <div className="point-guide-card">
-              <AttendanceCircles data={GUIDE_ATTENDANCE} />
-              <p className="point-guide-note">
-                4일 차 중간 보상 +3p&nbsp;&nbsp;&nbsp;7일 차 중간 보상 +10p
-              </p>
-            </div>
-
-            <div className="point-activity-title">활동별 적립</div>
-            {ACTIVITY_POINTS.map((item) => (
-              <div key={item.label} className="point-activity-row">
-                <span>{item.label}</span>
-                <span className="point-activity-val">{item.point}</span>
-              </div>
-            ))}
-          </div>
-
+          {/* 적립내역 탭 (기준 높이) */}
           <div className={`point-history${tab === 'history' ? '' : ' hidden'}`}>
             <div className="point-history-card">
+              <button
+                type="button"
+                className="point-info-btn"
+                onClick={() => setShowActivityInfo(true)}
+                aria-label="포인트 적립 안내"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 16v-4" />
+                  <path d="M12 8h.01" />
+                </svg>
+              </button>
               <div className="point-history-card-top">
                 <img src={pointIconImg} alt="" className="point-history-coin" aria-hidden="true" />
                 <div>
-                  <div className="point-history-card-label">나의 포인트</div>
+                  <div className="point-history-label-row">
+                    <span className="point-history-card-label">나의 포인트</span>
+                  </div>
                   <div className="point-history-total">{totalPoints} <span>p</span></div>
                 </div>
               </div>
@@ -100,14 +192,66 @@ export default function PointBottomSheet({ open, onClose, totalPoints = 245, mon
             </div>
 
             <div className="point-history-section-title">적립내역</div>
-            {HISTORY.map((item, i) => (
-              <div key={i} className="point-history-row">
-                <span className="point-history-row-label">{item.label}</span>
-                <span className="point-history-row-val">{item.point}</span>
+            <div className="point-history-list">
+              {HISTORY.map((item, i) => (
+                <div key={i} className="point-history-row">
+                  <span className="point-history-row-label">{item.label}</span>
+                  <span className="point-history-row-val">{item.point}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 출석체크 탭 */}
+          <div className={`point-attendance${tab === 'attendance' ? '' : ' hidden'}`}>
+            <div className="point-attendance-card">
+              <div className="point-attendance-header">
+                <span className="point-attendance-card-title">출석체크</span>
+                {streak > 0 && (
+                  <span className="point-attendance-streak">{streak}일 연속 출석 중!🔥</span>
+                )}
               </div>
-            ))}
+              <div className="point-attendance-grid">
+                {DAY_IMAGES.map((img, idx) => {
+                  const isOn = idx + 1 <= daysInCycle
+                  return (
+                    <div
+                      key={idx}
+                      className={`point-attendance-day${idx === 6 ? ' point-attendance-day--seven' : ''}`}
+                    >
+                      <img
+                        src={isOn ? img.on : img.off}
+                        alt={`${idx + 1}일차`}
+                        className="point-attendance-day-img"
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* 활동별 적립 안내 오버레이 */}
+        {showActivityInfo && (
+          <div
+            className="point-activity-overlay"
+            onClick={() => setShowActivityInfo(false)}
+          >
+            <div
+              className="point-activity-info-card"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="point-activity-title">활동별 적립</div>
+              {ACTIVITY_POINTS.map((item) => (
+                <div key={item.label} className="point-activity-row">
+                  <span>{item.label}</span>
+                  <span className="point-activity-val">{item.point}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </BottomSheet>
   )

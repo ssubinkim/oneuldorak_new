@@ -14,6 +14,7 @@ type AppRoute =
   | 'mypage-saved-recipes'
   | 'mypage-plus'
   | 'mypage-plus-benefit'
+  | 'mypage-profile-edit'
   | 'meal-weekly-plan'
   | 'meal-grocery'
   | 'meal-storage'
@@ -35,6 +36,7 @@ const importLikePage: RouteImporter = () => import('./pages/mypage/LikePage')
 const importSavedRecipePage: RouteImporter = () => import('./pages/mypage/SavedRecipePage')
 const importPlusPage: RouteImporter = () => import('./pages/mypage/PlusPage')
 const importPlusBenefitPage: RouteImporter = () => import('./pages/mypage/PlusBenefitPage')
+const importProfileEditPage: RouteImporter = () => import('./pages/mypage/ProfileEditPage')
 const importWeeklyPlanPage: RouteImporter = () => import('./pages/meal/WeeklyPlanPage')
 const importGroceryPage: RouteImporter = () => import('./pages/meal/GroceryPage')
 const importStoragePage: RouteImporter = () => import('./pages/meal/StoragePage')
@@ -62,6 +64,7 @@ const Chatbot = lazy(importChatbotPage)
 const ChatbotCamera = lazy(importChatbotCameraPage)
 const ChatbotChat = lazy(importChatbotChatPage)
 const Recipe = lazy(importRecipePage)
+const ProfileEditPage = lazy(importProfileEditPage)
 
 const pages = {
   start: StartPage,
@@ -78,6 +81,7 @@ const pages = {
   'mypage-saved-recipes': SavedRecipePage,
   'mypage-plus': PlusPage,
   'mypage-plus-benefit': PlusBenefitPage,
+  'mypage-profile-edit': ProfileEditPage,
   'meal-weekly-plan': WeeklyPlanPage,
   'meal-grocery': GroceryPage,
   'meal-storage': StoragePage,
@@ -100,6 +104,7 @@ const pageImporters = {
   'mypage-saved-recipes': importSavedRecipePage,
   'mypage-plus': importPlusPage,
   'mypage-plus-benefit': importPlusBenefitPage,
+  'mypage-profile-edit': importProfileEditPage,
   'meal-weekly-plan': importWeeklyPlanPage,
   'meal-grocery': importGroceryPage,
   'meal-storage': importStoragePage,
@@ -123,6 +128,7 @@ const prefetchTargets = {
   'mypage-saved-recipes': ['mypage'],
   'mypage-plus': ['mypage-plus-benefit'],
   'mypage-plus-benefit': ['mypage-plus', 'mypage'],
+  'mypage-profile-edit': ['mypage'],
   'meal-weekly-plan': ['meal-grocery'],
   'meal-grocery': ['meal-storage'],
   'meal-storage': ['meal'],
