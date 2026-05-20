@@ -1,7 +1,7 @@
 .chatbot-screen {
   min-height: 100dvh;
   height: 100dvh;
-  background: linear-gradient(180deg, #f4f4f5 0%, #edf1fb 80%, #E6EDFF 100%);
+  background: linear-gradient(180deg, #FFF 53.91%, #E6EDFF 100%);
 }
 
 @supports not (height: 100dvh) {
@@ -21,7 +21,7 @@
   box-sizing: border-box;
   overflow: hidden;
   color: #1f1f1f;
-  background: linear-gradient(180deg, #f4f4f5 0%, #edf1fb 80%, #E6EDFF 100%);
+  background: linear-gradient(180deg, #FFF 53.91%, #E6EDFF 100%);
 }
 
 .chatbot-topbar {

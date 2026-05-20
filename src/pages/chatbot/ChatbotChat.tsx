@@ -1,23 +1,18 @@
 import { useCallback, useEffect, useRef, useState, type ChangeEvent } from 'react'
-import type { ChatMessage, RecipeData } from '../../types/chatbot'
+import type { ChatMessage } from '../../types/chatbot'
 import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
-import { askGPT, type AnalysisType } from '../../api/chatApi'
-import chatbotMascotIcon from '../../components/chatbot/images/chatbot .svg'
-import bubbleIcon from '../../components/chatbot/images/bubble.svg'
-import tunamayoImage from '../../components/chatbot/images/tunamayo.svg'
-import chamchimayoImage from '../../assets/images/food_imges/chamchimayo.png'
-import kimchiRiceImage from '../../assets/images/food_imges/kimbok.png'
-import bulgogiImage from '../../assets/images/food_imges/bulgogi.png'
-import btnXIcon from '../../components/chatbot/images/btn_x.svg'
+import { requestAiChat } from '../../features/ai/services/aiApi'
+import { AI_FEATURES, type AiFeature, type AnalysisType } from '../../features/ai/types/ai.types'
+import chatbotMascotIcon from '../../components/chatbot/images/chatbot .png'
+import btnXIcon from '../../components/chatbot/images/btn_x.png'
 import ChatbotInputBar from '../../components/chatbot/ChatbotInputBar'
 import ChatbotCameraSheet from '../../components/chatbot/ChatbotCameraSheet'
 import ChatbotRecipeCard from '../../components/chatbot/ChatbotRecipeCard'
 import '../chatbot/Chatbot.css'
 import './ChatbotChat.css'
 
-type AiLoadingMessage = { id: string; type: 'ai-loading' }
-type LocalMessage = ChatMessage | AiLoadingMessage
+type LocalMessage = ChatMessage
 type JudgeMode = 'text' | 'photo'
 type PickerMode = 'camera' | 'album'
 
@@ -26,6 +21,7 @@ type ChatRouteContext = {
   useApi: boolean
   judgeMode: JudgeMode | null
   analysisType: AnalysisType | null
+  feature: AiFeature | null
   openPicker: boolean
   pick: PickerMode | null
 }
@@ -35,8 +31,8 @@ type RequestOptions = {
   requestText?: string
   imageDataUrl?: string
   analysisType?: AnalysisType
+  feature?: AiFeature
   judgeFlow?: boolean
-  fallbackToMock?: boolean
 }
 
 function shouldUseDesktopWebcam() {
@@ -64,26 +60,6 @@ function shouldUseDesktopWebcam() {
 
 const JUDGE_PHOTO_PROMPT = '사진 속 도시락 관련 용품이나 식재료를 오늘 도시락 기준으로 살까말까 판단해줘. 사야 하는지/보류인지와 이유, 대체 선택지를 간단히 알려줘.'
 
-const MOCK_SUGGESTIONS = ['좋아. 레시피 볼래.', '더 가벼운 메뉴 추천해줘.', '더 든든한 메뉴로 추천해줘', '다른 메뉴 보여줘.']
-const JUDGE_SUGGESTIONS = ['더 저렴한 대안도 알려줘.', '영양 기준으로 다시 판단해줘.', '사진 다시 분석할래.']
-const API_FALLBACK_NOTICE = 'API 연결이 잠시 불안정해서, 저장된 목업 데이터로 먼저 안내해드릴게요.'
-const MOCK_JUDGE_RESPONSES = [
-  [
-    '- 판단: 보류해도 좋아요.',
-    '- 이유: 이미 있는 재료를 먼저 써도 도시락 준비가 가능해 보여요.',
-    '- 도시락 활용도: 당장 필요도는 낮지만, 추후 활용 가능성은 있어요.',
-    '- 가격/가성비 체크: 가격 비교 후 할인 시점에 구매하는 편이 좋아요.',
-    '- 추천 행동: 이번 주는 보류하고, 다음 장보기 전에 다시 확인해요.',
-  ].join('\n'),
-  [
-    '- 판단: 사도 좋아요.',
-    '- 이유: 도시락 준비 시간을 줄이는 데 바로 도움이 될 수 있어요.',
-    '- 도시락 활용도: 주 2~3회 이상 활용 가능성이 높아요.',
-    '- 가격/가성비 체크: 비슷한 제품과 비교했을 때 평균 수준이면 괜찮아요.',
-    '- 추천 행동: 예산 범위 안이면 이번 장보기에서 구매해도 좋아요.',
-  ].join('\n'),
-]
-
 const MAX_INPUT_IMAGE_FILE_SIZE = 20_000_000
 const MAX_IMAGE_DATA_URL_LENGTH = 3_600_000
 const MAX_IMAGE_EDGE = 1400
@@ -93,6 +69,13 @@ const JPEG_QUALITY_CANDIDATES = [0.84, 0.72, 0.62, 0.52, 0.44]
 function readAnalysisType(value: string | null): AnalysisType | null {
   if (value === 'menu' || value === 'receipt' || value === 'judge') {
     return value
+  }
+  return null
+}
+
+function readAiFeature(value: string | null): AiFeature | null {
+  if (value && AI_FEATURES.includes(value as AiFeature)) {
+    return value as AiFeature
   }
   return null
 }
@@ -128,94 +111,10 @@ function getRouteContext(): ChatRouteContext {
     useApi: params.get('api') === '1',
     judgeMode,
     analysisType: readAnalysisType(params.get('analysis')),
+    feature: readAiFeature(params.get('feature')),
     openPicker: params.get('openPicker') === '1',
     pick: routePick === 'camera' || routePick === 'album' ? routePick : null,
   }
-}
-
-const MOCK_RECIPES: { recipe: RecipeData; text: string }[] = [
-  {
-    recipe: {
-      title: '참치마요 주먹밥 도시락',
-      subtitle: '간단한 아침 · 냄새 부담 적음',
-      imageUrl: tunamayoImage,
-      cookTime: '15분',
-      estimatedCost: '약 2,500원',
-      reason: '보유 재료인 밥, 김, 참치를 활용할 수 있고\n준비시간이 짧아 바쁜 아침에 좋아요.',
-    },
-    text: '마이도락 정보를 기준으로\n오늘 먹기 좋은 도시락을 골라봤어요.\n오늘은 **참치마요 주먹밥 도시락** 어때요?',
-  },
-  {
-    recipe: {
-      title: '깍두기 볶음밥 도시락',
-      subtitle: '든든한 한 끼 · 재료 활용 최고',
-      imageUrl: kimchiRiceImage,
-      cookTime: '10분',
-      estimatedCost: '약 1,800원',
-      reason: '냉장고 속 깍두기와 밥만 있으면 뚝딱!\n기름진 맛이 입맛 없을 때도 잘 어울려요.',
-    },
-    text: '마이도락 정보를 기준으로\n오늘 먹기 좋은 도시락을 골라봤어요.\n오늘은 **깍두기 볶음밥 도시락** 어때요?',
-  },
-  {
-    recipe: {
-      title: '불고기 도시락',
-      subtitle: '달콤한 양념 · 밥도둑',
-      imageUrl: bulgogiImage,
-      cookTime: '20분',
-      estimatedCost: '약 4,000원',
-      reason: '미리 재워둔 불고기를 활용하면\n바쁜 아침에도 근사한 도시락이 완성돼요.',
-    },
-    text: '마이도락 정보를 기준으로\n오늘 먹기 좋은 도시락을 골라봤어요.\n오늘은 **불고기 도시락** 어때요?',
-  },
-  {
-    recipe: {
-      title: '참치마요 덮밥 도시락',
-      subtitle: '고소한 맛 · 간단 조리',
-      imageUrl: chamchimayoImage,
-      cookTime: '10분',
-      estimatedCost: '약 2,000원',
-      reason: '참치캔과 마요네즈로 빠르게 만들 수 있고\n고소해서 남녀노소 누구나 좋아해요.',
-    },
-    text: '마이도락 정보를 기준으로\n오늘 먹기 좋은 도시락을 골라봤어요.\n오늘은 **참치마요 덮밥 도시락** 어때요?',
-  },
-]
-
-function createSuggestionsMessage(judgeFlow: boolean): ChatMessage {
-  return {
-    id: `ai-suggestions-${Date.now()}`,
-    type: 'suggestions',
-    items: judgeFlow ? JUDGE_SUGGESTIONS : MOCK_SUGGESTIONS,
-  }
-}
-
-function getMockAiResponse(pendingId: string): ChatMessage[] {
-  const ts = Date.now()
-  const { recipe, text } = MOCK_RECIPES[Math.floor(Math.random() * MOCK_RECIPES.length)]
-  return [
-    { id: pendingId, type: 'ai-text', text },
-    { id: `ai-recipe-${ts}`, type: 'ai-recipe', recipe },
-    createSuggestionsMessage(false),
-  ]
-}
-
-function getMockJudgeResponse(pendingId: string): ChatMessage[] {
-  const fallbackText = MOCK_JUDGE_RESPONSES[Math.floor(Math.random() * MOCK_JUDGE_RESPONSES.length)]
-  return [
-    {
-      id: pendingId,
-      type: 'ai-text',
-      text: `${API_FALLBACK_NOTICE}\n\n${fallbackText}`,
-    },
-    createSuggestionsMessage(true),
-  ]
-}
-
-function getMockFallbackResponse(pendingId: string, judgeFlow: boolean): ChatMessage[] {
-  if (judgeFlow) {
-    return getMockJudgeResponse(pendingId)
-  }
-
-  return getMockAiResponse(pendingId)
 }
 
 function renderBubbleText(text: string) {
@@ -286,7 +185,17 @@ function getAiTextDisplay(text: string): AiTextDisplay {
 }
 
 function isJudgeSuggestionText(text: string) {
-  return JUDGE_SUGGESTIONS.includes(text)
+  const normalized = text.replace(/\s+/g, '')
+  return /(대안|영양|판단|사진|분석)/.test(normalized)
+}
+
+function applyPendingIdToFirstAssistantMessage(messages: ChatMessage[], pendingId: string): ChatMessage[] {
+  return messages.map((message, index) => {
+    if (index === 0 && message.type !== 'suggestions' && message.type !== 'ai-recipe') {
+      return { ...message, id: pendingId }
+    }
+    return message
+  })
 }
 
 function buildJudgeFollowupPrompt(requestText: string, subjectHint: string) {
@@ -458,61 +367,33 @@ function ChatbotChat() {
     options: RequestOptions,
   ) => {
     try {
-      if (options.useApi) {
-        const responseText = await askGPT(userText, {
-          imageDataUrl: options.imageDataUrl,
-          analysisType: options.analysisType,
-        })
-        const aiMessage: ChatMessage = {
-          id: pendingId,
-          type: 'ai-text',
-          text: responseText || '추천 결과를 만들지 못했어요. 다시 한 번 알려주세요.',
-        }
-
-        setMessages((previousMessages) => [
-          ...previousMessages.map((message) => (message.id === pendingId ? aiMessage : message)),
-          createSuggestionsMessage(Boolean(options.judgeFlow)),
-        ])
-        return
-      }
-
-      const timerResponse = await new Promise<ChatMessage[]>((resolve) => {
-        window.setTimeout(() => {
-          resolve(getMockAiResponse(pendingId))
-        }, 1200)
+      const response = await requestAiChat({
+        message: userText,
+        imageDataUrl: options.imageDataUrl,
+        analysisType: options.analysisType,
+        feature: options.feature,
+        forceMock: !options.useApi,
       })
+      const responseMessages = applyPendingIdToFirstAssistantMessage(response.messages, pendingId)
 
       setMessages((previousMessages) => {
         const pendingIndex = previousMessages.findIndex((message) => message.id === pendingId)
         if (pendingIndex === -1) return previousMessages
 
         const nextMessages = [...previousMessages]
-        nextMessages.splice(pendingIndex, 1, ...timerResponse)
+        nextMessages.splice(pendingIndex, 1, ...responseMessages)
         return nextMessages
       })
     } catch (error) {
-      if (options.useApi && options.fallbackToMock) {
-        const timerResponse = await new Promise<ChatMessage[]>((resolve) => {
-          window.setTimeout(() => {
-            resolve(getMockFallbackResponse(pendingId, Boolean(options.judgeFlow)))
-          }, 500)
-        })
-
-        setMessages((previousMessages) => {
-          const pendingIndex = previousMessages.findIndex((message) => message.id === pendingId)
-          if (pendingIndex === -1) return previousMessages
-
-          const nextMessages = [...previousMessages]
-          nextMessages.splice(pendingIndex, 1, ...timerResponse)
-          return nextMessages
-        })
-        return
-      }
-
       const errorText = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.'
       const nextErrorMessage: ChatMessage = {
         id: pendingId,
         type: 'ai-text',
+        role: 'assistant',
+        status: 'error',
+        feature: options.feature,
+        source: 'api',
+        createdAt: new Date().toISOString(),
         text: `앗, 지금 추천을 준비하지 못했어요.\n${errorText}`,
       }
 
@@ -527,9 +408,28 @@ function ChatbotChat() {
     source: 'quick' | 'input',
     options: RequestOptions,
   ) => {
-    const userMsg: ChatMessage = { id: `user-${Date.now()}`, type: 'user', text: displayText }
+    const userMsg: ChatMessage = {
+      id: `user-${Date.now()}`,
+      type: 'user',
+      role: 'user',
+      status: 'success',
+      feature: options.feature,
+      createdAt: new Date().toISOString(),
+      text: displayText,
+    }
     const pendingId = `pending-${Date.now()}`
-    setMessages((prev) => [...prev, userMsg, { id: pendingId, type: 'ai-loading' }])
+    setMessages((prev) => [
+      ...prev,
+      userMsg,
+      {
+        id: pendingId,
+        type: 'ai-loading',
+        role: 'assistant',
+        status: 'loading',
+        feature: options.feature,
+        createdAt: new Date().toISOString(),
+      },
+    ])
     appendChatbotHistoryMessage(displayText, source)
     void requestAiResponse(options.requestText ?? displayText, pendingId, options)
   }, [requestAiResponse])
@@ -563,6 +463,10 @@ function ChatbotChat() {
         introMessages.push({
           id: 'route-user-open-picker',
           type: 'user',
+          role: 'user',
+          status: 'success',
+          feature: context.feature ?? 'fridge-photo-analysis',
+          createdAt: new Date().toISOString(),
           text: context.query,
         })
         appendChatbotHistoryMessage(context.query, 'quick')
@@ -571,6 +475,10 @@ function ChatbotChat() {
       introMessages.push({
         id: 'route-ai-open-picker',
         type: 'ai-text',
+        role: 'assistant',
+        status: 'success',
+        feature: context.feature ?? 'fridge-photo-analysis',
+        createdAt: new Date().toISOString(),
         text: '좋아요! 사진을 올려주시면 바로 분석해서 추천해드릴게요.',
       })
 
@@ -589,6 +497,10 @@ function ChatbotChat() {
         introMessages.push({
           id: 'route-user-photo',
           type: 'user',
+          role: 'user',
+          status: 'success',
+          feature: context.feature ?? 'buy-or-not',
+          createdAt: new Date().toISOString(),
           text: context.query,
         })
         appendChatbotHistoryMessage(context.query, 'quick')
@@ -597,6 +509,10 @@ function ChatbotChat() {
       introMessages.push({
         id: 'route-ai-photo',
         type: 'ai-text',
+        role: 'assistant',
+        status: 'success',
+        feature: context.feature ?? 'buy-or-not',
+        createdAt: new Date().toISOString(),
         text: '좋아요! 사진을 올려주면 살까말까를 바로 판단해드릴게요.',
       })
 
@@ -614,8 +530,8 @@ function ChatbotChat() {
     queueUserRequest(context.query, 'quick', {
       useApi: shouldUseApi,
       analysisType: isJudgeRoute ? 'judge' : (context.analysisType ?? inferAnalysisTypeFromText(context.query, 'menu')),
+      feature: context.feature ?? undefined,
       judgeFlow: isJudgeRoute,
-      fallbackToMock: shouldUseApi,
     })
   }, [queueUserRequest])
 
@@ -665,8 +581,8 @@ function ChatbotChat() {
       queueUserRequest(text, 'input', {
         useApi: true,
         analysisType: 'judge',
+        feature: 'buy-or-not',
         judgeFlow: true,
-        fallbackToMock: true,
         requestText: buildJudgeFollowupPrompt(text, lastJudgeSubjectRef.current),
         imageDataUrl: judgeMode === 'photo' ? (lastJudgeImageDataUrlRef.current ?? undefined) : undefined,
       })
@@ -677,7 +593,6 @@ function ChatbotChat() {
       useApi: initialContext.useApi,
       analysisType: inferAnalysisTypeFromText(text, 'judge'),
       judgeFlow: false,
-      fallbackToMock: initialContext.useApi,
     })
   }
 
@@ -693,6 +608,11 @@ function ChatbotChat() {
             {
               id: `ai-error-${Date.now()}`,
               type: 'ai-text',
+              role: 'assistant',
+              status: 'error',
+              feature: 'buy-or-not',
+              source: 'api',
+              createdAt: new Date().toISOString(),
               text: '카메라 권한이 막혀 있어 앨범 선택으로 전환했어요. 브라우저에서 카메라 권한을 허용하면 바로 촬영할 수 있어요.',
             },
           ])
@@ -732,8 +652,8 @@ function ChatbotChat() {
         requestText: promptText,
         imageDataUrl,
         analysisType,
+        feature: 'buy-or-not',
         judgeFlow,
-        fallbackToMock: true,
       })
     } catch (error) {
       const message = error instanceof Error ? error.message : '사진 분석 중 오류가 발생했어요.'
@@ -742,6 +662,11 @@ function ChatbotChat() {
         {
           id: `ai-error-${Date.now()}`,
           type: 'ai-text',
+          role: 'assistant',
+          status: 'error',
+          feature: 'buy-or-not',
+          source: 'api',
+          createdAt: new Date().toISOString(),
           text: message,
         },
       ])
@@ -807,8 +732,8 @@ function ChatbotChat() {
       requestText: promptText,
       imageDataUrl,
       analysisType,
+      feature: 'buy-or-not',
       judgeFlow,
-      fallbackToMock: true,
     })
   }
 
@@ -871,9 +796,8 @@ function ChatbotChat() {
                   <div key={msg.id} className="chatbot-msg chatbot-msg--ai">
                     <img className="chatbot-mascot" src={chatbotMascotIcon} alt="" aria-hidden="true" />
                     <div className="chatbot-ai-bubble">
-                      <img className="chatbot-ai-bubble__bg" src={bubbleIcon} alt="" aria-hidden="true" />
                       <span className="chatbot-ai-bubble__text chatbot-loading__text">
-                        냠냠크루가 준비 중입니다.
+                        {msg.text ?? '냠냠크루가 준비 중입니다.'}
                       </span>
                     </div>
                   </div>
@@ -881,22 +805,16 @@ function ChatbotChat() {
               }
 
               if (msg.type === 'ai-text') {
-                const display = getAiTextDisplay(msg.text)
+                const bubbleText = msg.text.trim() ? msg.text : getAiTextDisplay(msg.text).bubbleText
                 return (
                   <div key={msg.id} className="chatbot-msg chatbot-msg--ai">
                     <img className="chatbot-mascot" src={chatbotMascotIcon} alt="" aria-hidden="true" />
                     <div className="chatbot-ai-stack">
                       <div className="chatbot-ai-bubble">
-                        <img className="chatbot-ai-bubble__bg" src={bubbleIcon} alt="" aria-hidden="true" />
                         <span className="chatbot-ai-bubble__text">
-                          {renderBubbleText(display.bubbleText)}
+                          {renderBubbleText(bubbleText)}
                         </span>
                       </div>
-                      {display.detailText ? (
-                        <article className="chatbot-ai-detail-card">
-                          <p className="chatbot-ai-detail-card__text">{renderBubbleText(display.detailText)}</p>
-                        </article>
-                      ) : null}
                     </div>
                   </div>
                 )
@@ -915,11 +833,11 @@ function ChatbotChat() {
                         className="chatbot-suggestion-chip"
                         type="button"
                         onClick={() => {
-                          if (item === '좋아. 레시피 볼래.') {
+                          if (item.includes('레시피 보러')) {
                             window.location.hash = '#/community?recipeId=recipe-1'
                             return
                           }
-                          if (item === '사진 다시 분석할래.') {
+                          if (item.includes('사진') && item.includes('다시')) {
                             setJudgeMode('photo')
                             setIsJudgeFlow(true)
                             setShowCameraSheet(true)

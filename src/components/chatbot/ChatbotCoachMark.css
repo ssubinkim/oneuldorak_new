@@ -93,11 +93,14 @@
 .chatbot-coachmark::after {
   content: '';
   position: absolute;
-  bottom: -8px;
-  left: 18px;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 9px solid #fff;
+  bottom: -20px;
+  left: 8px;
+  width: 37px;
+  height: 36px;
+  background: #fff;
+  -webkit-mask: url('./images/bubble-tail.png') no-repeat center / 100% 100%;
+  mask: url('./images/bubble-tail.png') no-repeat center / 100% 100%;
+  transform: rotate(-90deg);
 }
 
 @media (prefers-reduced-motion: reduce) {

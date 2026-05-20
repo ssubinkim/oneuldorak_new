@@ -2,9 +2,9 @@ import { useState } from 'react'
 import '../../styles/Tailwind.css'
 import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
-import { type AnalysisType } from '../../api/chatApi'
-import chatbotHeroImage from '../../components/chatbot/images/ai_main.svg'
-import btnXIcon from '../../components/chatbot/images/btn_x.svg'
+import type { AiFeature, AnalysisType } from '../../features/ai/types/ai.types'
+import chatbotHeroImage from '../../components/chatbot/images/ai_main.png'
+import btnXIcon from '../../components/chatbot/images/btn_x.png'
 import ChatbotCoachMark from '../../components/chatbot/ChatbotCoachMark'
 import ChatbotCameraSheet from '../../components/chatbot/ChatbotCameraSheet'
 import ChatbotInputBar from '../../components/chatbot/ChatbotInputBar'
@@ -14,15 +14,16 @@ type QuickSuggestion = {
   label: string
   useApi?: boolean
   analysisType?: AnalysisType
+  feature?: AiFeature
 }
 
 const quickSuggestions: QuickSuggestion[] = [
-  { label: '오늘 도시락 추천', useApi: true, analysisType: 'menu' },
-  { label: '주간 도시락 플랜', useApi: true, analysisType: 'menu' },
-  { label: '재료별 레시피', useApi: true, analysisType: 'menu' },
-  { label: '오늘 추천 재료', useApi: true, analysisType: 'menu' },
-  { label: '남은 재료 활용', useApi: true, analysisType: 'menu' },
-  { label: '살까말까', useApi: true, analysisType: 'judge' },
+  { label: '오늘 도시락 추천', useApi: true, analysisType: 'menu', feature: 'today-lunchbox-recommendation' },
+  { label: '주간 도시락 플랜', useApi: true, analysisType: 'menu', feature: 'weekly-lunchbox-plan' },
+  { label: '재료별 레시피', useApi: true, analysisType: 'menu', feature: 'ingredient-recipes' },
+  { label: '오늘 추천 재료', useApi: true, analysisType: 'menu', feature: 'today-recommended-ingredients' },
+  { label: '남은 재료 활용', useApi: true, analysisType: 'menu', feature: 'leftover-ingredients' },
+  { label: '살까말까', useApi: true, analysisType: 'judge', feature: 'buy-or-not' },
 ]
 
 function closeChatbot() {
@@ -42,6 +43,7 @@ type OpenChatOptions = {
   openPicker?: boolean
   pick?: CameraPickMode
   analysisType?: AnalysisType
+  feature?: AiFeature
 }
 
 const JUDGE_TEXT_QUERY = '살까말까 고민 중이야. 오늘 도시락 기준으로 사도 될지 판단해줘.'
@@ -60,6 +62,7 @@ function Chatbot() {
     params.set('q', text)
     if (options?.useApi) params.set('api', '1')
     if (options?.analysisType) params.set('analysis', options.analysisType)
+    if (options?.feature) params.set('feature', options.feature)
     if (options?.judgeMode) {
       params.set('judge', '1')
       params.set('mode', options.judgeMode)
@@ -81,6 +84,7 @@ function Chatbot() {
     openChatPage(suggestion, 'quick', {
       useApi: suggestionConfig?.useApi,
       analysisType: suggestionConfig?.analysisType,
+      feature: suggestionConfig?.feature,
     })
   }
 
@@ -97,6 +101,7 @@ function Chatbot() {
       pick: 'camera',
       analysisType: 'judge',
       judgeMode: 'photo',
+      feature: 'buy-or-not',
     })
   }
 
@@ -108,12 +113,18 @@ function Chatbot() {
       pick: 'album',
       analysisType: 'judge',
       judgeMode: 'photo',
+      feature: 'buy-or-not',
     })
   }
 
   const handleJudgeByText = () => {
     setShowJudgeModeSheet(false)
-    openChatPage(JUDGE_TEXT_QUERY, 'quick', { useApi: true, judgeMode: 'text', analysisType: 'judge' })
+    openChatPage(JUDGE_TEXT_QUERY, 'quick', {
+      useApi: true,
+      judgeMode: 'text',
+      analysisType: 'judge',
+      feature: 'buy-or-not',
+    })
   }
 
   const handleJudgeByPhoto = () => {
@@ -123,6 +134,7 @@ function Chatbot() {
       judgeMode: 'photo',
       openPicker: true,
       analysisType: 'judge',
+      feature: 'buy-or-not',
     })
   }
 

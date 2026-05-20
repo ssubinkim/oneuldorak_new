@@ -194,7 +194,7 @@ button {
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1072px) {
   .app-shell {
     align-items: flex-start;
     padding: 24px;
