@@ -79,9 +79,9 @@
   padding-top: 8px;
   background: linear-gradient(
     180deg,
-    rgba(237, 241, 251, 0) 0%,
-    rgba(230, 237, 255, 0.92) 24%,
-    #e6edff 64%
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.58) 28%,
+    rgba(255, 255, 255, 0.72) 100%
   );
 }
 
@@ -127,52 +127,60 @@
   min-height: 40px;
   max-width: min(82%, 320px);
   height: auto;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  padding: 10px 12px;
+  padding: 8px 12px;
   background: #3c3c3c;
-  color: #fff;
-  border-radius: 999px;
-  font-size: 14px;
+  border: 1px solid #D9D9D9;
+  color: #FFF;
+  border-radius: 40px;
+  font-family: "Pretendard Variable";
+  font-size: 16px;
+  font-style: normal;
   font-weight: 600;
-  line-height: 1.35;
+  line-height: 130%;
   white-space: normal;
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
 
 .chatbot-ai-bubble {
+  --chatbot-ai-bubble-color: var(--green-blue-blue10, #E6EDFF);
+  --chatbot-ai-tail-left: -12px;
+  --chatbot-ai-tail-bottom: 0px;
+  --chatbot-ai-tail-width: 37px;
+  --chatbot-ai-tail-height: 36px;
   position: relative;
   width: fit-content;
   max-width: 100%;
   min-height: 0;
   margin-bottom: 0;
-  background: #e6edff;
-  border-radius: 18px;
+  border: 1px solid var(--green-blue-blue10, #E6EDFF);
+  background: var(--green-blue-blue10, #E6EDFF);
+  border-radius: 24px;
+  box-sizing: border-box;
   overflow: visible;
 }
 
 .chatbot-ai-bubble::after {
   content: '';
   position: absolute;
-  left: 12px;
-  bottom: -8px;
-  width: 14px;
-  height: 14px;
-  background: #e6edff;
-  border-radius: 0 0 0 8px;
-  clip-path: polygon(0 0, 100% 100%, 0 100%);
-}
-
-.chatbot-ai-bubble__bg {
-  display: none;
+  left: var(--chatbot-ai-tail-left);
+  bottom: var(--chatbot-ai-tail-bottom);
+  z-index: 1;
+  width: var(--chatbot-ai-tail-width);
+  height: var(--chatbot-ai-tail-height);
+  background: var(--chatbot-ai-bubble-color);
+  -webkit-mask: url('../../components/chatbot/images/bubble-tail.png') no-repeat center / 100% 100%;
+  mask: url('../../components/chatbot/images/bubble-tail.png') no-repeat center / 100% 100%;
+  pointer-events: none;
 }
 
 .chatbot-ai-bubble__text {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: block;
-  padding: 11px 14px;
+  padding: 13px 18px 18px 22px;
   font-size: 14px;
   line-height: 1.45;
   color: #1a1a1a;

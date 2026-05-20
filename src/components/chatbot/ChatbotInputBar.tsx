@@ -1,6 +1,6 @@
 import { useRef, useState, type FormEvent } from 'react'
-import chatCameraIcon from './images/chat_camera.svg'
-import btnSendIcon from './images/btn_send.svg'
+import chatCameraIcon from './images/chat_camera.png'
+import btnSendIcon from './images/btn_send.png'
 import './ChatbotInputBar.css'
 
 type ChatbotInputBarProps = {

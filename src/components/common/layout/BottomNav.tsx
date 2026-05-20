@@ -7,7 +7,7 @@ import mydorakOffIcon from '../../../assets/icons/mydorak_off.svg'
 import mydorakOnIcon from '../../../assets/icons/mydorak_on.svg'
 import storeOffIcon from '../../../assets/icons/store_off.svg'
 import storeOnIcon from '../../../assets/icons/store_on.svg'
-import chatbotIcon from '../../chatbot/images/chatbot .svg'
+import chatbotIcon from '../../chatbot/images/chatbot .png'
 import './BottomNav.css'
 
 export type BottomNavRoute = 'home' | 'meal' | 'community' | 'store' | 'mypage' | 'chatbot'

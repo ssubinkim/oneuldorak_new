@@ -1,19 +1,11 @@
-export type RecipeData = {
-  title: string
-  subtitle: string
-  imageUrl?: string
-  cookTime: string
-  estimatedCost: string
-  reason: string
-}
+export type {
+  AiChatMessage,
+  AiLoadingMessage,
+  AiRecipeMessage,
+  AiSuggestionMessage as SuggestionMessage,
+  AiTextMessage,
+  AiUserMessage as UserMessage,
+  RecipeData,
+} from '../features/ai/types/ai.types'
 
-export type UserMessage     = { id: string; type: 'user'; text: string }
-export type AiTextMessage   = { id: string; type: 'ai-text'; text: string }
-export type AiRecipeMessage = { id: string; type: 'ai-recipe'; recipe: RecipeData }
-export type SuggestionMessage = { id: string; type: 'suggestions'; items: string[] }
-
-export type ChatMessage =
-  | UserMessage
-  | AiTextMessage
-  | AiRecipeMessage
-  | SuggestionMessage
+export type { AiChatMessage as ChatMessage } from '../features/ai/types/ai.types'
