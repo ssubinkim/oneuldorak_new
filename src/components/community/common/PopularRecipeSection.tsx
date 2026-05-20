@@ -20,6 +20,7 @@ export type RecipeCard = {
 type PopularRecipeSectionProps = {
   recipes: RecipeCard[]
   showMore?: boolean
+  title?: string
 }
 
 const mascotIcons = [
@@ -38,11 +39,11 @@ function getRandomMascotIcon(seed: string) {
   return mascotIcons[seedValue % mascotIcons.length]
 }
 
-function PopularRecipeSection({ recipes, showMore = true }: PopularRecipeSectionProps) {
+function PopularRecipeSection({ recipes, showMore = true, title = '인기 레시피' }: PopularRecipeSectionProps) {
   return (
     <section className="recipe-section">
       <div className="recipe-section__header">
-        <h2>인기 레시피</h2>
+        <h2>{title}</h2>
         {showMore && (
           <button type="button" className="recipe-section__more">
             더보기 <ArrowRightIcon />

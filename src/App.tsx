@@ -18,6 +18,7 @@ import OnboardingPage from './pages/onboarding/OnboardingPage'
 import SignupPage from './pages/onboarding/SignupPage'
 import StartPage from './pages/onboarding/StartPage'
 import Store from './pages/store/Store'
+import Recipe from './pages/recipe/Recipe'
 
 type AppRoute =
   | BottomNavRoute
@@ -35,6 +36,7 @@ type AppRoute =
   | 'meal-weekly-plan'
   | 'meal-grocery'
   | 'meal-storage'
+  | 'recipe'
 
 const pages = {
   start: StartPage,
@@ -45,6 +47,7 @@ const pages = {
   meal: Meal,
   community: Community,
   store: Store,
+  recipe: Recipe,
   mypage: MyPage,
   'mypage-likes': () => <LikePage />,
   'mypage-saved-recipes': () => <SavedRecipePage />,
