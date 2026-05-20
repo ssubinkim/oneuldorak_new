@@ -1,11 +1,11 @@
 import { useState, type FormEvent } from 'react'
 import type { RecipeComment } from './recipeDetailData'
 import { StatIcon } from './RecipeDetailIcons'
-import blueMascotIcon from '../../assets/food_mascot/blue_mascot.svg'
-import broMascotIcon from '../../assets/food_mascot/bro_mascot.svg'
-import carrotMascotIcon from '../../assets/food_mascot/carrot_mascot.svg'
-import eggMascotIcon from '../../assets/food_mascot/egg_mascot.svg'
-import strawMascotIcon from '../../assets/food_mascot/straw_mascot.svg'
+import blueMascotIcon from '../../assets/food_mascot/blue_mascot.png'
+import broMascotIcon from '../../assets/food_mascot/bro_mascot.png'
+import carrotMascotIcon from '../../assets/food_mascot/carrot_mascot.png'
+import eggMascotIcon from '../../assets/food_mascot/egg_mascot.png'
+import strawMascotIcon from '../../assets/food_mascot/straw_mascot.png'
 
 const mascotIcons = [blueMascotIcon, broMascotIcon, carrotMascotIcon, eggMascotIcon, strawMascotIcon]
 

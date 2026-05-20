@@ -55,7 +55,16 @@ function IngredientSection() {
           <div key={item.id} className="ing-item">
             <div className="ing-circle-wrap">
               <div className={`ing-circle${item.daysLeft !== null ? ' ing-circle--urgent' : ''}`}>
-                <img src={item.image} alt={item.name} className={`ing-img ${getIngredientIconClassName(item.image)}`} />
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className={`ing-img ${getIngredientIconClassName(item.image)}`}
+                  width={52}
+                  height={52}
+                  loading="lazy"
+                  decoding="async"
+                  fetchPriority="low"
+                />
               </div>
               {item.daysLeft !== null && (
                 <span className="ing-urgent-badge">D-{item.daysLeft}</span>

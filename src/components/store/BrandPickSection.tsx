@@ -19,7 +19,7 @@ function BrandPickSection() {
     <div className="brand-pick">
       <div className="brand-pick__header">
         <p className="brand-pick__title">
-          <img src={starIcon} alt="" className="brand-pick__title-icon" />
+          <img src={starIcon} alt="" className="brand-pick__title-icon" width={22} height={22} loading="lazy" decoding="async" fetchPriority="low" />
           오늘도락 PICK
         </p>
         <div className="brand-pick__subrow">
@@ -31,7 +31,23 @@ function BrandPickSection() {
         {BRANDS.map(brand => (
           <div key={brand.id} className="brand-pick__item">
             <div className="brand-pick__circle">
-              <img className="brand-pick__logo" src={brand.logo} alt={brand.name} />
+              <img
+                className="brand-pick__logo store-img-fade"
+                src={brand.logo}
+                alt={brand.name}
+                width={70}
+                height={70}
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+                data-loaded="false"
+                onLoad={(event) => {
+                  event.currentTarget.dataset.loaded = 'true'
+                }}
+                onError={(event) => {
+                  event.currentTarget.dataset.loaded = 'true'
+                }}
+              />
             </div>
             <p className="brand-pick__name">{brand.name}</p>
           </div>

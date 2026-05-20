@@ -6,11 +6,11 @@ import kimbokImage from '../../../assets/images/food_imges/kimbok.png'
 import omuriceImage from '../../../assets/images/food_imges/omurice.png'
 import bulgogiImage from '../../../assets/images/food_imges/bulgogi.png'
 import ssoyaImage from '../../../assets/images/food_imges/ssoya.png'
-import blueMascotIcon from '../../../assets/food_mascot/blue_mascot.svg'
-import broMascotIcon from '../../../assets/food_mascot/bro_mascot.svg'
-import carrotMascotIcon from '../../../assets/food_mascot/carrot_mascot.svg'
-import eggMascotIcon from '../../../assets/food_mascot/egg_mascot.svg'
-import strawMascotIcon from '../../../assets/food_mascot/straw_mascot.svg'
+import blueMascotIcon from '../../../assets/food_mascot/blue_mascot.png'
+import broMascotIcon from '../../../assets/food_mascot/bro_mascot.png'
+import carrotMascotIcon from '../../../assets/food_mascot/carrot_mascot.png'
+import eggMascotIcon from '../../../assets/food_mascot/egg_mascot.png'
+import strawMascotIcon from '../../../assets/food_mascot/straw_mascot.png'
 import type { CommunityMediaAttachment } from '../communitywritepage/writeTypes'
 
 export type RecipeItem = {
@@ -164,9 +164,11 @@ function RecipeActionIcon({ kind }: { kind: 'heart' | 'comment' | 'bookmark' }) 
 function RecipeCard({
   item,
   onOpenDetail,
+  index,
 }: {
   item: RecipeItem
   onOpenDetail: (recipeId: string) => void
+  index: number
 }) {
   const handleOpenDetail = () => {
     onOpenDetail(item.id)
@@ -187,7 +189,17 @@ function RecipeCard({
         }
       }}
     >
-      <img className="recipe-share-card__thumb" src={item.image ?? chamchimayoImage} alt="" aria-hidden="true" />
+      <img
+        className="recipe-share-card__thumb"
+        src={item.image ?? chamchimayoImage}
+        alt=""
+        aria-hidden="true"
+        width={116}
+        height={106}
+        loading={index < 2 ? 'eager' : 'lazy'}
+        fetchPriority={index < 2 ? 'high' : 'low'}
+        decoding={index < 2 ? 'sync' : 'async'}
+      />
 
       <div className="recipe-share-card__content">
         <p className="recipe-share-card__subtitle">{item.subtitle}</p>
@@ -202,7 +214,7 @@ function RecipeCard({
         <div className="recipe-share-card__meta-row">
           <small>
             <span className="recipe-share-card__author-icon" aria-hidden="true">
-              <img src={authorMascotIcon} alt="" />
+              <img src={authorMascotIcon} alt="" width={18} height={18} loading="lazy" decoding="async" fetchPriority="low" />
             </span>
             {item.author}
           </small>
@@ -267,7 +279,7 @@ function RecipeList({
     <section ref={listRef} className="recipe-page__list" aria-label="레시피 목록">
       {items.map((item, index) => (
         <Fragment key={item.id}>
-          <RecipeCard item={item} onOpenDetail={onOpenDetail} />
+          <RecipeCard item={item} onOpenDetail={onOpenDetail} index={index} />
           {middleSlot && index === middleInsertIndex - 1 ? middleSlot : null}
         </Fragment>
       ))}

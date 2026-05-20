@@ -128,7 +128,23 @@ function StoreBanner() {
         >
           {EXTENDED.map((slide, index) => (
             <div key={index} className="store-banner__card">
-              <img className="store-banner__image" src={slide.image} alt={slide.title} />
+              <img
+                className="store-banner__image store-img-fade"
+                src={slide.image}
+                alt={slide.title}
+                width={360}
+                height={270}
+                loading={index === 1 ? 'eager' : 'lazy'}
+                fetchPriority={index === 1 ? 'high' : 'low'}
+                decoding={index === 1 ? 'sync' : 'async'}
+                data-loaded="false"
+                onLoad={(event) => {
+                  event.currentTarget.dataset.loaded = 'true'
+                }}
+                onError={(event) => {
+                  event.currentTarget.dataset.loaded = 'true'
+                }}
+              />
               <div className="store-banner__overlay" />
               <div
                 ref={el => { textRefs.current[index] = el }}

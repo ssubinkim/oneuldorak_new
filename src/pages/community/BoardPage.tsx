@@ -26,23 +26,12 @@ function BoardPage({
   onFocusHandled,
 }: BoardPageProps) {
   const [activeFilter, setActiveFilter] = useState<BoardFilter>(boardFilters[0])
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
   const {
     isHeaderCompact,
     pageRef,
     compactTriggerRef,
     handleCommunityScroll,
   } = useCommunityHeaderCollapse()
-
-  const handleSearchToggle = () => {
-    setIsSearchOpen((previousValue) => !previousValue)
-  }
-
-  const handleSearchClose = () => {
-    setIsSearchOpen(false)
-    setSearchValue('')
-  }
 
   return (
     <main
@@ -53,11 +42,6 @@ function BoardPage({
       <CommunityBanner
         variant="board"
         isCompact={isHeaderCompact}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
       />
       <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
       <CommunityStickyHeader
@@ -65,11 +49,6 @@ function BoardPage({
         tabsClassName="community-tabs"
         isCompact={isHeaderCompact}
         onSelectTab={onSelectTab}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
       />
 
       <div className="free-detail-body">

@@ -15,7 +15,7 @@ import './Home.css'
 function Home() {
   return (
     <div className="app-shell">
-      <div className="app-screen home-screen font-nanum-square-neo">
+      <div className="app-screen home-screen font-nanum-square-neo font-line-height-default font-letter-spacing-default">
         <Header />
 
         <div className="home-scroll">

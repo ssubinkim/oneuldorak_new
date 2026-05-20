@@ -34,3 +34,14 @@
   color: #FFDB78;
   pointer-events: none;
 }
+
+.store-img-fade {
+  opacity: 0;
+  transform: scale(1.015);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.store-img-fade[data-loaded='true'] {
+  opacity: 1;
+  transform: scale(1);
+}

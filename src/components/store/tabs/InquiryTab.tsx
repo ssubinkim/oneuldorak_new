@@ -24,7 +24,7 @@ function InquiryTab({ onSelectProduct }: Props) {
     <div>
       {/* 상품 문의 */}
       <div className="inquiry-section">
-        <img className="inquiry-section__img" src={storecall1} alt="상품 문의" />
+        <img className="inquiry-section__img" src={storecall1} alt="상품 문의" width={360} height={200} loading="lazy" decoding="async" fetchPriority="low" />
         <p className="inquiry-section__title">상품에 대해 궁금한 것이 있으신가요?</p>
         <p className="inquiry-section__desc">상품 관련 문의는 판매자가 상세히 답변드립니다.</p>
         <button className="inquiry-section__btn">상품 문의하기</button>
@@ -32,7 +32,7 @@ function InquiryTab({ onSelectProduct }: Props) {
 
       {/* 배송 문의 */}
       <div className="inquiry-section">
-        <img className="inquiry-section__img" src={storecall2} alt="배송 문의" />
+        <img className="inquiry-section__img" src={storecall2} alt="배송 문의" width={360} height={200} loading="lazy" decoding="async" fetchPriority="low" />
         <p className="inquiry-section__title">배송에 대해 궁금한 것이 있으신가요?</p>
         <p className="inquiry-section__desc">배송 관련 문의는 오늘도락 고객센터에서 답변드립니다</p>
         <button className="inquiry-section__btn">배송 문의하기</button>
