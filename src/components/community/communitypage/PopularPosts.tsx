@@ -16,9 +16,10 @@ type HotPost = {
 type PopularPostsProps = {
   posts: HotPost[]
   onMoreClick?: () => void
+  showHeaderImage?: boolean
 }
 
-function PopularPosts({ posts, onMoreClick }: PopularPostsProps) {
+function PopularPosts({ posts, onMoreClick, showHeaderImage = true }: PopularPostsProps) {
   const thumbnails = [talk1, talk2, talk3]
   const storyItems: SequentialHighlightItem[] = posts.map((post, index) => ({
     id: `${post.rank}-${post.title}`,
@@ -32,13 +33,13 @@ function PopularPosts({ posts, onMoreClick }: PopularPostsProps) {
     <section className="hot-posts" aria-label="실시간 인기글">
       <div className="hot-posts__header">
         <div className="hot-posts__header-left">
-          <h2>지금 인기 있는<br />냉털 이야기 👀</h2>
+          <h2>지금 인기 있는 냉털 이야기 👀</h2>
           <div className="hot-posts__header-sub">
             <span>이번주 인기글 TOP3</span>
             <button type="button" onClick={onMoreClick}>보러가기 <ArrowRightIcon /></button>
           </div>
         </div>
-        <img className="hot-posts__header-img" src={talkGroup} alt="" aria-hidden="true" />
+        {showHeaderImage && <img className="hot-posts__header-img" src={talkGroup} alt="" aria-hidden="true" />}
       </div>
 
       <div className="story-list">
