@@ -1,0 +1,484 @@
+.profile-edit-screen {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 상단 바 ── */
+.profile-edit-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  flex-shrink: 0;
+}
+
+.profile-edit-topbar__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.profile-edit-topbar__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* ── 스크롤 영역 ── */
+.profile-edit-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 32px;
+}
+
+/* ── 프로필 이미지 ── */
+.profile-edit-avatar-wrap {
+  position: relative;
+  width: fit-content;
+  margin: 20px auto 32px;
+}
+
+.profile-edit-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: #cfe8b8;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-edit-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-edit-camera-btn {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1.5px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* ── 폼 본문 ── */
+.profile-edit-body {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.profile-edit-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-edit-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  padding-left: 4px;
+}
+
+/* ── 인풋 ── */
+.profile-edit-input {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: none;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a1a;
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.profile-edit-input::placeholder {
+  color: #bbb;
+  font-weight: 400;
+}
+
+.profile-edit-input--flex {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+
+.profile-edit-input--disabled {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  color: #888;
+  cursor: default;
+}
+
+.profile-edit-input--icon {
+  gap: 8px;
+}
+
+/* ── 인풋 + 버튼 행 ── */
+.profile-edit-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+/* ── 아이디/비밀번호 변경 버튼 (goal-sheet-btn.primary 동일) ── */
+.profile-edit-action-btn {
+  padding: 0 16px;
+  border-radius: 14px;
+  background: #FFDB78;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #3c3c3c;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.profile-edit-email-text {
+  font-weight: 400;
+  color: #888;
+}
+
+/* ── 비밀번호 필드 ── */
+.profile-edit-password-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  border: none;
+  background: #ffffff;
+}
+
+.profile-edit-password-field input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  font-size: 15px;
+  color: #1a1a1a;
+  outline: none;
+}
+
+.profile-edit-eye-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #bbb;
+  display: flex;
+  align-items: center;
+}
+
+/* ── 힌트 / 글자수 ── */
+.profile-edit-section--padded {
+  padding-bottom: 26px;
+}
+
+.profile-edit-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-edit-pw-link {
+  background: none;
+  border: none;
+  padding: 0 4px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+}
+
+.profile-edit-pw-link.done {
+  color: #4caf50;
+}
+
+.profile-edit-hint {
+  font-size: 12px;
+  color: #aaa;
+  margin: 0;
+}
+
+.profile-edit-id-success {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #4caf50;
+  margin: 0;
+}
+
+.profile-edit-action-btn--done {
+  background: #e8f5e9;
+  color: #4caf50;
+}
+
+.profile-edit-nickname-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-edit-nickname-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a1a;
+  outline: none;
+}
+
+.profile-edit-char-count {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: #f5c842;
+  font-weight: 500;
+}
+
+/* ── 회원탈퇴 ── */
+.profile-edit-withdraw {
+  background: none;
+  border: none;
+  padding: 0 0 0 4px;
+  font-size: 14px;
+  color: #aaa;
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: left;
+}
+
+/* ── 저장 완료 토스트 ── */
+.profile-edit-toast {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 20px;
+  border-radius: 24px;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 60;
+  animation: toast-in 0.2s ease;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── 나가기 확인 모달 ── */
+.leave-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 60;
+}
+
+.leave-modal {
+  width: 100%;
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.leave-modal-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 5px;
+  text-align: center;
+}
+
+.leave-modal-sub {
+  font-size: 13px;
+  color: #aaa;
+  margin: 0 0 24px;
+  text-align: center;
+}
+
+.leave-modal-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.leave-modal-btn {
+  flex: 1;
+  padding: 14px 0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.leave-modal-btn--leave {
+  background: #e0e0e0;
+  color: #555;
+}
+
+.leave-modal-btn--stay {
+  background: #92BA6B;
+  color: #fff;
+}
+
+/* ── 비밀번호 변경 모달 ── */
+.pw-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 50;
+}
+
+.pw-modal {
+  width: 100%;
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 24px 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pw-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+}
+
+.pw-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pw-modal-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+}
+
+.pw-modal-input {
+  padding: 13px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #f8f8f8;
+  font-size: 14px;
+  color: #1a1a1a;
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.pw-modal-input::placeholder {
+  color: #bbb;
+}
+
+.pw-modal-input:focus {
+  background: #fff;
+  box-shadow: 0 0 0 1.5px #ffd515;
+}
+
+.pw-modal-error {
+  font-size: 12px;
+  color: #ff4d4f;
+  margin: -8px 0 0;
+}
+
+.pw-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.pw-modal-btn {
+  flex: 1;
+  padding: 14px 0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.pw-modal-btn--cancel {
+  background: #f0f0f0;
+  color: #888;
+}
+
+.pw-modal-btn--confirm {
+  background: #ffd515;
+  color: #3c3c3c;
+}
+
+/* ── 저장하기 버튼 (login-action-buttons__button--primary 동일) ── */
+.profile-edit-footer {
+  padding: 24px 20px 0;
+}
+
+.profile-edit-save-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 50px;
+  border-radius: 10px;
+  background: var(--color-primary-100, #ffd515);
+  border: 1px solid var(--color-primary-100, #ffd515);
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111111;
+  cursor: pointer;
+}

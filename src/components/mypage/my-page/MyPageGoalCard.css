@@ -8,9 +8,10 @@
   margin: 0 0 34px;
   padding: 24px 18px 22px;
   box-sizing: border-box;
-  border: 1.5px dashed #e2d48a;
+  border: 1.5px solid rgba(245, 200, 66, 0.6);
   border-radius: 8px;
   background: #fffdf4;
+  box-shadow: 0 8px 18px rgba(26, 26, 26, 0.04);
   text-align: left;
 }
 
@@ -18,6 +19,10 @@
   display: grid;
   gap: 12px;
   min-width: 0;
+}
+
+.mypage-goal-note {
+  margin-top: -10px;
 }
 
 .mypage-goal-title {

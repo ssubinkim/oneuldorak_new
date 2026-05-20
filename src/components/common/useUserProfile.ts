@@ -7,6 +7,8 @@ type UserProfile = {
   email: string
   name: string
   nickname: string
+  isNew?: boolean
+  password?: string
 }
 
 const defaultUserProfile: UserProfile = {

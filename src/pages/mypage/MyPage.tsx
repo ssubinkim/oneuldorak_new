@@ -20,7 +20,15 @@ export default function MyPage() {
   const [goalOpen, setGoalOpen] = useState(false)
   const [goal, setGoal] = useState({ current: 72000, target: 100000 })
   const [pointOpen, setPointOpen] = useState(false)
-  const [pointSheetKey, setPointSheetKey] = useState(0)
+  const [showSavedToast, setShowSavedToast] = useState(false)
+
+  useEffect(() => {
+    if (sessionStorage.getItem('profile_saved') === 'true') {
+      sessionStorage.removeItem('profile_saved')
+      setShowSavedToast(true)
+      setTimeout(() => setShowSavedToast(false), 2000)
+    }
+  }, [])
   const { email } = useUserProfile()
   const { totalPoints, monthlyPoints } = usePointBalance()
   const activityCounts = getMyPageActivityCounts(email)
@@ -43,6 +51,14 @@ export default function MyPage() {
 
   return (
     <MyPageShell>
+      {showSavedToast && (
+        <div className="mypage-saved-toast">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          저장이 완료되었어요!
+        </div>
+      )}
       <div className="page-scroll">
         <div className="mypage">
           <header className="mypage-topbar">
@@ -56,6 +72,7 @@ export default function MyPage() {
           </header>
 
           <section className="mypage-profile-card" aria-label="내 프로필 요약">
+            <button type="button" className="mypage-profile-edit-btn" onClick={() => { window.location.hash = '#/mypage-profile-edit' }}>수정하기</button>
             <MyPageProfile profileImg={profileImg} />
             <MyPageStats
               stats={stats}
@@ -73,10 +90,7 @@ export default function MyPage() {
           />
           <MyPagePointCard
             totalPoints={totalPoints}
-            onPointHistoryClick={() => {
-              setPointSheetKey((prev) => prev + 1)
-              setPointOpen(true)
-            }}
+            onPointHistoryClick={() => setPointOpen(true)}
           />
           <MyPageMenuSections />
         </div>
@@ -89,7 +103,6 @@ export default function MyPage() {
         onSave={(newGoal) => { setGoal(newGoal); setGoalOpen(false) }}
       />
       <PointBottomSheet
-        key={pointSheetKey}
         open={pointOpen}
         onClose={() => setPointOpen(false)}
         totalPoints={totalPoints}
