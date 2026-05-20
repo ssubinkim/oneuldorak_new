@@ -13,13 +13,6 @@
   overscroll-behavior-y: contain;
 }
 
-.vote-page h1 {
-  font-size: 24px;
-  color: #1a1a1a;
-  font-family: 'Pretendard Variable', sans-serif;
-  line-height: 130%;
-  letter-spacing: 0.08px;
-}
 
 .vote-page h2 {
   color: #1a1a1a;
