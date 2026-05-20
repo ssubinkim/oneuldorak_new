@@ -43,7 +43,7 @@
   background: #fff;
   color: #5f6e8d;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
 }
 
@@ -57,6 +57,10 @@
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
+}
+
+.chatbot-page--chat .chatbot-topbar {
+  min-height: 25px;
 }
 
 .chatbot-chat-messages {
@@ -124,7 +128,6 @@
 }
 
 .chatbot-bubble--user {
-  min-height: 40px;
   max-width: min(82%, 320px);
   height: auto;
   display: flex;
@@ -137,11 +140,33 @@
   font-family: "Pretendard Variable";
   font-size: 16px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 130%;
   white-space: normal;
   word-break: keep-all;
   overflow-wrap: anywhere;
+}
+
+.chatbot-bubble--user-with-image {
+  width: min(82%, 280px);
+  max-width: min(82%, 280px);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 20px;
+}
+
+.chatbot-bubble__image {
+  display: block;
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.chatbot-bubble__text {
+  padding: 0 4px 2px;
 }
 
 .chatbot-ai-bubble {
@@ -274,7 +299,7 @@
   justify-content: center;
   height: 40px;
   padding: 0 18px;
-  background: #FFFBE8;
+  background: #FFF7D0;
   color: #1a1a1a;
   border: 1px solid #d9d9d9;
   border-radius: 999px;

@@ -15,9 +15,11 @@ type QuickSuggestion = {
   useApi?: boolean
   analysisType?: AnalysisType
   feature?: AiFeature
+  openPicker?: boolean
 }
 
 const quickSuggestions: QuickSuggestion[] = [
+  { label: '냉장고 분석', useApi: true, analysisType: 'menu', feature: 'fridge-photo-analysis', openPicker: true },
   { label: '오늘 도시락 추천', useApi: true, analysisType: 'menu', feature: 'today-lunchbox-recommendation' },
   { label: '주간 도시락 플랜', useApi: true, analysisType: 'menu', feature: 'weekly-lunchbox-plan' },
   { label: '재료별 레시피', useApi: true, analysisType: 'menu', feature: 'ingredient-recipes' },
@@ -85,6 +87,7 @@ function Chatbot() {
       useApi: suggestionConfig?.useApi,
       analysisType: suggestionConfig?.analysisType,
       feature: suggestionConfig?.feature,
+      openPicker: suggestionConfig?.openPicker,
     })
   }
 

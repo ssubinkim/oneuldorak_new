@@ -36,6 +36,7 @@ export type AiUserMessage = AiChatMessageBase & {
   role: 'user'
   status: 'success'
   text: string
+  imageDataUrl?: string
 }
 
 export type AiTextMessage = AiChatMessageBase & {

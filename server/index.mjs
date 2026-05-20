@@ -6,6 +6,7 @@ import OpenAI from 'openai'
 const app = express()
 const PORT = Number(process.env.PORT) || 4242
 const HOST = process.env.HOST || '127.0.0.1'
+const AI_DEBUG_PREFIX = '[oneuldorak-ai-server]'
 
 const ONEULDORAK_SYSTEM_PROMPT = `
 너는 '오늘도락' 앱의 카메라 AI 도우미야.
@@ -72,11 +73,38 @@ function looksLikeVisionFailure(text) {
   return /사진.*볼 수 없|이미지.*볼 수 없|사진.*보이지 않|이미지.*보이지 않|재료.*알려주면/i.test(text)
 }
 
+function shouldLogAiDebug() {
+  return process.env.NODE_ENV !== 'production' || process.env.AI_DEBUG === 'true'
+}
+
+function getMessagePreview(message) {
+  return message.length > 80 ? `${message.slice(0, 80)}...` : message
+}
+
+function logAiDebug(label, details) {
+  if (!shouldLogAiDebug()) return
+  console.info(`${AI_DEBUG_PREFIX} ${label}`, details)
+}
+
 function normalizeAnalysisType(value) {
   if (value === 'menu' || value === 'receipt' || value === 'judge') {
     return value
   }
   return ''
+}
+
+const AI_FEATURES = [
+  'today-lunchbox-recommendation',
+  'weekly-lunchbox-plan',
+  'ingredient-recipes',
+  'today-recommended-ingredients',
+  'leftover-ingredients',
+  'buy-or-not',
+  'fridge-photo-analysis',
+]
+
+function normalizeFeature(value) {
+  return AI_FEATURES.includes(value) ? value : ''
 }
 
 function inferAnalysisType(message, explicitType) {
@@ -95,7 +123,57 @@ function inferAnalysisType(message, explicitType) {
   return 'menu'
 }
 
-function getAnalysisTypeInstruction(analysisType) {
+function inferFeature(message, analysisType, imageDataUrl, explicitFeature) {
+  if (explicitFeature) return explicitFeature
+
+  const normalized = (message || '').replace(/\s+/g, '').toLowerCase()
+
+  if (imageDataUrl && analysisType !== 'judge') {
+    return 'fridge-photo-analysis'
+  }
+
+  if (analysisType === 'judge') {
+    return 'buy-or-not'
+  }
+
+  if (/weekly|week|주간|일주일|이번주|플랜/.test(normalized)) {
+    return 'weekly-lunchbox-plan'
+  }
+
+  if (/추천재료|오늘추천재료|재료추천/.test(normalized)) {
+    return 'today-recommended-ingredients'
+  }
+
+  if (/leftover|남은재료|남은|자투리|활용/.test(normalized)) {
+    return 'leftover-ingredients'
+  }
+
+  if (/ingredient|recipe|재료별|레시피/.test(normalized)) {
+    return 'ingredient-recipes'
+  }
+
+  if (/fridge|냉장고|사진분석/.test(normalized)) {
+    return 'fridge-photo-analysis'
+  }
+
+  return 'today-lunchbox-recommendation'
+}
+
+function getEffectiveAnalysisType(analysisType, feature) {
+  if (feature === 'buy-or-not') return 'judge'
+  if (feature === 'fridge-photo-analysis') return 'menu'
+  return analysisType
+}
+
+function getMaxOutputTokens(feature) {
+  if (feature === 'weekly-lunchbox-plan' || feature === 'fridge-photo-analysis') {
+    return 520
+  }
+
+  return 420
+}
+
+function getAnalysisTypeInstruction(analysisType, feature, hasImage) {
   if (analysisType === 'receipt') {
     return `
 [현재 분석 유형: 영수증 분석]
@@ -108,9 +186,9 @@ function getAnalysisTypeInstruction(analysisType) {
 `
   }
 
-  if (analysisType === 'judge') {
+  if (feature === 'buy-or-not' || analysisType === 'judge') {
     return `
-[현재 분석 유형: 살까 말까 판단]
+[현재 기능: 살까 말까 판단]
 살까 말까 판단 형식으로만 답해.
 - 판단:
 - 이유:
@@ -120,9 +198,86 @@ function getAnalysisTypeInstruction(analysisType) {
 `
   }
 
+  if (feature === 'fridge-photo-analysis') {
+    return `
+[현재 기능: 냉장고 사진 분석]
+${hasImage ? '첨부된 냉장고 사진에서 실제로 보이는 식재료만 분석해.' : '사진이 없으면 냉장고 사진을 올려 달라고 짧게 안내해.'}
+아래 형식으로만 답해.
+- 확인된 재료:
+- 먼저 쓸 재료:
+- 오늘 추천 메뉴:
+- 간단한 조리법:
+- 보관/주의:
+
+사진에서 확실하지 않은 재료는 단정하지 말고 "확실하지 않아요"라고 말해.
+`
+  }
+
+  if (feature === 'weekly-lunchbox-plan') {
+    return `
+[현재 기능: 주간 도시락 플랜]
+월요일부터 금요일까지 도시락 흐름을 짜줘.
+재료가 겹치도록 구성해서 장보기 부담을 줄여.
+아래 형식으로만 답해.
+- 이번 주 방향:
+- 월:
+- 화:
+- 수:
+- 목:
+- 금:
+- 장보기 핵심 재료:
+- 절약 포인트:
+`
+  }
+
+  if (feature === 'ingredient-recipes') {
+    return `
+[현재 기능: 재료별 레시피]
+사용자가 말한 재료를 중심으로 만들 수 있는 도시락 레시피를 추천해.
+재료가 불명확하면 먼저 필요한 재료를 1개만 물어봐.
+아래 형식으로만 답해.
+- 추천 레시피:
+- 사용하는 재료:
+- 추가하면 좋은 재료:
+- 조리 시간:
+- 만드는 법:
+- 도시락 팁:
+`
+  }
+
+  if (feature === 'today-recommended-ingredients') {
+    return `
+[현재 기능: 오늘 추천 재료]
+오늘 사두면 도시락에 바로 활용하기 좋은 재료를 추천해.
+가격, 보관성, 활용도를 같이 고려해.
+아래 형식으로만 답해.
+- 추천 재료:
+- 추천 이유:
+- 바로 만들 수 있는 메뉴:
+- 보관 팁:
+- 사지 않아도 되는 경우:
+`
+  }
+
+  if (feature === 'leftover-ingredients') {
+    return `
+[현재 기능: 남은 재료 활용]
+남은 재료를 버리지 않고 도시락으로 이어 쓰는 방법을 제안해.
+먼저 써야 할 재료와 보관 가능한 재료를 구분해.
+아래 형식으로만 답해.
+- 먼저 쓸 재료:
+- 추천 메뉴:
+- 활용 방법:
+- 추가하면 좋은 재료:
+- 절약 포인트:
+`
+  }
+
   return `
-[현재 분석 유형: 가진 재료 메뉴 추천]
-메뉴 추천 형식으로만 답해.
+[현재 기능: 오늘 도시락 추천]
+오늘 먹기 좋은 도시락 메뉴 1개를 추천해.
+준비 시간, 보유 재료 활용, 식어도 먹기 좋은지를 고려해.
+아래 형식으로만 답해.
 - 추천 메뉴:
 - 활용 재료:
 - 추가로 있으면 좋은 재료:
@@ -132,9 +287,9 @@ function getAnalysisTypeInstruction(analysisType) {
 `
 }
 
-function buildUserInput(message, imageDataUrl, analysisType) {
+function buildUserInput(message, imageDataUrl, analysisType, feature) {
   const userContent = []
-  const modeInstruction = getAnalysisTypeInstruction(analysisType)
+  const modeInstruction = getAnalysisTypeInstruction(analysisType, feature, Boolean(imageDataUrl))
 
   if (imageDataUrl) {
     userContent.push({
@@ -168,12 +323,12 @@ function buildUserInput(message, imageDataUrl, analysisType) {
   ]
 }
 
-async function requestMenuRecommendation(client, { message, imageDataUrl, analysisType, model }) {
+async function requestMenuRecommendation(client, { message, imageDataUrl, analysisType, feature, model }) {
   return await client.responses.create({
     model,
     instructions: ONEULDORAK_SYSTEM_PROMPT,
-    input: buildUserInput(message, imageDataUrl, analysisType),
-    max_output_tokens: 360,
+    input: buildUserInput(message, imageDataUrl, analysisType, feature),
+    max_output_tokens: getMaxOutputTokens(feature),
   })
 }
 
@@ -215,7 +370,20 @@ app.post('/api/chat', async (req, res) => {
   const message = typeof req.body?.message === 'string' ? req.body.message.trim() : ''
   const imageDataUrl = typeof req.body?.imageDataUrl === 'string' ? req.body.imageDataUrl.trim() : ''
   const analysisTypeRaw = typeof req.body?.analysisType === 'string' ? req.body.analysisType.trim() : ''
-  const analysisType = inferAnalysisType(message, normalizeAnalysisType(analysisTypeRaw))
+  const featureRaw = typeof req.body?.feature === 'string' ? req.body.feature.trim() : ''
+  const requestedAnalysisType = inferAnalysisType(message, normalizeAnalysisType(analysisTypeRaw))
+  const feature = inferFeature(message, requestedAnalysisType, imageDataUrl, normalizeFeature(featureRaw))
+  const analysisType = getEffectiveAnalysisType(requestedAnalysisType, feature)
+
+  logAiDebug('request received', {
+    source: 'api',
+    feature,
+    analysisType,
+    requestedAnalysisType,
+    explicitFeature: featureRaw || null,
+    hasImage: Boolean(imageDataUrl),
+    messagePreview: getMessagePreview(message),
+  })
 
   if (!message && !imageDataUrl) {
     res.status(400).json({
@@ -234,6 +402,13 @@ app.post('/api/chat', async (req, res) => {
   const client = getOpenAiClient()
 
   if (!client) {
+    logAiDebug('request rejected', {
+      source: 'api',
+      feature,
+      analysisType,
+      hasImage: Boolean(imageDataUrl),
+      reason: 'OPENAI_API_KEY missing',
+    })
     res.status(503).json({
       error:
         'OpenAI API 키가 설정되지 않았습니다. server/.env 파일을 만들고 OPENAI_API_KEY 값을 넣어주세요.',
@@ -243,29 +418,57 @@ app.post('/api/chat', async (req, res) => {
 
   try {
     const primaryModel = 'gpt-4o-mini'
+    let model = primaryModel
 
     let response = await requestMenuRecommendation(client, {
       message,
       imageDataUrl,
       analysisType,
+      feature,
       model: primaryModel,
     })
 
     let text = response.output_text?.trim() || '추천 결과를 만들지 못했어요. 다시 시도해 주세요.'
 
     if (imageDataUrl && looksLikeVisionFailure(text)) {
+      logAiDebug('vision retry', {
+        source: 'api',
+        feature,
+        analysisType,
+        hasImage: true,
+        fromModel: primaryModel,
+        toModel: 'gpt-4.1-mini',
+      })
+      model = 'gpt-4.1-mini'
       response = await requestMenuRecommendation(client, {
         message,
         imageDataUrl,
         analysisType,
+        feature,
         model: 'gpt-4.1-mini',
       })
       text = response.output_text?.trim() || text
     }
 
-    res.json({ text })
+    logAiDebug('response sent', {
+      source: 'api',
+      feature,
+      analysisType,
+      hasImage: Boolean(imageDataUrl),
+      model,
+    })
+
+    res.json({ text, feature, analysisType })
   } catch (error) {
     const messageText = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.'
+
+    logAiDebug('request failed', {
+      source: 'api',
+      feature,
+      analysisType,
+      hasImage: Boolean(imageDataUrl),
+      reason: messageText,
+    })
 
     res.status(500).json({
       error: `GPT 응답 생성에 실패했어요: ${messageText}`,

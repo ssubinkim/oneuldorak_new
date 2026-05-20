@@ -30,6 +30,7 @@ type RequestOptions = {
   useApi: boolean
   requestText?: string
   imageDataUrl?: string
+  displayImageDataUrl?: string
   analysisType?: AnalysisType
   feature?: AiFeature
   judgeFlow?: boolean
@@ -59,12 +60,14 @@ function shouldUseDesktopWebcam() {
 }
 
 const JUDGE_PHOTO_PROMPT = '사진 속 도시락 관련 용품이나 식재료를 오늘 도시락 기준으로 살까말까 판단해줘. 사야 하는지/보류인지와 이유, 대체 선택지를 간단히 알려줘.'
+const FRIDGE_PHOTO_PROMPT = '냉장고 사진 속 식재료를 분석해서 확인된 재료, 먼저 써야 할 재료, 오늘 만들기 좋은 도시락 메뉴를 간단히 추천해줘.'
 
 const MAX_INPUT_IMAGE_FILE_SIZE = 20_000_000
 const MAX_IMAGE_DATA_URL_LENGTH = 3_600_000
 const MAX_IMAGE_EDGE = 1400
 const IMAGE_EDGE_CANDIDATES = [1400, 1200, 1000, 900, 800, 700, 600]
 const JPEG_QUALITY_CANDIDATES = [0.84, 0.72, 0.62, 0.52, 0.44]
+const GO_TO_CHATBOT_HOME_LABEL = '처음으로 가기'
 
 function readAnalysisType(value: string | null): AnalysisType | null {
   if (value === 'menu' || value === 'receipt' || value === 'judge') {
@@ -92,6 +95,62 @@ function inferAnalysisTypeFromText(text: string, fallback: AnalysisType = 'menu'
   }
 
   return fallback
+}
+
+function getExplicitFeatureFromText(text: string): AiFeature | null {
+  const normalized = text.replace(/\s+/g, '').toLowerCase()
+
+  if (/살까말까|살까|사지마|사도돼|구매|보류|판단|가성비|buyornot/.test(normalized)) {
+    return 'buy-or-not'
+  }
+
+  if (/냉장고사진|사진분석|냉장고분석|fridge/.test(normalized)) {
+    return 'fridge-photo-analysis'
+  }
+
+  if (/주간|일주일|이번주|플랜|weekly|week/.test(normalized)) {
+    return 'weekly-lunchbox-plan'
+  }
+
+  if (/오늘추천재료|추천재료|재료추천/.test(normalized)) {
+    return 'today-recommended-ingredients'
+  }
+
+  if (/남은재료|남은|자투리|활용|leftover/.test(normalized)) {
+    return 'leftover-ingredients'
+  }
+
+  if (/재료별|레시피|recipe|ingredient/.test(normalized)) {
+    return 'ingredient-recipes'
+  }
+
+  if (/오늘도시락|도시락추천|메뉴추천|lunchbox/.test(normalized)) {
+    return 'today-lunchbox-recommendation'
+  }
+
+  return null
+}
+
+function getAnalysisTypeForFeature(feature: AiFeature): AnalysisType {
+  return feature === 'buy-or-not' ? 'judge' : 'menu'
+}
+
+function getPhotoAnalysisConfig(feature: AiFeature | null | undefined) {
+  if (feature === 'fridge-photo-analysis') {
+    return {
+      analysisType: 'menu' as AnalysisType,
+      feature: 'fridge-photo-analysis' as AiFeature,
+      judgeFlow: false,
+      promptText: FRIDGE_PHOTO_PROMPT,
+    }
+  }
+
+  return {
+    analysisType: 'judge' as AnalysisType,
+    feature: 'buy-or-not' as AiFeature,
+    judgeFlow: true,
+    promptText: JUDGE_PHOTO_PROMPT,
+  }
 }
 
 function getRouteContext(): ChatRouteContext {
@@ -317,6 +376,8 @@ function ChatbotChat() {
   const messagesRef = useRef<HTMLDivElement>(null)
   const lastJudgeSubjectRef = useRef('')
   const lastJudgeImageDataUrlRef = useRef<string | null>(null)
+  const activeFeatureRef = useRef<AiFeature | null>(initialContext.feature)
+  const activeAnalysisTypeRef = useRef<AnalysisType>(initialAnalysisType)
   const hasInitializedRef = useRef(false)
 
   const stopDesktopCamera = useCallback(() => {
@@ -374,6 +435,8 @@ function ChatbotChat() {
         feature: options.feature,
         forceMock: !options.useApi,
       })
+      activeFeatureRef.current = response.feature
+      activeAnalysisTypeRef.current = getAnalysisTypeForFeature(response.feature)
       const responseMessages = applyPendingIdToFirstAssistantMessage(response.messages, pendingId)
 
       setMessages((previousMessages) => {
@@ -408,6 +471,13 @@ function ChatbotChat() {
     source: 'quick' | 'input',
     options: RequestOptions,
   ) => {
+    if (options.feature) {
+      activeFeatureRef.current = options.feature
+    }
+    if (options.analysisType) {
+      activeAnalysisTypeRef.current = options.analysisType
+    }
+
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
       type: 'user',
@@ -416,6 +486,7 @@ function ChatbotChat() {
       feature: options.feature,
       createdAt: new Date().toISOString(),
       text: displayText,
+      imageDataUrl: options.displayImageDataUrl,
     }
     const pendingId = `pending-${Date.now()}`
     setMessages((prev) => [
@@ -589,10 +660,24 @@ function ChatbotChat() {
       return
     }
 
+    const explicitFeature = getExplicitFeatureFromText(text)
+    const nextFeature = explicitFeature ?? activeFeatureRef.current ?? initialContext.feature ?? undefined
+    const nextAnalysisType = explicitFeature
+      ? getAnalysisTypeForFeature(explicitFeature)
+      : inferAnalysisTypeFromText(text, activeAnalysisTypeRef.current === 'judge' ? 'menu' : activeAnalysisTypeRef.current)
+    const nextJudgeFlow = nextAnalysisType === 'judge' || nextFeature === 'buy-or-not'
+
+    if (nextJudgeFlow) {
+      setIsJudgeFlow(true)
+      setJudgeMode('text')
+      lastJudgeSubjectRef.current = text
+    }
+
     queueUserRequest(text, 'input', {
       useApi: initialContext.useApi,
-      analysisType: inferAnalysisTypeFromText(text, 'judge'),
-      judgeFlow: false,
+      analysisType: nextAnalysisType,
+      feature: nextFeature,
+      judgeFlow: nextJudgeFlow,
     })
   }
 
@@ -610,7 +695,7 @@ function ChatbotChat() {
               type: 'ai-text',
               role: 'assistant',
               status: 'error',
-              feature: 'buy-or-not',
+              feature: activeFeatureRef.current ?? initialContext.feature ?? 'buy-or-not',
               source: 'api',
               createdAt: new Date().toISOString(),
               text: '카메라 권한이 막혀 있어 앨범 선택으로 전환했어요. 브라우저에서 카메라 권한을 허용하면 바로 촬영할 수 있어요.',
@@ -641,18 +726,24 @@ function ChatbotChat() {
       const displayText = mode === 'camera'
         ? '촬영 사진 첨부했어. 분석해줘.'
         : '앨범 사진 첨부했어. 분석해줘.'
-      const analysisType: AnalysisType = 'judge'
-      const promptText = JUDGE_PHOTO_PROMPT
-      const judgeFlow = true
+      const { analysisType, feature, judgeFlow, promptText } = getPhotoAnalysisConfig(
+        activeFeatureRef.current ?? initialContext.feature,
+      )
       lastJudgeImageDataUrlRef.current = imageDataUrl
-      lastJudgeSubjectRef.current = displayText
+      if (judgeFlow) {
+        lastJudgeSubjectRef.current = displayText
+      }
+      setIsJudgeFlow(judgeFlow)
+      activeFeatureRef.current = feature
+      activeAnalysisTypeRef.current = analysisType
 
       queueUserRequest(displayText, 'input', {
         useApi: true,
         requestText: promptText,
         imageDataUrl,
+        displayImageDataUrl: imageDataUrl,
         analysisType,
-        feature: 'buy-or-not',
+        feature,
         judgeFlow,
       })
     } catch (error) {
@@ -664,7 +755,7 @@ function ChatbotChat() {
           type: 'ai-text',
           role: 'assistant',
           status: 'error',
-          feature: 'buy-or-not',
+          feature: activeFeatureRef.current ?? initialContext.feature ?? 'buy-or-not',
           source: 'api',
           createdAt: new Date().toISOString(),
           text: message,
@@ -721,18 +812,24 @@ function ChatbotChat() {
     }
 
     handleDesktopCameraClose()
-    const analysisType: AnalysisType = 'judge'
-    const promptText = JUDGE_PHOTO_PROMPT
-    const judgeFlow = true
+    const { analysisType, feature, judgeFlow, promptText } = getPhotoAnalysisConfig(
+      activeFeatureRef.current ?? initialContext.feature,
+    )
     lastJudgeImageDataUrlRef.current = imageDataUrl
-    lastJudgeSubjectRef.current = '촬영 사진 첨부했어. 분석해줘.'
+    if (judgeFlow) {
+      lastJudgeSubjectRef.current = '촬영 사진 첨부했어. 분석해줘.'
+    }
+    setIsJudgeFlow(judgeFlow)
+    activeFeatureRef.current = feature
+    activeAnalysisTypeRef.current = analysisType
 
     queueUserRequest('촬영 사진 첨부했어. 분석해줘.', 'input', {
       useApi: true,
       requestText: promptText,
       imageDataUrl,
+      displayImageDataUrl: imageDataUrl,
       analysisType,
-      feature: 'buy-or-not',
+      feature,
       judgeFlow,
     })
   }
@@ -784,9 +881,15 @@ function ChatbotChat() {
 
             {messages.map((msg) => {
               if (msg.type === 'user') {
+                const hasUserImage = Boolean(msg.imageDataUrl)
                 return (
                   <div key={msg.id} className="chatbot-msg chatbot-msg--user">
-                    <span className="chatbot-bubble chatbot-bubble--user">{msg.text}</span>
+                    <span className={`chatbot-bubble chatbot-bubble--user${hasUserImage ? ' chatbot-bubble--user-with-image' : ''}`}>
+                      {msg.imageDataUrl ? (
+                        <img className="chatbot-bubble__image" src={msg.imageDataUrl} alt="첨부한 사진" />
+                      ) : null}
+                      {hasUserImage ? <span className="chatbot-bubble__text">{msg.text}</span> : msg.text}
+                    </span>
                   </div>
                 )
               }
@@ -825,14 +928,22 @@ function ChatbotChat() {
               }
 
               if (msg.type === 'suggestions') {
+                const suggestionItems = msg.items.includes(GO_TO_CHATBOT_HOME_LABEL)
+                  ? msg.items
+                  : [...msg.items, GO_TO_CHATBOT_HOME_LABEL]
+
                 return (
                   <div key={msg.id} className="chatbot-msg-suggestions">
-                    {msg.items.map((item) => (
+                    {suggestionItems.map((item) => (
                       <button
                         key={item}
                         className="chatbot-suggestion-chip"
                         type="button"
                         onClick={() => {
+                          if (item === GO_TO_CHATBOT_HOME_LABEL) {
+                            window.location.hash = '#/chatbot'
+                            return
+                          }
                           if (item.includes('레시피 보러')) {
                             window.location.hash = '#/community?recipeId=recipe-1'
                             return
