@@ -2,12 +2,12 @@ import {
   carrotImg, potatoImg, appleImg, onionImg, brocollyImg,
   getIngredientIconClassName,
 } from '../meal/mealData'
-import mushRoomImg from '../../assets/images/food_icon/mushroom.svg'
-import tomatoImg from '../../assets/images/food_icon/tomato.svg'
+import mushRoomImg from '../../assets/images/food_icon/mushroom.png'
+import tomatoImg from '../../assets/images/food_icon/tomato.png'
 import fridgeIcon from '../../assets/icons/refrige.svg'
-import dorak01 from '../../assets/food_mascot_all/dorak01.svg'
-import dorak02 from '../../assets/food_mascot_all/dorak02.svg'
-import dorak03 from '../../assets/food_mascot_all/dorak03.svg'
+import dorak01 from '../../assets/food_mascot_all/dorak01.png'
+import dorak02 from '../../assets/food_mascot_all/dorak02.png'
+import dorak03 from '../../assets/food_mascot_all/dorak03.png'
 import './FridgeSection.css'
 
 interface FridgeIngredient {
