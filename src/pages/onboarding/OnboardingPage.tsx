@@ -91,9 +91,19 @@ function OnboardingPage() {
       setAnswers((prevAnswers) => {
         const currentAnswer = prevAnswers[activeQuestion.id]
         const currentOptions = Array.isArray(currentAnswer) ? currentAnswer : []
+        const isNoneOption = option === '없음'
+        const hasNoneOption = currentOptions.includes('없음')
+
+        if (isNoneOption) {
+          return {
+            ...prevAnswers,
+            [activeQuestion.id]: hasNoneOption ? [] : ['없음'],
+          }
+        }
+
         const nextOptions = currentOptions.includes(option)
           ? currentOptions.filter((currentOption) => currentOption !== option)
-          : [...currentOptions, option]
+          : [...currentOptions.filter((currentOption) => currentOption !== '없음'), option]
 
         return {
           ...prevAnswers,

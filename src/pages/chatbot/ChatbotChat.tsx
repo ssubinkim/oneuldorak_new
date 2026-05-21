@@ -48,6 +48,7 @@ type RequestOptions = {
   analysisType?: AnalysisType
   feature?: AiFeature
   judgeFlow?: boolean
+  suppressRecipeCard?: boolean
 }
 
 type FridgeIngredientCatalogItem = {
@@ -100,6 +101,49 @@ const FRIDGE_LOADING_STEPS = ['이미지 확인 중', '재료 식별 중', '결�
 const FRIDGE_LOADING_STEP_INTERVAL = 1800
 const FRIDGE_LOADING_MIN_DURATION = 7600
 const FRIDGE_RESULT_MAX_ITEMS = 8
+
+const FEATURE_FOLLOWUP_SUGGESTIONS: Record<AiFeature, string[]> = {
+  'today-lunchbox-recommendation': [
+    '더 저렴하게 바꿔줘',
+    '단백질을 더해줘',
+    '주간 도시락 플랜도 보여줘',
+  ],
+  'weekly-lunchbox-plan': [
+    '장보기 재료로 정리해줘',
+    '오늘 메뉴만 다시 추천해줘',
+    '더 저렴하게 바꿔줘',
+  ],
+  'ingredient-recipes': [
+    '다른 재료 조합도 추천해줘',
+    '단백질을 더해줘',
+    '남은 재료 활용으로 바꿔줘',
+  ],
+  'today-recommended-ingredients': [
+    '이 재료로 레시피 추천해줘',
+    '예산 5천원 안으로 골라줘',
+    '보관 쉬운 재료만 보여줘',
+  ],
+  'leftover-ingredients': [
+    '먼저 써야 할 순서로 정리해줘',
+    '오늘 도시락으로 바꿔줘',
+    '재료별 레시피도 보여줘',
+  ],
+  'buy-or-not': [
+    '대안도 추천해줘',
+    '가성비를 더 자세히 봐줘',
+    '사진으로 다시 판단해줘',
+  ],
+  'fridge-photo-analysis': [
+    '이 재료로 도시락 추천해줘',
+    '남은 재료 활용으로 바꿔줘',
+    '사진 다시 분석할래',
+  ],
+  'receipt-analysis': [
+    '추천 메뉴 더 보여줘',
+    '절약 포인트 더 알려줘',
+    '장보기 목록으로 정리해줘',
+  ],
+}
 
 const FRIDGE_INGREDIENT_CATALOG: FridgeIngredientCatalogItem[] = [
   { label: '계란', aliases: ['달걀', 'egg'], icon: eggIngredientIcon },
@@ -338,12 +382,12 @@ const JUDGE_RESULT_FIELDS: JudgeResultField[] = [
 ]
 
 const RECOMMENDATION_CARD_FIELDS: RecommendationField[] = [
-  { key: 'menu', aliases: ['추천 메뉴', '추천메뉴', '메뉴'] },
-  { key: 'ingredients', aliases: ['활용 재료', '활용재료', '재료'] },
+  { key: 'menu', aliases: ['추천 메뉴', '추천메뉴', '오늘 추천 메뉴', '오늘추천메뉴', '추천 도시락', '추천도시락', '메뉴'] },
+  { key: 'ingredients', aliases: ['활용 재료', '활용재료', '먼저 쓸 재료', '먼저쓸재료', '먼저 써야 할 재료', '먼저써야할재료', '사용 재료', '사용재료', '보유 재료', '보유재료', '재료'] },
   { key: 'extra', aliases: ['추가로 있으면 좋은 재료', '추가 재료', '추가재료'] },
   { key: 'cookTime', aliases: ['예상 조리 시간', '예상조리시간', '조리 시간', '조리시간'] },
   { key: 'cost', aliases: ['예상 식비', '예상식비', '식비', '비용', '가격'] },
-  { key: 'method', aliases: ['간단한 조리법', '간단한조리법', '조리법', '만드는 법', '만드는법'] },
+  { key: 'method', aliases: ['간단한 조리법', '간단한조리법', '활용 방법', '활용방법', '사용 방법', '사용방법', '조리법', '만드는 법', '만드는법'] },
   { key: 'saving', aliases: ['절약 포인트', '절약포인트'] },
   { key: 'reason', aliases: ['추천 이유', '추천이유', '이유'] },
 ]
@@ -378,6 +422,70 @@ function cleanJudgeResultLine(line: string) {
     .replace(/^[-*•]\s*/, '')
     .replace(/^\d+[.)]\s*/, '')
     .trim()
+}
+
+function readFirstMeaningfulLine(text: string) {
+  return text
+    .split('\n')
+    .map((line) => cleanJudgeResultLine(line))
+    .find(Boolean) ?? ''
+}
+
+function inferLeftoverMenuTitle(text: string) {
+  const normalized = text.replace(/\s+/g, '')
+
+  if (/볶음면|비빔면|면/.test(normalized)) {
+    return '남은 재료 볶음면 도시락'
+  }
+
+  if (/덮밥/.test(normalized)) {
+    return '남은 재료 덮밥 도시락'
+  }
+
+  if (/주먹밥|김밥/.test(normalized)) {
+    return '남은 재료 주먹밥 도시락'
+  }
+
+  if (/볶음밥|밥/.test(normalized)) {
+    return '남은 재료 볶음밥 도시락'
+  }
+
+  return '남은 재료 활용 도시락'
+}
+
+function inferLeftoverIngredients(text: string) {
+  const normalized = text.replace(/\s+/g, '')
+  const candidates = [
+    { label: '자투리 채소', pattern: /자투리채소|남은채소|채소/ },
+    { label: '밥 또는 면', pattern: /밥|면/ },
+    { label: '계란', pattern: /계란|달걀/ },
+    { label: '참치캔', pattern: /참치/ },
+    { label: '김치', pattern: /김치/ },
+  ]
+
+  return candidates
+    .filter((candidate) => candidate.pattern.test(normalized))
+    .map((candidate) => candidate.label)
+    .slice(0, 4)
+    .join(', ')
+}
+
+function getRecommendationDefaults(feature: AiFeature) {
+  if (feature === 'leftover-ingredients') {
+    return {
+      title: '남은 재료 활용 도시락',
+      subtitle: '남은 재료를 먼저 쓰는 도시락',
+      cookTime: '약 15분',
+      estimatedCost: '추가 구매 최소',
+    }
+  }
+
+  return {
+    title: '오늘 도시락 추천',
+    subtitle: '간단하게 준비하기 좋은 도시락',
+    cookTime: '약 15분',
+    estimatedCost: '재료별 상이',
+  }
 }
 
 function buildJudgeResultDisplay(text: string): JudgeResultDisplay | null {
@@ -476,23 +584,33 @@ function buildRecommendationRecipeData(text: string, feature: AiFeature | null |
   const method = readField('method')
   const saving = readField('saving')
   const reason = readField('reason')
+  const defaults = getRecommendationDefaults(feature)
+  const isLeftover = feature === 'leftover-ingredients'
+  const fallbackMenu = isLeftover ? inferLeftoverMenuTitle(text) : ''
+  const fallbackIngredients = isLeftover ? inferLeftoverIngredients(text) : ''
+  const effectiveMenu = menu || fallbackMenu
+  const effectiveIngredients = ingredients || fallbackIngredients
 
-  if (!menu && !cookTime && !method && !ingredients) return null
+  if (!effectiveMenu && !cookTime && !method && !effectiveIngredients && !saving) return null
+
+  const ingredientLabel = isLeftover ? '먼저 쓸 재료' : '활용 재료'
+  const methodLabel = isLeftover ? '활용 방법' : '조리법'
+  const fallbackReason = isLeftover ? readFirstMeaningfulLine(text) : ''
 
   const reasonLines = [
-    reason,
-    ingredients ? `활용 재료: ${ingredients}` : '',
+    reason || fallbackReason,
+    effectiveIngredients ? `${ingredientLabel}: ${effectiveIngredients}` : '',
     extra ? `추가 재료: ${extra}` : '',
-    saving,
-    method ? `조리법: ${method}` : '',
+    method ? `${methodLabel}: ${method}` : '',
+    saving ? `절약 포인트: ${saving}` : '',
   ].filter(Boolean)
 
   return {
-    title: menu || '오늘 도시락 추천',
-    subtitle: ingredients ? `${ingredients} 활용 메뉴` : '간단하게 준비하기 좋은 도시락',
+    title: effectiveMenu || defaults.title,
+    subtitle: effectiveIngredients ? `${effectiveIngredients} 활용 메뉴` : defaults.subtitle,
     imageUrl: defaultRecipeImage,
-    cookTime: cookTime || '약 15분',
-    estimatedCost: cost || '재료별 상이',
+    cookTime: cookTime || defaults.cookTime,
+    estimatedCost: cost || defaults.estimatedCost,
     reason: reasonLines.join('\n') || text.trim(),
   }
 }
@@ -613,6 +731,69 @@ function applyPendingIdToFirstAssistantMessage(messages: ChatMessage[], pendingI
     }
     return message
   })
+}
+
+function getUniqueSuggestionItems(items: string[]) {
+  const seen = new Set<string>()
+  return items.filter((item) => {
+    const normalized = item.trim()
+    if (!normalized || seen.has(normalized)) {
+      return false
+    }
+    seen.add(normalized)
+    return true
+  })
+}
+
+function getFollowupSuggestionItems(feature: AiFeature, apiSuggestions: string[] = []) {
+  return getUniqueSuggestionItems([
+    ...apiSuggestions,
+    ...(FEATURE_FOLLOWUP_SUGGESTIONS[feature] ?? []),
+    GO_TO_CHATBOT_HOME_LABEL,
+  ]).slice(0, 4)
+}
+
+function withConversationSuggestions(
+  messages: ChatMessage[],
+  feature: AiFeature,
+  apiSuggestions: string[] = [],
+) {
+  const items = getFollowupSuggestionItems(feature, apiSuggestions)
+  const suggestionIndex = messages.findIndex((message) => message.type === 'suggestions')
+
+  if (suggestionIndex >= 0) {
+    return messages.map((message, index) => (
+      index === suggestionIndex && message.type === 'suggestions'
+        ? { ...message, items: getUniqueSuggestionItems([...message.items, ...items]) }
+        : message
+    ))
+  }
+
+  const suggestionMessage: ChatMessage = {
+    id: `ai-suggestions-${Date.now()}`,
+    type: 'suggestions',
+    role: 'assistant',
+    status: 'success',
+    feature,
+    source: messages[0]?.source ?? 'api',
+    createdAt: new Date().toISOString(),
+    items,
+  }
+
+  return [
+    ...messages,
+    suggestionMessage,
+  ]
+}
+
+function withoutRecipeCards(messages: ChatMessage[]) {
+  return messages
+    .filter((message) => message.type !== 'ai-recipe')
+    .map((message) => (
+      message.type === 'ai-text'
+        ? { ...message, feature: undefined }
+        : message
+    ))
 }
 
 function getFridgeLoadingOverlay(messages: LocalMessage[]) {
@@ -881,7 +1062,17 @@ function ChatbotChat() {
       await ensureFridgeLoadingDuration(pendingId)
       activeFeatureRef.current = response.feature
       activeAnalysisTypeRef.current = getAnalysisTypeForFeature(response.feature)
-      const responseMessages = applyPendingIdToFirstAssistantMessage(response.messages, pendingId)
+      const baseResponseMessages = applyPendingIdToFirstAssistantMessage(response.messages, pendingId)
+      const visibleResponseMessages = options.suppressRecipeCard
+        ? withoutRecipeCards(baseResponseMessages)
+        : baseResponseMessages
+      const responseMessages = response.status === 'success'
+        ? withConversationSuggestions(
+          visibleResponseMessages,
+          response.feature,
+          response.suggestions,
+        )
+        : visibleResponseMessages
 
       setMessages((previousMessages) => {
         const pendingIndex = previousMessages.findIndex((message) => message.id === pendingId)
@@ -1057,6 +1248,7 @@ function ChatbotChat() {
       analysisType: isJudgeRoute ? 'judge' : (context.analysisType ?? inferAnalysisTypeFromText(context.query, 'menu')),
       feature: context.feature ?? undefined,
       judgeFlow: isJudgeRoute,
+      suppressRecipeCard: context.feature ? RECOMMENDATION_CARD_FEATURES.has(context.feature) : false,
     })
   }, [openCameraSheet, queueUserRequest])
 
@@ -1160,19 +1352,22 @@ function ChatbotChat() {
     setShowFridgeSavedModal(true)
   }, [fridgeDetectedIngredients])
 
-  const addUserMessage = (text: string) => {
+  const addUserMessage = (text: string, source: 'input' | 'suggestion' = 'input') => {
+    const shouldSuppressRecipeCard = source === 'suggestion'
+
     if (isJudgeFlow) {
       if (!isJudgeSuggestionText(text)) {
         lastJudgeSubjectRef.current = text
       }
 
-      queueUserRequest(text, 'input', {
+      queueUserRequest(text, source === 'suggestion' ? 'quick' : 'input', {
         useApi: true,
         analysisType: 'judge',
         feature: 'buy-or-not',
         judgeFlow: true,
         requestText: buildJudgeFollowupPrompt(text, lastJudgeSubjectRef.current),
         imageDataUrl: judgeMode === 'photo' ? (lastJudgeImageDataUrlRef.current ?? undefined) : undefined,
+        suppressRecipeCard: shouldSuppressRecipeCard,
       })
       return
     }
@@ -1190,11 +1385,12 @@ function ChatbotChat() {
       lastJudgeSubjectRef.current = text
     }
 
-    queueUserRequest(text, 'input', {
+    queueUserRequest(text, source === 'suggestion' ? 'quick' : 'input', {
       useApi: initialContext.useApi,
       analysisType: nextAnalysisType,
       feature: nextFeature,
       judgeFlow: nextJudgeFlow,
+      suppressRecipeCard: shouldSuppressRecipeCard,
     })
   }
 
@@ -1422,6 +1618,7 @@ function ChatbotChat() {
 
               if (msg.type === 'ai-text') {
                 const aiDisplay = getAiTextDisplay(msg.text)
+                const showFullTextInBubble = msg.status !== 'error' && !msg.feature
                 const judgeResultDisplay = msg.status !== 'error' && msg.feature === 'buy-or-not'
                   ? buildJudgeResultDisplay(msg.text)
                   : null
@@ -1435,12 +1632,21 @@ function ChatbotChat() {
                   ? 'AI가 판단한 결과에요.'
                   : recommendationRecipe
                     ? '도시락 추천 결과를 정리해봤어요.'
-                    : aiDisplay.bubbleText
-                const detailText = judgeResultDisplay || recommendationRecipe ? null : aiDisplay.detailText
+                    : showFullTextInBubble
+                      ? msg.text
+                      : aiDisplay.bubbleText
+                const detailText = judgeResultDisplay || recommendationRecipe || showFullTextInBubble
+                  ? null
+                  : aiDisplay.detailText
                 const stackClassName = [
                   'chatbot-ai-stack',
                   judgeResultDisplay ? 'chatbot-ai-stack--judge' : '',
                   recommendationRecipe ? 'chatbot-ai-stack--recipe' : '',
+                ].filter(Boolean).join(' ')
+                const messageClassName = [
+                  'chatbot-msg',
+                  'chatbot-msg--ai',
+                  showFullTextInBubble ? 'chatbot-msg--ai-full-bubble' : '',
                 ].filter(Boolean).join(' ')
                 if (judgeResultDisplay) {
                   return (
@@ -1461,7 +1667,7 @@ function ChatbotChat() {
                 }
 
                 return (
-                  <div key={msg.id} className="chatbot-msg chatbot-msg--ai">
+                  <div key={msg.id} className={messageClassName}>
                     <img className="chatbot-mascot" src={chatbotMascotIcon} alt="" aria-hidden="true" />
                     <div className={stackClassName}>
                       <div className="chatbot-ai-bubble">
@@ -1500,7 +1706,7 @@ function ChatbotChat() {
                         type="button"
                         onClick={() => {
                           if (item === GO_TO_CHATBOT_HOME_LABEL) {
-                            window.location.hash = '#/chatbot'
+                            window.location.hash = '#/chatbot?skipCoach=1'
                             return
                           }
                           if (item.includes('레시피 보러')) {
@@ -1513,7 +1719,7 @@ function ChatbotChat() {
                             openCameraSheet('buy-or-not')
                             return
                           }
-                          addUserMessage(item)
+                          addUserMessage(item, 'suggestion')
                         }}
                       >
                         {item}
