@@ -33,7 +33,7 @@ const BENEFITS = [
 ]
 
 export default function PlusPage() {
-  const [plan, setPlan] = useState<Plan>('monthly')
+  const [plan, setPlan] = useState<Plan>('annual')
 
   return (
     <div className="app-shell">
@@ -43,12 +43,7 @@ export default function PlusPage() {
             <img src={arrowLeftIcon} alt="" />
           </button>
           <h1 className="plus-header-title">오늘도락 Plus</h1>
-          <button className="plus-header-btn plus-header-btn--right" aria-label="알림">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-            </svg>
-          </button>
+          <div className="plus-header-btn plus-header-btn--right" aria-hidden="true" />
         </header>
 
         <div className="plus-scroll">
@@ -68,6 +63,7 @@ export default function PlusPage() {
             <button
               className={`plus-plan-card${plan === 'monthly' ? ' selected' : ''}`}
               onClick={() => setPlan('monthly')}
+              disabled
             >
               <div className={`plus-plan-radio${plan === 'monthly' ? ' selected' : ''}`}>
                 {plan === 'monthly' && (
@@ -89,6 +85,7 @@ export default function PlusPage() {
             <button
               className={`plus-plan-card${plan === 'annual' ? ' selected' : ''}`}
               onClick={() => setPlan('annual')}
+              disabled
             >
               <div className={`plus-plan-radio${plan === 'annual' ? ' selected' : ''}`}>
                 {plan === 'annual' && (
@@ -107,7 +104,7 @@ export default function PlusPage() {
               </div>
             </button>
 
-            <button className="plus-cta">PLUS 가입하고 혜택 받기</button>
+            <button className="plus-cta plus-cta--subscribed" disabled>이미 구독중이에요</button>
           </section>
 
           {/* 혜택 미리보기 */}

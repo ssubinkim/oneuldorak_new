@@ -62,13 +62,17 @@
 .font-nanum-square-neo {
   font-family: var(--font-nanum-square-neo);
   font-style: normal;
-  line-height: var(--font-line-height-default);
-  letter-spacing: var(--font-letter-spacing-default);
 }
 
 .font-pretendard-variable {
   font-family: var(--font-pretendard-variable);
   font-style: normal;
+}
+
+.font-line-height-default {
   line-height: var(--font-line-height-default);
+}
+
+.font-letter-spacing-default {
   letter-spacing: var(--font-letter-spacing-default);
 }

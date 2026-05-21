@@ -5,7 +5,6 @@ type CommunityTabsProps = {
   activeTab: CommunityTabRoute
   className: string
   onSelectTab: (tab: CommunityTabRoute) => void
-  mutedRecipe?: boolean
 }
 
 const communityTabItems: { id: CommunityTabRoute; label: string }[] = [
@@ -19,7 +18,6 @@ function CommunityTabs({
   activeTab,
   className,
   onSelectTab,
-  mutedRecipe = false,
 }: CommunityTabsProps) {
   return (
     <div className={className} role="tablist" aria-label="커뮤니티 카테고리">
@@ -28,8 +26,9 @@ function CommunityTabs({
           key={tab.id}
           label={tab.label}
           isActive={activeTab === tab.id}
-          className={mutedRecipe && tab.id === 'recipe' ? 'community-tab--recipe' : undefined}
+          className={tab.id === 'recipe' ? 'community-tab--recipe' : undefined}
           onClick={() => onSelectTab(tab.id)}
+          disabled={tab.id === 'recipe'}
         />
       ))}
     </div>

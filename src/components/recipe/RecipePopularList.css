@@ -1,0 +1,234 @@
+.recipe-popular-section {
+  padding: 40px 20px;
+  background: #fff;
+}
+
+.recipe-popular-section__header {
+  margin-bottom: 16px;
+}
+
+.recipe-popular-section__header h2 {
+  margin: 0;
+  color: #1a1a1a;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: -0.08px;
+}
+
+.recipe-popular-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recipe-popular-item {
+  border-bottom: 1px solid #f2f2f2;
+  opacity: 0;
+  transform: translateX(-14px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.recipe-popular-item:last-child {
+  border-bottom: none;
+}
+
+/* 화면에 진입하면 is-visible 클래스가 붙으며 순차적으로 등장 */
+.recipe-popular-list.is-visible .recipe-popular-item:nth-child(1) { opacity: 1; transform: translateX(0); transition-delay: 0ms; }
+.recipe-popular-list.is-visible .recipe-popular-item:nth-child(2) { opacity: 1; transform: translateX(0); transition-delay: 80ms; }
+.recipe-popular-list.is-visible .recipe-popular-item:nth-child(3) { opacity: 1; transform: translateX(0); transition-delay: 160ms; }
+.recipe-popular-list.is-visible .recipe-popular-item:nth-child(4) { opacity: 1; transform: translateX(0); transition-delay: 240ms; }
+.recipe-popular-list.is-visible .recipe-popular-item:nth-child(5) { opacity: 1; transform: translateX(0); transition-delay: 320ms; }
+
+.recipe-popular-item__btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 0;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background 0.18s ease, transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.recipe-popular-item__btn:active {
+  background: #f8f8f8;
+  transform: scale(0.98);
+}
+
+.recipe-popular-item__rank {
+  flex-shrink: 0;
+  width: 20px;
+  color: var(--color-text-main);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+}
+
+.recipe-popular-item__thumbnail-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 90px;
+  height: 90px;
+}
+
+.recipe-popular-item__thumbnail {
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #e5e5e5;
+}
+
+.recipe-popular-item__badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 2px 6px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+  line-height: 1.4;
+}
+
+.recipe-popular-item__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recipe-popular-item__desc {
+  margin: 0;
+  color: #888;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.recipe-popular-item__title {
+  margin: 0;
+  color: var(--color-text-main);
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recipe-popular-item__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.recipe-popular-tag {
+  padding: 2px 7px;
+  border-radius: 100px;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.recipe-popular-tag--red {
+  color: #d94040;
+  background: #ffe8e8;
+}
+
+.recipe-popular-tag--orange {
+  color: #c06100;
+  background: #fff0dc;
+}
+
+.recipe-popular-tag--green {
+  color: #2d7a3d;
+  background: #e2f5e8;
+}
+
+.recipe-popular-item__stats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 3px;
+  color: #aaa;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.recipe-popular-item__stats span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.recipe-popular-item__stats svg {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .recipe-popular-section {
+    padding: 36px 40px;
+  }
+
+  .recipe-popular-section__header h2 {
+    font-size: 24px;
+  }
+
+  .recipe-popular-item {
+    padding: 20px 0;
+    gap: 20px;
+  }
+
+  .recipe-popular-item__rank {
+    font-size: 24px;
+    width: 28px;
+  }
+
+  .recipe-popular-item__thumbnail {
+    width: 96px;
+    height: 96px;
+    border-radius: 14px;
+  }
+
+  .recipe-popular-item__title {
+    font-size: 18px;
+  }
+
+  .recipe-popular-item__desc {
+    font-size: 13px;
+  }
+
+  .recipe-popular-tag {
+    font-size: 13px;
+    padding: 3px 10px;
+  }
+
+  .recipe-popular-item__stats {
+    font-size: 13px;
+    gap: 14px;
+  }
+
+  .recipe-popular-item__stats svg {
+    width: 13px;
+    height: 13px;
+  }
+}

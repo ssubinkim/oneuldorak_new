@@ -43,6 +43,7 @@ function SignupPage() {
       email,
       name,
       nickname,
+      isNew: true,
     })
     window.location.hash = '#/onboarding'
   }

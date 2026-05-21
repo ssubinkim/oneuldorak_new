@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type React from 'react'
 import CommunityStickyHeader from '../../components/community/common/CommunityStickyHeader'
 import useCommunityHeaderCollapse from '../../components/community/common/useCommunityHeaderCollapse'
 import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
@@ -26,23 +27,13 @@ function VotePage({
   onFocusHandled,
 }: VotePageProps) {
   const [voteFilter, setVoteFilter] = useState<VoteFilter>('active')
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
   const {
     isHeaderCompact,
     pageRef,
     compactTriggerRef,
+    stickyHeaderRef,
     handleCommunityScroll,
   } = useCommunityHeaderCollapse()
-
-  const handleSearchToggle = () => {
-    setIsSearchOpen((previousValue) => !previousValue)
-  }
-
-  const handleSearchClose = () => {
-    setIsSearchOpen(false)
-    setSearchValue('')
-  }
 
   return (
     <main
@@ -50,41 +41,36 @@ function VotePage({
       className="page-scroll vote-page"
       onScroll={handleCommunityScroll}
     >
+      <div ref={stickyHeaderRef as React.RefObject<HTMLDivElement>} className="community-banner-header">
+        <h1>커뮤니티</h1>
+      </div>
       <CommunityBanner
         variant="vote"
+        hideHeader
         isCompact={isHeaderCompact}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
       />
       <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
-      <CommunityStickyHeader
-        activeTab="vote"
-        tabsClassName="community-tabs"
-        isCompact={isHeaderCompact}
-        onSelectTab={onSelectTab}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
-      />
-
-      <div className="vote-page__body">
-        <VoteList filter="active" variant="featured" extraVotes={extraVotes} />
-
-        <VoteFilterTabs activeFilter={voteFilter} onChange={setVoteFilter} />
-
-        <VoteList
-          filter={voteFilter}
-          extraVotes={extraVotes}
-          onUpdateVote={onUpdateVote}
-          onDeleteVote={onDeleteVote}
-          focusVoteId={focusVoteId}
-          onFocusHandled={onFocusHandled}
+      <div className="community-card-sheet">
+        <CommunityStickyHeader
+          activeTab="vote"
+          tabsClassName="community-tabs"
+          isCompact={isHeaderCompact}
+          onSelectTab={onSelectTab}
         />
+        <div className="vote-page__body">
+          <VoteList filter="active" variant="featured" extraVotes={extraVotes} />
+
+          <VoteFilterTabs activeFilter={voteFilter} onChange={setVoteFilter} />
+
+          <VoteList
+            filter={voteFilter}
+            extraVotes={extraVotes}
+            onUpdateVote={onUpdateVote}
+            onDeleteVote={onDeleteVote}
+            focusVoteId={focusVoteId}
+            onFocusHandled={onFocusHandled}
+          />
+        </div>
       </div>
     </main>
   )

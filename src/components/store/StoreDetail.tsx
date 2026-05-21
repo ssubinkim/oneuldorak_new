@@ -93,7 +93,18 @@ function StoreDetail({ product, onBack, onSelectProduct, onScrollToTop }: Props)
 
       {/* 상품 이미지 */}
       <div className="store-detail__product-img">
-        {product?.image && <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+        {product?.image && (
+          <img
+            src={product.image}
+            alt={product.name}
+            width={360}
+            height={360}
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        )}
       </div>
 
       {/* 상품 정보 */}

@@ -11,6 +11,9 @@ import MyPageStats from '../../components/mypage/my-page/MyPageStats'
 import type { MyPageStatItem } from '../../components/mypage/my-page/MyPageStats'
 import PointBottomSheet from '../../components/mypage/my-page/PointBottomSheet'
 import { getMyPageActivityCounts } from '../../components/mypage/mypageReactionData'
+import { initAttendance } from '../../components/mypage/mypageAttendance'
+import { NOTIFICATIONS } from '../../components/mypage/notification/notificationData'
+import { hasUnreadNotifications } from '../../components/mypage/notification/notificationState'
 import arrowLeftIcon from '../../assets/icons/arrow_left.svg'
 import bellIcon from '../../assets/icons/bell_icon.svg'
 import profileImg from '../../assets/icons/profile 1.svg?url'
@@ -20,8 +23,28 @@ export default function MyPage() {
   const [goalOpen, setGoalOpen] = useState(false)
   const [goal, setGoal] = useState({ current: 72000, target: 100000 })
   const [pointOpen, setPointOpen] = useState(false)
-  const [pointSheetKey, setPointSheetKey] = useState(0)
-  const { email } = useUserProfile()
+  const [showSavedToast, setShowSavedToast] = useState(false)
+
+  useEffect(() => {
+    if (sessionStorage.getItem('profile_saved') === 'true') {
+      sessionStorage.removeItem('profile_saved')
+      setShowSavedToast(true)
+      setTimeout(() => setShowSavedToast(false), 2000)
+    }
+  }, [])
+  const { email, isNew } = useUserProfile()
+  const notificationIds = NOTIFICATIONS.map(n => n.id)
+  const [hasUnread, setHasUnread] = useState(() => !isNew && hasUnreadNotifications(notificationIds))
+
+  useEffect(() => {
+    const check = () => setHasUnread(!isNew && hasUnreadNotifications(notificationIds))
+    window.addEventListener('hashchange', check)
+    return () => window.removeEventListener('hashchange', check)
+  }, [isNew])
+
+  useEffect(() => {
+    initAttendance(isNew)
+  }, [isNew])
   const { totalPoints, monthlyPoints } = usePointBalance()
   const activityCounts = getMyPageActivityCounts(email)
   const stats: MyPageStatItem[] = [
@@ -43,19 +66,29 @@ export default function MyPage() {
 
   return (
     <MyPageShell>
+      {showSavedToast && (
+        <div className="mypage-saved-toast">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          저장이 완료되었어요!
+        </div>
+      )}
       <div className="page-scroll">
         <div className="mypage">
           <header className="mypage-topbar">
             <button type="button" className="mypage-topbar__button" aria-label="뒤로가기" onClick={() => window.history.back()}>
-              <img src={arrowLeftIcon} alt="" aria-hidden="true" />
+              <img src={arrowLeftIcon} alt="" aria-hidden="true" width={22} height={22} loading="eager" decoding="sync" fetchPriority="high" />
             </button>
             <h1>마이페이지</h1>
-            <button type="button" className="mypage-topbar__button" aria-label="알림">
-              <img src={bellIcon} alt="" aria-hidden="true" />
+            <button type="button" className="mypage-topbar__button mypage-bell-btn" aria-label="알림" onClick={() => { window.location.hash = '#/mypage-notification' }}>
+              <img src={bellIcon} alt="" aria-hidden="true" width={22} height={22} loading="eager" decoding="sync" fetchPriority="high" />
+              {hasUnread && <span className="mypage-bell-badge" />}
             </button>
           </header>
 
           <section className="mypage-profile-card" aria-label="내 프로필 요약">
+            <button type="button" className="mypage-profile-edit-btn" onClick={() => { window.location.hash = '#/mypage-profile-edit' }}>수정하기</button>
             <MyPageProfile profileImg={profileImg} />
             <MyPageStats
               stats={stats}
@@ -73,10 +106,7 @@ export default function MyPage() {
           />
           <MyPagePointCard
             totalPoints={totalPoints}
-            onPointHistoryClick={() => {
-              setPointSheetKey((prev) => prev + 1)
-              setPointOpen(true)
-            }}
+            onPointHistoryClick={() => setPointOpen(true)}
           />
           <MyPageMenuSections />
         </div>
@@ -89,7 +119,6 @@ export default function MyPage() {
         onSave={(newGoal) => { setGoal(newGoal); setGoalOpen(false) }}
       />
       <PointBottomSheet
-        key={pointSheetKey}
         open={pointOpen}
         onClose={() => setPointOpen(false)}
         totalPoints={totalPoints}

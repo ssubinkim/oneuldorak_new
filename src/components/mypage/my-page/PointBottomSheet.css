@@ -2,8 +2,14 @@
   background: #fff;
 }
 
+.bs-container.point-bs {
+  max-height: 98%;
+  overflow-y: hidden;
+}
+
 .point-sheet {
-  padding: 8px 20px 32px;
+  position: relative;
+  padding: 8px 20px 20px;
 }
 
 .point-sheet-title {
@@ -42,7 +48,7 @@
 }
 
 .point-sheet-tab.active {
-  font-weight: 700;
+  font-weight: 600;
   color: #1a1a1a;
   border-bottom-color: #ffd515;
 }
@@ -52,20 +58,23 @@
   position: relative;
 }
 
-.point-guide,
-.point-history {
+.point-history,
+.point-attendance {
   width: 100%;
 }
 
-.point-history {
+.point-attendance {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
 }
 
-.point-guide.hidden,
 .point-history.hidden {
+  visibility: hidden;
+}
+
+.point-attendance.hidden {
   visibility: hidden;
 }
 
@@ -106,8 +115,132 @@
   color: #1a1a1a;
 }
 
+/* ── 나의 포인트 라벨 행 ── */
+.point-history-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.point-info-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  padding: 8px;
+  border: none;
+  background: none;
+  width: 44px;
+  height: 44px;
+  font-size: 22px;
+  color: #3c3c3c;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── 출석체크 탭 ── */
+.point-attendance-card {
+  background: #fffcee;
+  border: 1.5px solid #f5c842;
+  border-radius: 14px;
+  padding: 14px 10px 10px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(245, 200, 66, 0.18), 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.point-attendance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 0 7px;
+}
+
+.point-attendance-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.point-attendance-streak {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: #fff8dc;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f5a000;
+}
+
+.point-attendance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px 4px;
+}
+
+.point-attendance-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.point-attendance-day--seven {
+  grid-column: 2;
+}
+
+.point-attendance-day-img {
+  width: 90px;
+  height: 94px;
+  object-fit: contain;
+}
+
+.point-attendance-day--seven .point-attendance-day-img {
+  width: 92px;
+  height: 110px;
+}
+
+/* ── 활동별 적립 오버레이 ── */
+@keyframes point-overlay-fadein {
+  from { background: rgba(0, 0, 0, 0); }
+  to { background: rgba(0, 0, 0, 0.4); }
+}
+
+@keyframes point-card-slidein {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.point-activity-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  box-sizing: border-box;
+  z-index: 100;
+}
+
+.point-activity-info-card {
+  width: 100%;
+  background: #fafafa;
+  border: 1.5px solid #f5c842;
+  border-radius: 14px;
+  padding: 20px 18px 24px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  animation: point-card-slidein 0.25s ease;
+}
+
 /* ── 적립내역 탭 ── */
 .point-history-card {
+  position: relative;
   background: #fafafa;
   border: none;
   border-radius: 14px;
@@ -152,11 +285,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #dce7ff;
+  height: 50px;
+  background: #E6EDFF;
   border-radius: 10px;
-  padding: 11px 16px;
+  padding: 0 16px;
   font-size: 14px;
   color: #444;
+  box-sizing: border-box;
 }
 
 .point-history-monthly-val {
@@ -170,6 +305,16 @@
   font-weight: 500;
   color: #1a1a1a;
   margin-bottom: 7px;
+}
+
+.point-history-list {
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.point-history-list::-webkit-scrollbar {
+  display: none;
 }
 
 .point-history-row {

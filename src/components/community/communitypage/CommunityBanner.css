@@ -1,6 +1,6 @@
 .community-banner {
   background: var(--color-secondary);
-  padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 30px;
+  padding: 0px 20px 30px;
   overflow: visible;
   position: relative;
 }
@@ -17,11 +17,11 @@
 .community-banner .community-banner__header h1 {
   margin: 0;
   font-size: 26px;
-  font-weight: 800;
+  font-weight: 700;
   color: #1a1a1a;
   font-family: 'NanumSquareNeo';
-  line-height: 130%;
-  letter-spacing: 0.08px;
+  line-height: 120%;
+  letter-spacing: -0.08px;
 }
 
 .community-banner__actions {
@@ -41,7 +41,7 @@
 }
 
 .community-banner__subtitle {
-  margin: 0 0 20px;
+  margin: 0 0 10px;
   font-size: 16px;
   color: #3c3c3c;
   line-height: 130%;
@@ -51,7 +51,7 @@
   visibility: visible;
   transform: translateY(0);
   position: relative;
-  z-index: 1000;
+  z-index: 8;
   transition: opacity 200ms ease, transform 220ms ease, visibility 0ms linear;
 }
 
@@ -70,7 +70,7 @@
   max-width: min(70%, 560px);
   margin: 0 auto -10px;
   position: relative;
-  z-index: 999;
+  z-index: 15;
   object-fit: contain;
   object-position: center bottom;
   transform: var(--banner-image-transform);

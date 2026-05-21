@@ -1,9 +1,9 @@
 import heartIcon from '../../../assets/icons/heart.svg'
-import blueMascotIcon from '../../../assets/food_mascot/blue_mascot.svg'
-import broMascotIcon from '../../../assets/food_mascot/bro_mascot.svg'
-import carrotMascotIcon from '../../../assets/food_mascot/carrot_mascot.svg'
-import eggMascotIcon from '../../../assets/food_mascot/egg_mascot.svg'
-import strawMascotIcon from '../../../assets/food_mascot/straw_mascot.svg'
+import blueMascotIcon from '../../../assets/food_mascot/blue_mascot.png'
+import broMascotIcon from '../../../assets/food_mascot/bro_mascot.png'
+import carrotMascotIcon from '../../../assets/food_mascot/carrot_mascot.png'
+import eggMascotIcon from '../../../assets/food_mascot/egg_mascot.png'
+import strawMascotIcon from '../../../assets/food_mascot/straw_mascot.png'
 import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import './PopularRecipeSection.css'
 
@@ -20,7 +20,7 @@ export type RecipeCard = {
 type PopularRecipeSectionProps = {
   recipes: RecipeCard[]
   showMore?: boolean
-  onMoreClick?: () => void
+  title?: string
 }
 
 const mascotIcons = [
@@ -39,13 +39,13 @@ function getRandomMascotIcon(seed: string) {
   return mascotIcons[seedValue % mascotIcons.length]
 }
 
-function PopularRecipeSection({ recipes, showMore = true, onMoreClick }: PopularRecipeSectionProps) {
+function PopularRecipeSection({ recipes, showMore = true, title = '인기 레시피' }: PopularRecipeSectionProps) {
   return (
     <section className="recipe-section">
       <div className="recipe-section__header">
-        <h2>인기 레시피</h2>
+        <h2>{title}</h2>
         {showMore && (
-          <button type="button" className="recipe-section__more" onClick={onMoreClick}>
+          <button type="button" className="recipe-section__more">
             더보기 <ArrowRightIcon />
           </button>
         )}

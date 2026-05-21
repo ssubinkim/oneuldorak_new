@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import icon1 from '../images/icon-slot-1.svg'
 import icon2 from '../images/icon-slot-2.svg'
 import icon3 from '../images/icon-slot-3.svg'
@@ -33,7 +34,7 @@ const DEFAULT_MENU_SECTIONS: MyPageMenuSection[] = [
   {
     title: '멤버십',
     items: [
-      { label: '구독', aside: '정보', asideColor: '#1a1a1a', icon: icon3, onClick: () => { window.location.hash = '#/mypage-plus' } },
+      { label: '구독', aside: '연간구독 중', asideColor: '#4E7FFF', icon: icon3, onClick: () => { window.location.hash = '#/mypage-plus' } },
       { label: '혜택', icon: icon4, onClick: () => { window.location.hash = '#/mypage-plus-benefit' } },
       { label: '쿠폰', muted: true, icon: icon5 },
     ],
@@ -53,7 +54,9 @@ type MyPageMenuSectionsProps = {
 }
 
 function MyPageMenuSections({ sections = DEFAULT_MENU_SECTIONS }: MyPageMenuSectionsProps) {
-  const handleLogoutClick = () => {
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
+
+  const handleLogoutConfirm = () => {
     window.location.hash = '#/login'
   }
 
@@ -71,7 +74,7 @@ function MyPageMenuSections({ sections = DEFAULT_MENU_SECTIONS }: MyPageMenuSect
                 onClick={item.onClick}
               >
                 <span className="mypage-menu-icon-slot" aria-hidden="true">
-                  {item.icon && <img src={item.icon} alt="" />}
+                  {item.icon && <img src={item.icon} alt="" width={18} height={18} loading="lazy" decoding="async" fetchPriority="low" />}
                 </span>
                 <span className="mypage-menu-label">{item.label}</span>
                 <span className="mypage-menu-right">
@@ -84,9 +87,26 @@ function MyPageMenuSections({ sections = DEFAULT_MENU_SECTIONS }: MyPageMenuSect
         </section>
       ))}
 
-      <button type="button" className="mypage-logout" onClick={handleLogoutClick}>
+      <button type="button" className="mypage-logout" onClick={() => setShowLogoutModal(true)}>
         로그아웃
       </button>
+
+      {showLogoutModal && (
+        <div className="mypage-logout-overlay">
+          <div className="mypage-logout-modal">
+            <p className="mypage-logout-modal__title">로그아웃 하시겠어요?</p>
+            <p className="mypage-logout-modal__sub">오늘도락 계정에서 로그아웃돼요.</p>
+            <div className="mypage-logout-modal__actions">
+              <button type="button" className="mypage-logout-modal__btn mypage-logout-modal__btn--cancel" onClick={() => setShowLogoutModal(false)}>
+                취소
+              </button>
+              <button type="button" className="mypage-logout-modal__btn mypage-logout-modal__btn--confirm" onClick={handleLogoutConfirm}>
+                로그아웃
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

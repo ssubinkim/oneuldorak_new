@@ -1,10 +1,11 @@
 import { useState } from 'react'
+import type React from 'react'
 import BoardCategoryFilters from '../../components/community/boardpage/BoardCategoryFilters'
 import { boardFilters, type BoardFilter } from '../../components/community/boardpage/boardCategoryFilterData'
 import BoardList, { type BoardPost } from '../../components/community/boardpage/BoardList'
-import BoardPopularPosts from '../../components/community/boardpage/BoardPopularPosts'
 import { mockBoardPopularPosts } from '../../components/community/common/boardMockData'
 import CommunityStickyHeader from '../../components/community/common/CommunityStickyHeader'
+import PopularPosts from '../../components/community/communitypage/PopularPosts'
 import useCommunityHeaderCollapse from '../../components/community/common/useCommunityHeaderCollapse'
 import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
 import type { CommunityTabRoute } from './CommunityTabRoute'
@@ -26,23 +27,13 @@ function BoardPage({
   onFocusHandled,
 }: BoardPageProps) {
   const [activeFilter, setActiveFilter] = useState<BoardFilter>(boardFilters[0])
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
   const {
     isHeaderCompact,
     pageRef,
     compactTriggerRef,
+    stickyHeaderRef,
     handleCommunityScroll,
   } = useCommunityHeaderCollapse()
-
-  const handleSearchToggle = () => {
-    setIsSearchOpen((previousValue) => !previousValue)
-  }
-
-  const handleSearchClose = () => {
-    setIsSearchOpen(false)
-    setSearchValue('')
-  }
 
   return (
     <main
@@ -50,38 +41,33 @@ function BoardPage({
       className="page-scroll free-detail-page"
       onScroll={handleCommunityScroll}
     >
+      <div ref={stickyHeaderRef as React.RefObject<HTMLDivElement>} className="community-banner-header">
+        <h1>커뮤니티</h1>
+      </div>
       <CommunityBanner
         variant="board"
+        hideHeader
         isCompact={isHeaderCompact}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
       />
       <div ref={compactTriggerRef} className="community-banner-compact-trigger" aria-hidden="true" />
-      <CommunityStickyHeader
-        activeTab="free"
-        tabsClassName="community-tabs"
-        isCompact={isHeaderCompact}
-        onSelectTab={onSelectTab}
-        isSearchOpen={isSearchOpen}
-        searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchToggle={handleSearchToggle}
-        onSearchClose={handleSearchClose}
-      />
-
-      <div className="free-detail-body">
-        <BoardPopularPosts posts={mockBoardPopularPosts} />
-        <BoardCategoryFilters activeFilter={activeFilter} onChange={setActiveFilter} />
-        <BoardList
-          activeFilter={activeFilter}
-          onOpenDetail={onOpenDetail}
-          extraPosts={extraPosts}
-          focusPostId={focusPostId}
-          onFocusHandled={onFocusHandled}
+      <div className="community-card-sheet">
+        <CommunityStickyHeader
+          activeTab="free"
+          tabsClassName="community-tabs"
+          isCompact={isHeaderCompact}
+          onSelectTab={onSelectTab}
         />
+        <div className="free-detail-body">
+          <PopularPosts posts={mockBoardPopularPosts} showHeaderImage={false} />
+          <BoardCategoryFilters activeFilter={activeFilter} onChange={setActiveFilter} />
+          <BoardList
+            activeFilter={activeFilter}
+            onOpenDetail={onOpenDetail}
+            extraPosts={extraPosts}
+            focusPostId={focusPostId}
+            onFocusHandled={onFocusHandled}
+          />
+        </div>
       </div>
     </main>
   )

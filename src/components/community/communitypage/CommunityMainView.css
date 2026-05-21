@@ -12,22 +12,51 @@
   overscroll-behavior-y: contain;
 }
 
+
+.community-banner-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.community-banner-header__actions button {
+  padding: 4px;
+  color: #1a1a1a;
+  background: transparent;
+  border: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.community-banner-header__search-inline {
+  width: min(189px, 48.5vw);
+  margin-right: 2px;
+}
+
+/* 배너 body(subtitle + 마스코트): 스태킹 컨텍스트 없애서 이미지가 카드 위로 올라올 수 있게 */
+.community-page .community-banner {
+  position: relative;
+}
+
+
 .community-page h1 {
   font-size: 24px;
   color: #1a1a1a;
-  font-family: 'Pretendard Variable', sans-serif;
-  line-height: 130%;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
+  line-height: 120%;
   letter-spacing: -0.08px;
 }
 
 .community-page h2 {
-  color: #1a1a1a;
+  color: #3c3c3c;
   font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
-  font-size: 22px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
-  line-height: 130%;
+  line-height: 120%;
   letter-spacing: -0.08px;
+  margin-bottom: 4px;
 }
 
 
@@ -39,7 +68,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  gap: 30px;
+  gap: 40px;
   background: var(--color-bg-base);
 }
 

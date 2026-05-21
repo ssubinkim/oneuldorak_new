@@ -71,11 +71,21 @@ function HomeFridgeBanner() {
             className="fridge-banner__image fridge-banner__image--closed"
             src={bannerBefore}
             alt=""
+            width={360}
+            height={168}
+            loading="lazy"
+            decoding="async"
+            fetchPriority="low"
           />
           <img
             className="fridge-banner__image fridge-banner__image--open"
             src={bannerAfter}
             alt=""
+            width={360}
+            height={168}
+            loading="lazy"
+            decoding="async"
+            fetchPriority="low"
           />
         </div>
 
@@ -87,7 +97,7 @@ function HomeFridgeBanner() {
             오늘 필요한 것만 쏙 골라보세요
           </p>
         </div>
-        <img className="fridge-banner__arrow" src={arrowIcon} alt="" aria-hidden="true" />
+        <img className="fridge-banner__arrow" src={arrowIcon} alt="" aria-hidden="true" width={40} height={40} loading="lazy" decoding="async" fetchPriority="low" />
       </div>
       <span ref={triggerRef} className="fridge-banner__bottom-trigger" aria-hidden="true" />
     </section>

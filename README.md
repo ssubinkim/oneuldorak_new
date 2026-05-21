@@ -1,3 +1,29 @@
+# oneuldorak
+
+## Local Run (Web + AI API)
+
+1. Install dependencies once at project root:
+```bash
+npm install
+```
+
+2. Add API key to `server/.env`:
+```bash
+OPENAI_API_KEY=your_key_here
+```
+
+3. Start both frontend and API together:
+```bash
+npm run dev
+```
+
+- Web: `http://127.0.0.1:5173`
+- API proxy target: `http://127.0.0.1:4242` via Vite `/api`
+
+If the API does not respond, check:
+- `server/.env` has a valid `OPENAI_API_KEY`
+- `npm run dev` output includes both `WEB` and `API` processes
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

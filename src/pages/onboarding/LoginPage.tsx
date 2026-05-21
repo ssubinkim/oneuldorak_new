@@ -30,6 +30,8 @@ function LoginPage() {
       saveUserProfile({
         email: dummyAccount.id,
         nickname: dummyAccount.nickname,
+        password: dummyAccount.password,
+        isNew: false,
       })
       window.location.hash = '#/home'
       return

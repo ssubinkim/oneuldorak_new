@@ -57,10 +57,10 @@
 
 .plus-hero-title {
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 700;
   color: #1a1a1a;
-  line-height: 1.35;
-  margin: 0 0 8px;
+  line-height: 1.4;
+  margin: 0 0 14px;
 }
 
 .plus-blue {
@@ -68,7 +68,7 @@
 }
 
 .plus-hero-sub {
-  font-size: 16px;
+  font-size: 14px;
   color: #888;
   margin: 0;
 }
@@ -190,6 +190,12 @@
 }
 
 .plus-cta:active { opacity: 0.85; }
+
+.plus-cta--subscribed {
+  background: #e0e0e0;
+  color: #888;
+  cursor: default;
+}
 
 /* ── 혜택 미리보기 ── */
 .plus-benefits {

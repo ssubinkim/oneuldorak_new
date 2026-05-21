@@ -18,7 +18,7 @@ function HomeQuickActions() {
         {quickActions.map((action) => (
           <button className="quick-card" type="button" key={action.label}>
             <span className="quick-card__icon" aria-hidden="true">
-              <img src={action.icon} alt="" />
+              <img src={action.icon} alt="" width={44} height={44} loading="lazy" decoding="async" fetchPriority="low" />
             </span>
             <span>{action.label}</span>
           </button>

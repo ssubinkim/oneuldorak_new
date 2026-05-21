@@ -1,4 +1,4 @@
-import chatbotMascotIcon from './images/chatbot .svg'
+import chatbotMascotIcon from './images/chatbot .png'
 import './ChatbotCoachMark.css'
 
 type ChatbotCoachMarkProps = {

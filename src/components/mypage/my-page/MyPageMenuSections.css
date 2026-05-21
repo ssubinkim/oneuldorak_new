@@ -70,7 +70,7 @@
 
 .mypage-menu-aside {
   color: #a3a3a3;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 130%;
   white-space: nowrap;
@@ -87,15 +87,80 @@
 
 .mypage-logout {
   justify-self: center;
-  margin: 0 0 6px;
+  margin: 16px 0 6px;
   padding: 0;
   color: #8f8f8f;
   background: transparent;
   border: 0;
   border-bottom: 1px solid currentColor;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 130%;
+  cursor: pointer;
+}
+
+.mypage-logout-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 40;
+}
+
+.mypage-logout-modal {
+  width: 100%;
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.mypage-logout-modal__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 5px;
+  text-align: center;
+}
+
+.mypage-logout-modal__sub {
+  font-size: 13px;
+  color: #aaa;
+  margin: 0 0 24px;
+  text-align: center;
+}
+
+.mypage-logout-modal__actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.mypage-logout-modal__btn {
+  flex: 1;
+  padding: 14px 0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.mypage-logout-modal__btn--cancel {
+  background: #e0e0e0;
+  color: #555;
+}
+
+.mypage-logout-modal__btn--confirm {
+  background: #ff5c5c;
+  color: #fff;
 }
 
 @media (min-width: 768px) {

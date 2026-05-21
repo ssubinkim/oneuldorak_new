@@ -1,8 +1,9 @@
 import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import SequentialHighlightList, { type SequentialHighlightItem } from '../../effects/stagger/SequentialHighlightList'
-import subreview1 from '../../store/images/subreview/subreview_1.png'
-import subreview2 from '../../store/images/subreview/subreview_2.png'
-import subreview3 from '../../store/images/subreview/subreview_3.png'
+import talk1 from '../common/images/talk1.png'
+import talk2 from '../common/images/talk2.png'
+import talk3 from '../common/images/talk3.png'
+import talkGroup from '../common/images/talk.png'
 import './PopularPosts.css'
 
 type HotPost = {
@@ -15,10 +16,11 @@ type HotPost = {
 type PopularPostsProps = {
   posts: HotPost[]
   onMoreClick?: () => void
+  showHeaderImage?: boolean
 }
 
-function PopularPosts({ posts, onMoreClick }: PopularPostsProps) {
-  const thumbnails = [subreview1, subreview2, subreview3]
+function PopularPosts({ posts, onMoreClick, showHeaderImage = true }: PopularPostsProps) {
+  const thumbnails = [talk1, talk2, talk3]
   const storyItems: SequentialHighlightItem[] = posts.map((post, index) => ({
     id: `${post.rank}-${post.title}`,
     title: post.title,
@@ -30,8 +32,14 @@ function PopularPosts({ posts, onMoreClick }: PopularPostsProps) {
   return (
     <section className="hot-posts" aria-label="실시간 인기글">
       <div className="hot-posts__header">
-        <h2>실시간 인기글</h2>
-        <button type="button" onClick={onMoreClick}>더보기 <ArrowRightIcon /></button>
+        <div className="hot-posts__header-left">
+          <h2>지금 인기 있는 냉털 이야기 👀</h2>
+          <div className="hot-posts__header-sub">
+            <span>이번주 인기글 TOP3</span>
+            <button type="button" onClick={onMoreClick}>보러가기 <ArrowRightIcon /></button>
+          </div>
+        </div>
+        {showHeaderImage && <img className="hot-posts__header-img" src={talkGroup} alt="" aria-hidden="true" />}
       </div>
 
       <div className="story-list">

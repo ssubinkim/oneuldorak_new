@@ -7,6 +7,8 @@ type UserProfile = {
   email: string
   name: string
   nickname: string
+  isNew?: boolean
+  password?: string
 }
 
 const defaultUserProfile: UserProfile = {
@@ -35,6 +37,8 @@ function readStoredUserProfile(): UserProfile {
       email: parsedProfile.email || defaultUserProfile.email,
       name: parsedProfile.name || defaultUserProfile.name,
       nickname: parsedProfile.nickname || defaultUserProfile.nickname,
+      isNew: parsedProfile.isNew,
+      password: parsedProfile.password,
     }
   } catch {
     return defaultUserProfile
