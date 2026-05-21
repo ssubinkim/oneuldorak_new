@@ -3,7 +3,8 @@
   "short_name": "오늘도락",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#fffbea",
+  "theme_color": "#fffbea",
   "description": "합리적인 도시락 소비를 위한 AI 도시락 플랫폼",
   "icons": [
     {

@@ -119,12 +119,13 @@ body,
 #root {
   min-width: 320px;
   min-height: 100%;
+  background: var(--color-tertiary);
 }
 
 body {
   margin: 0;
   overflow-x: hidden;
-  background: var(--color-bg);
+  background: var(--color-tertiary);
 }
 
 button,
@@ -154,7 +155,7 @@ button {
   width: 100%;
   min-height: 100dvh;
   color: var(--color-text-main);
-  background: var(--color-bg);
+  background: var(--color-tertiary);
   font-family: var(--font-pretendard-variable);
 }
 
@@ -164,7 +165,7 @@ button {
   min-width: var(--screen-min-width);
   height: 100dvh;
   overflow: hidden;
-  background: #fff;
+  background: var(--color-bg-base);
 }
 
 .page-scroll {
