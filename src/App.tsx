@@ -150,7 +150,34 @@ const prefetchTargets = {
   recipe: [],
 } satisfies Record<AppRoute, AppRoute[]>
 
-const ONBOARDING_ROUTES = new Set<AppRoute>(['start', 'login', 'signup', 'onboarding'])
+const DEFAULT_THEME_COLOR = '#fffbea'
+
+const routeThemeColors = {
+  start: '#fffbea',
+  login: '#fffbea',
+  signup: '#fffbea',
+  onboarding: '#fffbea',
+  home: '#ffdb78',
+  meal: '#ffdb78',
+  community: '#ffffff',
+  store: '#ffffff',
+  recipe: '#ffffff',
+  mypage: '#ffffff',
+  'mypage-likes': '#ffffff',
+  'mypage-saved-recipes': '#fffdf7',
+  'mypage-plus': '#ffffff',
+  'mypage-plus-benefit': '#ffffff',
+  'mypage-profile-edit': '#ffffff',
+  'mypage-notification': '#ffffff',
+  'meal-weekly-plan': '#ffdb78',
+  'meal-grocery': '#fffffd',
+  'meal-storage': '#f5f3ef',
+  chatbot: '#ffffff',
+  'chatbot-camera': '#101722',
+  'chatbot-chat': '#ffffff',
+  'receipt-analysis': '#fffdf7',
+} satisfies Record<AppRoute, string>
+
 const prefetchedRoutes = new Set<AppRoute>()
 const warmedImageUrls = new Set<string>()
 const PREFETCH_DELAY_MS = 700
@@ -221,7 +248,7 @@ const warmRouteImages = (route: AppRoute) => {
 }
 
 function RouteFallback({ route }: { route: AppRoute }) {
-  const backgroundColor = ONBOARDING_ROUTES.has(route) ? 'var(--color-tertiary-90)' : 'var(--color-bg-base)'
+  const backgroundColor = routeThemeColors[route] ?? DEFAULT_THEME_COLOR
 
   return (
     <div className="app-shell" aria-hidden="true">
@@ -240,9 +267,25 @@ function getRouteFromHash(): AppRoute {
   return 'start'
 }
 
+function setThemeColor(color: string) {
+  let meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')
+
+  if (!meta) {
+    meta = document.createElement('meta')
+    meta.name = 'theme-color'
+    document.head.appendChild(meta)
+  }
+
+  meta.content = color
+}
+
 function App() {
   const [route, setRoute] = useState(getRouteFromHash)
   const Page = pages[route]
+
+  useEffect(() => {
+    setThemeColor(routeThemeColors[route] ?? DEFAULT_THEME_COLOR)
+  }, [route])
 
   useEffect(() => {
     const handleHashChange = () => {
