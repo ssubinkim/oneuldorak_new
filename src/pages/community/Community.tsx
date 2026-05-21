@@ -659,7 +659,7 @@ function Community() {
         )}
 
         {view === 'main' && (
-          <CommunityMainView activeTab={activeTab} onSelectTab={handleTabClick} />
+          <CommunityMainView activeTab={activeTab} onSelectTab={handleTabClick} onOpenBoardDetail={handleOpenBoardDetail} />
         )}
 
         {view === 'recipe' && (

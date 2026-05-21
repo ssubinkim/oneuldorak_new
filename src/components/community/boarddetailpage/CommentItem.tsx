@@ -59,6 +59,12 @@ function CommentItem({ comment, canManage, onUpdate, onDelete }: CommentItemProp
             {comment.user}
             <span>{comment.timeAgo}</span>
           </h3>
+          {canManage && !isEditing && (
+            <div className="board-detail-comment__manage">
+              <button type="button" onClick={() => { setDraftText(comment.text); setIsEditing(true) }}>수정</button>
+              <button type="button" onClick={() => onDelete(comment.id)}>삭제</button>
+            </div>
+          )}
         </div>
 
         {isEditing ? (
@@ -88,28 +94,7 @@ function CommentItem({ comment, canManage, onUpdate, onDelete }: CommentItemProp
             <div className="board-detail-comment__actions">
               <button type="button">좋아요</button>
               <button type="button">댓글</button>
-              <button type="button">신고</button>
-              {canManage && (
-                <>
-                  <button
-                    type="button"
-                    className="board-detail-comment__manage-action"
-                    onClick={() => {
-                      setDraftText(comment.text)
-                      setIsEditing(true)
-                    }}
-                  >
-                    수정
-                  </button>
-                  <button
-                    type="button"
-                    className="board-detail-comment__manage-action"
-                    onClick={() => onDelete(comment.id)}
-                  >
-                    삭제
-                  </button>
-                </>
-              )}
+              {!canManage && <button type="button">신고</button>}
             </div>
           </>
         )}

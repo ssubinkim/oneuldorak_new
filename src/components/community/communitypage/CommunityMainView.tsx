@@ -10,14 +10,26 @@ import PopularPosts from './PopularPosts'
 import BattleBanner from './BattleBanner'
 import Ranking from './Ranking'
 import { dorakRankings, hotPosts } from './communityData'
+import { mockBoardComments, mockBoardDetailPosts } from '../common/boardMockData'
+import { readPersistedBoardComments } from '../common/boardCommentPersistence'
 import './CommunityMainView.css'
 
 type CommunityMainViewProps = {
   activeTab: CommunityTabRoute
   onSelectTab: (tab: CommunityTabRoute) => void
+  onOpenBoardDetail?: (postId: string) => void
 }
 
-function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
+function CommunityMainView({ activeTab, onSelectTab, onOpenBoardDetail }: CommunityMainViewProps) {
+  const persistedComments = readPersistedBoardComments()
+  const mockPostIds = new Set(mockBoardDetailPosts.map((p) => p.id))
+  const hotPostsWithActualComments = hotPosts.map((post) => ({
+    ...post,
+    comments: post.id
+      ? (persistedComments[post.id]?.length ?? (mockPostIds.has(post.id) ? mockBoardComments.length : post.comments))
+      : post.comments,
+  }))
+
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const {
@@ -93,7 +105,7 @@ function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
           <Ranking rankings={dorakRankings} />
           <BattleBanner />
           <VoteList filter="active" variant="featured" onMoreClick={() => onSelectTab('vote')} />
-          <PopularPosts posts={hotPosts} />
+          <PopularPosts posts={hotPostsWithActualComments} onPostClick={onOpenBoardDetail} />
         </div>
       </div>
     </main>

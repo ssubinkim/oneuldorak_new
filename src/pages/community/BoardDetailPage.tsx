@@ -5,7 +5,7 @@ import type { BoardComment } from '../../components/community/boarddetailpage/Co
 import CommentSection from '../../components/community/boarddetailpage/CommentSection'
 import BoardWriteForm from '../../components/community/communitywritepage/BoardWriteForm'
 import type { BoardWriteData } from '../../components/community/communitywritepage/writeTypes'
-import { mockBoardComments, mockBoardDetailPosts } from '../../components/community/common/boardMockData'
+import { mockBoardCommentsByPostId, mockBoardDetailPosts } from '../../components/community/common/boardMockData'
 import {
   readPersistedBoardComments,
   savePersistedBoardComments,
@@ -85,8 +85,8 @@ function BoardDetailPage({
   const fallbackPost = allPosts[0]
   const currentPostId = postId ?? fallbackPost?.id ?? null
   const post = allPosts.find((item) => item.id === currentPostId) ?? fallbackPost
-  const commentSeed = mockBoardDetailPosts.some((mockPost) => mockPost.id === post?.id)
-    ? mockBoardComments
+  const commentSeed = post && mockBoardDetailPosts.some((mockPost) => mockPost.id === post.id)
+    ? (mockBoardCommentsByPostId[post.id] ?? [])
     : []
   const [commentsByPostId, setCommentsByPostId] = useState<Record<string, BoardComment[]>>(readPersistedBoardComments)
   const [likedBoardPostKeys, setLikedBoardPostKeys] = useState<string[]>(readPersistedBoardLikeKeys)

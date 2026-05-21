@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import pointBgImage from './images/pointbg.png'
 import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import { awardVotePoint } from '../../common/usePoints'
 import { useUserProfile } from '../../common/useUserProfile'
@@ -119,6 +120,19 @@ const voteCards: VoteCardItem[] = [
       { label: '진미채', votes: 14 },
     ],
   },
+  {
+    id: 'vote-fridge',
+    question: '냉장고에서 가장 자주 버리는 재료는?',
+    reward: '+1p',
+    participants: 41,
+    deadline: () => getDeadline(8),
+    options: [
+      { label: '채소류 (대파, 시금치 등)', votes: 20 },
+      { label: '두부', votes: 10 },
+      { label: '남은 양념류', votes: 7 },
+      { label: '과일', votes: 4 },
+    ],
+  },
 ]
 
 const endedVoteCards: VoteCardItem[] = [
@@ -225,6 +239,7 @@ function VoteResultItem({
   isLeading,
   isSelected,
   isDimmed,
+  isCardVisible,
   onSelect,
 }: {
   option: VoteOption
@@ -232,19 +247,18 @@ function VoteResultItem({
   isLeading?: boolean
   isSelected?: boolean
   isDimmed?: boolean
+  isCardVisible?: boolean
   onSelect?: (optionLabel: string) => void
 }) {
   const [isGaugeReady, setIsGaugeReady] = useState(false)
 
   useEffect(() => {
+    if (!isCardVisible) return
     const frameId = window.requestAnimationFrame(() => {
       setIsGaugeReady(true)
     })
-
-    return () => {
-      window.cancelAnimationFrame(frameId)
-    }
-  }, [])
+    return () => window.cancelAnimationFrame(frameId)
+  }, [isCardVisible])
 
   const className = [
     'vote-result-item',
@@ -284,10 +298,12 @@ function VoteResultItem({
 function VoteResultList({
   options,
   selectedOption,
+  isCardVisible,
   onSelect,
 }: {
   options: VoteOption[]
   selectedOption?: string
+  isCardVisible?: boolean
   onSelect?: (optionLabel: string) => void
 }) {
   const totalVotes = getTotalVotes(options)
@@ -303,6 +319,7 @@ function VoteResultList({
           isLeading={option.votes === maxVotes}
           isSelected={option.label === selectedOption}
           isDimmed={false}
+          isCardVisible={isCardVisible}
           onSelect={onSelect}
         />
       ))}
@@ -325,6 +342,7 @@ function VoteCard({
   onSaveEdit,
   onDelete,
   dataVoteId,
+  variant,
 }: {
   card: VoteCardItem
   selectedOption?: string
@@ -340,8 +358,29 @@ function VoteCard({
   onSaveEdit?: () => void
   onDelete?: () => void
   dataVoteId?: string
+  variant?: 'featured' | 'list'
 }) {
-  const isFeatured = Boolean(card.heading)
+  const isFeatured = Boolean(card.heading) && variant !== 'list'
+  const cardRef = useRef<HTMLElement | HTMLDivElement>(null)
+  const [isCardVisible, setIsCardVisible] = useState(isFeatured)
+
+  useEffect(() => {
+    if (isFeatured) return
+    const el = cardRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsCardVisible(true)
+          el.classList.add('is-visible')
+          observer.unobserve(el)
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -80px 0px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [isFeatured])
   const votedOptions = getVotedOptions(card.options, selectedOption)
   const deadlineText = typeof card.deadline === 'function' ? card.deadline() : card.deadline
   const participantCount = selectedOption ? card.participants + 1 : card.participants
@@ -350,6 +389,7 @@ function VoteCard({
     <VoteResultList
       options={votedOptions}
       selectedOption={selectedOption}
+      isCardVisible={isCardVisible}
       onSelect={isEnded ? undefined : (optionLabel) => onVote(card.id, optionLabel)}
     />
   ) : (
@@ -375,7 +415,7 @@ function VoteCard({
 
   if (isFeatured) {
     return (
-      <div className="vote-featured-section">
+      <div ref={cardRef as React.RefObject<HTMLDivElement>} className="vote-featured-section">
         <div className="vote-featured-section__header">
           <div className="vote-featured-section__title-group">
             <h2>{card.heading}</h2>
@@ -390,7 +430,15 @@ function VoteCard({
           )}
         </div>
         <article className="vote-card vote-card--featured">
-          <p className="vote-card-question">Q. {card.question}</p>
+          <div className="vote-card-title-wrap">
+            <p className="vote-card-question">Q. {card.question}</p>
+            {card.reward && (
+              <div className="vote-card-reward-wrap">
+                <img className="vote-card-reward-img" src={pointBgImage} alt="" aria-hidden="true" />
+                <span className="vote-card-reward-text">+1P</span>
+              </div>
+            )}
+          </div>
           {choices}
           {cardFooter}
         </article>
@@ -400,7 +448,7 @@ function VoteCard({
 
   if (isEditing && editValue && onChangeEdit && onCancelEdit && onSaveEdit) {
     return (
-      <article className="vote-card vote-card--editing" data-vote-id={dataVoteId} aria-label="투표 수정">
+      <article ref={cardRef as React.RefObject<HTMLElement>} className="vote-card vote-card--editing" data-vote-id={dataVoteId} aria-label="투표 수정">
         <h2>투표 수정</h2>
         <VoteWriteForm value={editValue} onChange={onChangeEdit} />
         <div className="vote-card-owner-actions vote-card-owner-actions--editing">
@@ -412,12 +460,16 @@ function VoteCard({
   }
 
   return (
-    <article className="vote-card" data-vote-id={dataVoteId}>
+    <article ref={cardRef as React.RefObject<HTMLElement>} className="vote-card" data-vote-id={dataVoteId}>
       <div className="vote-card-title-wrap">
-        <h2>{`Q. ${card.question}`}</h2>
-        {card.reward && <span className="vote-card-reward">{card.reward}</span>}
+        <h3>{`Q. ${card.question}`}</h3>
+        {card.reward && (
+          <div className="vote-card-reward-wrap">
+            <img className="vote-card-reward-img" src={pointBgImage} alt="" aria-hidden="true" />
+            <span className="vote-card-reward-text">+1P</span>
+          </div>
+        )}
       </div>
-      {card.subtitle && <p className="vote-card-subtitle">{card.subtitle}</p>}
       {choices}
       {cardFooter}
       {canManage && (
@@ -470,12 +522,14 @@ function VoteList({
 
       markVoteModalShown(cardId)
 
-      setVoteModal({
-        question: selectedCard.question,
-        selectedOption: optionLabel,
-        reward: selectedCard.reward,
-        isPointAwarded,
-      })
+      window.setTimeout(() => {
+        setVoteModal({
+          question: selectedCard.question,
+          selectedOption: optionLabel,
+          reward: selectedCard.reward,
+          isPointAwarded,
+        })
+      }, 820)
     }
   }
 
@@ -602,6 +656,7 @@ function VoteList({
           onSaveEdit={() => handleSaveEdit(card.id)}
           onDelete={() => handleDelete(card.id)}
           dataVoteId={variant === 'list' ? card.id : undefined}
+          variant={variant}
         />
       ))}
 
