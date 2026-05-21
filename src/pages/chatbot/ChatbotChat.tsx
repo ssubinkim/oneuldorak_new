@@ -1,11 +1,18 @@
-import { useCallback, useEffect, useRef, useState, type ChangeEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
 import type { ChatMessage } from '../../types/chatbot'
 import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import { requestAiChat } from '../../features/ai/services/aiApi'
 import { AI_FEATURES, type AiFeature, type AnalysisType } from '../../features/ai/types/ai.types'
 import chatbotMascotIcon from '../../components/chatbot/images/chatbot .png'
+import fridgeAnalyzeHeroImage from '../../components/chatbot/images/camera.png'
 import btnXIcon from '../../components/chatbot/images/btn_x.png'
+import eggIngredientIcon from '../../assets/images/food_icon/egg.png'
+import carrotIngredientIcon from '../../assets/images/food_icon/carrot.png'
+import tofuIngredientIcon from '../../assets/images/food_icon/tofu.png'
+import kimchiIngredientIcon from '../../assets/images/food_icon/kimchi.png'
+import cabbageIngredientIcon from '../../assets/images/food_icon/leaf_lettuce.png'
+import broccoliIngredientIcon from '../../assets/images/food_icon/broccoli.png'
 import ChatbotInputBar from '../../components/chatbot/ChatbotInputBar'
 import ChatbotCameraSheet from '../../components/chatbot/ChatbotCameraSheet'
 import ChatbotRecipeCard from '../../components/chatbot/ChatbotRecipeCard'
@@ -34,6 +41,20 @@ type RequestOptions = {
   analysisType?: AnalysisType
   feature?: AiFeature
   judgeFlow?: boolean
+}
+
+type FridgeIngredientCatalogItem = {
+  label: string
+  aliases: string[]
+  icon: string
+}
+
+type FridgeDetectedIngredient = {
+  id: string
+  label: string
+  icon: string
+  selected: boolean
+  needsReview: boolean
 }
 
 function shouldUseDesktopWebcam() {
@@ -68,6 +89,93 @@ const MAX_IMAGE_EDGE = 1400
 const IMAGE_EDGE_CANDIDATES = [1400, 1200, 1000, 900, 800, 700, 600]
 const JPEG_QUALITY_CANDIDATES = [0.84, 0.72, 0.62, 0.52, 0.44]
 const GO_TO_CHATBOT_HOME_LABEL = '처음으로 가기'
+const FRIDGE_LOADING_STEPS = ['이미지 확인 중', '재료 식별 중', '결과 정리 중', '저장 준비 중'] as const
+const FRIDGE_LOADING_STEP_INTERVAL = 1800
+const FRIDGE_LOADING_MIN_DURATION = 7600
+const FRIDGE_RESULT_MAX_ITEMS = 4
+
+const FRIDGE_INGREDIENT_CATALOG: FridgeIngredientCatalogItem[] = [
+  { label: '계란', aliases: ['달걀', 'egg'], icon: eggIngredientIcon },
+  { label: '당근', aliases: ['carrot'], icon: carrotIngredientIcon },
+  { label: '두부', aliases: ['tofu'], icon: tofuIngredientIcon },
+  { label: '김치', aliases: ['kimchi'], icon: kimchiIngredientIcon },
+  { label: '양배추', aliases: ['cabbage'], icon: cabbageIngredientIcon },
+  { label: '브로콜리', aliases: ['broccoli'], icon: broccoliIngredientIcon },
+]
+
+const FRIDGE_RESULT_FALLBACK_LABELS = ['계란', '두부', '양배추', '당근']
+
+function normalizeIngredientToken(value: string) {
+  return value
+    .replace(/\s+/g, '')
+    .replace(/[^a-zA-Z0-9가-힣]/g, '')
+    .toLowerCase()
+}
+
+function resolveCatalogItemByToken(token: string) {
+  const normalized = normalizeIngredientToken(token)
+  if (!normalized) return null
+
+  return FRIDGE_INGREDIENT_CATALOG.find((item) =>
+    [item.label, ...item.aliases].some((alias) => normalizeIngredientToken(alias) === normalized),
+  ) ?? null
+}
+
+function tokenizeIngredientLine(value: string) {
+  return value
+    .split(/[,\n/|·ㆍ]/)
+    .map((token) => token.trim())
+    .filter(Boolean)
+}
+
+function buildFridgeDetectedIngredientsFromText(text: string): FridgeDetectedIngredient[] {
+  const foundItems: FridgeDetectedIngredient[] = []
+  const usedLabels = new Set<string>()
+
+  const pushCatalogItem = (item: FridgeIngredientCatalogItem, needsReview: boolean) => {
+    if (usedLabels.has(item.label)) return
+    usedLabels.add(item.label)
+    foundItems.push({
+      id: `fridge-item-${item.label}`,
+      label: item.label,
+      icon: item.icon,
+      selected: false,
+      needsReview,
+    })
+  }
+
+  const listMatch = text.match(/확인된\s*재료\s*[:：]\s*([^\n]+)/)
+  if (listMatch?.[1]) {
+    const tokens = tokenizeIngredientLine(listMatch[1])
+    tokens.forEach((token) => {
+      const catalogItem = resolveCatalogItemByToken(token)
+      if (catalogItem) {
+        pushCatalogItem(catalogItem, false)
+      }
+    })
+  }
+
+  FRIDGE_INGREDIENT_CATALOG.forEach((catalogItem) => {
+    if (usedLabels.has(catalogItem.label)) return
+    const matched = [catalogItem.label, ...catalogItem.aliases].some((alias) =>
+      text.includes(alias),
+    )
+    if (matched) {
+      pushCatalogItem(catalogItem, false)
+    }
+  })
+
+  FRIDGE_RESULT_FALLBACK_LABELS.forEach((fallbackLabel) => {
+    if (foundItems.length >= FRIDGE_RESULT_MAX_ITEMS) return
+    if (usedLabels.has(fallbackLabel)) return
+    const catalogItem = resolveCatalogItemByToken(fallbackLabel)
+    if (catalogItem) {
+      pushCatalogItem(catalogItem, true)
+    }
+  })
+
+  return foundItems.slice(0, FRIDGE_RESULT_MAX_ITEMS)
+}
 
 function readAnalysisType(value: string | null): AnalysisType | null {
   if (value === 'menu' || value === 'receipt' || value === 'judge') {
@@ -257,6 +365,31 @@ function applyPendingIdToFirstAssistantMessage(messages: ChatMessage[], pendingI
   })
 }
 
+function getFridgeLoadingOverlay(messages: LocalMessage[]) {
+  for (let index = messages.length - 1; index >= 0; index -= 1) {
+    const message = messages[index]
+    if (message.type !== 'ai-loading' || message.feature !== 'fridge-photo-analysis') {
+      continue
+    }
+
+    let imageDataUrl: string | undefined
+    for (let candidateIndex = index - 1; candidateIndex >= 0; candidateIndex -= 1) {
+      const candidate = messages[candidateIndex]
+      if (candidate.type === 'user' && candidate.imageDataUrl) {
+        imageDataUrl = candidate.imageDataUrl
+        break
+      }
+    }
+
+    return {
+      pendingId: message.id,
+      imageDataUrl,
+    }
+  }
+
+  return null
+}
+
 function buildJudgeFollowupPrompt(requestText: string, subjectHint: string) {
   const subjectLine = subjectHint
     ? `직전 판단 대상 정보: ${subjectHint}`
@@ -273,6 +406,14 @@ function buildJudgeFollowupPrompt(requestText: string, subjectHint: string) {
     '- 가격/가성비 체크:',
     '- 추천 행동:',
   ].join('\n')
+}
+
+function wait(ms: number) {
+  return new Promise<void>((resolve) => {
+    window.setTimeout(() => {
+      resolve()
+    }, ms)
+  })
 }
 
 async function loadImageFromUrl(url: string) {
@@ -365,10 +506,15 @@ function ChatbotChat() {
   const displayName = nickname?.trim() || '도시락러버'
   const [messages, setMessages] = useState<LocalMessage[]>([])
   const [showCameraSheet, setShowCameraSheet] = useState(false)
+  const [cameraSheetFeature, setCameraSheetFeature] = useState<AiFeature | null>(initialContext.feature)
   const [showDesktopCamera, setShowDesktopCamera] = useState(false)
   const [desktopCameraError, setDesktopCameraError] = useState('')
   const [isJudgeFlow, setIsJudgeFlow] = useState(initialAnalysisType === 'judge')
   const [judgeMode, setJudgeMode] = useState<JudgeMode>(initialContext.judgeMode ?? 'text')
+  const [showFridgeResultModal, setShowFridgeResultModal] = useState(false)
+  const [showFridgeSavedModal, setShowFridgeSavedModal] = useState(false)
+  const [fridgeDetectedIngredients, setFridgeDetectedIngredients] = useState<FridgeDetectedIngredient[]>([])
+  const [savedFridgeIngredientLabels, setSavedFridgeIngredientLabels] = useState<string[]>([])
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const albumInputRef = useRef<HTMLInputElement>(null)
   const desktopVideoRef = useRef<HTMLVideoElement>(null)
@@ -379,6 +525,28 @@ function ChatbotChat() {
   const activeFeatureRef = useRef<AiFeature | null>(initialContext.feature)
   const activeAnalysisTypeRef = useRef<AnalysisType>(initialAnalysisType)
   const hasInitializedRef = useRef(false)
+  const [fridgeLoadingStep, setFridgeLoadingStep] = useState(1)
+  const [dismissedFridgeLoadingId, setDismissedFridgeLoadingId] = useState<string | null>(null)
+  const lastFridgeLoadingIdRef = useRef<string | null>(null)
+  const fridgeLoadingStartedAtRef = useRef<Record<string, number>>({})
+
+  const fridgeLoadingOverlay = useMemo(() => getFridgeLoadingOverlay(messages), [messages])
+  const activeFridgeLoadingId = fridgeLoadingOverlay?.pendingId ?? null
+  const shouldShowFridgeLoadingModal =
+    Boolean(fridgeLoadingOverlay)
+    && activeFridgeLoadingId !== dismissedFridgeLoadingId
+  const hasSelectedFridgeIngredients = fridgeDetectedIngredients.some((ingredient) => ingredient.selected)
+  const savedIngredientSummary = useMemo(() => {
+    if (savedFridgeIngredientLabels.length === 0) {
+      return '선택한 재료 0개가 추가됐어요'
+    }
+    return `${savedFridgeIngredientLabels.join(',')} ${savedFridgeIngredientLabels.length}개가 추가됐어요`
+  }, [savedFridgeIngredientLabels])
+
+  const openCameraSheet = useCallback((feature: AiFeature) => {
+    setCameraSheetFeature(feature)
+    setShowCameraSheet(true)
+  }, [])
 
   const stopDesktopCamera = useCallback(() => {
     const stream = desktopCameraStreamRef.current
@@ -422,6 +590,20 @@ function ChatbotChat() {
     }
   }, [stopDesktopCamera])
 
+  const ensureFridgeLoadingDuration = useCallback(async (pendingId: string) => {
+    const startedAt = fridgeLoadingStartedAtRef.current[pendingId]
+    if (!startedAt) {
+      return
+    }
+
+    const elapsed = Date.now() - startedAt
+    const remaining = FRIDGE_LOADING_MIN_DURATION - elapsed
+    if (remaining > 0) {
+      await wait(remaining)
+    }
+    delete fridgeLoadingStartedAtRef.current[pendingId]
+  }, [])
+
   const requestAiResponse = useCallback(async (
     userText: string,
     pendingId: string,
@@ -435,6 +617,7 @@ function ChatbotChat() {
         feature: options.feature,
         forceMock: !options.useApi,
       })
+      await ensureFridgeLoadingDuration(pendingId)
       activeFeatureRef.current = response.feature
       activeAnalysisTypeRef.current = getAnalysisTypeForFeature(response.feature)
       const responseMessages = applyPendingIdToFirstAssistantMessage(response.messages, pendingId)
@@ -447,7 +630,13 @@ function ChatbotChat() {
         nextMessages.splice(pendingIndex, 1, ...responseMessages)
         return nextMessages
       })
+
+      if (response.feature === 'fridge-photo-analysis' && response.status === 'success') {
+        setFridgeDetectedIngredients(buildFridgeDetectedIngredientsFromText(response.text))
+        setShowFridgeResultModal(true)
+      }
     } catch (error) {
+      await ensureFridgeLoadingDuration(pendingId)
       const errorText = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.'
       const nextErrorMessage: ChatMessage = {
         id: pendingId,
@@ -464,7 +653,7 @@ function ChatbotChat() {
         ...previousMessages.map((message) => (message.id === pendingId ? nextErrorMessage : message)),
       ])
     }
-  }, [])
+  }, [ensureFridgeLoadingDuration])
 
   const queueUserRequest = useCallback((
     displayText: string,
@@ -489,6 +678,9 @@ function ChatbotChat() {
       imageDataUrl: options.displayImageDataUrl,
     }
     const pendingId = `pending-${Date.now()}`
+    if (options.feature === 'fridge-photo-analysis') {
+      fridgeLoadingStartedAtRef.current[pendingId] = Date.now()
+    }
     setMessages((prev) => [
       ...prev,
       userMsg,
@@ -556,7 +748,7 @@ function ChatbotChat() {
       setMessages(introMessages)
 
       window.setTimeout(() => {
-        setShowCameraSheet(true)
+        openCameraSheet(context.feature ?? 'fridge-photo-analysis')
       }, 120)
       return
     }
@@ -590,7 +782,7 @@ function ChatbotChat() {
       setMessages(introMessages)
 
       if (context.openPicker) {
-        window.setTimeout(() => setShowCameraSheet(true), 120)
+        window.setTimeout(() => openCameraSheet(context.feature ?? 'buy-or-not'), 120)
       }
       return
     }
@@ -604,7 +796,7 @@ function ChatbotChat() {
       feature: context.feature ?? undefined,
       judgeFlow: isJudgeRoute,
     })
-  }, [queueUserRequest])
+  }, [openCameraSheet, queueUserRequest])
 
   useEffect(() => {
     const len = messages.length
@@ -642,6 +834,60 @@ function ChatbotChat() {
       stopDesktopCamera()
     }
   }, [stopDesktopCamera])
+
+  useEffect(() => {
+    if (!activeFridgeLoadingId) {
+      lastFridgeLoadingIdRef.current = null
+      setDismissedFridgeLoadingId(null)
+      setFridgeLoadingStep(1)
+      return
+    }
+
+    if (lastFridgeLoadingIdRef.current !== activeFridgeLoadingId) {
+      lastFridgeLoadingIdRef.current = activeFridgeLoadingId
+      setDismissedFridgeLoadingId(null)
+      setFridgeLoadingStep(1)
+    }
+  }, [activeFridgeLoadingId])
+
+  useEffect(() => {
+    if (!shouldShowFridgeLoadingModal) {
+      return
+    }
+
+    const timer = window.setInterval(() => {
+      setFridgeLoadingStep((previousStep) => (
+        previousStep >= FRIDGE_LOADING_STEPS.length
+          ? previousStep
+          : previousStep + 1
+      ))
+    }, FRIDGE_LOADING_STEP_INTERVAL)
+
+    return () => {
+      window.clearInterval(timer)
+    }
+  }, [shouldShowFridgeLoadingModal])
+
+  const toggleFridgeIngredient = useCallback((id: string) => {
+    setFridgeDetectedIngredients((previousIngredients) => previousIngredients.map((ingredient) => (
+      ingredient.id === id
+        ? { ...ingredient, selected: !ingredient.selected }
+        : ingredient
+    )))
+  }, [])
+
+  const handleAddSelectedIngredients = useCallback(() => {
+    const selectedIngredients = fridgeDetectedIngredients.filter((ingredient) => ingredient.selected)
+    if (selectedIngredients.length === 0) return
+
+    setSavedFridgeIngredientLabels(selectedIngredients.map((ingredient) => ingredient.label))
+    setFridgeDetectedIngredients((previousIngredients) => previousIngredients.map((ingredient) => ({
+      ...ingredient,
+      selected: false,
+    })))
+    setShowFridgeResultModal(false)
+    setShowFridgeSavedModal(true)
+  }, [fridgeDetectedIngredients])
 
   const addUserMessage = (text: string) => {
     if (isJudgeFlow) {
@@ -768,7 +1014,7 @@ function ChatbotChat() {
     setJudgeMode(mode)
     setIsJudgeFlow(true)
     if (mode === 'photo') {
-      setShowCameraSheet(true)
+      openCameraSheet('buy-or-not')
     }
   }
 
@@ -951,7 +1197,7 @@ function ChatbotChat() {
                           if (item.includes('사진') && item.includes('다시')) {
                             setJudgeMode('photo')
                             setIsJudgeFlow(true)
-                            setShowCameraSheet(true)
+                            openCameraSheet('buy-or-not')
                             return
                           }
                           addUserMessage(item)
@@ -970,7 +1216,15 @@ function ChatbotChat() {
 
           {showCameraSheet ? (
             <ChatbotCameraSheet
-              title={isJudgeFlow ? '사진을 어떻게 올릴까요?' : undefined}
+              mode={!isJudgeFlow && cameraSheetFeature === 'fridge-photo-analysis' ? 'fridge' : 'default'}
+              title={
+                !isJudgeFlow && cameraSheetFeature === 'fridge-photo-analysis'
+                  ? '냉장고 사진 분석'
+                  : (isJudgeFlow ? '사진을 어떻게 올릴까요?' : undefined)
+              }
+              description={!isJudgeFlow && cameraSheetFeature === 'fridge-photo-analysis' ? '사진을 선택해 재료를 분석해보세요.' : undefined}
+              takePhotoLabel={!isJudgeFlow && cameraSheetFeature === 'fridge-photo-analysis' ? '카메라로 찍기' : undefined}
+              selectFromAlbumLabel={!isJudgeFlow && cameraSheetFeature === 'fridge-photo-analysis' ? '앨범에서 선택' : undefined}
               onTakePhoto={handleTakePhoto}
               onSelectFromAlbum={handleSelectFromAlbum}
               onClose={() => setShowCameraSheet(false)}
@@ -995,6 +1249,193 @@ function ChatbotChat() {
                   </button>
                 </div>
               </div>
+            </div>
+          ) : null}
+
+          {shouldShowFridgeLoadingModal && fridgeLoadingOverlay ? (
+            <div className="chatbot-fridge-loading-overlay" role="dialog" aria-modal="true" aria-label="냉장고 분석 중">
+              <section className="chatbot-fridge-loading">
+                <button
+                  className="chatbot-fridge-loading__close"
+                  type="button"
+                  aria-label="로딩 창 닫기"
+                  onClick={() => {
+                    if (!activeFridgeLoadingId) return
+                    setDismissedFridgeLoadingId(activeFridgeLoadingId)
+                  }}
+                >
+                  <img src={btnXIcon} alt="" aria-hidden="true" />
+                </button>
+                <h2 className="chatbot-fridge-loading__title">AI가 재료를 찾고 있어요</h2>
+
+                <div className="chatbot-fridge-loading__visual">
+                  {fridgeLoadingOverlay.imageDataUrl ? (
+                    <img
+                      className="chatbot-fridge-loading__photo"
+                      src={fridgeLoadingOverlay.imageDataUrl}
+                      alt="분석 중인 사진"
+                    />
+                  ) : null}
+                  <div className="chatbot-fridge-loading__visual-dim" aria-hidden="true" />
+                  <img
+                    className="chatbot-fridge-loading__mascot"
+                    src={fridgeAnalyzeHeroImage}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </div>
+
+                <ol className="chatbot-fridge-loading__progress" aria-label="분석 진행 단계">
+                  {FRIDGE_LOADING_STEPS.map((_, index) => {
+                    const stepNumber = index + 1
+                    const isActive = stepNumber === fridgeLoadingStep
+                    const isDone = stepNumber < fridgeLoadingStep
+                    return (
+                      <li key={stepNumber} className="chatbot-fridge-loading__progress-item">
+                        <span
+                          className={`chatbot-fridge-loading__progress-dot${isActive ? ' is-active' : ''}${isDone ? ' is-done' : ''}`}
+                          aria-current={isActive ? 'step' : undefined}
+                        >
+                          {isDone ? '✓' : stepNumber}
+                        </span>
+                      </li>
+                    )
+                  })}
+                </ol>
+
+                <ol className="chatbot-fridge-loading__checklist" aria-live="polite">
+                  {FRIDGE_LOADING_STEPS.map((label, index) => {
+                    const stepNumber = index + 1
+                    const isDone = stepNumber < fridgeLoadingStep
+                    const isActive = stepNumber === fridgeLoadingStep
+                    return (
+                      <li key={label} className={`chatbot-fridge-loading__check-item${isActive ? ' is-active' : ''}`}>
+                        <span className={`chatbot-fridge-loading__check-icon${isDone ? ' is-done' : ''}`}>
+                          {isDone ? '✓' : stepNumber}
+                        </span>
+                        <span>{label}</span>
+                      </li>
+                    )
+                  })}
+                </ol>
+
+                <p className="chatbot-fridge-loading__hint">잠시만 기다려 주세요....</p>
+              </section>
+            </div>
+          ) : null}
+
+          {showFridgeResultModal ? (
+            <div className="chatbot-fridge-result-overlay" role="dialog" aria-modal="true" aria-label="분석 재료 선택">
+              <section className="chatbot-fridge-result-modal">
+                <button
+                  className="chatbot-fridge-result-modal__close"
+                  type="button"
+                  aria-label="재료 선택 창 닫기"
+                  onClick={() => setShowFridgeResultModal(false)}
+                >
+                  <img src={btnXIcon} alt="" aria-hidden="true" />
+                </button>
+                <h2 className="chatbot-fridge-result-modal__title">AI가 찾은 재료예요</h2>
+                <p className="chatbot-fridge-result-modal__description">재료함에 추가할 항목을 확인 해주세요</p>
+
+                <ul className="chatbot-fridge-result-modal__list">
+                  {fridgeDetectedIngredients.map((ingredient) => (
+                    <li key={ingredient.id}>
+                      <button
+                        className="chatbot-fridge-result-modal__item"
+                        type="button"
+                        onClick={() => toggleFridgeIngredient(ingredient.id)}
+                      >
+                        <span
+                          className={`chatbot-fridge-result-modal__check${ingredient.selected ? ' is-selected' : ''}`}
+                          aria-hidden="true"
+                        >
+                          {ingredient.selected ? '✓' : ''}
+                        </span>
+                        <img
+                          className="chatbot-fridge-result-modal__icon"
+                          src={ingredient.icon}
+                          alt=""
+                          aria-hidden="true"
+                        />
+                        <span className="chatbot-fridge-result-modal__name">{ingredient.label}</span>
+                        {ingredient.needsReview ? (
+                          <span className="chatbot-fridge-result-modal__badge">확인필요</span>
+                        ) : null}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="chatbot-fridge-result-modal__actions">
+                  <button
+                    className="chatbot-fridge-result-modal__action chatbot-fridge-result-modal__action--secondary"
+                    type="button"
+                  >
+                    직접 추가
+                  </button>
+                  <button
+                    className="chatbot-fridge-result-modal__action chatbot-fridge-result-modal__action--primary"
+                    type="button"
+                    disabled={!hasSelectedFridgeIngredients}
+                    onClick={handleAddSelectedIngredients}
+                  >
+                    선택한 재료 추가
+                  </button>
+                </div>
+              </section>
+            </div>
+          ) : null}
+
+          {showFridgeSavedModal ? (
+            <div className="chatbot-fridge-saved-overlay" role="dialog" aria-modal="true" aria-label="재료 추가 완료">
+              <section className="chatbot-fridge-saved-modal">
+                <button
+                  className="chatbot-fridge-saved-modal__close"
+                  type="button"
+                  aria-label="저장 완료 창 닫기"
+                  onClick={() => setShowFridgeSavedModal(false)}
+                >
+                  <img src={btnXIcon} alt="" aria-hidden="true" />
+                </button>
+
+                <div className="chatbot-fridge-saved-modal__check" aria-hidden="true">✓</div>
+                <div className="chatbot-fridge-saved-modal__confetti" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <img
+                  className="chatbot-fridge-saved-modal__hero"
+                  src={fridgeAnalyzeHeroImage}
+                  alt=""
+                  aria-hidden="true"
+                />
+
+                <h2 className="chatbot-fridge-saved-modal__title">재료함에 저장했어요!</h2>
+                <p className="chatbot-fridge-saved-modal__desc">{savedIngredientSummary}</p>
+                <p className="chatbot-fridge-saved-modal__sub">이 재료로 도시락 추천을 받을까요?</p>
+
+                <div className="chatbot-fridge-saved-modal__actions">
+                  <button
+                    className="chatbot-fridge-saved-modal__action chatbot-fridge-saved-modal__action--primary"
+                    type="button"
+                    onClick={() => setShowFridgeSavedModal(false)}
+                  >
+                    도시락 추천 받기
+                  </button>
+                  <button
+                    className="chatbot-fridge-saved-modal__action chatbot-fridge-saved-modal__action--secondary"
+                    type="button"
+                    onClick={() => setShowFridgeSavedModal(false)}
+                  >
+                    재료함 보러가기
+                  </button>
+                </div>
+              </section>
             </div>
           ) : null}
 
@@ -1037,7 +1478,7 @@ function ChatbotChat() {
                 onCameraClick={() => {
                   setJudgeMode('photo')
                   setIsJudgeFlow(true)
-                  setShowCameraSheet(true)
+                  openCameraSheet('buy-or-not')
                 }}
               />
             </section>
