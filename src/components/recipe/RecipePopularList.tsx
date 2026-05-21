@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import communityOffIcon from '../../assets/icons/Community_off.svg'
 import kimchiRiceImage from '../../assets/images/food_imges/kimbok.png'
 import spamMayoImage from '../../assets/images/food_imges/chamchimayo.png'
 import bibimbapImage from '../../assets/images/food_imges/bibimbap.png'
@@ -144,11 +145,11 @@ function PopularRecipeItem({ recipe, onOpenDetail }: { recipe: PopularRecipe; on
               {recipe.likes}
             </span>
             <span>
-              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2.5 3a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .854.354L5 10.707V12.5a.5.5 0 0 0 .854.354L8.207 10.5H11a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.5-.5H2.5ZM1 3.5A1.5 1.5 0 0 1 2.5 2h8.5A1.5 1.5 0 0 1 12.5 3.5v7A1.5 1.5 0 0 1 11 12H8.5l-2.5 2.5V12H2.5A1.5 1.5 0 0 1 1 10.5v-7Z" /></svg>
+              <img src={communityOffIcon} width={11} height={11} aria-hidden="true" />
               {recipe.comments}
             </span>
             <span>
-              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1Z" /></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /></svg>
               {recipe.saves}
             </span>
           </div>

@@ -7,7 +7,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 16px 0 14px;
+  padding: 16px 0 0;
 }
 
 .recipe-hero__title {
@@ -20,8 +20,8 @@
 
 .recipe-hero__subtitle {
   margin: 0;
-  color: #4d4d4d;
-  font-size: 12px;
+  color: #3c3c3c;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.55;
 }
@@ -52,15 +52,19 @@
 
 .recipe-hero__mascots {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: flex-end;
   gap: 2px;
-  height: 96px;
-  overflow: hidden;
+  height: 132px;
+  overflow: visible;
+  position: relative;
+  top: 10px;
+  z-index: 2;
+  padding-bottom: 12px;
 }
 
 .recipe-hero__mascots img {
-  height: 86px;
+  height: 120px;
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
