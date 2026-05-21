@@ -69,34 +69,57 @@
 }
 
 .mypage-goal-donut {
+  position: relative;
   flex: 0 0 auto;
   display: grid;
   place-items: center;
-  width: 96px;
-  height: 96px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
-  background: conic-gradient(var(--green-blue-blue06, #80A3FF) var(--goal-pct), #F6F6F6 0);
-  box-shadow:
-    4px 4px 4px 0 rgba(0, 0, 0, 0.08) inset,
-    2px -4px 4px 0 rgba(0, 0, 0, 0.08) inset;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
 }
 
-.mypage-goal-donut::before {
-  content: '';
-  grid-area: 1 / 1;
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 40% 35%, #ffffff, #f0f0f5);
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+.mypage-goal-donut__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
-.mypage-goal-donut span {
-  grid-area: 1 / 1;
+.mypage-goal-donut__track,
+.mypage-goal-donut__bar {
+  fill: none;
+  stroke-width: 15;
+}
+
+.mypage-goal-donut__track {
+  stroke: #eef2f8;
+}
+
+.mypage-goal-donut__bar {
+  stroke-dasharray: 100;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 60px 60px;
+}
+
+.mypage-goal-donut__thumb {
+  fill: #ffffff;
+  stroke: #6f95ff;
+  stroke-width: 2.8;
+  transition: opacity 0.2s ease;
+}
+
+.mypage-goal-donut__value {
+  position: relative;
   z-index: 1;
   color: #3c3c3c;
-  font-size: 25px;
-  font-weight: 600;
+  font-family: var(--font-pretendard-variable, 'Pretendard Variable', Pretendard, sans-serif);
+  font-size: 22px;
+  font-weight: 500;
   line-height: 1;
 }
 
@@ -108,13 +131,8 @@
   }
 
   .mypage-goal-donut {
-    width: 84px;
-    height: 84px;
-  }
-
-  .mypage-goal-donut::before {
-    width: 61px;
-    height: 61px;
+    width: 96px;
+    height: 96px;
   }
 }
 
@@ -126,16 +144,11 @@
   }
 
   .mypage-goal-donut {
-    width: 76px;
-    height: 76px;
+    width: 88px;
+    height: 88px;
   }
 
-  .mypage-goal-donut::before {
-    width: 55px;
-    height: 55px;
-  }
-
-  .mypage-goal-donut span {
+  .mypage-goal-donut__value {
     font-size: 22px;
   }
 
@@ -172,16 +185,11 @@
   }
 
   .mypage-goal-donut {
-    width: 132px;
-    height: 132px;
+    width: 150px;
+    height: 150px;
   }
 
-  .mypage-goal-donut::before {
-    width: 97px;
-    height: 97px;
-  }
-
-  .mypage-goal-donut span {
+  .mypage-goal-donut__value {
     font-size: 36px;
   }
 }
