@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import type { CookingStep } from './recipeDetailData'
 import blueMascotIcon from '../../assets/food_mascot/blue_mascot.svg'
 import broMascotIcon from '../../assets/food_mascot/bro_mascot.svg'
@@ -28,11 +27,16 @@ const videoPlayMascotIcons = [
   strawMascotIcon,
 ]
 
+function getMascotIcon(seed: string) {
+  const seedValue = seed
+    .split('')
+    .reduce((sum, character, index) => sum + character.charCodeAt(0) * (index + 1), 0)
+
+  return videoPlayMascotIcons[seedValue % videoPlayMascotIcons.length]
+}
+
 function RecipeDetailMethod({ heroImage, videoUrl, videoLabel, stepIcon, steps }: RecipeDetailMethodProps) {
-  const videoPlayMascot = useMemo(() => {
-    const randomIndex = Math.floor(Math.random() * videoPlayMascotIcons.length)
-    return videoPlayMascotIcons[randomIndex]
-  }, [])
+  const videoPlayMascot = getMascotIcon(heroImage)
 
   return (
     <section className="recipe-detail-section recipe-detail-method">

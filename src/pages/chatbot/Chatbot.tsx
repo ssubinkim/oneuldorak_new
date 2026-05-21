@@ -22,6 +22,10 @@ function closeChatbot() {
   window.location.hash = '#/home'
 }
 
+function navigateToHash(hash: string) {
+  window.location.hash = hash
+}
+
 type CameraPickMode = 'camera' | 'album'
 type JudgeMode = 'text' | 'photo'
 type AnalysisType = 'judge'
@@ -58,7 +62,7 @@ function Chatbot() {
     if (options?.pick) params.set('pick', options.pick)
 
     appendChatbotHistoryMessage(text, source)
-    window.location.hash = `#/chatbot-chat?${params.toString()}`
+    navigateToHash(`#/chatbot-chat?${params.toString()}`)
   }
 
   const handleSuggestionClick = (suggestion: string) => {

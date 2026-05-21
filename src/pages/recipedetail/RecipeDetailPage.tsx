@@ -34,7 +34,7 @@ type RecipeDetailPageProps = {
   recipeId: string | null
   onBack: () => void
   overrideRecipe?: RecipeDetail | null
-  onUpdateRecipe?: (recipeId: string, data: RecipeWriteData) => void
+  onUpdateRecipe?: (recipeId: string, data: RecipeWriteData) => void | Promise<RecipeWriteData | void>
   onDeleteRecipe?: (recipeId: string) => void
 }
 
@@ -117,6 +117,24 @@ function RecipeDetailPage({
   const canManageRecipe = Boolean(onUpdateRecipe && onDeleteRecipe && isOwnRecipe(recipe, email, nickname))
 
   useEffect(() => {
+    const applyHydratedState = (
+      nextRecipe: RecipeDetail,
+      persistedState: ReturnType<typeof normalizePersistedRecipeState>,
+    ) => {
+      queueMicrotask(() => {
+        setRecipe(nextRecipe)
+        setRecipeEditValue(getRecipeEditValue(nextRecipe))
+        setRecipeReactionState({
+          isLiked: persistedState.isLiked,
+          isSaved: persistedState.isSaved,
+        })
+        setIsEditingRecipe(false)
+        setComments(persistedState.comments)
+        setCheckedIngredientIds(persistedState.checkedIngredientIds)
+        setHasHydratedFromStorage(true)
+      })
+    }
+
     if (overrideRecipe) {
       const persistedState = normalizePersistedRecipeState(
         overrideRecipe.stats,
@@ -133,16 +151,7 @@ function RecipeDetailPage({
         stats: persistedState.stats,
       }
 
-      setRecipe(nextRecipe)
-      setRecipeEditValue(getRecipeEditValue(nextRecipe))
-      setRecipeReactionState({
-        isLiked: persistedState.isLiked,
-        isSaved: persistedState.isSaved,
-      })
-      setIsEditingRecipe(false)
-      setComments(persistedState.comments)
-      setCheckedIngredientIds(persistedState.checkedIngredientIds)
-      setHasHydratedFromStorage(true)
+      applyHydratedState(nextRecipe, persistedState)
       return
     }
 
@@ -158,22 +167,10 @@ function RecipeDetailPage({
       }),
     )
 
-    setRecipe({
+    applyHydratedState({
       ...nextRecipe,
       stats: persistedState.stats,
-    })
-    setRecipeEditValue(getRecipeEditValue({
-      ...nextRecipe,
-      stats: persistedState.stats,
-    }))
-    setRecipeReactionState({
-      isLiked: persistedState.isLiked,
-      isSaved: persistedState.isSaved,
-    })
-    setIsEditingRecipe(false)
-    setComments(persistedState.comments)
-    setCheckedIngredientIds(persistedState.checkedIngredientIds)
-    setHasHydratedFromStorage(true)
+    }, persistedState)
   }, [overrideRecipe, recipeId])
 
   useEffect(() => {
@@ -245,7 +242,7 @@ function RecipeDetailPage({
     toggleRecipeReaction('saveCount', 'isSaved')
   }
 
-  const handleSaveRecipeEdit = () => {
+  const handleSaveRecipeEdit = async () => {
     if (!onUpdateRecipe) {
       return
     }
@@ -262,26 +259,26 @@ function RecipeDetailPage({
       title: nextTitle,
       content: nextContent,
     }
-    const parsedDurationMinutes = Number(nextRecipeValue.time.match(/\d+/)?.[0])
+    const savedRecipeValue = await onUpdateRecipe(recipe.id, nextRecipeValue) ?? nextRecipeValue
+    const parsedDurationMinutes = Number(savedRecipeValue.time.match(/\d+/)?.[0])
 
-    onUpdateRecipe(recipe.id, nextRecipeValue)
     setRecipe((previous) => ({
       ...previous,
-      title: nextRecipeValue.title,
-      summary: nextRecipeValue.content,
+      title: savedRecipeValue.title,
+      summary: savedRecipeValue.content,
       cook: {
         durationMinutes: Number.isFinite(parsedDurationMinutes) && parsedDurationMinutes > 0
           ? parsedDurationMinutes
           : previous.cook.durationMinutes,
-        budgetLabel: nextRecipeValue.budget || previous.cook.budgetLabel,
-        difficultyLevel: nextRecipeValue.difficulty,
+        budgetLabel: savedRecipeValue.budget || previous.cook.budgetLabel,
+        difficultyLevel: savedRecipeValue.difficulty,
       },
-      ingredients: getRecipeIngredientsFromText(nextRecipeValue.ingredient),
-      tools: nextRecipeValue.tools.map((tool, index) => ({
+      ingredients: getRecipeIngredientsFromText(savedRecipeValue.ingredient),
+      tools: savedRecipeValue.tools.map((tool, index) => ({
         id: `user-tool-${index}-${tool}`,
         label: tool,
       })),
-      media: nextRecipeValue.media,
+      media: savedRecipeValue.media,
     }))
     setIsEditingRecipe(false)
   }
