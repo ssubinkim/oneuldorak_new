@@ -10,9 +10,10 @@ const PAGE_SIZE = 3
 type Props = {
   products: Product[]
   onSelect?: (product: Product) => void
+  onCartClick?: (rect: DOMRect) => void
 }
 
-function SubscriptionSection({ products, onSelect }: Props) {
+function SubscriptionSection({ products, onSelect, onCartClick }: Props) {
   const [activeTab, setActiveTab] = useState('전체')
   const [currentPage, setCurrentPage] = useState(0)
   const trackRef = useRef<HTMLDivElement>(null)
@@ -117,7 +118,7 @@ function SubscriptionSection({ products, onSelect }: Props) {
                     className="subscription__item-cart"
                     type="button"
                     aria-label="장바구니"
-                    onClick={e => e.stopPropagation()}
+                    onClick={e => { e.stopPropagation(); onCartClick?.(e.currentTarget.getBoundingClientRect()) }}
                   >
                     <svg viewBox="0 0 24 24" width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />

@@ -5,9 +5,10 @@ import ProductCard, { type Product } from './ProductCard'
 type Props = {
   products: Product[]
   onSelect?: (product: Product) => void
+  onCartClick?: (rect: DOMRect) => void
 }
 
-function KitchenSection({ products, onSelect }: Props) {
+function KitchenSection({ products, onSelect, onCartClick }: Props) {
   return (
     <div className="kitchen-section">
       <div className="kitchen-section__header">
@@ -23,7 +24,7 @@ function KitchenSection({ products, onSelect }: Props) {
       <div className="kitchen-section__track">
         {products.map((p, i) => (
           <div key={`${p.id}-${i}`} className="kitchen-section__item">
-            <ProductCard {...p} onClick={() => onSelect?.(p)} />
+            <ProductCard {...p} onClick={() => onSelect?.(p)} onCartClick={onCartClick} />
           </div>
         ))}
       </div>

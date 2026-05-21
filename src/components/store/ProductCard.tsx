@@ -15,10 +15,11 @@ export type Product = {
 type Props = Product & {
   rank?: number
   onClick?: () => void
+  onCartClick?: (rect: DOMRect) => void
   prioritizeImage?: boolean
 }
 
-function ProductCard({ name, price, originalPrice, brand, image, rating, reviewCount, rank, onClick, prioritizeImage = false }: Props) {
+function ProductCard({ name, price, originalPrice, brand, image, rating, reviewCount, rank, onClick, onCartClick, prioritizeImage = false }: Props) {
   return (
     <div className="product-card" onClick={onClick}>
       <div className="product-card__image-wrap">
@@ -46,7 +47,7 @@ function ProductCard({ name, price, originalPrice, brand, image, rating, reviewC
         )}
         <button
           className="product-card__cart-btn"
-          onClick={e => e.stopPropagation()}
+          onClick={e => { e.stopPropagation(); onCartClick?.(e.currentTarget.getBoundingClientRect()) }}
           type="button"
           aria-label="장바구니 담기"
         >

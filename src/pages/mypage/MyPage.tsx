@@ -14,7 +14,6 @@ import { getMyPageActivityCounts } from '../../components/mypage/mypageReactionD
 import { initAttendance } from '../../components/mypage/mypageAttendance'
 import { NOTIFICATIONS } from '../../components/mypage/notification/notificationData'
 import { hasUnreadNotifications } from '../../components/mypage/notification/notificationState'
-import arrowLeftIcon from '../../assets/icons/arrow_left.svg'
 import bellIcon from '../../assets/icons/bell_icon.svg'
 import profileImg from '../../assets/icons/profile 1.svg?url'
 import '../../components/mypage/my-page/MyPage.css'
@@ -32,7 +31,7 @@ export default function MyPage() {
       setTimeout(() => setShowSavedToast(false), 2000)
     }
   }, [])
-  const { email, isNew } = useUserProfile()
+  const { email, isNew, avatar } = useUserProfile()
   const notificationIds = NOTIFICATIONS.map(n => n.id)
   const [hasUnread, setHasUnread] = useState(() => !isNew && hasUnreadNotifications(notificationIds))
 
@@ -77,9 +76,6 @@ export default function MyPage() {
       <div className="page-scroll">
         <div className="mypage">
           <header className="mypage-topbar">
-            <button type="button" className="mypage-topbar__button" aria-label="뒤로가기" onClick={() => window.history.back()}>
-              <img src={arrowLeftIcon} alt="" aria-hidden="true" width={22} height={22} loading="eager" decoding="sync" fetchPriority="high" />
-            </button>
             <h1>마이페이지</h1>
             <button type="button" className="mypage-topbar__button mypage-bell-btn" aria-label="알림" onClick={() => { window.location.hash = '#/mypage-notification' }}>
               <img src={bellIcon} alt="" aria-hidden="true" width={22} height={22} loading="eager" decoding="sync" fetchPriority="high" />
@@ -89,7 +85,7 @@ export default function MyPage() {
 
           <section className="mypage-profile-card" aria-label="내 프로필 요약">
             <button type="button" className="mypage-profile-edit-btn" onClick={() => { window.location.hash = '#/mypage-profile-edit' }}>수정하기</button>
-            <MyPageProfile profileImg={profileImg} />
+            <MyPageProfile profileImg={avatar ?? profileImg} />
             <MyPageStats
               stats={stats}
               onStatClick={(stat) => {

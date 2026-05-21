@@ -5,9 +5,10 @@ import ProductCard, { type Product } from './ProductCard'
 type Props = {
   products: Product[]
   onSelect?: (product: Product) => void
+  onCartClick?: (rect: DOMRect) => void
 }
 
-function BestSection({ products, onSelect }: Props) {
+function BestSection({ products, onSelect, onCartClick }: Props) {
   return (
     <div className="best-section">
       <div className="best-section__header">
@@ -23,7 +24,7 @@ function BestSection({ products, onSelect }: Props) {
       <div className="best-section__track">
         {products.map((p, i) => (
           <div key={`${p.id}-${i}`} className="best-section__item">
-            <ProductCard {...p} rank={i + 1} prioritizeImage={i < 2} onClick={() => onSelect?.(p)} />
+            <ProductCard {...p} rank={i + 1} prioritizeImage={i < 2} onClick={() => onSelect?.(p)} onCartClick={onCartClick} />
           </div>
         ))}
       </div>

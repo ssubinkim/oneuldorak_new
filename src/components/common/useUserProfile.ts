@@ -9,6 +9,7 @@ type UserProfile = {
   nickname: string
   isNew?: boolean
   password?: string
+  avatar?: string
 }
 
 const defaultUserProfile: UserProfile = {
@@ -39,6 +40,7 @@ function readStoredUserProfile(): UserProfile {
       nickname: parsedProfile.nickname || defaultUserProfile.nickname,
       isNew: parsedProfile.isNew,
       password: parsedProfile.password,
+      avatar: parsedProfile.avatar,
     }
   } catch {
     return defaultUserProfile
