@@ -3,7 +3,7 @@ import '../../styles/Tailwind.css'
 import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import type { AiFeature, AnalysisType } from '../../features/ai/types/ai.types'
-import chatbotHeroImage from '../../components/chatbot/images/ai_main.png'
+import chatbotHeroImage from '../../components/chatbot/images/main_img.png'
 import xIcon from '../../components/chatbot/images/x.svg'
 import ChatbotCoachMark from '../../components/chatbot/ChatbotCoachMark'
 import ChatbotCameraSheet from '../../components/chatbot/ChatbotCameraSheet'
@@ -186,7 +186,18 @@ function Chatbot() {
             </div>
 
             <div className="chatbot-hero">
-              {!showCoachMark && <img src={chatbotHeroImage} alt="" aria-hidden="true" />}
+              {!showCoachMark && (
+                <>
+                  <p className="chatbot-hero-caption" aria-hidden="true">
+                    <span className="chatbot-hero-caption__text">
+                      <span className="chatbot-hero-caption__word">도시락 고민은</span>
+                      <span className="chatbot-hero-caption__word">우리와</span>
+                      <span className="chatbot-hero-caption__word">함께해요!</span>
+                    </span>
+                  </p>
+                  <img src={chatbotHeroImage} alt="" aria-hidden="true" />
+                </>
+              )}
             </div>
           </section>
 

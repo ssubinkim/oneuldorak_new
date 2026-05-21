@@ -11,6 +11,8 @@
   align-items: center;
   border-radius: 24px;
   background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
 .chatbot-camera {
@@ -22,14 +24,15 @@
   padding: 0;
   background: transparent;
   border: none;
-  border-radius: 20px;
-  overflow: hidden;
+  border-radius: 0;
+  overflow: visible;
 }
 
 .chatbot-camera img {
   width: 50px;
   height: 50px;
-  object-fit: cover;
+  object-fit: contain;
+  display: block;
 }
 
 .chatbot-input-shell {
@@ -39,12 +42,9 @@
   min-width: 0;
   height: 50px;
   border-radius: var(--chatbot-input-radius);
-  padding: 1px;
-  background: linear-gradient(
-    105deg,
-    rgba(183, 232, 134, 0.5),
-    rgba(103, 145, 255, 0.55)
-  );
+  padding: 0;
+  background: transparent;
+  border: 1px solid rgba(103, 145, 255, 0.24);
   box-shadow:
     -18px 0 30px rgba(183, 232, 134, 0.62),
     18px 0 32px rgba(103, 145, 255, 0.58),
@@ -200,6 +200,7 @@
 
 .chatbot-input-shell:focus-within {
   transform: translateY(-2px);
+  border-color: rgba(103, 145, 255, 0.42);
   box-shadow:
     -24px 0 40px rgba(183, 232, 134, 0.72),
     24px 0 42px rgba(103, 145, 255, 0.72),
@@ -255,7 +256,7 @@
   padding: 0 16px;
   box-sizing: border-box;
   color: #3C3C3C;
-  background: #FFFFFD;
+  background: rgba(255, 255, 253, 0.66);
   border: 0;
   border-radius: calc(var(--chatbot-input-radius) - 2px);
   outline: 0;
