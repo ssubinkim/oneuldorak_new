@@ -60,7 +60,7 @@
   font-weight: 700;
   color: #1a1a1a;
   line-height: 1.4;
-  margin: 0 0 8px;
+  margin: 0 0 14px;
 }
 
 .pb-blue {
@@ -68,7 +68,7 @@
 }
 
 .pb-hero-sub {
-  font-size: 16px;
+  font-size: 14px;
   color: #aaa;
   margin: 0;
 }
@@ -151,6 +151,7 @@
   width: 20px;
   height: 20px;
   object-fit: contain;
+  filter: brightness(0) opacity(0.4);
 }
 
 .pb-coupon-btn__arrow {
@@ -165,7 +166,7 @@
 .pb-cancel-notice {
   font-size: 12px;
   color: #aaa;
-  margin: 0 0 8px;
+  margin: 0 0 2px;
 }
 
 .pb-cancel-btn {

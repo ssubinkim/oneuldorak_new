@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import BottomSheet from '../common/BottomSheet'
-import { getUserProfile } from '../../common/useUserProfile'
+import { loadAttendanceDates, calcAttendanceStreak } from '../mypageAttendance'
 import pointIconImg from '../images/point-icon.svg'
 import day1Off from '../images/day1_off.png'
 import day1On from '../images/day1_on.png'
@@ -50,33 +50,6 @@ const HISTORY = [
   { label: '댓글 작성', point: '+1P' },
 ]
 
-const ATTENDANCE_KEY = 'mypage_attendance_dates'
-
-function getTodayStr() {
-  return new Date().toISOString().slice(0, 10)
-}
-
-function loadAttendanceDates(): string[] {
-  try {
-    return JSON.parse(localStorage.getItem(ATTENDANCE_KEY) ?? '[]')
-  } catch {
-    return []
-  }
-}
-
-function calcStreak(dates: string[]): number {
-  if (dates.length === 0) return 0
-  const today = getTodayStr()
-  let streak = 0
-  let checkDate = today
-  while (dates.includes(checkDate)) {
-    streak++
-    const d = new Date(checkDate)
-    d.setDate(d.getDate() - 1)
-    checkDate = d.toISOString().slice(0, 10)
-  }
-  return streak
-}
 
 type Tab = 'history' | 'attendance'
 
@@ -99,40 +72,10 @@ export default function PointBottomSheet({ open, onClose, totalPoints = 245, mon
       setTab('history')
       return
     }
-    const { isNew } = getUserProfile()
-    const today = getTodayStr()
-
-    if (isNew === false) {
-      // 로그인: 7일치 연속 출석 데이터 세팅
-      const sevenDays = Array.from({ length: 7 }, (_, i) => {
-        const d = new Date()
-        d.setDate(d.getDate() - (6 - i))
-        return d.toISOString().slice(0, 10)
-      })
-      localStorage.setItem(ATTENDANCE_KEY, JSON.stringify(sevenDays))
-      setAttendanceDates(sevenDays)
-      return
-    }
-
-    if (isNew === true) {
-      // 회원가입: 오늘 1일차만
-      const newDates = [today]
-      localStorage.setItem(ATTENDANCE_KEY, JSON.stringify(newDates))
-      setAttendanceDates(newDates)
-      return
-    }
-
-    const dates = loadAttendanceDates()
-    if (!dates.includes(today)) {
-      const updated = [...dates, today]
-      localStorage.setItem(ATTENDANCE_KEY, JSON.stringify(updated))
-      setAttendanceDates(updated)
-    } else {
-      setAttendanceDates(dates)
-    }
+    setAttendanceDates(loadAttendanceDates())
   }, [open])
 
-  const streak = calcStreak(attendanceDates)
+  const streak = calcAttendanceStreak(attendanceDates)
   const daysInCycle = streak === 0 ? 0 : streak % 7 === 0 ? 7 : streak % 7
 
   return (

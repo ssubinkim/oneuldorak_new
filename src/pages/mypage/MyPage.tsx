@@ -11,6 +11,7 @@ import MyPageStats from '../../components/mypage/my-page/MyPageStats'
 import type { MyPageStatItem } from '../../components/mypage/my-page/MyPageStats'
 import PointBottomSheet from '../../components/mypage/my-page/PointBottomSheet'
 import { getMyPageActivityCounts } from '../../components/mypage/mypageReactionData'
+import { initAttendance } from '../../components/mypage/mypageAttendance'
 import arrowLeftIcon from '../../assets/icons/arrow_left.svg'
 import bellIcon from '../../assets/icons/bell_icon.svg'
 import profileImg from '../../assets/icons/profile 1.svg?url'
@@ -29,7 +30,11 @@ export default function MyPage() {
       setTimeout(() => setShowSavedToast(false), 2000)
     }
   }, [])
-  const { email } = useUserProfile()
+  const { email, isNew } = useUserProfile()
+
+  useEffect(() => {
+    initAttendance(isNew)
+  }, [isNew])
   const { totalPoints, monthlyPoints } = usePointBalance()
   const activityCounts = getMyPageActivityCounts(email)
   const stats: MyPageStatItem[] = [
