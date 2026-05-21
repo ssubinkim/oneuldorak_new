@@ -54,8 +54,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   position: relative;
+  padding-top: 14px;
+  margin-left: 10px;
 }
 
 .meal-hero__greeting {
@@ -79,20 +81,21 @@
 
 .meal-hero__sub {
   margin: 0;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
   color: #3c3c3c;
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 1.2;
+  letter-spacing: -0.08px;
 }
 
 .meal-hero__mascot {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   object-fit: contain;
-  right: 20px;
-  top: -20px;
+  right: 10px;
+  top: -26px;
 }
 
 /* ── 콘텐츠 영역 ─────────────────────── */
@@ -119,9 +122,16 @@
     font-size: 14px;
   }
 
+  .meal-hero__body {
+    padding-top: 8px;
+    margin-left: 4px;
+  }
+
   .meal-hero__mascot {
     width: 88px;
     height: 88px;
+    right: 4px;
+    top: -18px;
   }
 }
 
@@ -133,6 +143,8 @@
   .meal-hero__mascot {
     width: 76px;
     height: 76px;
+    right: 0;
+    top: -12px;
   }
 }
 
@@ -152,5 +164,7 @@
   .meal-hero__mascot {
     width: 150px;
     height: 150px;
+    right: 20px;
+    top: -32px;
   }
 }

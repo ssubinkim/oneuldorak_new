@@ -1,38 +1,51 @@
 .fridge-sec {
   font-family: 'Pretendard Variable', sans-serif;
-  padding: 28px 0 0;
-  background: #F5F5F5;
+  padding: 48px 20px 32px;
+  background: #fff;
 }
 
-/* ── 헤더 ────────────────────────────── */
+.fridge-card {
+  padding: 16px 14px 12px;
+  background: #f5faef;
+  border-radius: 10px;
+}
+
 .fridge-sec__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  margin-bottom: 16px;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+  border-bottom: 1px dashed #dbe8cf;
 }
 
 .fridge-sec__title {
   margin: 0;
+  font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: #1a1a1a;
-  font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
 }
 
 .fridge-sec__count {
   font-size: 13px;
-  font-weight: 500;
-  color: #888;
+  font-weight: 700;
+  color: #75a85c;
 }
 
-/* ── 재료 가로 스크롤 ─────────────────── */
+.fridge-sec__body {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 4px 0 16px;
+}
+
 .fridge-sec__scroll {
   display: flex;
+  min-width: 0;
+  flex: 1;
   gap: 14px;
   overflow-x: auto;
-  padding: 4px 20px 16px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -41,73 +54,81 @@
   display: none;
 }
 
-/* ── 각 재료 아이템 ───────────────────── */
 .fridge-item {
   display: flex;
+  flex-shrink: 0;
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  flex-shrink: 0;
+}
+
+.fridge-item--add {
+  position: relative;
+  z-index: 1;
 }
 
 .fridge-item__name {
   font-size: 12px;
-  color: #666;
   font-weight: 500;
+  color: #3c3c3c;
   white-space: nowrap;
 }
 
-/* ── 재료 추가 버튼 ───────────────────── */
 .fridge-add-btn {
   position: relative;
+  display: flex;
   width: 62px;
   height: 62px;
-  border-radius: 50%;
-  background: #E8F0FF;
-  border: 1.5px solid #B0C4F0;
-  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  background: #e8f0ff;
+  border: none;
+  border-radius: 12px;
+}
+
+.fridge-add-btn__img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
 }
 
 .fridge-add-btn__plus {
   position: absolute;
-  top: -2px;
-  right: -2px;
+  right: -4px;
+  bottom: 0;
+  display: flex;
   width: 20px;
   height: 20px;
-  border-radius: 50%;
-  background: #4A7CFF;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 400;
-  display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 15px;
+  font-weight: 500;
   line-height: 1;
-  border: 2px solid #F5F5F5;
+  color: #fff;
+  background: #246bff;
+  border: 2px solid #f5faef;
+  border-radius: 50%;
 }
 
-/* ── 재료 원형 ────────────────────────── */
 .fridge-circle-wrap {
   position: relative;
 }
 
 .fridge-circle {
+  display: flex;
   width: 62px;
   height: 62px;
-  border-radius: 50%;
-  background: #fff;
-  border: 1.5px solid #e0e0e0;
-  display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  background: #fff;
+  border: 1.5px solid #e1e1e1;
+  border-radius: 50%;
 }
 
 .fridge-circle--urgent {
-  border-color: #ffb3b3;
+  border-color: #ffb5b5;
 }
 
 .fridge-circle__img {
@@ -118,73 +139,74 @@
 
 .fridge-badge {
   position: absolute;
-  top: -4px;
   right: -4px;
-  background: #FF4D4D;
-  color: #fff;
+  bottom: -6px;
+  padding: 1px 7px;
   font-size: 10px;
-  font-weight: 600;
-  padding: 2px 5px;
-  border-radius: 20px;
-  border: 2px solid #F5F5F5;
+  font-weight: 700;
+  color: #ff4d4d;
   white-space: nowrap;
+  background: #fff;
+  border: 1px solid #ff7777;
+  border-radius: 20px;
 }
 
-/* ── 소비기한 경고 ────────────────────── */
 .fridge-warning {
   display: flex;
+  width: 100%;
+  padding: 10px 12px;
   align-items: center;
   gap: 8px;
-  margin: 0 20px 14px;
-  padding: 12px 14px;
-  background: #FFFBEA;
-  border: 1px solid #FFE9A0;
-  border-radius: 12px;
-  cursor: pointer;
-  width: calc(100% - 40px);
   text-align: left;
+  cursor: pointer;
+  background: #ecf7df;
+  border: none;
+  border-radius: 10px;
 }
 
 .fridge-warning__icon {
-  font-size: 16px;
   flex-shrink: 0;
+  font-size: 15px;
 }
 
 .fridge-warning__text {
   flex: 1;
   font-size: 13px;
   font-weight: 600;
-  color: #7A6000;
+  color: #8dbb54;
 }
 
 .fridge-warning__arrow {
-  font-size: 18px;
-  color: #aaa;
-  font-weight: 700;
   flex-shrink: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #8dbb54;
 }
 
-/* ── 도락마켓 배너 ────────────────────── */
 .market-banner {
   display: flex;
+  min-height: 112px;
+  padding: 18px 16px;
+  margin-top: 18px;
   align-items: center;
   justify-content: space-between;
-  background: #fff;
-  margin: 0 20px 28px;
-  padding: 20px 16px;
-  border-radius: 16px;
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   gap: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #fff5cd;
+  border-radius: 10px;
 }
 
 .market-banner:focus-visible {
-  outline: 2px solid #FFDB78;
+  outline: 2px solid #ffdb78;
   outline-offset: 2px;
 }
 
 .market-banner__text {
+  position: relative;
+  z-index: 1;
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 3px;
 }
@@ -192,75 +214,62 @@
 .market-banner__desc {
   margin: 0;
   font-size: 13px;
-  color: #666;
+  color: #3c3c3c;
 }
 
 .market-banner__name {
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 800;
-  color: #2D9A4E;
   line-height: 1.2;
+  color: #5fb848;
 }
 
 .market-banner__link {
   display: inline-block;
+  padding: 5px 16px;
   margin-top: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #fff;
-  background: #FFDB78;
-  border-radius: 20px;
-  padding: 5px 12px;
   align-self: flex-start;
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+  background: #ffdb78;
+  border-radius: 20px;
 }
 
 .market-banner__mascots {
   display: flex;
-  align-items: flex-end;
   flex-shrink: 0;
+  align-items: flex-end;
 }
 
 .market-banner__mascot {
-  width: 48px;
-  height: 48px;
+  width: 132px;
+  height: 96px;
   object-fit: contain;
-  margin-left: -12px;
-}
-
-.market-banner__mascot:first-child {
-  margin-left: 0;
-}
-
-.market-banner__mascot--front {
-  z-index: 1;
 }
 
 @media (max-width: 360px) {
-  .fridge-sec__header {
-    padding: 0 14px;
+  .fridge-sec {
+    padding: 42px 14px 28px;
   }
 
   .fridge-sec__scroll {
-    padding: 4px 14px 16px;
+    gap: 12px;
   }
 
-  .fridge-warning {
-    margin: 0 14px 14px;
-    width: calc(100% - 28px);
-  }
-
-  .market-banner {
-    margin: 0 14px 24px;
+  .market-banner__mascot {
+    width: 116px;
+    height: 86px;
   }
 }
 
 @media (min-width: 768px) {
   .fridge-sec {
-    padding: 40px 0 0;
+    padding: 56px 40px 40px;
   }
 
-  .fridge-sec__header {
-    padding: 0 40px;
+  .fridge-card {
+    padding: 22px 20px 16px;
   }
 
   .fridge-sec__title {
@@ -268,7 +277,10 @@
   }
 
   .fridge-sec__scroll {
-    padding: 8px 40px 20px;
+    gap: 20px;
+  }
+
+  .fridge-sec__body {
     gap: 20px;
   }
 
@@ -276,6 +288,11 @@
   .fridge-add-btn {
     width: 80px;
     height: 80px;
+  }
+
+  .fridge-add-btn__img {
+    width: 58px;
+    height: 58px;
   }
 
   .fridge-circle__img {
@@ -287,22 +304,17 @@
     font-size: 14px;
   }
 
-  .fridge-warning {
-    margin: 0 40px 20px;
-    width: calc(100% - 80px);
-  }
-
   .market-banner {
-    margin: 0 40px 40px;
+    min-height: 140px;
     padding: 24px 20px;
   }
 
   .market-banner__name {
-    font-size: 20px;
+    font-size: 24px;
   }
 
   .market-banner__mascot {
-    width: 64px;
-    height: 64px;
+    width: 180px;
+    height: 128px;
   }
 }
