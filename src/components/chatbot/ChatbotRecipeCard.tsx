@@ -12,8 +12,11 @@ type ReasonHighlight = {
 
 const REASON_HIGHLIGHT_LABELS = [
   '활용 재료',
+  '먼저 쓸 재료',
   '추가 재료',
   '절약 포인트',
+  '활용 방법',
+  '사용 방법',
   '조리법',
   '조리 방법',
   '만드는 법',

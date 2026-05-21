@@ -38,6 +38,11 @@ function navigateToHash(hash: string) {
   window.location.hash = hash
 }
 
+function shouldSkipCoachMark() {
+  const [, queryString = ''] = window.location.hash.split('?')
+  return new URLSearchParams(queryString).get('skipCoach') === '1'
+}
+
 type CameraPickMode = 'camera' | 'album'
 type JudgeMode = 'text' | 'photo'
 
@@ -55,7 +60,7 @@ const JUDGE_PHOTO_QUERY = '사진으로 살까말까 판단받고 싶어.'
 const CAMERA_ANALYZE_QUERY = '사진으로 살까말까 판단받고 싶어.'
 
 function Chatbot() {
-  const [showCoachMark, setShowCoachMark] = useState(true)
+  const [showCoachMark, setShowCoachMark] = useState(() => !shouldSkipCoachMark())
   const [showJudgeModeSheet, setShowJudgeModeSheet] = useState(false)
   const [showCameraSheet, setShowCameraSheet] = useState(false)
   const { nickname } = useUserProfile()

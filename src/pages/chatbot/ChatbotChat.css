@@ -186,6 +186,10 @@
   gap: 12px;
 }
 
+.chatbot-msg--ai-full-bubble {
+  align-items: flex-end;
+}
+
 .chatbot-bubble {
   display: inline-block;
   max-width: 75%;
@@ -240,10 +244,10 @@
 
 .chatbot-ai-bubble {
   --chatbot-ai-bubble-color: var(--green-blue-blue10, #E6EDFF);
-  --chatbot-ai-tail-left: -10px;
+  --chatbot-ai-tail-left: -12px;
   --chatbot-ai-tail-bottom: 0px;
-  --chatbot-ai-tail-width: 30px;
-  --chatbot-ai-tail-height: 30px;
+  --chatbot-ai-tail-width: 28px;
+  --chatbot-ai-tail-height: 22px;
   position: relative;
   width: fit-content;
   max-width: min(74vw, 300px);
@@ -261,12 +265,14 @@
   position: absolute;
   left: var(--chatbot-ai-tail-left);
   bottom: var(--chatbot-ai-tail-bottom);
-  z-index: 1;
+  z-index: 0;
   width: var(--chatbot-ai-tail-width);
   height: var(--chatbot-ai-tail-height);
   background: var(--chatbot-ai-bubble-color);
-  -webkit-mask: url('../../components/chatbot/images/bubble-tail.png') no-repeat center / 100% 100%;
-  mask: url('../../components/chatbot/images/bubble-tail.png') no-repeat center / 100% 100%;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 24'%3E%3Cpath fill='black' d='M32 0H17C17 8.8 11.2 16.4 0 20.5C10.5 22.9 23.4 18 32 8.5V0Z'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 24'%3E%3Cpath fill='black' d='M32 0H17C17 8.8 11.2 16.4 0 20.5C10.5 22.9 23.4 18 32 8.5V0Z'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+  transform: none;
+  transform-origin: right bottom;
   pointer-events: none;
 }
 
@@ -304,11 +310,15 @@
   --chatbot-ai-card-shift: clamp(48px, 12vw, 64px);
 }
 
-.chatbot-msg--ai:not(.chatbot-msg--ai-loading):not(.chatbot-msg--ai-judge) .chatbot-recipe-card {
-  width: calc(100% + var(--chatbot-ai-card-shift));
+.chatbot-msg--ai:not(.chatbot-msg--ai-loading):not(.chatbot-msg--ai-judge) .chatbot-ai-stack--recipe {
+  --chatbot-recipe-card-shift: clamp(24px, 6vw, 34px);
+}
+
+.chatbot-msg--ai:not(.chatbot-msg--ai-loading):not(.chatbot-msg--ai-judge) .chatbot-ai-stack--recipe .chatbot-recipe-card {
+  width: min(100%, 350px);
   max-width: calc(100vw - 44px);
-  margin-top: 20px;
-  margin-left: calc(var(--chatbot-ai-card-shift) * -1);
+  margin: 20px 0 12px;
+  transform: translateX(calc(var(--chatbot-recipe-card-shift) * -1));
 }
 
 .chatbot-ai-stack--judge {
@@ -320,7 +330,19 @@
 }
 
 .chatbot-ai-stack--judge .chatbot-ai-bubble {
+  --chatbot-ai-tail-bottom: 18px;
   max-width: min(74vw, 300px);
+}
+
+.chatbot-ai-judge-head .chatbot-ai-bubble {
+  --chatbot-ai-tail-bottom: 18px;
+}
+
+.chatbot-msg--ai-full-bubble .chatbot-ai-bubble {
+  --chatbot-ai-tail-left: -16px;
+  --chatbot-ai-tail-bottom: 14px;
+  --chatbot-ai-tail-width: 38px;
+  --chatbot-ai-tail-height: 30px;
 }
 
 .chatbot-ai-stack--recipe {
@@ -460,24 +482,25 @@
 
 .chatbot-msg--ai-loading {
   align-items: flex-end;
+  gap: 12px;
   margin-top: 28px;
 }
 
 .chatbot-ai-bubble--loading {
-  --chatbot-ai-tail-left: -8px;
-  --chatbot-ai-tail-bottom: 4px;
+  --chatbot-ai-tail-left: -10px;
+  --chatbot-ai-tail-bottom: 2px;
   --chatbot-ai-tail-width: 22px;
-  --chatbot-ai-tail-height: 22px;
+  --chatbot-ai-tail-height: 16px;
 
-  min-height: 42px;
+  min-height: 40px;
   max-width: min(72vw, 260px);
   display: flex;
   align-items: center;
-  border-radius: 20px 20px 20px 10px;
+  border-radius: 22px;
 }
 
 .chatbot-ai-bubble--loading .chatbot-loading__text {
-  padding: 11px 16px 12px 18px;
+  padding: 10px 16px 11px 18px;
   color: #5f6e8d;
   line-height: 1.35;
 }
@@ -488,11 +511,12 @@
   margin-right: 0;
   flex-shrink: 0;
   object-fit: contain;
-  transform: translateY(-2px);
+  transform: none;
 }
 
 .chatbot-msg--ai-loading .chatbot-mascot {
-  transform: translateY(4px);
+  width: 56px;
+  transform: translateY(2px);
 }
 
 .chatbot-chat-messages .chatbot-recipe-card {
