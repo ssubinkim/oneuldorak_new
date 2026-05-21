@@ -12,10 +12,10 @@ import bookOpenIcon from '../../assets/icons/book_open.svg'
 import './TodayRecipeSection.css'
 
 const RECIPE_SLIDES = [
-  { name: '깍두기\n볶음밥', meta: '5000원 | 30분 | 초보', image: kimchiRiceImage },
+  { name: '깍두기 볶음밥', meta: '5000원 | 30분 | 초보', image: kimchiRiceImage },
   { name: '비빔밥', meta: '6500원 | 20분 | 초보', image: bibimbapImage },
-  { name: '불고기\n덮밥', meta: '8000원 | 25분 | 보통', image: bulgogiImage },
-  { name: '참치마요\n덮밥', meta: '4500원 | 15분 | 초보', image: chamchiMayoImage },
+  { name: '불고기 덮밥', meta: '8000원 | 25분 | 보통', image: bulgogiImage },
+  { name: '참치마요 덮밥', meta: '4500원 | 15분 | 초보', image: chamchiMayoImage },
   { name: '오므라이스', meta: '6000원 | 25분 | 보통', image: omuriceImage },
   { name: '쏘야볶음', meta: '5500원 | 15분 | 초보', image: ssoyaImage },
   { name: '잔치국수', meta: '5000원 | 20분 | 초보', image: noodlesImage },
@@ -108,7 +108,9 @@ function TodayRecipeSection() {
       setIsTransitionEnabled(false)
       setDisplayRecipeIndex(1)
       window.requestAnimationFrame(() => {
-        setIsTransitionEnabled(true)
+        window.requestAnimationFrame(() => {
+          setIsTransitionEnabled(true)
+        })
       })
     }
 
@@ -116,7 +118,9 @@ function TodayRecipeSection() {
       setIsTransitionEnabled(false)
       setDisplayRecipeIndex(RECIPE_SLIDES.length)
       window.requestAnimationFrame(() => {
-        setIsTransitionEnabled(true)
+        window.requestAnimationFrame(() => {
+          setIsTransitionEnabled(true)
+        })
       })
     }
   }

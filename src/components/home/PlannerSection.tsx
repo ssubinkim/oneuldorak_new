@@ -29,6 +29,12 @@ type Props = {
 function PlannerSection({ onDirectSelect }: Props) {
   const [selectedDate, setSelectedDate] = useState(TODAY_DATE)
   const [slideSteps, setSlideSteps] = useState(0)
+  const [toast, setToast] = useState(false)
+
+  const handleSave = () => {
+    setToast(true)
+    setTimeout(() => setToast(false), 2000)
+  }
   const selectedMenu = weeklyMenuData.find(m => m.date === selectedDate) ?? weeklyMenuData[0]
   const visibleDays = useMemo(() => getVisibleDays(selectedDate), [selectedDate])
   const daysInnerRef = useRef<HTMLDivElement>(null)
@@ -115,7 +121,7 @@ function PlannerSection({ onDirectSelect }: Props) {
       <div className="planner__card">
         <div className="planner__card-header">
           <div className="planner__today-label">
-            <ChefHatIcon width="18" height="18" stroke="#3C3C3C" aria-hidden="true" />
+            <ChefHatIcon width="20" height="20" stroke="#3C3C3C" aria-hidden="true" />
             <span>Today</span>
           </div>
           <button
@@ -135,19 +141,19 @@ function PlannerSection({ onDirectSelect }: Props) {
             <div className="planner__menu-info">
               <h3 className="planner__menu-name">{selectedMenu.name}</h3>
               {selectedMenu.usage !== null && (
-                <span className="planner__usage-badge">활용도 {selectedMenu.usage}%</span>
+                <span className="planner__usage-badge">내 재료 활용 {selectedMenu.usage}%</span>
               )}
-              <p className="planner__menu-desc">{selectedMenu.description}</p>
+              {/* <p className="planner__menu-desc">{selectedMenu.description}</p> */}
               <div className="planner__menu-meta">
                 {selectedMenu.time && (
                   <span className="planner__meta-item">
-                    <AlarmIcon width="13" height="13" stroke="#0248FF" />
+                    <AlarmIcon width="14" height="14" color="#0248FF" />
                     {selectedMenu.time}
                   </span>
                 )}
                 {selectedMenu.savedAmount > 0 && (
                   <span className="planner__meta-item planner__meta-save">
-                    <GraphIcon width="13" height="13" stroke="#EF5246" />
+                    <GraphIcon width="14" height="14" color="#EF5246" />
                     {selectedMenu.savedAmount.toLocaleString()}원 절약
                   </span>
                 )}
@@ -164,12 +170,16 @@ function PlannerSection({ onDirectSelect }: Props) {
           </button>
           <button
             className="planner__btn planner__btn--primary"
-            onClick={() => { window.location.hash = '#/meal-weekly-plan' }}
+            onClick={handleSave}
           >
             저장하기
           </button>
         </div>
       </div>
+
+      {toast && (
+        <div className="planner__toast">저장되었습니다 ✓</div>
+      )}
     </section>
   )
 }
