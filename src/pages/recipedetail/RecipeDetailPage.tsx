@@ -8,11 +8,9 @@ import RecipeDetailIngredients from '../../components/recipedetailpage/RecipeDet
 import RecipeDetailIntro from '../../components/recipedetailpage/RecipeDetailIntro'
 import RecipeDetailMethod from '../../components/recipedetailpage/RecipeDetailMethod'
 import RecipeDetailSimilar from '../../components/recipedetailpage/RecipeDetailSimilar'
-import RecipeDetailTools from '../../components/recipedetailpage/RecipeDetailTools'
 import RecipeDetailTopBar from '../../components/recipedetailpage/RecipeDetailTopBar'
 import {
   cookingSteps,
-  cookingTools,
   getRecipeDetail,
   getRecipeIngredientsFromText,
   ingredients,
@@ -109,7 +107,6 @@ function RecipeDetailPage({
   const pageRef = useRef<HTMLElement | null>(null)
   const [recipe, setRecipe] = useState(() => overrideRecipe ?? getRecipeDetail(recipeId))
   const [comments, setComments] = useState<RecipeComment[]>(recipeComments)
-  const [checkedIngredientIds, setCheckedIngredientIds] = useState<string[]>([])
   const [hasHydratedFromStorage, setHasHydratedFromStorage] = useState(false)
   const [isEditingRecipe, setIsEditingRecipe] = useState(false)
   const [recipeEditValue, setRecipeEditValue] = useState<RecipeWriteData>(() => getRecipeEditValue(recipe))
@@ -130,7 +127,6 @@ function RecipeDetailPage({
         })
         setIsEditingRecipe(false)
         setComments(persistedState.comments)
-        setCheckedIngredientIds(persistedState.checkedIngredientIds)
         setHasHydratedFromStorage(true)
       })
     }
@@ -181,12 +177,11 @@ function RecipeDetailPage({
     savePersistedRecipeDetailState(recipe.id, {
       stats: recipe.stats,
       comments,
-      checkedIngredientIds,
+      checkedIngredientIds: [],
       isLiked: recipeReactionState.isLiked,
       isSaved: recipeReactionState.isSaved,
     })
   }, [
-    checkedIngredientIds,
     comments,
     hasHydratedFromStorage,
     recipe.id,
@@ -303,14 +298,6 @@ function RecipeDetailPage({
     })
   }
 
-  const handleToggleIngredient = (ingredientId: string) => {
-    setCheckedIngredientIds((previous) =>
-      previous.includes(ingredientId)
-        ? previous.filter((id) => id !== ingredientId)
-        : [...previous, ingredientId],
-    )
-  }
-
   const visibleIngredients = recipe.ingredients && recipe.ingredients.length > 0
     ? recipe.ingredients
     : ingredients
@@ -332,7 +319,7 @@ function RecipeDetailPage({
       content,
     }
 
-    setComments((previous) => [...previous, nextComment])
+    setComments((previous) => [nextComment, ...previous])
     increaseStat('commentCount')
   }
 
@@ -405,12 +392,7 @@ function RecipeDetailPage({
                 <button type="button" onClick={handleDeleteRecipe}>삭제</button>
               </div>
             )}
-            <RecipeDetailIngredients
-              ingredients={visibleIngredients}
-              checkedIngredientIds={checkedIngredientIds}
-              onToggleIngredient={handleToggleIngredient}
-            />
-            <RecipeDetailTools tools={recipe.tools && recipe.tools.length > 0 ? recipe.tools : cookingTools} />
+            <RecipeDetailIngredients ingredients={visibleIngredients} />
             <RecipeDetailMethod
               heroImage={visibleHeroImage}
               videoUrl={recipeVideoMedia?.url}

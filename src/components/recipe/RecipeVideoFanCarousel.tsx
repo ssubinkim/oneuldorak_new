@@ -93,7 +93,7 @@ function RecipeVideoFanCarousel({ recipes, autoPlayInterval = 4000, onOpenDetail
         const absOffset = Math.abs(offset)
         const hidden = absOffset > 2
         const isActive = index === activeIndex
-        const scale = isActive ? 1 : Math.max(0.72, 1 - absOffset * 0.13)
+        const scale = isActive ? 1 : Math.max(0.58, 1 - absOffset * 0.22)
         const translateX = offset * 72
         const translateY = absOffset * 12
         const rotate = offset * 9
