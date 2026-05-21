@@ -164,7 +164,7 @@ const routeThemeColors = {
   recipe: '#ffffff',
   mypage: '#ffffff',
   'mypage-likes': '#ffffff',
-  'mypage-saved-recipes': '#fffdf7',
+  'mypage-saved-recipes': '#ffffff',
   'mypage-plus': '#ffffff',
   'mypage-plus-benefit': '#ffffff',
   'mypage-profile-edit': '#ffffff',
@@ -267,7 +267,7 @@ function getRouteFromHash(): AppRoute {
   return 'start'
 }
 
-function setThemeColor(color: string) {
+function setRouteThemeColor(color: string) {
   let meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')
 
   if (!meta) {
@@ -277,6 +277,7 @@ function setThemeColor(color: string) {
   }
 
   meta.content = color
+  document.documentElement.style.setProperty('--app-status-bg', color)
 }
 
 function App() {
@@ -284,7 +285,7 @@ function App() {
   const Page = pages[route]
 
   useEffect(() => {
-    setThemeColor(routeThemeColors[route] ?? DEFAULT_THEME_COLOR)
+    setRouteThemeColor(routeThemeColors[route] ?? DEFAULT_THEME_COLOR)
   }, [route])
 
   useEffect(() => {
