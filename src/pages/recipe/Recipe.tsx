@@ -28,6 +28,7 @@ function Recipe() {
         <div className="app-screen recipe-screen">
           <Header />
           <RecipeDetailPage recipeId={selectedRecipeId} onBack={handleBack} />
+          <BottomNav />
         </div>
       </div>
     )

@@ -41,11 +41,14 @@ export type RecipeDetail = {
   media?: CommunityMediaAttachment[]
 }
 
+export type IngredientStatus = 'owned' | 'low' | 'none'
+
 export type Ingredient = {
   id: string
   name: string
   quantity: string
   icon: string
+  status?: IngredientStatus
 }
 
 export type CookingTool = {
@@ -148,11 +151,14 @@ export function getRecipeDetail(recipeId: string | null) {
 }
 
 export const ingredients: Ingredient[] = [
-  { id: 'rice', name: '밥', quantity: '1공기', icon: carrotIcon },
-  { id: 'kimchi', name: '김치', quantity: '1/2컵', icon: chiliPepperIcon },
-  { id: 'sesame-oil', name: '참기름', quantity: '1큰술', icon: garlicIcon },
-  { id: 'egg', name: '계란', quantity: '1개', icon: eggIcon },
-  { id: 'seaweed-flakes', name: '김가루', quantity: '약간', icon: greenOnionIcon },
+  { id: 'egg', name: '계란', quantity: '1개', icon: eggIcon, status: 'owned' },
+  { id: 'rice', name: '밥', quantity: '1공기', icon: carrotIcon, status: 'owned' },
+  { id: 'kimchi', name: '김치', quantity: '1/2컵', icon: chiliPepperIcon, status: 'low' },
+  { id: 'sesame-oil', name: '참기름', quantity: '1큰술', icon: garlicIcon, status: 'none' },
+  { id: 'seaweed-flakes', name: '김가루', quantity: '약간', icon: greenOnionIcon, status: 'none' },
+  { id: 'cooking-oil', name: '식용유', quantity: '1큰술', icon: carrotIcon, status: 'low' },
+  { id: 'salt', name: '소금', quantity: '약간', icon: carrotIcon, status: 'none' },
+  { id: 'pepper', name: '후추', quantity: '약간', icon: carrotIcon, status: 'owned' },
 ]
 
 function createIngredientId(name: string, index: number) {

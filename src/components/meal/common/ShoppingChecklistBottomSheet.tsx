@@ -127,7 +127,12 @@ function ShoppingChecklistBottomSheet({
         aria-labelledby="shopping-checklist-sheet-title"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="shopping-checklist-sheet__tabs" role="tablist" aria-label="장보기 메뉴">
+        <div
+          className="shopping-checklist-sheet__tabs"
+          role="tablist"
+          aria-label="장보기 메뉴"
+          style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
+        >
           {tabs.map((tab) => {
             const isActive = tab.id === activeTabId
 
