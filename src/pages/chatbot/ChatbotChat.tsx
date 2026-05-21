@@ -1,18 +1,25 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent, type UIEvent } from 'react'
 import type { ChatMessage } from '../../types/chatbot'
 import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import { requestAiChat } from '../../features/ai/services/aiApi'
-import { AI_FEATURES, type AiFeature, type AnalysisType } from '../../features/ai/types/ai.types'
+import { AI_FEATURES, type AiFeature, type AnalysisType, type RecipeData } from '../../features/ai/types/ai.types'
 import chatbotMascotIcon from '../../components/chatbot/images/chatbot .png'
-import fridgeAnalyzeHeroImage from '../../components/chatbot/images/camera.png'
-import btnXIcon from '../../components/chatbot/images/btn_x.png'
+import defaultRecipeImage from '../../components/chatbot/images/tunamayo.png'
+import fridgeLoadingMascotImage from '../../components/chatbot/images/ser.png'
+import fridgeSavedHeroImage from '../../components/chatbot/images/com.png'
+import checkIcon from '../../components/chatbot/images/check.svg'
+import xIcon from '../../components/chatbot/images/x.svg'
 import eggIngredientIcon from '../../assets/images/food_icon/egg.png'
 import carrotIngredientIcon from '../../assets/images/food_icon/carrot.png'
 import tofuIngredientIcon from '../../assets/images/food_icon/tofu.png'
 import kimchiIngredientIcon from '../../assets/images/food_icon/kimchi.png'
 import cabbageIngredientIcon from '../../assets/images/food_icon/leaf_lettuce.png'
 import broccoliIngredientIcon from '../../assets/images/food_icon/broccoli.png'
+import onionIngredientIcon from '../../assets/images/food_icon/onion.png'
+import tomatoIngredientIcon from '../../assets/images/food_icon/tomato.png'
+import potatoIngredientIcon from '../../assets/images/food_icon/potato.png'
+import mushroomIngredientIcon from '../../assets/images/food_icon/mushroom.png'
 import ChatbotInputBar from '../../components/chatbot/ChatbotInputBar'
 import ChatbotCameraSheet from '../../components/chatbot/ChatbotCameraSheet'
 import ChatbotRecipeCard from '../../components/chatbot/ChatbotRecipeCard'
@@ -92,7 +99,7 @@ const GO_TO_CHATBOT_HOME_LABEL = '처음으로 가기'
 const FRIDGE_LOADING_STEPS = ['이미지 확인 중', '재료 식별 중', '결과 정리 중', '저장 준비 중'] as const
 const FRIDGE_LOADING_STEP_INTERVAL = 1800
 const FRIDGE_LOADING_MIN_DURATION = 7600
-const FRIDGE_RESULT_MAX_ITEMS = 4
+const FRIDGE_RESULT_MAX_ITEMS = 8
 
 const FRIDGE_INGREDIENT_CATALOG: FridgeIngredientCatalogItem[] = [
   { label: '계란', aliases: ['달걀', 'egg'], icon: eggIngredientIcon },
@@ -101,9 +108,13 @@ const FRIDGE_INGREDIENT_CATALOG: FridgeIngredientCatalogItem[] = [
   { label: '김치', aliases: ['kimchi'], icon: kimchiIngredientIcon },
   { label: '양배추', aliases: ['cabbage'], icon: cabbageIngredientIcon },
   { label: '브로콜리', aliases: ['broccoli'], icon: broccoliIngredientIcon },
+  { label: '양파', aliases: ['onion'], icon: onionIngredientIcon },
+  { label: '토마토', aliases: ['tomato'], icon: tomatoIngredientIcon },
+  { label: '감자', aliases: ['potato'], icon: potatoIngredientIcon },
+  { label: '버섯', aliases: ['mushroom'], icon: mushroomIngredientIcon },
 ]
 
-const FRIDGE_RESULT_FALLBACK_LABELS = ['계란', '두부', '양배추', '당근']
+const FRIDGE_RESULT_FALLBACK_LABELS = ['계란', '두부', '양배추', '당근', '김치', '브로콜리', '양파', '토마토']
 
 function normalizeIngredientToken(value: string) {
   return value
@@ -293,6 +304,245 @@ function renderBubbleText(text: string) {
 type AiTextDisplay = {
   bubbleText: string
   detailText: string | null
+}
+
+type JudgeResultField = {
+  key: string
+  title: string
+  aliases: string[]
+}
+
+type JudgeResultSection = {
+  key: string
+  title: string
+  content: string
+}
+
+type JudgeResultDisplay = {
+  title: string
+  subtitle: string
+  sections: JudgeResultSection[]
+}
+
+type RecommendationField = {
+  key: 'menu' | 'ingredients' | 'extra' | 'cookTime' | 'cost' | 'method' | 'saving' | 'reason'
+  aliases: string[]
+}
+
+const JUDGE_RESULT_FIELDS: JudgeResultField[] = [
+  { key: 'decision', title: '판단', aliases: ['판단', '구매 판단'] },
+  { key: 'reason', title: '이유', aliases: ['이유'] },
+  { key: 'lunchbox', title: '도시락 활용도', aliases: ['도시락 활용도', '활용도'] },
+  { key: 'price', title: '가격/가성비 체크', aliases: ['가격/가성비 체크', '가격', '가성비', '가성비 체크'] },
+  { key: 'action', title: '추천 행동', aliases: ['추천 행동', '추천'] },
+]
+
+const RECOMMENDATION_CARD_FIELDS: RecommendationField[] = [
+  { key: 'menu', aliases: ['추천 메뉴', '추천메뉴', '메뉴'] },
+  { key: 'ingredients', aliases: ['활용 재료', '활용재료', '재료'] },
+  { key: 'extra', aliases: ['추가로 있으면 좋은 재료', '추가 재료', '추가재료'] },
+  { key: 'cookTime', aliases: ['예상 조리 시간', '예상조리시간', '조리 시간', '조리시간'] },
+  { key: 'cost', aliases: ['예상 식비', '예상식비', '식비', '비용', '가격'] },
+  { key: 'method', aliases: ['간단한 조리법', '간단한조리법', '조리법', '만드는 법', '만드는법'] },
+  { key: 'saving', aliases: ['절약 포인트', '절약포인트'] },
+  { key: 'reason', aliases: ['추천 이유', '추천이유', '이유'] },
+]
+
+const RECOMMENDATION_CARD_FEATURES = new Set<AiFeature>([
+  'today-lunchbox-recommendation',
+  'ingredient-recipes',
+  'leftover-ingredients',
+])
+
+function normalizeJudgeFieldLabel(label: string) {
+  return label.replace(/\s+/g, '').replace(/[/?ㆍ·_-]/g, '').toLowerCase()
+}
+
+function resolveJudgeResultField(label: string) {
+  const normalizedLabel = normalizeJudgeFieldLabel(label)
+  return JUDGE_RESULT_FIELDS.find((field) =>
+    field.aliases.some((alias) => normalizeJudgeFieldLabel(alias) === normalizedLabel),
+  ) ?? null
+}
+
+function resolveRecommendationField(label: string) {
+  const normalizedLabel = normalizeJudgeFieldLabel(label)
+  return RECOMMENDATION_CARD_FIELDS.find((field) =>
+    field.aliases.some((alias) => normalizeJudgeFieldLabel(alias) === normalizedLabel),
+  ) ?? null
+}
+
+function cleanJudgeResultLine(line: string) {
+  return line
+    .trim()
+    .replace(/^[-*•]\s*/, '')
+    .replace(/^\d+[.)]\s*/, '')
+    .trim()
+}
+
+function buildJudgeResultDisplay(text: string): JudgeResultDisplay | null {
+  const sectionMap = new Map<string, string[]>()
+  let currentField: JudgeResultField | null = null
+
+  text.split('\n').forEach((rawLine) => {
+    const line = cleanJudgeResultLine(rawLine)
+    if (!line) return
+
+    const labelMatch = line.match(/^(.{1,24}?)\s*[:：]\s*(.*)$/)
+    if (labelMatch) {
+      const field = resolveJudgeResultField(labelMatch[1])
+      if (field) {
+        currentField = field
+        const value = labelMatch[2].trim()
+        if (value) {
+          sectionMap.set(field.key, [...(sectionMap.get(field.key) ?? []), value])
+        }
+        return
+      }
+    }
+
+    if (currentField) {
+      sectionMap.set(currentField.key, [...(sectionMap.get(currentField.key) ?? []), line])
+    }
+  })
+
+  const sections = JUDGE_RESULT_FIELDS.map((field) => {
+    const content = (sectionMap.get(field.key) ?? []).join('\n').trim()
+    return content ? { key: field.key, title: field.title, content } : null
+  }).filter((section): section is JudgeResultSection => Boolean(section))
+
+  if (sections.length < 2) return null
+
+  return {
+    title: 'AI 구매 판단',
+    subtitle: '구매에 대한 AI의 추천이에요',
+    sections,
+  }
+}
+
+function renderJudgeResultCard(display: JudgeResultDisplay) {
+  return (
+    <section className="chatbot-judge-result-card" aria-label={display.title}>
+      <header className="chatbot-judge-result-card__header">
+        <h3 className="chatbot-judge-result-card__title">{display.title}</h3>
+        <p className="chatbot-judge-result-card__subtitle">{display.subtitle}</p>
+      </header>
+      <div className="chatbot-judge-result-card__sections">
+        {display.sections.map((section) => (
+          <article className="chatbot-judge-result-card__section" key={section.key}>
+            <strong className="chatbot-judge-result-card__label">{section.title}</strong>
+            <p className="chatbot-judge-result-card__content">{section.content}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function buildRecommendationRecipeData(text: string, feature: AiFeature | null | undefined): RecipeData | null {
+  if (!feature || !RECOMMENDATION_CARD_FEATURES.has(feature)) return null
+
+  const sectionMap = new Map<RecommendationField['key'], string[]>()
+  let currentField: RecommendationField | null = null
+
+  text.split('\n').forEach((rawLine) => {
+    const line = cleanJudgeResultLine(rawLine)
+    if (!line) return
+
+    const labelMatch = line.match(/^(.{1,24}?)\s*[:：]\s*(.*)$/)
+    if (labelMatch) {
+      const field = resolveRecommendationField(labelMatch[1])
+      if (field) {
+        currentField = field
+        const value = labelMatch[2].trim()
+        if (value) {
+          sectionMap.set(field.key, [...(sectionMap.get(field.key) ?? []), value])
+        }
+        return
+      }
+    }
+
+    if (currentField) {
+      sectionMap.set(currentField.key, [...(sectionMap.get(currentField.key) ?? []), line])
+    }
+  })
+
+  const readField = (key: RecommendationField['key']) => (sectionMap.get(key) ?? []).join('\n').trim()
+  const menu = readField('menu')
+  const ingredients = readField('ingredients')
+  const extra = readField('extra')
+  const cookTime = readField('cookTime')
+  const cost = readField('cost')
+  const method = readField('method')
+  const saving = readField('saving')
+  const reason = readField('reason')
+
+  if (!menu && !cookTime && !method && !ingredients) return null
+
+  const reasonLines = [
+    reason,
+    ingredients ? `활용 재료: ${ingredients}` : '',
+    extra ? `추가 재료: ${extra}` : '',
+    saving,
+    method ? `조리법: ${method}` : '',
+  ].filter(Boolean)
+
+  return {
+    title: menu || '오늘 도시락 추천',
+    subtitle: ingredients ? `${ingredients} 활용 메뉴` : '간단하게 준비하기 좋은 도시락',
+    imageUrl: defaultRecipeImage,
+    cookTime: cookTime || '약 15분',
+    estimatedCost: cost || '재료별 상이',
+    reason: reasonLines.join('\n') || text.trim(),
+  }
+}
+
+function SplitGreeting({ displayName }: { displayName: string }) {
+  let charIndex = 0
+
+  const renderSegment = (text: string, key: string, strong = false) => {
+    const chars = Array.from(text)
+    const segment = (
+      <span className="chatbot-greeting__segment" key={key}>
+        {chars.map((char) => {
+          const delay = `${charIndex * 34}ms`
+          charIndex += 1
+
+          return (
+            <span
+              className="chatbot-greeting__char"
+              key={`${key}-${charIndex}`}
+              style={{ animationDelay: delay }}
+            >
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+          )
+        })}
+      </span>
+    )
+
+    return strong ? (
+      <strong className="chatbot-greeting__strong" key={`${key}-strong`}>
+        {segment}
+      </strong>
+    ) : segment
+  }
+
+  return (
+    <p
+      className="chatbot-greeting chatbot-greeting--split"
+      aria-label={`안녕하세요. ${displayName}님! 오늘은 무엇을 도와드릴까요?`}
+    >
+      <span className="chatbot-greeting__line" aria-hidden="true">
+        {renderSegment('안녕하세요. ', 'hello')}
+        {renderSegment(displayName, 'name', true)}
+        {renderSegment('님!', 'suffix')}
+      </span>
+      <span className="chatbot-greeting__line" aria-hidden="true">
+        {renderSegment('오늘은 무엇을 도와드릴까요?', 'question')}
+      </span>
+    </p>
+  )
 }
 
 function summarizeAiText(text: string) {
@@ -515,6 +765,10 @@ function ChatbotChat() {
   const [showFridgeSavedModal, setShowFridgeSavedModal] = useState(false)
   const [fridgeDetectedIngredients, setFridgeDetectedIngredients] = useState<FridgeDetectedIngredient[]>([])
   const [savedFridgeIngredientLabels, setSavedFridgeIngredientLabels] = useState<string[]>([])
+  const [fridgeResultListScroll, setFridgeResultListScroll] = useState({
+    isAtTop: true,
+    isAtBottom: false,
+  })
   const cameraInputRef = useRef<HTMLInputElement>(null)
   const albumInputRef = useRef<HTMLInputElement>(null)
   const desktopVideoRef = useRef<HTMLVideoElement>(null)
@@ -525,17 +779,24 @@ function ChatbotChat() {
   const activeFeatureRef = useRef<AiFeature | null>(initialContext.feature)
   const activeAnalysisTypeRef = useRef<AnalysisType>(initialAnalysisType)
   const hasInitializedRef = useRef(false)
-  const [fridgeLoadingStep, setFridgeLoadingStep] = useState(1)
+  const [fridgeLoadingProgress, setFridgeLoadingProgress] = useState<{ loadingId: string | null; step: number }>({
+    loadingId: null,
+    step: 1,
+  })
   const [dismissedFridgeLoadingId, setDismissedFridgeLoadingId] = useState<string | null>(null)
-  const lastFridgeLoadingIdRef = useRef<string | null>(null)
   const fridgeLoadingStartedAtRef = useRef<Record<string, number>>({})
 
   const fridgeLoadingOverlay = useMemo(() => getFridgeLoadingOverlay(messages), [messages])
   const activeFridgeLoadingId = fridgeLoadingOverlay?.pendingId ?? null
+  const fridgeLoadingStep =
+    activeFridgeLoadingId && fridgeLoadingProgress.loadingId === activeFridgeLoadingId
+      ? fridgeLoadingProgress.step
+      : 1
   const shouldShowFridgeLoadingModal =
     Boolean(fridgeLoadingOverlay)
     && activeFridgeLoadingId !== dismissedFridgeLoadingId
   const hasSelectedFridgeIngredients = fridgeDetectedIngredients.some((ingredient) => ingredient.selected)
+  const hasScrollableFridgeResultList = fridgeDetectedIngredients.length > 5
   const savedIngredientSummary = useMemo(() => {
     if (savedFridgeIngredientLabels.length === 0) {
       return '선택한 재료 0개가 추가됐어요'
@@ -633,6 +894,7 @@ function ChatbotChat() {
 
       if (response.feature === 'fridge-photo-analysis' && response.status === 'success') {
         setFridgeDetectedIngredients(buildFridgeDetectedIngredientsFromText(response.text))
+        setFridgeResultListScroll({ isAtTop: true, isAtBottom: false })
         setShowFridgeResultModal(true)
       }
     } catch (error) {
@@ -836,37 +1098,30 @@ function ChatbotChat() {
   }, [stopDesktopCamera])
 
   useEffect(() => {
-    if (!activeFridgeLoadingId) {
-      lastFridgeLoadingIdRef.current = null
-      setDismissedFridgeLoadingId(null)
-      setFridgeLoadingStep(1)
-      return
-    }
-
-    if (lastFridgeLoadingIdRef.current !== activeFridgeLoadingId) {
-      lastFridgeLoadingIdRef.current = activeFridgeLoadingId
-      setDismissedFridgeLoadingId(null)
-      setFridgeLoadingStep(1)
-    }
-  }, [activeFridgeLoadingId])
-
-  useEffect(() => {
-    if (!shouldShowFridgeLoadingModal) {
+    if (!shouldShowFridgeLoadingModal || !activeFridgeLoadingId) {
       return
     }
 
     const timer = window.setInterval(() => {
-      setFridgeLoadingStep((previousStep) => (
-        previousStep >= FRIDGE_LOADING_STEPS.length
-          ? previousStep
-          : previousStep + 1
-      ))
+      setFridgeLoadingProgress((previousProgress) => {
+        const currentStep = previousProgress.loadingId === activeFridgeLoadingId
+          ? previousProgress.step
+          : 1
+
+        if (currentStep >= FRIDGE_LOADING_STEPS.length) {
+          return previousProgress.loadingId === activeFridgeLoadingId
+            ? previousProgress
+            : { loadingId: activeFridgeLoadingId, step: currentStep }
+        }
+
+        return { loadingId: activeFridgeLoadingId, step: currentStep + 1 }
+      })
     }, FRIDGE_LOADING_STEP_INTERVAL)
 
     return () => {
       window.clearInterval(timer)
     }
-  }, [shouldShowFridgeLoadingModal])
+  }, [activeFridgeLoadingId, shouldShowFridgeLoadingModal])
 
   const toggleFridgeIngredient = useCallback((id: string) => {
     setFridgeDetectedIngredients((previousIngredients) => previousIngredients.map((ingredient) => (
@@ -874,6 +1129,22 @@ function ChatbotChat() {
         ? { ...ingredient, selected: !ingredient.selected }
         : ingredient
     )))
+  }, [])
+
+  const handleFridgeResultListScroll = useCallback((event: UIEvent<HTMLUListElement>) => {
+    const list = event.currentTarget
+    const maxScrollTop = list.scrollHeight - list.clientHeight
+    const nextScrollState = {
+      isAtTop: list.scrollTop <= 1,
+      isAtBottom: maxScrollTop <= 1 || list.scrollTop >= maxScrollTop - 1,
+    }
+
+    setFridgeResultListScroll((previousScrollState) => (
+      previousScrollState.isAtTop === nextScrollState.isAtTop
+        && previousScrollState.isAtBottom === nextScrollState.isAtBottom
+        ? previousScrollState
+        : nextScrollState
+    ))
   }, [])
 
   const handleAddSelectedIngredients = useCallback(() => {
@@ -1091,16 +1362,12 @@ function ChatbotChat() {
               aria-label="닫기"
               onClick={() => { window.location.hash = '#/home' }}
             >
-              <img src={btnXIcon} alt="" aria-hidden="true" />
+              <img src={xIcon} alt="" aria-hidden="true" />
             </button>
           </header>
 
           <div ref={messagesRef} className="chatbot-chat-messages">
-            <p className="chatbot-greeting">
-              안녕하세요. <strong>{displayName}</strong>님!
-              <br />
-              오늘은 무엇을 도와드릴까요?
-            </p>
+            <SplitGreeting displayName={displayName} />
 
             {isJudgeFlow ? (
               <div className="chatbot-judge-mode" role="tablist" aria-label="살까말까 판단 방식">
@@ -1125,7 +1392,7 @@ function ChatbotChat() {
               </div>
             ) : null}
 
-            {messages.map((msg) => {
+            {messages.map((msg, index) => {
               if (msg.type === 'user') {
                 const hasUserImage = Boolean(msg.imageDataUrl)
                 return (
@@ -1142,9 +1409,9 @@ function ChatbotChat() {
 
               if (msg.type === 'ai-loading') {
                 return (
-                  <div key={msg.id} className="chatbot-msg chatbot-msg--ai">
+                  <div key={msg.id} className="chatbot-msg chatbot-msg--ai chatbot-msg--ai-loading">
                     <img className="chatbot-mascot" src={chatbotMascotIcon} alt="" aria-hidden="true" />
-                    <div className="chatbot-ai-bubble">
+                    <div className="chatbot-ai-bubble chatbot-ai-bubble--loading">
                       <span className="chatbot-ai-bubble__text chatbot-loading__text">
                         {msg.text ?? '냠냠크루가 준비 중입니다.'}
                       </span>
@@ -1154,16 +1421,45 @@ function ChatbotChat() {
               }
 
               if (msg.type === 'ai-text') {
-                const bubbleText = msg.text.trim() ? msg.text : getAiTextDisplay(msg.text).bubbleText
+                const aiDisplay = getAiTextDisplay(msg.text)
+                const judgeResultDisplay = msg.status !== 'error' && msg.feature === 'buy-or-not'
+                  ? buildJudgeResultDisplay(msg.text)
+                  : null
+                const hasFollowingRecipe = messages.slice(index + 1).some((message) =>
+                  message.type === 'ai-recipe' && message.feature === msg.feature,
+                )
+                const recommendationRecipe = msg.status !== 'error' && !judgeResultDisplay && !hasFollowingRecipe
+                  ? buildRecommendationRecipeData(msg.text, msg.feature)
+                  : null
+                const bubbleText = judgeResultDisplay
+                  ? 'AI가 판단한 결과에요.'
+                  : recommendationRecipe
+                    ? '도시락 추천 결과를 정리해봤어요.'
+                    : aiDisplay.bubbleText
+                const detailText = judgeResultDisplay || recommendationRecipe ? null : aiDisplay.detailText
+                const stackClassName = [
+                  'chatbot-ai-stack',
+                  judgeResultDisplay ? 'chatbot-ai-stack--judge' : '',
+                  recommendationRecipe ? 'chatbot-ai-stack--recipe' : '',
+                ].filter(Boolean).join(' ')
                 return (
                   <div key={msg.id} className="chatbot-msg chatbot-msg--ai">
                     <img className="chatbot-mascot" src={chatbotMascotIcon} alt="" aria-hidden="true" />
-                    <div className="chatbot-ai-stack">
+                    <div className={stackClassName}>
                       <div className="chatbot-ai-bubble">
                         <span className="chatbot-ai-bubble__text">
                           {renderBubbleText(bubbleText)}
                         </span>
                       </div>
+                      {judgeResultDisplay ? renderJudgeResultCard(judgeResultDisplay) : null}
+                      {recommendationRecipe ? <ChatbotRecipeCard recipe={recommendationRecipe} /> : null}
+                      {detailText ? (
+                        <div className="chatbot-ai-detail-card">
+                          <p className="chatbot-ai-detail-card__text">
+                            {renderBubbleText(detailText)}
+                          </p>
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 )
@@ -1264,7 +1560,7 @@ function ChatbotChat() {
                     setDismissedFridgeLoadingId(activeFridgeLoadingId)
                   }}
                 >
-                  <img src={btnXIcon} alt="" aria-hidden="true" />
+                  <img src={xIcon} alt="" aria-hidden="true" />
                 </button>
                 <h2 className="chatbot-fridge-loading__title">AI가 재료를 찾고 있어요</h2>
 
@@ -1279,7 +1575,7 @@ function ChatbotChat() {
                   <div className="chatbot-fridge-loading__visual-dim" aria-hidden="true" />
                   <img
                     className="chatbot-fridge-loading__mascot"
-                    src={fridgeAnalyzeHeroImage}
+                    src={fridgeLoadingMascotImage}
                     alt=""
                     aria-hidden="true"
                   />
@@ -1291,12 +1587,15 @@ function ChatbotChat() {
                     const isActive = stepNumber === fridgeLoadingStep
                     const isDone = stepNumber < fridgeLoadingStep
                     return (
-                      <li key={stepNumber} className="chatbot-fridge-loading__progress-item">
+                      <li
+                        key={stepNumber}
+                        className={`chatbot-fridge-loading__progress-item${isActive ? ' is-active' : ''}${isDone ? ' is-done' : ''}`}
+                      >
                         <span
                           className={`chatbot-fridge-loading__progress-dot${isActive ? ' is-active' : ''}${isDone ? ' is-done' : ''}`}
                           aria-current={isActive ? 'step' : undefined}
                         >
-                          {isDone ? '✓' : stepNumber}
+                          {stepNumber}
                         </span>
                       </li>
                     )
@@ -1309,9 +1608,19 @@ function ChatbotChat() {
                     const isDone = stepNumber < fridgeLoadingStep
                     const isActive = stepNumber === fridgeLoadingStep
                     return (
-                      <li key={label} className={`chatbot-fridge-loading__check-item${isActive ? ' is-active' : ''}`}>
+                      <li
+                        key={label}
+                        className={`chatbot-fridge-loading__check-item${isActive ? ' is-active' : ''}${isDone ? ' is-done' : ''}`}
+                      >
                         <span className={`chatbot-fridge-loading__check-icon${isDone ? ' is-done' : ''}`}>
-                          {isDone ? '✓' : stepNumber}
+                          {isDone ? (
+                            <img
+                              className="chatbot-fridge-loading__check-icon-img"
+                              src={checkIcon}
+                              alt=""
+                              aria-hidden="true"
+                            />
+                          ) : stepNumber}
                         </span>
                         <span>{label}</span>
                       </li>
@@ -1319,7 +1628,14 @@ function ChatbotChat() {
                   })}
                 </ol>
 
-                <p className="chatbot-fridge-loading__hint">잠시만 기다려 주세요....</p>
+                <p className="chatbot-fridge-loading__hint" aria-label="잠시만 기다려 주세요...">
+                  잠시만 기다려 주세요
+                  <span className="chatbot-fridge-loading__dots" aria-hidden="true">
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                  </span>
+                </p>
               </section>
             </div>
           ) : null}
@@ -1333,39 +1649,53 @@ function ChatbotChat() {
                   aria-label="재료 선택 창 닫기"
                   onClick={() => setShowFridgeResultModal(false)}
                 >
-                  <img src={btnXIcon} alt="" aria-hidden="true" />
+                  <img src={xIcon} alt="" aria-hidden="true" />
                 </button>
                 <h2 className="chatbot-fridge-result-modal__title">AI가 찾은 재료예요</h2>
                 <p className="chatbot-fridge-result-modal__description">재료함에 추가할 항목을 확인 해주세요</p>
 
-                <ul className="chatbot-fridge-result-modal__list">
-                  {fridgeDetectedIngredients.map((ingredient) => (
-                    <li key={ingredient.id}>
-                      <button
-                        className="chatbot-fridge-result-modal__item"
-                        type="button"
-                        onClick={() => toggleFridgeIngredient(ingredient.id)}
-                      >
-                        <span
-                          className={`chatbot-fridge-result-modal__check${ingredient.selected ? ' is-selected' : ''}`}
+                <div
+                  className={`chatbot-fridge-result-modal__list-wrap${hasScrollableFridgeResultList ? ' is-scrollable' : ''}${!fridgeResultListScroll.isAtTop ? ' has-top-fade' : ''}${hasScrollableFridgeResultList && !fridgeResultListScroll.isAtBottom ? ' has-bottom-fade' : ''}`}
+                >
+                  <ul
+                    className="chatbot-fridge-result-modal__list"
+                    onScroll={handleFridgeResultListScroll}
+                  >
+                    {fridgeDetectedIngredients.map((ingredient) => (
+                      <li className="chatbot-fridge-result-modal__list-row" key={ingredient.id}>
+                        <button
+                          className="chatbot-fridge-result-modal__item"
+                          type="button"
+                          onClick={() => toggleFridgeIngredient(ingredient.id)}
+                        >
+                          <span
+                            className={`chatbot-fridge-result-modal__check${ingredient.selected ? ' is-selected' : ''}`}
                           aria-hidden="true"
                         >
-                          {ingredient.selected ? '✓' : ''}
+                          {ingredient.selected ? (
+                            <img
+                              className="chatbot-fridge-result-modal__check-img"
+                              src={checkIcon}
+                              alt=""
+                              aria-hidden="true"
+                            />
+                          ) : null}
                         </span>
-                        <img
-                          className="chatbot-fridge-result-modal__icon"
-                          src={ingredient.icon}
-                          alt=""
-                          aria-hidden="true"
-                        />
-                        <span className="chatbot-fridge-result-modal__name">{ingredient.label}</span>
-                        {ingredient.needsReview ? (
-                          <span className="chatbot-fridge-result-modal__badge">확인필요</span>
-                        ) : null}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                          <img
+                            className="chatbot-fridge-result-modal__icon"
+                            src={ingredient.icon}
+                            alt=""
+                            aria-hidden="true"
+                          />
+                          <span className="chatbot-fridge-result-modal__name">{ingredient.label}</span>
+                          {ingredient.needsReview ? (
+                            <span className="chatbot-fridge-result-modal__badge">확인필요</span>
+                          ) : null}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
                 <div className="chatbot-fridge-result-modal__actions">
                   <button
@@ -1396,21 +1726,12 @@ function ChatbotChat() {
                   aria-label="저장 완료 창 닫기"
                   onClick={() => setShowFridgeSavedModal(false)}
                 >
-                  <img src={btnXIcon} alt="" aria-hidden="true" />
+                  <img src={xIcon} alt="" aria-hidden="true" />
                 </button>
 
-                <div className="chatbot-fridge-saved-modal__check" aria-hidden="true">✓</div>
-                <div className="chatbot-fridge-saved-modal__confetti" aria-hidden="true">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
                 <img
                   className="chatbot-fridge-saved-modal__hero"
-                  src={fridgeAnalyzeHeroImage}
+                  src={fridgeSavedHeroImage}
                   alt=""
                   aria-hidden="true"
                 />

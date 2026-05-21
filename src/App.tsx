@@ -10,6 +10,7 @@ type AppRoute =
   | 'chatbot'
   | 'chatbot-camera'
   | 'chatbot-chat'
+  | 'receipt-analysis'
   | 'mypage-likes'
   | 'mypage-saved-recipes'
   | 'mypage-plus'
@@ -45,6 +46,7 @@ const importStoragePage: RouteImporter = () => import('./pages/meal/StoragePage'
 const importChatbotPage: RouteImporter = () => import('./pages/chatbot/Chatbot')
 const importChatbotCameraPage: RouteImporter = () => import('./pages/chatbot/ChatbotCamera')
 const importChatbotChatPage: RouteImporter = () => import('./pages/chatbot/ChatbotChat')
+const importReceiptAnalysisPage: RouteImporter = () => import('./pages/chatbot/ReceiptAnalysis')
 const importRecipePage: RouteImporter = () => import('./pages/recipe/Recipe')
 
 const StartPage = lazy(importStartPage)
@@ -65,6 +67,7 @@ const StoragePage = lazy(importStoragePage)
 const Chatbot = lazy(importChatbotPage)
 const ChatbotCamera = lazy(importChatbotCameraPage)
 const ChatbotChat = lazy(importChatbotChatPage)
+const ReceiptAnalysis = lazy(importReceiptAnalysisPage)
 const Recipe = lazy(importRecipePage)
 const ProfileEditPage = lazy(importProfileEditPage)
 const NotificationPage = lazy(importNotificationPage)
@@ -92,6 +95,7 @@ const pages = {
   chatbot: Chatbot,
   'chatbot-camera': ChatbotCamera,
   'chatbot-chat': ChatbotChat,
+  'receipt-analysis': ReceiptAnalysis,
 } satisfies Record<AppRoute, PageComponent>
 
 const pageImporters = {
@@ -116,6 +120,7 @@ const pageImporters = {
   chatbot: importChatbotPage,
   'chatbot-camera': importChatbotCameraPage,
   'chatbot-chat': importChatbotChatPage,
+  'receipt-analysis': importReceiptAnalysisPage,
   recipe: importRecipePage,
 } satisfies Record<AppRoute, RouteImporter>
 
@@ -138,9 +143,10 @@ const prefetchTargets = {
   'meal-weekly-plan': ['meal-grocery'],
   'meal-grocery': ['meal-storage'],
   'meal-storage': ['meal'],
-  chatbot: ['chatbot-chat', 'chatbot-camera'],
+  chatbot: ['chatbot-chat', 'chatbot-camera', 'receipt-analysis'],
   'chatbot-camera': ['chatbot', 'chatbot-chat'],
   'chatbot-chat': ['chatbot'],
+  'receipt-analysis': ['chatbot'],
   recipe: [],
 } satisfies Record<AppRoute, AppRoute[]>
 

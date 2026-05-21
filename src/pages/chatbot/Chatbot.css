@@ -11,6 +11,19 @@
   }
 }
 
+@keyframes chatbot-chip-in {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
+}
+
 .chatbot-page {
   position: relative;
   display: flex;
@@ -71,6 +84,11 @@
   gap: 8px;
 }
 
+.chatbot-page--coachmark .chatbot-suggestions {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .chatbot-chip {
   display: inline-flex;
   align-items: center;
@@ -86,6 +104,61 @@
   font-weight: 400;
   line-height: 1.3;
   white-space: nowrap;
+  opacity: 1;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.chatbot-suggestions.is-ready .chatbot-chip {
+  opacity: 0;
+  animation: chatbot-chip-in 0.56s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.chatbot-suggestions.is-ready .chatbot-chip:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.chatbot-suggestions.is-ready .chatbot-chip:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.chatbot-suggestions.is-ready .chatbot-chip:nth-child(3) {
+  animation-delay: 0.26s;
+}
+
+.chatbot-suggestions.is-ready .chatbot-chip:nth-child(4) {
+  animation-delay: 0.34s;
+}
+
+.chatbot-suggestions.is-ready .chatbot-chip:nth-child(5) {
+  animation-delay: 0.42s;
+}
+
+.chatbot-suggestions.is-ready .chatbot-chip:nth-child(6) {
+  animation-delay: 0.5s;
+}
+
+.chatbot-suggestions.is-ready .chatbot-chip:nth-child(7) {
+  animation-delay: 0.58s;
+}
+
+.chatbot-suggestions.is-ready .chatbot-chip:nth-child(8) {
+  animation-delay: 0.66s;
+}
+
+.chatbot-chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--green-blue-blue06, #80A3FF);
+  background: var(--green-blue-blue10, #E6EDFF);
+  box-shadow: 0 6px 14px rgba(128, 163, 255, 0.18);
+}
+
+.chatbot-chip:active {
+  transform: translateY(0) scale(0.97);
 }
 
 .chatbot-hero {
@@ -107,6 +180,17 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.chatbot-page--coachmark .chatbot-camera {
+  position: relative;
+  z-index: 12;
+  opacity: 1;
+  filter: none;
+}
+
+.chatbot-page--coachmark .chatbot-camera img {
+  filter: none;
 }
 
 @media (max-width: 420px) {

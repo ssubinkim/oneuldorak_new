@@ -2,8 +2,6 @@
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
   z-index: 10;
   pointer-events: none;
   opacity: 0;
@@ -88,19 +86,6 @@
   opacity: 0;
   animation: coachmark-mascot-in 320ms ease-out 120ms forwards;
   will-change: transform, opacity;
-}
-
-.chatbot-coachmark::after {
-  content: '';
-  position: absolute;
-  bottom: -20px;
-  left: 8px;
-  width: 37px;
-  height: 36px;
-  background: #fff;
-  -webkit-mask: url('./images/bubble-tail.png') no-repeat center / 100% 100%;
-  mask: url('./images/bubble-tail.png') no-repeat center / 100% 100%;
-  transform: rotate(-90deg);
 }
 
 @media (prefers-reduced-motion: reduce) {

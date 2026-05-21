@@ -26,10 +26,17 @@ function ChatbotInputBar({ onSubmit, onCameraClick }: ChatbotInputBarProps) {
         <img src={chatCameraIcon} alt="" aria-hidden="true" />
       </button>
       <div className="chatbot-input-shell">
+        <span className="chatbot-input-glow" aria-hidden="true" />
+        <span className="chatbot-input-dark-border" aria-hidden="true" />
+        <span className="chatbot-input-dark-border" aria-hidden="true" />
+        <span className="chatbot-input-dark-border" aria-hidden="true" />
+        <span className="chatbot-input-white" aria-hidden="true" />
+        <span className="chatbot-input-border" aria-hidden="true" />
+        <span className="chatbot-input-pink-mask" aria-hidden="true" />
         <input
           ref={inputRef}
-          aria-label="댓글 입력"
-          placeholder="댓글을 입력하세요"
+          aria-label="챗봇 메시지 입력"
+          placeholder="무엇이든 물어보세요"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
         />
