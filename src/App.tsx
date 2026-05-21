@@ -15,6 +15,7 @@ type AppRoute =
   | 'mypage-plus'
   | 'mypage-plus-benefit'
   | 'mypage-profile-edit'
+  | 'mypage-notification'
   | 'meal-weekly-plan'
   | 'meal-grocery'
   | 'meal-storage'
@@ -37,6 +38,7 @@ const importSavedRecipePage: RouteImporter = () => import('./pages/mypage/SavedR
 const importPlusPage: RouteImporter = () => import('./pages/mypage/PlusPage')
 const importPlusBenefitPage: RouteImporter = () => import('./pages/mypage/PlusBenefitPage')
 const importProfileEditPage: RouteImporter = () => import('./pages/mypage/ProfileEditPage')
+const importNotificationPage: RouteImporter = () => import('./pages/mypage/NotificationPage')
 const importWeeklyPlanPage: RouteImporter = () => import('./pages/meal/WeeklyPlanPage')
 const importGroceryPage: RouteImporter = () => import('./pages/meal/GroceryPage')
 const importStoragePage: RouteImporter = () => import('./pages/meal/StoragePage')
@@ -65,6 +67,7 @@ const ChatbotCamera = lazy(importChatbotCameraPage)
 const ChatbotChat = lazy(importChatbotChatPage)
 const Recipe = lazy(importRecipePage)
 const ProfileEditPage = lazy(importProfileEditPage)
+const NotificationPage = lazy(importNotificationPage)
 
 const pages = {
   start: StartPage,
@@ -82,6 +85,7 @@ const pages = {
   'mypage-plus': PlusPage,
   'mypage-plus-benefit': PlusBenefitPage,
   'mypage-profile-edit': ProfileEditPage,
+  'mypage-notification': NotificationPage,
   'meal-weekly-plan': WeeklyPlanPage,
   'meal-grocery': GroceryPage,
   'meal-storage': StoragePage,
@@ -105,6 +109,7 @@ const pageImporters = {
   'mypage-plus': importPlusPage,
   'mypage-plus-benefit': importPlusBenefitPage,
   'mypage-profile-edit': importProfileEditPage,
+  'mypage-notification': importNotificationPage,
   'meal-weekly-plan': importWeeklyPlanPage,
   'meal-grocery': importGroceryPage,
   'meal-storage': importStoragePage,
@@ -129,6 +134,7 @@ const prefetchTargets = {
   'mypage-plus': ['mypage-plus-benefit'],
   'mypage-plus-benefit': ['mypage-plus', 'mypage'],
   'mypage-profile-edit': ['mypage'],
+  'mypage-notification': ['mypage'],
   'meal-weekly-plan': ['meal-grocery'],
   'meal-grocery': ['meal-storage'],
   'meal-storage': ['meal'],
