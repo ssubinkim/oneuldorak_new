@@ -12,7 +12,7 @@
   --bottom-nav-center-column: clamp(76px, 22.5641vw, 88px);
   --bottom-nav-bg-inset: 0px;
   --bottom-nav-bg-radius: 10px;
-  --bottom-nav-safe-bottom: env(safe-area-inset-bottom);
+  --bottom-nav-safe-bottom: 0px;
 
   position: absolute;
   right: 0;
@@ -25,7 +25,7 @@
     minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   width: 100%;
-  height: calc(var(--bottom-nav-bg-height) + var(--bottom-nav-safe-bottom));
+  height: var(--bottom-nav-bg-height);
   padding: 0;
   margin: 0 auto;
   box-sizing: border-box;
@@ -44,9 +44,7 @@
   z-index: 0;
   display: block;
   width: calc(100% - var(--bottom-nav-bg-inset) * 2);
-  height: calc(
-    var(--bottom-nav-bg-height) + var(--bottom-nav-safe-bottom) - var(--bottom-nav-bg-inset)
-  );
+  height: calc(var(--bottom-nav-bg-height) - var(--bottom-nav-bg-inset));
   filter: drop-shadow(0 -2px 12px rgba(13, 10, 44, 0.12))
     drop-shadow(0 0 1px rgba(13, 10, 44, 0.18));
   pointer-events: none;
