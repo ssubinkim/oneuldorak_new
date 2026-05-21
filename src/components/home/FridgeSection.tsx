@@ -5,7 +5,8 @@ import {
 import mushRoomImg from '../../assets/images/food_icon/mushroom.png'
 import tomatoImg from '../../assets/images/food_icon/tomato.png'
 import dorak21 from '../../assets/food_mascot_all/dorkak21.png'
-import blueStuffImg from './images/blue__stuff.png'
+import blueStuffImg from './images/blue_stuff.png'
+import lightImg from './images/light.png'
 import './FridgeSection.css'
 
 interface FridgeIngredient {
@@ -17,12 +18,12 @@ interface FridgeIngredient {
 
 const FRIDGE_ITEMS: FridgeIngredient[] = [
   { id: 1, name: '당근', image: carrotImg, daysLeft: 1 },
-  { id: 2, name: '감자', image: potatoImg, daysLeft: 1 },
-  { id: 3, name: '사과', image: appleImg, daysLeft: 1 },
-  { id: 4, name: '양파', image: onionImg, daysLeft: 1 },
-  { id: 5, name: '브로콜리', image: brocollyImg, daysLeft: 1 },
+  { id: 2, name: '감자', image: potatoImg, daysLeft: 5 },
+  { id: 3, name: '사과', image: appleImg, daysLeft: 3 },
+  { id: 4, name: '양파', image: onionImg, daysLeft: 2 },
+  { id: 5, name: '브로콜리', image: brocollyImg, daysLeft: 7 },
   { id: 6, name: '버섯', image: mushRoomImg, daysLeft: 1 },
-  { id: 7, name: '방울토마토', image: tomatoImg, daysLeft: 1 },
+  { id: 7, name: '방울토마토', image: tomatoImg, daysLeft: 4 },
 ]
 
 const urgentCount = FRIDGE_ITEMS.filter(i => i.daysLeft !== null).length
@@ -33,7 +34,7 @@ function FridgeSection() {
       <div className="fridge-card">
         <div className="fridge-sec__header">
           <h2 className="fridge-sec__title">오늘의 냉장고</h2>
-          <span className="fridge-sec__count">총 {FRIDGE_ITEMS.length}개 재료</span>
+          <span className="fridge-sec__count">총 <span className="fridge-sec__count-num">{FRIDGE_ITEMS.length}개</span> 재료</span>
         </div>
 
         <div className="fridge-sec__body">
@@ -52,19 +53,17 @@ function FridgeSection() {
           <div className="fridge-sec__scroll">
             {FRIDGE_ITEMS.map(item => (
               <div key={item.id} className="fridge-item">
-                <div className="fridge-circle-wrap">
-                  <div className={`fridge-circle${item.daysLeft !== null ? ' fridge-circle--urgent' : ''}`}>
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className={`fridge-circle__img ${getIngredientIconClassName(item.image)}`}
-                    />
-                  </div>
-                  {item.daysLeft !== null && (
-                    <span className="fridge-badge" aria-label={`D-${item.daysLeft}`}>D-{item.daysLeft}</span>
-                  )}
+                <div className="fridge-circle">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className={`fridge-circle__img ${getIngredientIconClassName(item.image)}`}
+                  />
                 </div>
                 <span className="fridge-item__name">{item.name}</span>
+                {item.daysLeft !== null && (
+                  <span className={`fridge-badge${item.daysLeft <= 2 ? ' fridge-badge--urgent' : ''}`} aria-label={`D-${item.daysLeft}`}>D-{item.daysLeft}</span>
+                )}
               </div>
             ))}
           </div>
@@ -76,9 +75,11 @@ function FridgeSection() {
             onClick={() => { window.location.hash = '#/meal-storage' }}
             aria-label="소비기한 임박 재료 확인하기"
           >
-            <span className="fridge-warning__icon" aria-hidden="true">💡</span>
+            <img src={lightImg} alt="" className="fridge-warning__icon" aria-hidden="true" />
             <span className="fridge-warning__text">소비기한이 임박한 재료가 있어요 !</span>
-            <span className="fridge-warning__arrow" aria-hidden="true">&gt;</span>
+            <svg className="fridge-warning__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9 18L15 12L9 6" stroke="#92BA6B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
         )}
       </div>
