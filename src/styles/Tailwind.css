@@ -146,9 +146,7 @@ button {
   --screen-min-width: 320px;
   --screen-max-width: 1024px;
   --header-height: 44px;
-  --bottom-nav-height: calc(
-    clamp(104px, 28vw, 112px) + env(safe-area-inset-bottom, 0px)
-  );
+  --bottom-nav-height: clamp(104px, 28vw, 112px);
 
   display: flex;
   justify-content: center;
