@@ -4,7 +4,7 @@ import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import type { AiFeature, AnalysisType } from '../../features/ai/types/ai.types'
 import chatbotHeroImage from '../../components/chatbot/images/ai_main.png'
-import btnXIcon from '../../components/chatbot/images/btn_x.png'
+import xIcon from '../../components/chatbot/images/x.svg'
 import ChatbotCoachMark from '../../components/chatbot/ChatbotCoachMark'
 import ChatbotCameraSheet from '../../components/chatbot/ChatbotCameraSheet'
 import ChatbotInputBar from '../../components/chatbot/ChatbotInputBar'
@@ -16,10 +16,12 @@ type QuickSuggestion = {
   analysisType?: AnalysisType
   feature?: AiFeature
   openPicker?: boolean
+  route?: 'receipt-analysis'
 }
 
 const quickSuggestions: QuickSuggestion[] = [
   { label: '냉장고 분석', useApi: true, analysisType: 'menu', feature: 'fridge-photo-analysis', openPicker: true },
+  { label: '영수증 분석', route: 'receipt-analysis' },
   { label: '오늘 도시락 추천', useApi: true, analysisType: 'menu', feature: 'today-lunchbox-recommendation' },
   { label: '주간 도시락 플랜', useApi: true, analysisType: 'menu', feature: 'weekly-lunchbox-plan' },
   { label: '재료별 레시피', useApi: true, analysisType: 'menu', feature: 'ingredient-recipes' },
@@ -83,6 +85,10 @@ function Chatbot() {
       return
     }
     const suggestionConfig = quickSuggestions.find((item) => item.label === suggestion)
+    if (suggestionConfig?.route === 'receipt-analysis') {
+      navigateToHash('#/receipt-analysis')
+      return
+    }
     openChatPage(suggestion, 'quick', {
       useApi: suggestionConfig?.useApi,
       analysisType: suggestionConfig?.analysisType,
@@ -144,10 +150,14 @@ function Chatbot() {
   return (
     <div className="app-shell">
       <div className="app-screen chatbot-screen">
-        <main className="chatbot-page" aria-label="챗봇" onClick={() => setShowCoachMark(false)}>
+        <main
+          className={`chatbot-page${showCoachMark ? ' chatbot-page--coachmark' : ''}`}
+          aria-label="챗봇"
+          onClick={() => setShowCoachMark(false)}
+        >
           <header className="chatbot-topbar">
             <button className="chatbot-close" type="button" aria-label="닫기" onClick={closeChatbot}>
-              <img src={btnXIcon} alt="" aria-hidden="true" />
+              <img src={xIcon} alt="" aria-hidden="true" />
             </button>
           </header>
 
@@ -158,7 +168,11 @@ function Chatbot() {
               오늘은 무엇을 도와드릴까요?
             </p>
 
-            <div className="chatbot-suggestions" aria-label="추천 질문">
+            <div
+              key={showCoachMark ? 'suggestions-waiting' : 'suggestions-ready'}
+              className={`chatbot-suggestions${showCoachMark ? ' is-waiting' : ' is-ready'}`}
+              aria-label="추천 질문"
+            >
               {quickSuggestions.map(({ label }) => (
                 <button
                   key={label}

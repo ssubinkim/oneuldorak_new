@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import btnXIcon from './images/btn_x.png'
+import xIcon from './images/x.svg'
 import cameraOptionIcon from './images/chat_camera.png'
 import galleryOptionIcon from './images/gall.png'
 import fridgeAnalyzeHeroImage from './images/camera.png'
@@ -15,7 +15,6 @@ type ChatbotCameraSheetProps = {
   heroImageSrc?: string
   takePhotoLabel?: string
   selectFromAlbumLabel?: string
-  cancelLabel?: string
   actions?: Array<{
     label: string
     onClick: () => void
@@ -32,7 +31,6 @@ function ChatbotCameraSheet({
   heroImageSrc,
   takePhotoLabel = '사진 촬영',
   selectFromAlbumLabel = '앨범 선택',
-  cancelLabel = '취소',
   actions,
 }: ChatbotCameraSheetProps) {
   const resolvedActions = actions ?? [
@@ -76,7 +74,7 @@ function ChatbotCameraSheet({
       <div className={`chatbot-sheet${isFridgeMode ? ' is-fridge' : ''}`} onClick={(e) => e.stopPropagation()}>
         {isFridgeMode ? (
           <button className="chatbot-sheet__close" type="button" aria-label="닫기" onClick={onClose}>
-            <img src={btnXIcon} alt="" aria-hidden="true" />
+            <img src={xIcon} alt="" aria-hidden="true" />
           </button>
         ) : null}
 
@@ -117,17 +115,11 @@ function ChatbotCameraSheet({
                   <img src={iconSrc} alt="" className="chatbot-sheet__tab-icon" />
                 </span>
               ) : null}
-              {action.label}
+              <span className="chatbot-sheet__tab-label">{action.label}</span>
             </button>
             )
           })}
         </div>
-
-        {isFridgeMode ? (
-          <button className="chatbot-sheet__cancel" type="button" onClick={onClose}>
-            {cancelLabel}
-          </button>
-        ) : null}
       </div>
     </div>
   )

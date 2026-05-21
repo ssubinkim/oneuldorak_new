@@ -101,6 +101,7 @@ const AI_FEATURES = [
   'leftover-ingredients',
   'buy-or-not',
   'fridge-photo-analysis',
+  'receipt-analysis',
 ]
 
 function normalizeFeature(value) {
@@ -129,7 +130,14 @@ function inferFeature(message, analysisType, imageDataUrl, explicitFeature) {
   const normalized = (message || '').replace(/\s+/g, '').toLowerCase()
 
   if (imageDataUrl && analysisType !== 'judge') {
+    if (analysisType === 'receipt') {
+      return 'receipt-analysis'
+    }
     return 'fridge-photo-analysis'
+  }
+
+  if (analysisType === 'receipt') {
+    return 'receipt-analysis'
   }
 
   if (analysisType === 'judge') {
@@ -161,6 +169,7 @@ function inferFeature(message, analysisType, imageDataUrl, explicitFeature) {
 
 function getEffectiveAnalysisType(analysisType, feature) {
   if (feature === 'buy-or-not') return 'judge'
+  if (feature === 'receipt-analysis') return 'receipt'
   if (feature === 'fridge-photo-analysis') return 'menu'
   return analysisType
 }
@@ -332,6 +341,235 @@ async function requestMenuRecommendation(client, { message, imageDataUrl, analys
   })
 }
 
+const RECEIPT_IMAGE_MAX_DATA_URL_LENGTH = 5_000_000
+const RECEIPT_ANALYSIS_MODEL = process.env.OPENAI_RECEIPT_MODEL?.trim() || 'gpt-4o-mini'
+
+const RECEIPT_ANALYSIS_PROMPT = `
+너는 오늘도락 앱의 영수증 분석 AI야.
+사용자가 업로드한 영수증 이미지를 읽고 도시락 준비와 장보기 절약에 도움이 되도록 분석해.
+
+반드시 JSON 객체만 반환해. 마크다운 코드블록, 설명 문장, 주석은 절대 넣지 마.
+영수증에서 읽히지 않는 항목은 "확인 어려움"으로 처리해.
+금액을 정확히 읽을 수 없으면 추측하지 말고 null로 반환하거나 필드를 생략해.
+품목명, 수량, 가격도 영수증에서 확인 가능한 정보만 사용해.
+도시락 활용 여부는 식재료와 식사 준비에 쓸 수 있는지 기준으로 판단해.
+간식, 음료, 생필품처럼 도시락 재료로 보기 어려운 항목은 lunchboxUsable을 false로 둬.
+
+반환 형식:
+{
+  "storeName": "가게명 또는 확인 어려움",
+  "purchasedAt": "구매일시 또는 확인 어려움",
+  "totalAmount": 12300,
+  "items": [
+    {
+      "name": "품목명",
+      "price": 3000,
+      "quantity": "1개",
+      "category": "vegetable",
+      "lunchboxUsable": true
+    }
+  ],
+  "lunchboxIngredients": ["도시락에 쓸 수 있는 재료명"],
+  "savingTips": ["과소비/절약 포인트"],
+  "recommendedMenus": [
+    {
+      "name": "추천 도시락 메뉴",
+      "reason": "추천 이유",
+      "ingredients": ["필요 재료"]
+    }
+  ],
+  "summary": "전체 요약",
+  "nextAction": "다음 행동 제안"
+}
+`
+
+const RECEIPT_ANALYSIS_JSON_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  properties: {
+    storeName: { type: ['string', 'null'] },
+    purchasedAt: { type: ['string', 'null'] },
+    totalAmount: { type: ['number', 'null'] },
+    items: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          name: { type: 'string' },
+          price: { type: ['number', 'null'] },
+          quantity: { type: ['string', 'null'] },
+          category: {
+            type: ['string', 'null'],
+            enum: ['vegetable', 'meat', 'seafood', 'dairy', 'grain', 'snack', 'drink', 'etc', null],
+          },
+          lunchboxUsable: { type: ['boolean', 'null'] },
+        },
+        required: ['name'],
+      },
+    },
+    lunchboxIngredients: {
+      type: 'array',
+      items: { type: 'string' },
+    },
+    savingTips: {
+      type: 'array',
+      items: { type: 'string' },
+    },
+    recommendedMenus: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          name: { type: 'string' },
+          reason: { type: 'string' },
+          ingredients: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+        },
+        required: ['name', 'reason', 'ingredients'],
+      },
+    },
+    summary: { type: 'string' },
+    nextAction: { type: 'string' },
+  },
+  required: ['items', 'lunchboxIngredients', 'savingTips', 'recommendedMenus', 'summary', 'nextAction'],
+}
+
+function isPlainObject(value) {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function readReceiptString(value) {
+  return typeof value === 'string' && value.trim() ? value.trim() : undefined
+}
+
+function readReceiptNumber(value) {
+  return typeof value === 'number' && Number.isFinite(value) ? value : undefined
+}
+
+function readReceiptBoolean(value) {
+  return typeof value === 'boolean' ? value : undefined
+}
+
+function readReceiptStringArray(value) {
+  return Array.isArray(value)
+    ? value.map(readReceiptString).filter(Boolean)
+    : []
+}
+
+function extractJsonObjectText(text) {
+  const trimmed = text.trim()
+    .replace(/^```(?:json)?/i, '')
+    .replace(/```$/i, '')
+    .trim()
+
+  if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+    return trimmed
+  }
+
+  const start = trimmed.indexOf('{')
+  const end = trimmed.lastIndexOf('}')
+
+  if (start >= 0 && end > start) {
+    return trimmed.slice(start, end + 1)
+  }
+
+  return trimmed
+}
+
+function normalizeReceiptAnalysisResult(value) {
+  if (!isPlainObject(value)) {
+    throw new Error('영수증 분석 결과 형식이 올바르지 않습니다.')
+  }
+
+  const items = Array.isArray(value.items)
+    ? value.items
+      .filter(isPlainObject)
+      .map((item) => ({
+        name: readReceiptString(item.name) || '확인 어려움',
+        price: readReceiptNumber(item.price),
+        quantity: readReceiptString(item.quantity),
+        category: readReceiptString(item.category) || 'etc',
+        lunchboxUsable: readReceiptBoolean(item.lunchboxUsable) ?? false,
+      }))
+    : []
+
+  return {
+    storeName: readReceiptString(value.storeName),
+    purchasedAt: readReceiptString(value.purchasedAt),
+    totalAmount: readReceiptNumber(value.totalAmount),
+    items: items.length > 0
+      ? items
+      : [{ name: '확인 어려움', category: 'etc', lunchboxUsable: false }],
+    lunchboxIngredients: readReceiptStringArray(value.lunchboxIngredients),
+    savingTips: readReceiptStringArray(value.savingTips),
+    recommendedMenus: Array.isArray(value.recommendedMenus)
+      ? value.recommendedMenus
+        .filter(isPlainObject)
+        .map((menu) => ({
+          name: readReceiptString(menu.name) || '추천 메뉴 확인 어려움',
+          reason: readReceiptString(menu.reason) || '영수증 정보가 부족해 이유를 확인하기 어려워요.',
+          ingredients: readReceiptStringArray(menu.ingredients),
+        }))
+      : [],
+    summary: readReceiptString(value.summary) || '영수증 내용을 확인했어요.',
+    nextAction: readReceiptString(value.nextAction) || '도시락에 쓸 재료를 골라 보관 목록에 추가해보세요.',
+  }
+}
+
+function parseReceiptAnalysisText(text) {
+  const jsonText = extractJsonObjectText(text)
+  const parsed = JSON.parse(jsonText)
+  return normalizeReceiptAnalysisResult(parsed)
+}
+
+function isVisionModelError(error) {
+  const message = error instanceof Error ? error.message : String(error)
+  return /image|vision|input_image|unsupported|modalit/i.test(message)
+}
+
+async function requestReceiptAnalysis(client, imageDataUrl) {
+  const response = await client.responses.create({
+    model: RECEIPT_ANALYSIS_MODEL,
+    instructions: RECEIPT_ANALYSIS_PROMPT,
+    input: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'input_image',
+            image_url: imageDataUrl,
+            detail: 'high',
+          },
+          {
+            type: 'input_text',
+            text: '이 영수증 이미지를 분석해서 오늘도락 도시락 준비용 JSON만 반환해줘.',
+          },
+        ],
+      },
+    ],
+    text: {
+      format: {
+        type: 'json_schema',
+        name: 'receipt_analysis_result',
+        schema: RECEIPT_ANALYSIS_JSON_SCHEMA,
+        strict: false,
+      },
+    },
+    max_output_tokens: 1200,
+  })
+
+  const text = response.output_text?.trim() || ''
+  if (!text) {
+    throw new Error('영수증 분석 결과가 비어 있습니다.')
+  }
+
+  return parseReceiptAnalysisText(text)
+}
+
 app.use(cors())
 app.use(express.json({ limit: '12mb' }))
 
@@ -358,6 +596,7 @@ app.get('/', (_req, res) => {
     endpoints: {
       health: 'GET /health',
       chat: 'POST /api/chat',
+      receiptAnalyze: 'POST /api/receipt/analyze',
     },
   })
 })
@@ -472,6 +711,80 @@ app.post('/api/chat', async (req, res) => {
 
     res.status(500).json({
       error: `GPT 응답 생성에 실패했어요: ${messageText}`,
+    })
+  }
+})
+
+app.post('/api/receipt/analyze', async (req, res) => {
+  const imageDataUrl = typeof req.body?.imageDataUrl === 'string' ? req.body.imageDataUrl.trim() : ''
+
+  logAiDebug('receipt request received', {
+    source: 'api',
+    feature: 'receipt-analysis',
+    hasImage: Boolean(imageDataUrl),
+    imageLength: imageDataUrl.length,
+  })
+
+  if (!imageDataUrl) {
+    res.status(400).json({
+      error: '분석할 영수증 이미지(imageDataUrl)를 보내주세요.',
+    })
+    return
+  }
+
+  if (!imageDataUrl.startsWith('data:image/')) {
+    res.status(400).json({
+      error: 'imageDataUrl 형식이 올바르지 않습니다. data:image/... 형식으로 보내주세요.',
+    })
+    return
+  }
+
+  if (imageDataUrl.length > RECEIPT_IMAGE_MAX_DATA_URL_LENGTH) {
+    res.status(413).json({
+      error: '이미지가 너무 커요. 영수증을 조금 더 가까이 찍거나 낮은 해상도로 다시 시도해주세요.',
+    })
+    return
+  }
+
+  const client = getOpenAiClient()
+
+  if (!client) {
+    res.status(503).json({
+      error: 'OpenAI API 키가 설정되지 않았습니다. server/.env에 OPENAI_API_KEY를 넣어주세요.',
+    })
+    return
+  }
+
+  try {
+    const result = await requestReceiptAnalysis(client, imageDataUrl)
+
+    logAiDebug('receipt response sent', {
+      source: 'api',
+      feature: 'receipt-analysis',
+      model: RECEIPT_ANALYSIS_MODEL,
+      itemCount: result.items.length,
+    })
+
+    res.json({ result })
+  } catch (error) {
+    const messageText = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.'
+
+    logAiDebug('receipt request failed', {
+      source: 'api',
+      feature: 'receipt-analysis',
+      model: RECEIPT_ANALYSIS_MODEL,
+      reason: messageText,
+    })
+
+    if (isVisionModelError(error)) {
+      res.status(400).json({
+        error: '현재 설정된 이미지 분석 모델이 영수증 사진을 읽지 못했어요. 이미지 입력을 지원하는 모델로 설정한 뒤 다시 시도해주세요.',
+      })
+      return
+    }
+
+    res.status(500).json({
+      error: `영수증 분석에 실패했어요. 영수증을 더 밝게 찍어 다시 시도해주세요. (${messageText})`,
     })
   }
 })

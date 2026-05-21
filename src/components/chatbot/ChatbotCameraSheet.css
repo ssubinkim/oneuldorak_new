@@ -27,10 +27,14 @@
 
 .chatbot-sheet__title {
   margin: 0 0 10px;
-  font-size: 15px;
-  font-weight: 700;
-  color: #1a1a1a;
+  color: #3C3C3C;
   text-align: center;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: "Pretendard Variable";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%; /* 26px */
 }
 
 .chatbot-sheet__tabs {
@@ -60,12 +64,14 @@
 }
 
 .chatbot-sheet.is-fridge {
-  width: min(100%, 300px);
+  width: min(300px, calc(100% - 40px));
+  height: min(433px, calc(100% - 48px));
   align-self: center;
-  background: #f4f5f7;
-  border-radius: 18px;
+  background: #FFF;
+  border-radius: 10px;
   padding: 18px 20px 14px;
   box-sizing: border-box;
+  overflow-y: auto;
   animation: none;
 }
 
@@ -89,83 +95,90 @@
 }
 
 .chatbot-sheet.is-fridge .chatbot-sheet__title {
-  margin: 4px 0 6px;
-  font-size: 34px;
-  font-weight: 700;
-  letter-spacing: -0.08px;
-  line-height: 1.28;
+  margin: 0 0 6px;
 }
 
 .chatbot-sheet__description {
   margin: 0;
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 1.35;
-  letter-spacing: -0.08px;
-  color: #666a74;
+  color: #767676;
   text-align: center;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: "Pretendard Variable";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%; /* 18.2px */
 }
 
 .chatbot-sheet__hero {
   width: min(100%, 252px);
   height: auto;
   align-self: center;
-  margin: 22px 0 18px;
+  margin: 18px 0 16px;
   object-fit: contain;
 }
 
 .chatbot-sheet.is-fridge .chatbot-sheet__tabs {
   grid-template-columns: 1fr;
   gap: 10px;
+  width: min(220px, 100%);
+  align-self: center;
 }
 
 .chatbot-sheet__tab.is-fridge {
+  width: 100%;
   height: 50px;
-  border-radius: 11px;
-  border: 1.5px solid #b7c7f7;
-  background: #d3dcf1;
-  color: #43454b;
-  justify-content: flex-start;
-  display: inline-flex;
+  left: 50px;
+  border-radius: 10px;
+  border: 1px solid var(--green-blue-blue09, #CCDAFF);
+  background: var(--green-blue-blue10, #E6EDFF);
+  color: #3C3C3C;
+  text-align: center;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: "Pretendard Variable";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%; /* 20.8px */
+  display: flex;
   align-items: center;
-  gap: 9px;
+  justify-content: center;
+  gap: 10px;
   padding: 0 12px;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -0.08px;
+  letter-spacing: 0;
+  white-space: nowrap;
   transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 
 .chatbot-sheet__tab.is-fridge .chatbot-sheet__tab-icon-wrap {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: #c8d4f5;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   flex-shrink: 0;
 }
 
 .chatbot-sheet__tab.is-fridge .chatbot-sheet__tab-icon {
-  width: 18px;
-  height: 18px;
+  width: 38px;
+  height: 38px;
   object-fit: contain;
+}
+
+.chatbot-sheet__tab-label {
+  display: block;
+  text-align: center;
+}
+
+.chatbot-sheet__tab.is-fridge:nth-child(2) .chatbot-sheet__tab-icon {
+  width: 40px;
+  height: 40px;
 }
 
 .chatbot-sheet__tab.is-fridge.is-active,
 .chatbot-sheet__tab.is-fridge:active {
-  background: #9fb4eb;
-  border-color: #6f92e9;
+  border-radius: 10px;
+  border: 1px solid var(--green-blue-blue06, #80A3FF);
+  background: var(--green-blue-blue08, #B3C8FF);
   color: #2f3749;
 }
 
-.chatbot-sheet__cancel {
-  margin-top: 10px;
-  width: 100%;
-  height: 42px;
-  border: 0;
-  background: transparent;
-  font-size: 16px;
-  font-weight: 600;
-  color: #4a4d55;
-}

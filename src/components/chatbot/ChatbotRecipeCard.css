@@ -1,114 +1,260 @@
 .chatbot-recipe-card {
-  background: #fff;
-  border: 1px solid #dde3f0;
-  border-radius: 16px;
-  padding: 16px;
-  margin: 4px 0 12px;
+  width: min(100%, 350px);
+  box-sizing: border-box;
+  margin: 4px auto 12px;
+  padding: 14px;
+  border: 1px solid var(--green-blue-blue09, #CCDAFF);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+  box-shadow:
+    0 8px 20px rgba(71, 91, 145, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 .chatbot-recipe-card__header {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-bottom: 14px;
+  gap: 6px;
+}
+
+.chatbot-recipe-card__eyebrow {
+  color: #4E7FFF;
+  font-family: "Pretendard Variable";
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: 0;
 }
 
 .chatbot-recipe-card__title {
   margin: 0;
+  color: #1f2430;
+  font-family: "Pretendard Variable";
   font-size: 18px;
-  font-weight: 600;
-  color: #1a1a1a;
-  line-height: 1.3;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  font-feature-settings: 'liga' off, 'clig' off;
+  letter-spacing: 0;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 .chatbot-recipe-card__subtitle {
   margin: 0;
-  font-size: 14px;
+  color: #777f91;
+  font-family: "Pretendard Variable";
+  font-size: 13px;
+  font-style: normal;
   font-weight: 500;
-  color: #8d8d8d;
-  line-height: 1.3;
+  line-height: 140%;
+  font-feature-settings: 'liga' off, 'clig' off;
+  letter-spacing: 0;
+  word-break: keep-all;
 }
 
-.chatbot-recipe-card__body {
+.chatbot-recipe-card__ingredients {
   display: flex;
-  flex-direction: row;
-  gap: 10px;
-  margin-bottom: 14px;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.chatbot-recipe-card__image {
-  width: 55%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 10px;
-  flex-shrink: 0;
+.chatbot-recipe-card__ingredients-label {
+  color: #6f7788;
+  font-family: "Pretendard Variable";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%;
+  letter-spacing: 0;
 }
 
-.chatbot-recipe-card__image-placeholder {
-  width: 55%;
-  aspect-ratio: 1 / 1;
+.chatbot-recipe-card__ingredient-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chatbot-recipe-card__ingredient-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 9px;
+  box-sizing: border-box;
+  border: 1px solid #dce6ff;
+  border-radius: 999px;
+  background: #f4f7ff;
+  color: #43506a;
+  font-family: "Pretendard Variable";
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 130%;
+}
+
+.chatbot-recipe-card__image-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  margin-top: 12px;
+  overflow: hidden;
   border-radius: 10px;
-  flex-shrink: 0;
   background: #eef1fb;
 }
 
+.chatbot-recipe-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chatbot-recipe-card__image-placeholder {
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(135deg, rgba(204, 218, 255, 0.75) 0%, rgba(255, 247, 208, 0.85) 100%);
+}
+
 .chatbot-recipe-card__stats {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
+  margin-top: 8px;
 }
 
 .chatbot-recipe-card__stat {
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 6px;
-  padding: 10px 12px;
-  background: var(--color-status-success-10);
+  gap: 4px;
+  min-height: 54px;
+  padding: 9px 11px;
+  box-sizing: border-box;
+  border: 1px solid #dce6ff;
   border-radius: 10px;
+  background: var(--green-blue-blue10, #E6EDFF);
 }
 
 .chatbot-recipe-card__stat-label {
-  font-size: 13px;
-  font-weight: 400;
-  color: #8d8d8d;
-  line-height: 1.3;
+  color: #7a8294;
+  font-family: "Pretendard Variable";
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
+  font-feature-settings: 'liga' off, 'clig' off;
+  letter-spacing: 0;
 }
 
 .chatbot-recipe-card__stat-value {
+  color: #2f3440;
+  font-family: "Pretendard Variable";
   font-size: 15px;
-  font-weight: 600;
-  color: #3c3c3c;
-  line-height: 1.3;
-}
-
-.chatbot-recipe-card__divider {
-  border: none;
-  border-top: 1px dashed #cdd3e8;
-  margin-bottom: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  font-feature-settings: 'liga' off, 'clig' off;
+  letter-spacing: 0;
+  word-break: keep-all;
 }
 
 .chatbot-recipe-card__reason {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 9px;
+  margin-top: 13px;
+  padding-top: 13px;
+  border-top: 1px dashed #ccd7ef;
+}
+
+.chatbot-recipe-card__reason-heading {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.chatbot-recipe-card__reason-mark {
+  width: 4px;
+  height: 16px;
+  border-radius: 999px;
+  background: #4E7FFF;
+  flex-shrink: 0;
 }
 
 .chatbot-recipe-card__reason-title {
   margin: 0;
-  font-size: 14px;
-  font-weight: 500;
+  color: #2f5fff;
+  font-family: "Pretendard Variable";
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  font-feature-settings: 'liga' off, 'clig' off;
+  letter-spacing: 0;
+}
+
+.chatbot-recipe-card__reason-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+}
+
+.chatbot-recipe-card__reason-row {
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  column-gap: 9px;
+  align-items: start;
+}
+
+.chatbot-recipe-card__reason-row dt {
   color: #4E7FFF;
-  line-height: 1.3;
+  font-family: "Pretendard Variable";
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 145%;
+  word-break: keep-all;
+}
+
+.chatbot-recipe-card__reason-row dd {
+  margin: 0;
+  color: #5d6472;
+  font-family: "Pretendard Variable";
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 145%;
+  white-space: pre-line;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 .chatbot-recipe-card__reason-text {
   margin: 0;
+  color: #5d6472;
+  font-family: "Pretendard Variable";
   font-size: 13px;
-  font-weight: 400;
-  color: #8d8d8d;
-  line-height: 1.3;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 155%;
+  font-feature-settings: 'liga' off, 'clig' off;
+  letter-spacing: 0;
   white-space: pre-line;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 360px) {
+  .chatbot-recipe-card {
+    padding: 12px;
+  }
+
+  .chatbot-recipe-card__title {
+    font-size: 17px;
+  }
+
+  .chatbot-recipe-card__reason-row {
+    grid-template-columns: 1fr;
+    row-gap: 2px;
+  }
 }

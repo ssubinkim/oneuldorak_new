@@ -6,6 +6,7 @@ export const AI_FEATURES = [
   'leftover-ingredients',
   'buy-or-not',
   'fridge-photo-analysis',
+  'receipt-analysis',
 ] as const
 
 export type AiFeature = typeof AI_FEATURES[number]
@@ -20,6 +21,28 @@ export type RecipeData = {
   cookTime: string
   estimatedCost: string
   reason: string
+}
+
+export type ReceiptAnalysisResult = {
+  storeName?: string
+  purchasedAt?: string
+  totalAmount?: number
+  items: {
+    name: string
+    price?: number
+    quantity?: string
+    category?: 'vegetable' | 'meat' | 'seafood' | 'dairy' | 'grain' | 'snack' | 'drink' | 'etc'
+    lunchboxUsable?: boolean
+  }[]
+  lunchboxIngredients: string[]
+  savingTips: string[]
+  recommendedMenus: {
+    name: string
+    reason: string
+    ingredients: string[]
+  }[]
+  summary: string
+  nextAction: string
 }
 
 type AiChatMessageBase = {
