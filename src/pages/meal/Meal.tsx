@@ -8,7 +8,7 @@ import FridgeSection from '../../components/home/FridgeSection'
 import type { DayMenu } from '../../components/meal/mealData'
 import logoImg from '../../assets/logos/logo.svg'
 import bellIcon from '../../assets/icons/bell_icon.svg'
-import mascotGroupImg from '../../assets/food_mascot_all/dorak19.svg'
+import mascotGroupImg from '../../assets/food_mascot_all/dorak19.png'
 import '../../styles/Tailwind.css'
 import './Meal.css'
 
