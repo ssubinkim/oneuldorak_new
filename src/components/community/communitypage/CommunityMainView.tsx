@@ -47,9 +47,21 @@ function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
       <div ref={stickyHeaderRef as React.RefObject<HTMLDivElement>} className="community-banner-header">
         <h1>커뮤니티</h1>
         <div className="community-banner-header__actions">
-          {isSearchOpen ? (
+          <button
+            type="button"
+            aria-label="검색"
+            aria-expanded={isSearchOpen}
+            onClick={handleSearchToggle}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+        </div>
+        {isSearchOpen && (
+          <div className="community-banner-header__search-overlay">
             <CommunitySearchBar
-              className="community-banner-header__search-inline"
               value={searchValue}
               onChange={setSearchValue}
               onClose={handleSearchClose}
@@ -57,25 +69,8 @@ function CommunityMainView({ activeTab, onSelectTab }: CommunityMainViewProps) {
               showCloseButton={false}
               autoFocus
             />
-          ) : (
-            <button
-              type="button"
-              aria-label="검색"
-              aria-expanded={isSearchOpen}
-              onClick={handleSearchToggle}
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </button>
-          )}
-          <button type="button" aria-label="저장">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-            </svg>
-          </button>
-        </div>
+          </div>
+        )}
       </div>
 
       {/* 배너 body만 (subtitle + 마스코트) - 카드가 위로 덮으며 올라옴 */}

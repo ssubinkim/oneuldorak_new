@@ -90,14 +90,8 @@
   filter: drop-shadow(0px 5px 8px rgba(0, 0, 0, 0.18));
 }
 
-.dorak-ranking__mascot {
-  animation: mascot-rise-rank2 1.2s cubic-bezier(0.34, 1.1, 0.64, 1) both;
-}
-
 .dorak-ranking__podium-item--rank1 .dorak-ranking__mascot {
-  animation:
-    mascot-rise-rank1 1.2s cubic-bezier(0.34, 1.1, 0.64, 1) both,
-    mascot-bounce 0.55s ease-out 1.2s forwards;
+  animation: mascot-rise-rank1 1.2s cubic-bezier(0.34, 1.1, 0.64, 1) both;
 }
 
 .dorak-ranking__podium-item--rank2 .dorak-ranking__mascot {
@@ -140,24 +134,6 @@
     transform: translateY(70px);
   }
   to {
-    transform: translateY(0);
-  }
-}
-
-@keyframes mascot-bounce {
-  0% {
-    transform: translateY(0);
-  }
-  35% {
-    transform: translateY(-7px);
-  }
-  65% {
-    transform: translateY(-2px);
-  }
-  85% {
-    transform: translateY(-5px);
-  }
-  100% {
     transform: translateY(0);
   }
 }

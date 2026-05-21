@@ -1,7 +1,19 @@
 .free-detail-list {
   display: grid;
-  gap: 18px;
+  gap: 15px;
   padding: 30px 0 0;
+  animation: board-list-enter 240ms ease both;
+}
+
+@keyframes board-list-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .free-post-card {
@@ -11,6 +23,29 @@
   border-radius: 10px;
   box-sizing: border-box;
   cursor: pointer;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.free-post-card.is-visible {
+  animation: card-slide-up 420ms ease both;
+}
+
+@keyframes card-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.free-post-card:active {
+  transform: scale(0.97);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
 }
 
 .free-post-card.is-newly-created {
@@ -65,21 +100,22 @@
 
 .free-post-card h3 {
   margin: 12px 0 0;
-  color: #1a1a1a;
-  font-size: 18px;
-  font-weight: 600;
+  color: #3c3c3c;
+  font-size: 16px;
+  font-weight: 500;
   font-family: 'Pretendard Variable', sans-serif;
-  line-height: 130%;
-  letter-spacing: 0.08px;
+  line-height: 120%;
+  letter-spacing: -0.08px;
 }
 
 .free-post-card__body {
   display: -webkit-box;
   margin: 4px 0 0;
   overflow: hidden;
-  color: #4f4f4f;
-  font-size: 13px;
-  line-height: 1.35;
+  color: #5f5f5f;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: -0.08px;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
 }
@@ -97,7 +133,7 @@
   align-items: center;
   gap:5px;
   min-width: 0;
-  color: #555;
+  color: #5f5f5f;
   font-size: 12px;
   line-height: 1;
 }
@@ -114,7 +150,7 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  color: #7a7a7a;
+  color: #777;
   font-size: 12px;
   line-height: 1;
   white-space: nowrap;
@@ -138,6 +174,44 @@
 
 .free-post-card__stats span:first-child svg {
   color: #ff5a5f;
+}
+
+.free-post-card__like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0;
+  color: #777;
+  background: transparent;
+  border: 0;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.free-post-card__like-btn svg {
+  width: 13px;
+  height: 13px;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: #ff5a5f;
+  transition: transform 200ms ease;
+}
+
+.free-post-card__like-btn.is-liked {
+  color: #ff5a5f;
+}
+
+.free-post-card__like-btn.is-liked svg {
+  animation: heart-bounce 320ms ease;
+}
+
+@keyframes heart-bounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4); }
+  70%  { transform: scale(0.88); }
+  100% { transform: scale(1); }
 }
 
 @media (max-width: 360px) {

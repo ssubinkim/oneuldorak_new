@@ -5,7 +5,7 @@ import { boardFilters, type BoardFilter } from '../../components/community/board
 import BoardList, { type BoardPost } from '../../components/community/boardpage/BoardList'
 import { mockBoardPopularPosts } from '../../components/community/common/boardMockData'
 import CommunityStickyHeader from '../../components/community/common/CommunityStickyHeader'
-import PopularPosts from '../../components/community/communitypage/PopularPosts'
+import BoardPopularPosts from '../../components/community/boardpage/BoardPopularPosts'
 import useCommunityHeaderCollapse from '../../components/community/common/useCommunityHeaderCollapse'
 import CommunityBanner from '../../components/community/communitypage/CommunityBanner'
 import type { CommunityTabRoute } from './CommunityTabRoute'
@@ -58,7 +58,7 @@ function BoardPage({
           onSelectTab={onSelectTab}
         />
         <div className="free-detail-body">
-          <PopularPosts posts={mockBoardPopularPosts} showHeaderImage={false} />
+          <BoardPopularPosts posts={mockBoardPopularPosts} onOpenDetail={onOpenDetail} />
           <BoardCategoryFilters activeFilter={activeFilter} onChange={setActiveFilter} />
           <BoardList
             activeFilter={activeFilter}

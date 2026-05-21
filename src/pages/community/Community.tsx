@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import type { BoardDetailPost } from '../../components/community/boarddetailpage/BoardContent'
@@ -32,6 +32,8 @@ import RecipePage from './RecipePage'
 import VotePage from './VotePage'
 import '../../styles/Tailwind.css'
 import './Community.css'
+
+type ScrollButtonState = 'full' | 'compact' | 'top'
 
 type CommunityTab = CommunityTabRoute
 type CommunityView = 'main' | 'recipe' | 'free' | 'vote' | 'detail' | 'boardDetail' | 'write'
@@ -371,6 +373,36 @@ function Community() {
   const [previousView, setPreviousView] = useState<CommunityView>(() =>
     initialTarget?.kind === 'recipe' ? 'recipe' : initialTarget?.kind === 'board' ? 'free' : 'main',
   )
+  const [scrollBtnState, setScrollBtnState] = useState<ScrollButtonState>('full')
+  const scrollBtnStateRef = useRef<ScrollButtonState>('full')
+
+  useEffect(() => {
+    const handleScroll = (event: Event) => {
+      const target = event.target as HTMLElement
+      if (!target.classList?.contains('page-scroll')) return
+      const { scrollTop, scrollHeight, clientHeight } = target
+      const next: ScrollButtonState =
+        scrollHeight - scrollTop - clientHeight < 120 ? 'top'
+        : scrollTop > 60 ? 'compact'
+        : 'full'
+      if (next !== scrollBtnStateRef.current) {
+        scrollBtnStateRef.current = next
+        setScrollBtnState(next)
+      }
+    }
+    document.addEventListener('scroll', handleScroll, true)
+    return () => document.removeEventListener('scroll', handleScroll, true)
+  }, [])
+
+  useEffect(() => {
+    scrollBtnStateRef.current = 'full'
+    setScrollBtnState('full')
+  }, [view])
+
+  const handleScrollToTop = () => {
+    document.querySelector('.page-scroll')?.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const [selectedRecipeId, setSelectedRecipeId] = useState<string | null>(
     initialTarget?.kind === 'recipe' ? initialTarget.id : null,
   )
@@ -693,8 +725,9 @@ function Community() {
         {view !== 'write' && (
           <CommunityWriteButton
             className="community-page__write-button"
-            aria-label="글쓰기"
-            onClick={handleOpenWrite}
+            scrollState={scrollBtnState}
+            aria-label={scrollBtnState === 'top' ? '맨 위로' : '글쓰기'}
+            onClick={scrollBtnState === 'top' ? handleScrollToTop : handleOpenWrite}
           />
         )}
 

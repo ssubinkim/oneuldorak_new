@@ -1,27 +1,38 @@
 import type { ButtonHTMLAttributes } from 'react'
+import plusIcon from '../../../assets/icons/plus.svg'
+import arrowUpIcon from '../../../assets/icons/arrow_up.svg'
 import './CommunityWriteButton.css'
 
-type CommunityWriteButtonProps = ButtonHTMLAttributes<HTMLButtonElement>
+type ScrollButtonState = 'full' | 'compact' | 'top'
+
+type CommunityWriteButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  scrollState?: ScrollButtonState
+}
 
 function CommunityWriteButton({
   className = '',
   type = 'button',
-  'aria-label': ariaLabel = '글쓰기',
+  scrollState = 'full',
+  'aria-label': ariaLabel,
   ...buttonProps
 }: CommunityWriteButtonProps) {
-  const buttonClassName = ['community-write-button', className].filter(Boolean).join(' ')
+  const buttonClassName = ['community-write-button', `is-${scrollState}`, className].filter(Boolean).join(' ')
+  const label = ariaLabel ?? (scrollState === 'top' ? '맨 위로' : '글쓰기')
 
   return (
-    <button
-      className={buttonClassName}
-      type={type}
-      aria-label={ariaLabel}
-      {...buttonProps}
-    >
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4.5 19.5h4.2L19 9.1l-4.2-4.2L4.5 15.3v4.2Z" />
-        <path d="M12.8 6.9 17 11.1" />
-      </svg>
+    <button className={buttonClassName} type={type} aria-label={label} {...buttonProps}>
+      {scrollState === 'full' && (
+        <span className="community-write-button__label">
+          <img src={plusIcon} alt="" aria-hidden="true" className="community-write-button__icon" />
+          글쓰기
+        </span>
+      )}
+      {scrollState === 'compact' && (
+        <img src={plusIcon} alt="" aria-hidden="true" className="community-write-button__icon" />
+      )}
+      {scrollState === 'top' && (
+        <img src={arrowUpIcon} alt="" aria-hidden="true" className="community-write-button__icon" />
+      )}
     </button>
   )
 }

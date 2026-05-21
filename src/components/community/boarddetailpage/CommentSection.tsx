@@ -35,7 +35,6 @@ function CommentSection({
     <section className="board-detail-comments">
       <div className="board-detail-comments__header">
         <h2>댓글 ({comments.length})</h2>
-        <span>최신순&nbsp;&nbsp;인기순</span>
       </div>
 
       <div className="board-detail-comments__input">

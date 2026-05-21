@@ -8,6 +8,7 @@ export type BoardDetailPost = {
   title: string
   author: string
   authorId?: string
+  mascot?: string
   timeAgo: string
   likes: number
   comments: number
@@ -50,7 +51,10 @@ function BoardContent({
       <h1>{post.title}</h1>
 
       <div className="board-detail-meta-row">
-        <p className="board-detail-meta">{post.author} · {post.timeAgo}</p>
+        <p className="board-detail-meta">
+          {post.mascot && <img src={post.mascot} alt="" aria-hidden="true" className="board-detail-meta__avatar" />}
+          {post.author} · {post.timeAgo}
+        </p>
 
         <div className="board-detail-stats">
           <button

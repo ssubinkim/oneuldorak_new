@@ -1,5 +1,5 @@
 import './BoardList.css'
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { boardFilters, type BoardFilter } from './boardCategoryFilterData'
 import { mockBoardPosts } from '../common/boardMockData'
 
@@ -25,15 +25,15 @@ type BoardListProps = {
   onFocusHandled?: () => void
 }
 
-function BoardActionIcon({ kind }: { kind: 'heart' | 'comment' | 'bookmark' }) {
-  if (kind === 'heart') {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M20.8 5.6a5 5 0 0 0-7 0L12 7.4l-1.7-1.8a5 5 0 0 0-7.1 7l1.8 1.8L12 21l7.1-6.6 1.7-1.8a5 5 0 0 0 0-7Z" />
-      </svg>
-    )
-  }
+function HeartIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" style={{ fill: filled ? '#ff5a5f' : 'none', stroke: 'currentColor' }}>
+      <path d="M20.8 5.6a5 5 0 0 0-7 0L12 7.4l-1.7-1.8a5 5 0 0 0-7.1 7l1.8 1.8L12 21l7.1-6.6 1.7-1.8a5 5 0 0 0 0-7Z" />
+    </svg>
+  )
+}
 
+function BoardActionIcon({ kind }: { kind: 'comment' | 'bookmark' }) {
   if (kind === 'comment') {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -56,12 +56,40 @@ function BoardCard({
   post: BoardPost
   onOpenDetail: (postId: string) => void
 }) {
+  const cardRef = useRef<HTMLElement>(null)
+  const [liked, setLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState(post.likes)
+
+  useEffect(() => {
+    const card = cardRef.current
+    if (!card) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          card.classList.add('is-visible')
+          observer.unobserve(card)
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -80px 0px' }
+    )
+    observer.observe(card)
+    return () => observer.disconnect()
+  }, [])
+
   const handleOpenDetail = () => {
     onOpenDetail(post.id)
   }
 
+  const handleLike = (event: React.MouseEvent) => {
+    event.stopPropagation()
+    const newLiked = !liked
+    setLiked(newLiked)
+    setLikeCount(newLiked ? likeCount + 1 : likeCount - 1)
+  }
+
   return (
     <article
+      ref={cardRef}
       className="free-post-card"
       data-post-id={post.id}
       role="button"
@@ -90,10 +118,15 @@ function BoardCard({
           {post.user}
         </span>
         <div className="free-post-card__stats">
-          <span>
-            <BoardActionIcon kind="heart" />
-            {post.likes}
-          </span>
+          <button
+            type="button"
+            className={`free-post-card__like-btn${liked ? ' is-liked' : ''}`}
+            onClick={handleLike}
+            aria-label={liked ? '좋아요 취소' : '좋아요'}
+          >
+            <HeartIcon filled={liked} />
+            {likeCount}
+          </button>
           <span>
             <BoardActionIcon kind="comment" />
             {post.comments}
@@ -114,6 +147,20 @@ function shouldShowPost(post: BoardPost, activeFilter: BoardFilter) {
   return true
 }
 
+function timeAgoToMinutes(timeAgo: string): number {
+  if (timeAgo.includes('방금')) return 0
+  const value = Number(timeAgo.match(/\d+/)?.[0] ?? 0)
+  if (timeAgo.includes('시간')) return value * 60
+  if (timeAgo.includes('일')) return value * 60 * 24
+  return value
+}
+
+function sortPosts(posts: BoardPost[], filter: BoardFilter): BoardPost[] {
+  if (filter === '인기순') return [...posts].sort((a, b) => b.likes - a.likes)
+  if (filter === '최신순') return [...posts].sort((a, b) => timeAgoToMinutes(a.timeAgo) - timeAgoToMinutes(b.timeAgo))
+  return posts
+}
+
 function BoardList({
   activeFilter,
   onOpenDetail,
@@ -123,7 +170,8 @@ function BoardList({
 }: BoardListProps) {
   const listRef = useRef<HTMLElement | null>(null)
   const sourcePosts = [...extraPosts, ...mockBoardPosts]
-  const visiblePosts = sourcePosts.filter((post) => shouldShowPost(post, activeFilter))
+  const filteredPosts = sourcePosts.filter((post) => shouldShowPost(post, activeFilter))
+  const visiblePosts = sortPosts(filteredPosts, activeFilter)
   const hasFocusTarget = focusPostId ? visiblePosts.some((post) => post.id === focusPostId) : false
 
   useEffect(() => {
@@ -152,7 +200,7 @@ function BoardList({
   }, [focusPostId, hasFocusTarget, onFocusHandled])
 
   return (
-    <section ref={listRef} className="free-detail-list" aria-label="자유게시판 글 목록">
+    <section ref={listRef} key={activeFilter} className="free-detail-list" aria-label="자유게시판 글 목록">
       {visiblePosts.map((post) => (
         <BoardCard
           key={post.id}

@@ -10,6 +10,19 @@
   box-sizing: border-box;
 }
 
+.community-banner-header__search-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  background: var(--color-secondary);
+  padding: 0 20px;
+  z-index: 1;
+  width: 80px;
+}
+
 .community-banner-header h1 {
   margin: 0;
   font-size: 26px;
@@ -35,7 +48,7 @@
 
 .community-sticky-header.is-compact {
   position: sticky;
-  top: var(--community-banner-header-height, calc(68px + env(safe-area-inset-top, 0px)));
+  top: calc(var(--community-banner-header-height, calc(68px + env(safe-area-inset-top, 0px))) - 1px);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 

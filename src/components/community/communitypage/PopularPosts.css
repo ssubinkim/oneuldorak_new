@@ -19,7 +19,7 @@
   margin: 0;
   color: #1a1a1a;
   font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 130%;
   letter-spacing: -0.08px;
@@ -95,6 +95,7 @@
   transform-origin: center;
   perspective: 720px;
   will-change: transform, opacity;
+  transition: opacity 220ms ease, transform 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__item:last-child {
@@ -103,9 +104,10 @@
 
 .community-hot-posts__stagger .sequential-highlight-list__item.is-active {
   background: transparent !important;
-  border: none !important;
+  border-top: 1px solid #f2f2f2 !important;
+  border-bottom: 1px solid #f2f2f2 !important;
   border-radius: 0 !important;
-  box-shadow: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
   outline: none;
   animation: none;
 }
@@ -152,7 +154,7 @@
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__item.is-active .sequential-highlight-list__content {
-  animation: hot-posts-text-3d-flip 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: hot-posts-text-3d-flip 620ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .community-hot-posts__stagger .sequential-highlight-list__title {
