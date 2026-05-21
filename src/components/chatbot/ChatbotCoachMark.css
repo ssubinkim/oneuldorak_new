@@ -2,7 +2,7 @@
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
-  z-index: 10;
+  z-index: 18;
   pointer-events: none;
   opacity: 0;
   animation: coachmark-overlay-in 260ms ease-out forwards;
@@ -37,6 +37,7 @@
 
 .chatbot-coachmark {
   position: absolute;
+  z-index: 34;
   left: var(--layout-padding-x);
   bottom: calc(50px + 16px + env(safe-area-inset-bottom) + 14px);
   pointer-events: auto;
@@ -49,7 +50,8 @@
   padding: 12px 16px;
   background: #fff;
   border-radius: 12px;
-  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.2));
+  filter: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   color: #3c3c3c;
   text-align: left;
   animation: coachmark-in 360ms cubic-bezier(0.22, 1, 0.36, 1) both;

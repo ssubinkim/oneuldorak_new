@@ -1442,6 +1442,24 @@ function ChatbotChat() {
                   judgeResultDisplay ? 'chatbot-ai-stack--judge' : '',
                   recommendationRecipe ? 'chatbot-ai-stack--recipe' : '',
                 ].filter(Boolean).join(' ')
+                if (judgeResultDisplay) {
+                  return (
+                    <div key={msg.id} className="chatbot-msg chatbot-msg--ai chatbot-msg--ai-judge">
+                      <div className="chatbot-ai-judge-head">
+                        <img className="chatbot-mascot" src={chatbotMascotIcon} alt="" aria-hidden="true" />
+                        <div className="chatbot-ai-bubble">
+                          <span className="chatbot-ai-bubble__text">
+                            {renderBubbleText(bubbleText)}
+                          </span>
+                        </div>
+                      </div>
+                      <div className={stackClassName}>
+                        {renderJudgeResultCard(judgeResultDisplay)}
+                      </div>
+                    </div>
+                  )
+                }
+
                 return (
                   <div key={msg.id} className="chatbot-msg chatbot-msg--ai">
                     <img className="chatbot-mascot" src={chatbotMascotIcon} alt="" aria-hidden="true" />
@@ -1451,7 +1469,6 @@ function ChatbotChat() {
                           {renderBubbleText(bubbleText)}
                         </span>
                       </div>
-                      {judgeResultDisplay ? renderJudgeResultCard(judgeResultDisplay) : null}
                       {recommendationRecipe ? <ChatbotRecipeCard recipe={recommendationRecipe} /> : null}
                       {detailText ? (
                         <div className="chatbot-ai-detail-card">

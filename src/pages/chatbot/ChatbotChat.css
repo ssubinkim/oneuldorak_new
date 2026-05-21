@@ -95,8 +95,9 @@
 
 .chatbot-page--chat {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr);
   overflow: hidden;
+  overscroll-behavior: none;
   background: #FFF;
 }
 
@@ -118,25 +119,29 @@
 
 .chatbot-chat-messages {
   position: relative;
+  grid-row: 2;
+  grid-column: 1;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  padding-bottom: 8px;
+  padding-bottom: 104px;
   -webkit-overflow-scrolling: touch;
 }
 
 .chatbot-page--chat .chatbot-bottom {
-  position: sticky;
-  bottom: 0;
+  position: relative;
+  grid-row: 2;
+  grid-column: 1;
+  align-self: end;
   z-index: 20;
   flex-shrink: 0;
   margin-right: -8px;
   margin-left: -8px;
-  padding-top: 8px;
   background: transparent;
+  padding: 8px 8px 0;
 }
 
 /* hide scrollbar */
@@ -162,9 +167,23 @@
 
 .chatbot-msg--ai {
   justify-content: flex-start;
-  align-items: flex-end;
+  align-items: flex-start;
+  gap: 16px;
   margin-top: 40px;
   animation: msg-in 0.5s ease both;
+}
+
+.chatbot-msg--ai-judge {
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.chatbot-ai-judge-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
 }
 
 .chatbot-bubble {
@@ -278,13 +297,26 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 10px;
+}
+
+.chatbot-msg--ai:not(.chatbot-msg--ai-loading):not(.chatbot-msg--ai-judge) .chatbot-ai-stack {
+  --chatbot-ai-card-shift: clamp(48px, 12vw, 64px);
+}
+
+.chatbot-msg--ai:not(.chatbot-msg--ai-loading):not(.chatbot-msg--ai-judge) .chatbot-recipe-card {
+  width: calc(100% + var(--chatbot-ai-card-shift));
+  max-width: calc(100vw - 44px);
+  margin-top: 20px;
+  margin-left: calc(var(--chatbot-ai-card-shift) * -1);
 }
 
 .chatbot-ai-stack--judge {
-  width: min(88vw, 360px);
-  max-width: min(92%, 360px);
-  gap: 10px;
+  width: min(100%, 396px);
+  max-width: calc(100vw - 32px);
+  gap: 12px;
+  margin-top: 20px;
+  margin-left: 0;
 }
 
 .chatbot-ai-stack--judge .chatbot-ai-bubble {
@@ -298,8 +330,11 @@
 }
 
 .chatbot-ai-detail-card {
-  width: 100%;
+  width: calc(100% + var(--chatbot-ai-card-shift, 0px));
+  max-width: calc(100vw - 44px);
   box-sizing: border-box;
+  margin-top: 20px;
+  margin-left: calc(var(--chatbot-ai-card-shift, 0px) * -1);
   background: #fff;
   border: 1px solid #dde3f0;
   border-radius: 16px;
@@ -450,8 +485,14 @@
 .chatbot-mascot {
   width: 60px;
   height: auto;
+  margin-right: 0;
   flex-shrink: 0;
   object-fit: contain;
+  transform: translateY(-2px);
+}
+
+.chatbot-msg--ai-loading .chatbot-mascot {
+  transform: translateY(4px);
 }
 
 .chatbot-chat-messages .chatbot-recipe-card {
