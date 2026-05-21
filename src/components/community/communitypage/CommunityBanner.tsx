@@ -2,7 +2,7 @@ import CommunitySearchBar from '../common/CommunitySearchBar'
 import './CommunityBanner.css'
 import defaultBannerImage from '../../../pages/community/images/dorak02.png'
 import recipeBannerImage from '../../../assets/food_mascot_all/dorak18.png'
-import boardBannerImage from '../../../assets/food_mascot_all/dorak15.png'
+import boardBannerImage from '../common/images/communityboard.png'
 import voteBannerImage from '../../../assets/food_mascot_all/dorak20.png'
 
 type CommunityBannerVariant = 'default' | 'recipe' | 'board' | 'vote'
@@ -66,11 +66,6 @@ function CommunityBanner({
                 </svg>
               </button>
             )}
-            <button type="button" aria-label="저장">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-              </svg>
-            </button>
           </div>
         </div>
       )}

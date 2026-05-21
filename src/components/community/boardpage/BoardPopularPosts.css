@@ -3,25 +3,26 @@
 }
 
 .board-popular-posts h2 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin: 0 0 20px;
-  color: #1a1a1a;
-  font-size: 22px;
+  color: #3c3c3c;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
   font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
-  line-height: 130%;
+  line-height: 120%;
   letter-spacing: -0.08px;
 }
 
 .board-popular-posts__list {
   display: grid;
   margin: 0;
-  padding: 20px;
+  padding: 20px 10px;
   list-style: none;
   background: var(--color-bg-base);
-  border: 1px solid var(--color-border);
   border-radius: 8px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
 .board-popular-posts__list li {
@@ -34,7 +35,7 @@
 }
 
 .board-popular-posts__list li + li {
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid #f2f2f2;
 }
 
 .board-popular-posts__list li:first-child {
@@ -46,9 +47,9 @@
 }
 
 .board-popular-posts__rank {
-  color: #333;
-  font-size: 18px;
-  font-weight: 600;
+  color: #3c3c3c;
+  font-size: 20px;
+  font-weight: 500;
   line-height: 1.2;
 }
 
@@ -63,19 +64,56 @@
   overflow: hidden;
   color: var(--color-text-main);
   font-size: 17px;
-  font-weight: 600;
-  line-height: 135%;
+  font-weight: 500;
+  line-height: 120%;
   letter-spacing: -0.08px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.board-popular-posts__list p {
-  margin: 4px 0 0;
+.board-popular-posts__body {
+  margin: 4px 0 6px;
+  overflow: hidden;
+  color: #777;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 130%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board-popular-posts__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   color: var(--color-text-date);
   font-size: 12px;
   font-weight: 500;
   line-height: 130%;
+}
+
+.board-popular-posts__stats {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.board-popular-posts__stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.board-popular-posts__stat svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+  stroke: none;
+}
+
+.board-popular-posts__stat:first-of-type svg {
+  color: #EF5246;
 }
 
 .board-popular-posts__list li.is-top p {
@@ -92,4 +130,43 @@
 
 .board-popular-posts__list li:active {
   transform: translateY(0);
+}
+
+.board-popular-posts__like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+  color: #777;
+  background: transparent;
+  border: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.board-popular-posts__like-btn svg {
+  width: 12px;
+  height: 12px;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: #ff5a5f;
+  transition: transform 200ms ease;
+}
+
+.board-popular-posts__like-btn.is-liked {
+  color: #ff5a5f;
+}
+
+.board-popular-posts__like-btn.is-liked svg {
+  animation: popular-heart-bounce 320ms ease;
+}
+
+@keyframes popular-heart-bounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.45); }
+  70%  { transform: scale(0.88); }
+  100% { transform: scale(1); }
 }

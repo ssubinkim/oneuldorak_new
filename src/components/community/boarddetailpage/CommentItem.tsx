@@ -1,4 +1,16 @@
 import { useState } from 'react'
+import eggMascot from '../../../assets/food_mascot/egg_mascot.png'
+import strawMascot from '../../../assets/food_mascot/straw_mascot.png'
+import blueMascot from '../../../assets/food_mascot/blue_mascot.png'
+import carrotMascot from '../../../assets/food_mascot/carrot_mascot.png'
+import broMascot from '../../../assets/food_mascot/bro_mascot.png'
+
+const mascots = [eggMascot, strawMascot, blueMascot, carrotMascot, broMascot]
+
+function getMascot(username: string): string {
+  const hash = username.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0)
+  return mascots[hash % mascots.length]
+}
 
 export type BoardComment = {
   id: string
@@ -38,10 +50,7 @@ function CommentItem({ comment, canManage, onUpdate, onDelete }: CommentItemProp
   return (
     <article className="board-detail-comment">
       <span className="board-detail-comment-avatar" aria-hidden="true">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="8.4" r="3.3" />
-          <path d="M5.6 19.2c.8-3.3 3.1-5.2 6.4-5.2s5.6 1.9 6.4 5.2" />
-        </svg>
+        <img src={getMascot(comment.user)} alt="" />
       </span>
 
       <div className="board-detail-comment__content">

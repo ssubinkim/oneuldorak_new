@@ -222,13 +222,15 @@ function isOwnVote(card: VoteCardItem, currentUserId: string, nickname: string) 
 function VoteResultItem({
   option,
   percent,
-  isHighlighted,
+  isLeading,
+  isSelected,
   isDimmed,
   onSelect,
 }: {
   option: VoteOption
   percent: number
-  isHighlighted?: boolean
+  isLeading?: boolean
+  isSelected?: boolean
   isDimmed?: boolean
   onSelect?: (optionLabel: string) => void
 }) {
@@ -243,6 +245,13 @@ function VoteResultItem({
       window.cancelAnimationFrame(frameId)
     }
   }, [])
+
+  const className = [
+    'vote-result-item',
+    isLeading ? 'is-leading' : '',
+    isSelected ? 'is-selected' : '',
+    isDimmed ? 'is-dimmed' : '',
+  ].filter(Boolean).join(' ')
 
   const content = (
     <>
@@ -259,18 +268,14 @@ function VoteResultItem({
 
   if (onSelect) {
     return (
-      <button
-        type="button"
-        className={`vote-result-item${isHighlighted ? ' is-highlighted' : ''}${isDimmed ? ' is-dimmed' : ''}`}
-        onClick={() => onSelect(option.label)}
-      >
+      <button type="button" className={className} onClick={() => onSelect(option.label)}>
         {content}
       </button>
     )
   }
 
   return (
-    <article className={`vote-result-item${isHighlighted ? ' is-highlighted' : ''}${isDimmed ? ' is-dimmed' : ''}`}>
+    <article className={className}>
       {content}
     </article>
   )
@@ -286,6 +291,7 @@ function VoteResultList({
   onSelect?: (optionLabel: string) => void
 }) {
   const totalVotes = getTotalVotes(options)
+  const maxVotes = Math.max(...options.map((o) => o.votes))
 
   return (
     <div className="vote-result-list">
@@ -294,8 +300,9 @@ function VoteResultList({
           key={option.label}
           option={option}
           percent={getVotePercent(option.votes, totalVotes)}
-          isHighlighted={option.highlighted || option.label === selectedOption}
-          isDimmed={Boolean(selectedOption) && option.label !== selectedOption}
+          isLeading={option.votes === maxVotes}
+          isSelected={option.label === selectedOption}
+          isDimmed={false}
           onSelect={onSelect}
         />
       ))}

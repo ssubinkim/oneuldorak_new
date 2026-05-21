@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import dorakRewardImage from './images/dorak10.png'
 import votePointImage from './images/community_vote_point.png'
 import './VoteCompleteModal.css'
 
-const AUTO_CLOSE_DELAY_MS = 2000
+const AUTO_CLOSE_DELAY_MS = 1300
 
 const preloadImage = async (src: string) => {
   if (typeof window === 'undefined') return
@@ -86,7 +87,7 @@ function VoteCompleteModal({
     ? '다른 투표도 참여해보세요'
     : '이미 참여한 투표는 포인트가 중복 지급되지 않아요'
 
-  return (
+  return createPortal(
     <div
       className={`vote-complete-modal${isVisualReady ? ' vote-complete-modal--visual-ready' : ''}`}
       role="presentation"
@@ -134,7 +135,8 @@ function VoteCompleteModal({
           {question} 투표에서 {selectedOption} 항목을 선택했습니다.
         </p>
       </section>
-    </div>
+    </div>,
+    document.body
   )
 }
 

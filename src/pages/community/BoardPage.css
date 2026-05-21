@@ -23,28 +23,6 @@
 }
 
 
-.free-detail-page .hot-posts {
-  margin-top: 0;
-}
-
-.free-detail-page .hot-posts__header-sub button {
-  display: none;
-}
-
-.free-detail-page .hot-posts__header-sub {
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.free-detail-page .hot-posts__header h2 {
-  font-size: 20px;
-  color: #3c3c3c;
-  line-height: 120%;
-  margin-bottom: 4px;
-}
-
 .free-detail-page h2 {
   color: #3c3c3c;
   font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;

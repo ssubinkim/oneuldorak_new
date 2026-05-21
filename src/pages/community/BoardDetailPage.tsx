@@ -63,29 +63,10 @@ function isOwnBoardPost(post: BoardDetailPost | undefined, currentUserId: string
   return post.id.startsWith('user-board') && post.author === nickname
 }
 
-function BoardDetailIcon({ kind }: { kind: 'heart' | 'share' | 'bookmark' }) {
-  if (kind === 'heart') {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M20.8 5.6a5 5 0 0 0-7 0L12 7.4l-1.7-1.8a5 5 0 0 0-7.1 7l1.8 1.8L12 21l7.1-6.6 1.7-1.8a5 5 0 0 0 0-7Z" />
-      </svg>
-    )
-  }
-
-  if (kind === 'share') {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="6" cy="12" r="2" />
-        <circle cx="17.5" cy="6" r="2" />
-        <circle cx="17.5" cy="18" r="2" />
-        <path d="M7.8 11.1 15.7 7M7.8 12.9 15.7 17" />
-      </svg>
-    )
-  }
-
+function BoardDetailIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M7.1 4.8h9.8a1.4 1.4 0 0 1 1.4 1.4v13.9l-6.3-3.4-6.3 3.4V6.2a1.4 1.4 0 0 1 1.4-1.4Z" />
+      <path d="M20.8 5.6a5 5 0 0 0-7 0L12 7.4l-1.7-1.8a5 5 0 0 0-7.1 7l1.8 1.8L12 21l7.1-6.6 1.7-1.8a5 5 0 0 0 0-7Z" />
     </svg>
   )
 }
@@ -281,13 +262,7 @@ function BoardDetailPage({
             aria-pressed={isBoardPostLiked}
             onClick={handleToggleBoardLike}
           >
-            <BoardDetailIcon kind="heart" />
-          </button>
-          <button type="button" aria-label="북마크">
-            <BoardDetailIcon kind="bookmark" />
-          </button>
-          <button type="button" aria-label="공유하기">
-            <BoardDetailIcon kind="share" />
+            <BoardDetailIcon />
           </button>
         </div>
       </section>
