@@ -7,7 +7,8 @@ import ChefHatIcon from '../../assets/icons/chef_hat.svg?react'
 import AlarmIcon from '../../assets/icons/alarm.svg?react'
 import './PlannerSection.css'
 
-const TODAY_DATE = 1
+const jsDay = new Date().getDay()
+const TODAY_DATE = jsDay === 0 ? 7 : jsDay
 const WEEK_LEN = weeklyMenuData.length
 
 function getVisibleDays(selectedDate: number) {
@@ -32,6 +33,16 @@ function PlannerSection({ onDirectSelect }: Props) {
   const visibleDays = useMemo(() => getVisibleDays(selectedDate), [selectedDate])
   const daysInnerRef = useRef<HTMLDivElement>(null)
   const isAnimating = useRef(false)
+  const dragStartX = useRef<number | null>(null)
+
+  const handleDragStart = (x: number) => { dragStartX.current = x }
+  const handleDragEnd = (x: number) => {
+    if (dragStartX.current === null) return
+    const delta = x - dragStartX.current
+    dragStartX.current = null
+    if (Math.abs(delta) < 40) return
+    handleDayClick(delta < 0 ? 1 : -1)
+  }
 
   const handleDayClick = useCallback((posOffset: number) => {
     if (posOffset === 0 || isAnimating.current) return
@@ -71,11 +82,18 @@ function PlannerSection({ onDirectSelect }: Props) {
           aria-label="플래너 달력 열기"
           onClick={() => { window.location.hash = '#/meal-weekly-plan' }}
         >
-          <CalendarPlusIcon width="20" height="20" stroke="#3C3C3C" aria-hidden="true" />
+          <CalendarPlusIcon width="22" height="22" stroke="#3C3C3C" aria-hidden="true" />
         </button>
       </div>
 
-      <div className="planner__days-wrap">
+      <div
+        className="planner__days-wrap"
+        onMouseDown={e => handleDragStart(e.clientX)}
+        onMouseUp={e => handleDragEnd(e.clientX)}
+        onMouseLeave={() => { dragStartX.current = null }}
+        onTouchStart={e => handleDragStart(e.touches[0].clientX)}
+        onTouchEnd={e => handleDragEnd(e.changedTouches[0].clientX)}
+      >
         <div
           ref={daysInnerRef}
           className="planner__days"
@@ -97,7 +115,7 @@ function PlannerSection({ onDirectSelect }: Props) {
       <div className="planner__card">
         <div className="planner__card-header">
           <div className="planner__today-label">
-            <ChefHatIcon width="16" height="16" stroke="#3C3C3C" aria-hidden="true" />
+            <ChefHatIcon width="18" height="18" stroke="#3C3C3C" aria-hidden="true" />
             <span>Today</span>
           </div>
           <button

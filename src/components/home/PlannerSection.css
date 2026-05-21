@@ -39,10 +39,13 @@
 
 .planner__title {
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
+  font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
   color: #1a1a1a;
   line-height: 1.2;
+  letter-spacing: -0.08px;
+  padding-top: 4px;
 }
 
 .planner__cal-btn {
@@ -61,6 +64,9 @@
   position: relative;
   overflow: hidden;
   margin-bottom: 2px;
+  padding: 3px;
+  margin-left: -3px;
+  margin-right: -3px;
 }
 
 .planner__days {
@@ -69,12 +75,13 @@
 }
 
 .planner__day {
-  flex: 0 0 calc(100% / 7);
-  display: flex;
-  flex-direction: column;
+  flex: 1;
+  display: grid;
+  grid-template-rows: 24px 24px;
+  justify-items: center;
   align-items: center;
-  gap: 4px;
-  padding: 6px 4px;
+  gap: 2px;
+  padding: 4px;
   background: none;
   border: none;
   cursor: pointer;
@@ -83,52 +90,36 @@
 }
 
 .planner__day-name {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
-  color: #3c3c3c;
-  line-height: 1.2;
+  color: #5f5f5f;
+  line-height: 24px;
+  height: 24px;
+  overflow: hidden;
 }
 
 .planner__day-num {
-  font-size: 16px;
-  font-weight: 500;
-  color: #3c3c3c;
-  line-height: 1;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #5f5f5f;
+  line-height: 24px;
+  height: 24px;
+  overflow: hidden;
 }
 
 .planner__day--active {
   background: #FFEDBC;
-  border: 1.4px solid #FFDB78;
+  box-shadow: 0 0 0 1.4px #FFDB78;
 }
 
 .planner__day--active .planner__day-name {
-  color: #3c3c3c;
-  font-weight: 700;
+  color: #1a1a1a;
 }
 
 .planner__day--active .planner__day-num {
-  color: #3c3c3c;
-  font-weight: 700;
+  color: #1a1a1a;
 }
 
-/* triangle indicator */
-.planner__days-indicator {
-  position: absolute;
-  bottom: -8px;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-top: 8px solid #FF8C00;
-  transition: left 0.2s ease;
-  pointer-events: none;
-}
 
 /* ── 메뉴 카드 ───────────────────────── */
 .planner__card {
@@ -159,17 +150,18 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1.6 px dashed #FFDB78;
+  padding-bottom: 8px;
+  border-bottom: 1.6px dashed #FFDB78;
 }
 
 .planner__today-label {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
   color: #3c3c3c;
+  line-height: 1.2;
 
 }
 
@@ -177,7 +169,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: #767676;
   padding: 0;
@@ -187,7 +179,7 @@
 .planner__menu-body {
   display: flex;
   gap: 14px;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .planner__menu-img {
@@ -208,7 +200,7 @@
 
 .planner__menu-name {
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   color: #1a1a1a;
   line-height: 1.2;
@@ -231,7 +223,7 @@
   color: #3c3c3c;
   line-height: 1.2;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
