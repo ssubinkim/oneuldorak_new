@@ -35,6 +35,12 @@ export default function MenuAddSheet({ open, onClose, onMenuAdd }: Props) {
   )
   const [flyingItem, setFlyingItem] = useState<FlyingItem | null>(null)
   const groceryLinkRef = useRef<HTMLButtonElement>(null)
+  const [portalTarget, setPortalTarget] = useState<Element>(document.body)
+
+  useEffect(() => {
+    const el = document.querySelector('.app-screen')
+    if (el) setPortalTarget(el)
+  }, [])
 
   useEffect(() => {
     if (!flyingItem || flyingItem.animating) return
@@ -112,8 +118,6 @@ export default function MenuAddSheet({ open, onClose, onMenuAdd }: Props) {
     setSelectedMenuIndex(null)
     setSelectedDays([])
   }
-
-  const target = document.querySelector('.app-screen') ?? document.body
 
   return createPortal(
     <>
@@ -232,6 +236,6 @@ export default function MenuAddSheet({ open, onClose, onMenuAdd }: Props) {
         </div>
       )}
     </>,
-    target
+    portalTarget
   )
 }

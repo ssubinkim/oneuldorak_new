@@ -1,0 +1,254 @@
+﻿.recipe-sec {
+  font-family: 'Pretendard Variable', sans-serif;
+  padding: 28px 20px 8px;
+  background: #fff;
+}
+
+/* ── 헤더 ────────────────────────────── */
+.recipe-sec__header {
+  margin-bottom: 16px;
+}
+
+.recipe-sec__title {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
+  line-height: 1.2;
+  letter-spacing: -0.08px;
+}
+
+.recipe-sec__sub {
+  margin: 0;
+  font-size: 16px;
+  color: #5f5f5f;
+  line-height: 1.2;
+  letter-spacing: -0.08px;
+}
+
+/* ── 2-컬럼 그리드 ────────────────────── */
+.recipe-sec__grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* ── 레시피 페이지 카드 (왼쪽) ──────── */
+.recipe-page-card {
+  position: relative;
+  background: #FFFCE6;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-height: 160px;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  text-align: left;
+}
+
+.recipe-page-card__label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.3;
+  z-index: 1;
+}
+
+.recipe-page-card__mascot {
+  width: 100%;
+  max-width: 130px;
+  object-fit: contain;
+  align-self: center;
+  margin: 4px auto;
+}
+
+.recipe-page-card__arrow {
+  font-size: 22px;
+  color: #1a1a1a;
+  font-weight: 700;
+  align-self: flex-end;
+  line-height: 1;
+}
+
+/* ── 레시피 이미지 카드 (오른쪽) ──────── */
+.recipe-img-card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 160px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: block;
+}
+
+.recipe-img-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  min-height: 160px;
+}
+
+.recipe-img-card__badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 20px;
+}
+
+.recipe-img-card__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 10px 12px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.65) 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.recipe-img-card__name {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.recipe-img-card__meta {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+/* ── 내 레시피 보관함 ─────────────────── */
+.saved-recipe {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFCE6;
+  border-radius: 10px;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  gap: 10px;
+}
+
+.saved-recipe__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.saved-recipe__top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.saved-recipe__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.saved-recipe__sub {
+  font-size: 12px;
+  color: #888;
+}
+
+.saved-recipe__link {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  background: #FFDB78;
+  border-radius: 20px;
+  padding: 4px 12px;
+  align-self: flex-start;
+}
+
+.saved-recipe__mascots {
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.saved-recipe__mascot {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+}
+
+@media (max-width: 360px) {
+  .recipe-sec {
+    padding: 24px 14px 8px;
+  }
+
+  .recipe-sec__grid {
+    grid-template-columns: 100px 1fr;
+  }
+
+  .recipe-page-card {
+    min-height: 140px;
+  }
+
+  .recipe-img-card,
+  .recipe-img-card__img {
+    min-height: 140px;
+  }
+}
+
+@media (min-width: 768px) {
+  .recipe-sec {
+    padding: 40px 40px 8px;
+  }
+
+  .recipe-sec__title {
+    font-size: 24px;
+  }
+
+  .recipe-sec__sub {
+    font-size: 15px;
+  }
+
+  .recipe-sec__grid {
+    grid-template-columns: 140px 1fr;
+    gap: 14px;
+  }
+
+  .recipe-page-card,
+  .recipe-img-card,
+  .recipe-img-card__img {
+    min-height: 220px;
+  }
+
+  .recipe-page-card__mascot {
+    max-width: 160px;
+  }
+
+  .recipe-img-card__name {
+    font-size: 17px;
+  }
+
+  .saved-recipe__mascot {
+    width: 140px;
+    height: 140px;
+  }
+}
