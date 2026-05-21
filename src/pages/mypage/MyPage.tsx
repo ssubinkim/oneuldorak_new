@@ -12,6 +12,8 @@ import type { MyPageStatItem } from '../../components/mypage/my-page/MyPageStats
 import PointBottomSheet from '../../components/mypage/my-page/PointBottomSheet'
 import { getMyPageActivityCounts } from '../../components/mypage/mypageReactionData'
 import { initAttendance } from '../../components/mypage/mypageAttendance'
+import { NOTIFICATIONS } from '../../components/mypage/notification/notificationData'
+import { hasUnreadNotifications } from '../../components/mypage/notification/notificationState'
 import arrowLeftIcon from '../../assets/icons/arrow_left.svg'
 import bellIcon from '../../assets/icons/bell_icon.svg'
 import profileImg from '../../assets/icons/profile 1.svg?url'
@@ -31,6 +33,14 @@ export default function MyPage() {
     }
   }, [])
   const { email, isNew } = useUserProfile()
+  const notificationIds = NOTIFICATIONS.map(n => n.id)
+  const [hasUnread, setHasUnread] = useState(() => !isNew && hasUnreadNotifications(notificationIds))
+
+  useEffect(() => {
+    const check = () => setHasUnread(!isNew && hasUnreadNotifications(notificationIds))
+    window.addEventListener('hashchange', check)
+    return () => window.removeEventListener('hashchange', check)
+  }, [isNew])
 
   useEffect(() => {
     initAttendance(isNew)
@@ -71,8 +81,9 @@ export default function MyPage() {
               <img src={arrowLeftIcon} alt="" aria-hidden="true" width={22} height={22} loading="eager" decoding="sync" fetchPriority="high" />
             </button>
             <h1>마이페이지</h1>
-            <button type="button" className="mypage-topbar__button" aria-label="알림" onClick={() => { window.location.hash = '#/mypage-notification' }}>
+            <button type="button" className="mypage-topbar__button mypage-bell-btn" aria-label="알림" onClick={() => { window.location.hash = '#/mypage-notification' }}>
               <img src={bellIcon} alt="" aria-hidden="true" width={22} height={22} loading="eager" decoding="sync" fetchPriority="high" />
+              {hasUnread && <span className="mypage-bell-badge" />}
             </button>
           </header>
 
