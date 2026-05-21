@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import { NOTIFICATIONS, type NotificationType } from '../../components/mypage/notification/notificationData'
+import { getReadIds, markAsRead } from '../../components/mypage/notification/notificationState'
 import arrowLeftIcon from '../../assets/icons/arrow_left.svg'
 import attendanceIcon from '../../components/mypage/images/Attendance.png'
 import pointIcon from '../../components/mypage/images/point.png'
@@ -21,6 +23,17 @@ export default function NotificationPage() {
   const { isNew } = useUserProfile()
   const notifications = isNew ? [] : NOTIFICATIONS
 
+  const [readIds, setReadIds] = useState<Set<number>>(getReadIds)
+
+  const handleRead = (id: number) => {
+    markAsRead(id)
+    setReadIds(prev => {
+      const next = new Set(prev)
+      next.add(id)
+      return next
+    })
+  }
+
   return (
     <div className="app-shell">
       <div className="app-screen">
@@ -40,27 +53,34 @@ export default function NotificationPage() {
             </div>
           ) : (
             <ul className="notification-list" role="list">
-              {notifications.map((item) => (
-                <li key={item.id} className="notification-card">
-                  <div className="notification-icon">
-                    <img src={iconMap[item.type]} alt="" aria-hidden="true" />
-                  </div>
-                  <div className="notification-body">
-                    <div className="notification-meta">
-                      <span className="notification-label">{item.label}</span>
-                      <span className="notification-time">{item.time}</span>
+              {notifications.map((item) => {
+                const isRead = readIds.has(item.id)
+                return (
+                  <li
+                    key={item.id}
+                    className={`notification-card${isRead ? '' : ' notification-card--unread'}`}
+                    onClick={() => handleRead(item.id)}
+                  >
+                    <div className="notification-icon">
+                      <img src={iconMap[item.type]} alt="" aria-hidden="true" />
                     </div>
-                    <p className="notification-message">
-                      {item.lines.map((line, i) => (
-                        <span key={i}>
-                          {line}
-                          {i < item.lines.length - 1 && <br />}
-                        </span>
-                      ))}
-                    </p>
-                  </div>
-                </li>
-              ))}
+                    <div className="notification-body">
+                      <div className="notification-meta">
+                        <span className="notification-label">{item.label}</span>
+                        <span className="notification-time">{item.time}</span>
+                      </div>
+                      <p className="notification-message">
+                        {item.lines.map((line, i) => (
+                          <span key={i}>
+                            {line}
+                            {i < item.lines.length - 1 && <br />}
+                          </span>
+                        ))}
+                      </p>
+                    </div>
+                  </li>
+                )
+              })}
             </ul>
           )}
         </div>
