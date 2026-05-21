@@ -33,9 +33,9 @@
 }
 
 .mypage-topbar {
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr) 28px;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   min-height: 72px;
   padding: 18px 0 12px;
   box-sizing: border-box;
@@ -45,7 +45,7 @@
   min-width: 0;
   margin: 0;
   color: #202020;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
   line-height: 130%;
   letter-spacing: -0.08px;
@@ -79,8 +79,8 @@
 
 .mypage-topbar__button img {
   display: block;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
 }
 

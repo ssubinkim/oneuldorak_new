@@ -72,7 +72,7 @@ export default function ProfileEditPage() {
   }
 
   const handleSave = () => {
-    saveUserProfile({ nickname: nicknameVal })
+    saveUserProfile({ nickname: nicknameVal, avatar: avatarSrc })
     sessionStorage.setItem('profile_saved', 'true')
     window.location.hash = '#/mypage'
   }

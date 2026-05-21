@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import './StoreMain.css'
 import StoreTopBar from './StoreTopBar'
 import StoreBanner from './StoreBanner'
@@ -54,12 +54,39 @@ type Props = {
   onSelect: (product: Product) => void
 }
 
+type FlyDot = { id: number; x: number; y: number; dx: number; dy: number }
+
 function StoreMain({ onSelect }: Props) {
   const [activeTab, setActiveTab] = useState('추천')
+  const [flyDots, setFlyDots] = useState<FlyDot[]>([])
+  const [cartBounce, setCartBounce] = useState(false)
+  const [cartCount, setCartCount] = useState(0)
+  const cartBtnRef = useRef<HTMLButtonElement>(null)
+  const flyIdRef = useRef(0)
+
+  const handleCartClick = useCallback((rect: DOMRect) => {
+    const cartRect = cartBtnRef.current?.getBoundingClientRect()
+    if (!cartRect) return
+
+    const startX = rect.left + rect.width / 2
+    const startY = rect.top + rect.height / 2
+    const endX = cartRect.left + cartRect.width / 2
+    const endY = cartRect.top + cartRect.height / 2
+    const id = ++flyIdRef.current
+
+    setFlyDots(prev => [...prev, { id, x: startX, y: startY, dx: endX - startX, dy: endY - startY }])
+
+    setTimeout(() => {
+      setFlyDots(prev => prev.filter(d => d.id !== id))
+      setCartCount(prev => prev + 1)
+      setCartBounce(true)
+      setTimeout(() => setCartBounce(false), 400)
+    }, 500)
+  }, [])
 
   return (
     <div className="store-main">
-      <StoreTopBar />
+      <StoreTopBar cartBtnRef={cartBtnRef} cartBounce={cartBounce} cartCount={cartCount} />
       <StoreBanner />
       <StoreCategoryTabs active={activeTab} onChange={setActiveTab} />
       <div className="store-search">
@@ -69,11 +96,24 @@ function StoreMain({ onSelect }: Props) {
           <path d="M21 21l-4.35-4.35" />
         </svg>
       </div>
-      <BestSection products={BEST_PRODUCTS} onSelect={onSelect} />
+      <BestSection products={BEST_PRODUCTS} onSelect={onSelect} onCartClick={handleCartClick} />
       <BrandPickSection />
-      <SubscriptionSection products={SUBSCRIPTION_PRODUCTS} onSelect={onSelect} />
-      <KitchenSection products={KITCHEN_PRODUCTS} onSelect={onSelect} />
+      <SubscriptionSection products={SUBSCRIPTION_PRODUCTS} onSelect={onSelect} onCartClick={handleCartClick} />
+      <KitchenSection products={KITCHEN_PRODUCTS} onSelect={onSelect} onCartClick={handleCartClick} />
       <div style={{ height: 32 }} />
+
+      {flyDots.map(dot => (
+        <div
+          key={dot.id}
+          className="store-fly-dot"
+          style={{
+            left: dot.x,
+            top: dot.y,
+            '--fly-dx': `${dot.dx}px`,
+            '--fly-dy': `${dot.dy}px`,
+          } as React.CSSProperties}
+        />
+      ))}
     </div>
   )
 }

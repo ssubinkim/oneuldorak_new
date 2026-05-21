@@ -40,7 +40,7 @@ function MyPageGoalCard({ goal, pct, goalBarPct, onEdit }: MyPageGoalCardProps) 
   return (
     <button type="button" className="mypage-goal-card" onClick={onEdit}>
       <span className="mypage-goal-copy">
-        <span className="mypage-goal-title">이번달 절약 목표</span>
+        <span className="mypage-goal-title">6월 첫째주 절약 목표</span>
         <span className="mypage-goal-amount">
           <strong>{goal.current.toLocaleString()}원</strong>
           <span> / {goal.target.toLocaleString()}원</span>

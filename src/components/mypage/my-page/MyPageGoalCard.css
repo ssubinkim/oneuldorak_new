@@ -28,7 +28,7 @@
 .mypage-goal-title {
   color: #333;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 130%;
 }
 
@@ -75,11 +75,10 @@
   width: 96px;
   height: 96px;
   border-radius: 50%;
-  background: conic-gradient(#4E7FFF var(--goal-pct), #dde3ee 0);
+  background: conic-gradient(var(--green-blue-blue06, #80A3FF) var(--goal-pct), #F6F6F6 0);
   box-shadow:
-    4px 6px 14px rgba(78, 127, 255, 0.25),
-    -2px -2px 6px rgba(255, 255, 255, 0.8),
-    inset 0 1px 2px rgba(0, 0, 0, 0.06);
+    4px 4px 4px 0 rgba(0, 0, 0, 0.08) inset,
+    2px -4px 4px 0 rgba(0, 0, 0, 0.08) inset;
 }
 
 .mypage-goal-donut::before {
@@ -96,8 +95,8 @@
   grid-area: 1 / 1;
   z-index: 1;
   color: #3c3c3c;
-  font-size: 26px;
-  font-weight: 800;
+  font-size: 25px;
+  font-weight: 600;
   line-height: 1;
 }
 
