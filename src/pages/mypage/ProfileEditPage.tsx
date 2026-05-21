@@ -2,7 +2,6 @@ import { useState, useRef } from 'react'
 import { useUserProfile, saveUserProfile, getUserProfile } from '../../components/common/useUserProfile'
 import profileImg from '../../assets/icons/profile 1.svg?url'
 import arrowLeftIcon from '../../assets/icons/arrow_left.svg?url'
-import bellIcon from '../../assets/icons/bell_icon.svg?url'
 import './ProfileEditPage.css'
 
 export default function ProfileEditPage() {
@@ -92,9 +91,7 @@ export default function ProfileEditPage() {
             <img src={arrowLeftIcon} alt="" />
           </button>
           <h1 className="profile-edit-topbar__title">프로필 수정</h1>
-          <button type="button" className="profile-edit-topbar__btn" aria-label="알림">
-            <img src={bellIcon} alt="" />
-          </button>
+          <div className="profile-edit-topbar__btn" aria-hidden="true" />
         </header>
 
         <div className="profile-edit-scroll">
