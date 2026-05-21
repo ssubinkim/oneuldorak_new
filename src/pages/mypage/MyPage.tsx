@@ -71,7 +71,7 @@ export default function MyPage() {
               <img src={arrowLeftIcon} alt="" aria-hidden="true" width={22} height={22} loading="eager" decoding="sync" fetchPriority="high" />
             </button>
             <h1>마이페이지</h1>
-            <button type="button" className="mypage-topbar__button" aria-label="알림">
+            <button type="button" className="mypage-topbar__button" aria-label="알림" onClick={() => { window.location.hash = '#/mypage-notification' }}>
               <img src={bellIcon} alt="" aria-hidden="true" width={22} height={22} loading="eager" decoding="sync" fetchPriority="high" />
             </button>
           </header>
