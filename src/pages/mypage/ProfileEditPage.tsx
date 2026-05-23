@@ -5,16 +5,20 @@ import arrowLeftIcon from '../../assets/icons/arrow_left.svg?url'
 import './ProfileEditPage.css'
 
 export default function ProfileEditPage() {
-  const { nickname, email, password } = useUserProfile()
+  const { nickname, email, password, avatar } = useUserProfile()
   const [nicknameVal, setNicknameVal] = useState(nickname)
-  const [avatarSrc, setAvatarSrc] = useState<string>(profileImg)
+  const [avatarSrc, setAvatarSrc] = useState<string>(avatar ?? profileImg)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    const url = URL.createObjectURL(file)
-    setAvatarSrc(url)
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      const dataUrl = ev.target?.result as string
+      setAvatarSrc(dataUrl)
+    }
+    reader.readAsDataURL(file)
   }
   const [idVal, setIdVal] = useState('dorak_2030')
   const [idCheckDone, setIdCheckDone] = useState(false)
@@ -208,7 +212,7 @@ export default function ProfileEditPage() {
               </div>
             </div>
 
-            <button type="button" className="profile-edit-withdraw">회원탈퇴</button>
+            <button type="button" className="profile-edit-withdraw" disabled>회원탈퇴</button>
 
           </div>
 

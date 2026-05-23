@@ -18,7 +18,7 @@ function BestSection({ products, onSelect, onCartClick }: Props) {
         </p>
         <div className="best-section__subrow">
           <p className="best-section__desc">가장 인기있는 상품만 모아보세요</p>
-          <button className="best-section__more" type="button">더보기 &gt;</button>
+          <button className="best-section__more" type="button" disabled>더보기 &gt;</button>
         </div>
       </div>
       <div className="best-section__track">

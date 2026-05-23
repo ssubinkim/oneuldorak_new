@@ -4,10 +4,10 @@ const TABS = ['추천', '베스트', '가성비', '밀키트', '밀프랩', '도
 
 type Props = {
   active: string
-  onChange: (tab: string) => void
+  onChange?: (tab: string) => void
 }
 
-function StoreCategoryTabs({ active, onChange }: Props) {
+function StoreCategoryTabs({ active }: Props) {
   return (
     <div className="store-category-tabs">
       <div className="store-category-tabs__track">
@@ -16,7 +16,7 @@ function StoreCategoryTabs({ active, onChange }: Props) {
             key={tab}
             type="button"
             className={`store-category-tabs__tab${active === tab ? ' store-category-tabs__tab--active' : ''}`}
-            onClick={() => onChange(tab)}
+            disabled
           >
             {tab}
           </button>

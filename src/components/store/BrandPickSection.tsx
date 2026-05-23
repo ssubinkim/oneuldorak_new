@@ -24,7 +24,7 @@ function BrandPickSection() {
         </p>
         <div className="brand-pick__subrow">
           <p className="brand-pick__desc">오늘도락이 추천하는 브랜드</p>
-          <button className="brand-pick__more" type="button">더보기 &gt;</button>
+          <button className="brand-pick__more" type="button" disabled>더보기 &gt;</button>
         </div>
       </div>
       <div className="brand-pick__track">

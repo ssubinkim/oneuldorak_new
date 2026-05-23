@@ -72,6 +72,7 @@ function MyPageMenuSections({ sections = DEFAULT_MENU_SECTIONS }: MyPageMenuSect
                 type="button"
                 className={`mypage-menu-row${item.muted ? ' is-muted' : ''}`}
                 onClick={item.onClick}
+                disabled={!item.onClick}
               >
                 <span className="mypage-menu-icon-slot" aria-hidden="true">
                   {item.icon && <img src={item.icon} alt="" width={18} height={18} loading="lazy" decoding="async" fetchPriority="low" />}
