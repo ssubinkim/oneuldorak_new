@@ -10,7 +10,8 @@ import '../../components/mypage/saved-recipe-page/SavedRecipePage.css'
 type Props = { onBack?: () => void }
 
 export default function SavedRecipePage({ onBack }: Props) {
-  const handleBack = onBack ?? (() => { window.location.hash = '#/mypage' })
+  const fromHome = new URLSearchParams(window.location.hash.split('?')[1] ?? '').get('from') === 'home'
+  const handleBack = onBack ?? (() => { window.location.hash = fromHome ? '#/home' : '#/mypage' })
   const [savedRecipeCards] = useState(getSavedRecipeCards)
   const savedRecipes = [...savedRecipeCards, ...STATIC_SAVED_RECIPES]
 

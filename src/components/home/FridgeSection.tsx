@@ -4,7 +4,7 @@ import {
 } from '../meal/mealData'
 import mushRoomImg from '../../assets/images/food_icon/mushroom.png'
 import tomatoImg from '../../assets/images/food_icon/tomato.png'
-import dorak21 from '../../assets/food_mascot_all/dorkak21.png'
+import dorak21 from '../../assets/food_mascot_all/dorak21.png'
 import blueStuffImg from './images/blue_stuff.png'
 import lightImg from './images/light.png'
 import './FridgeSection.css'
@@ -72,7 +72,7 @@ function FridgeSection() {
         {urgentCount > 0 && (
           <button
             className="fridge-warning"
-            onClick={() => { window.location.hash = '#/meal-storage' }}
+            onClick={() => { window.location.hash = '#/meal-storage?from=home' }}
             aria-label="소비기한 임박 재료 확인하기"
           >
             <img src={lightImg} alt="" className="fridge-warning__icon" aria-hidden="true" />

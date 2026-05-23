@@ -1,35 +1,17 @@
 import bookOpenImg from '../../../../assets/icons/meal_book_open.svg'
-import indexGreenImg from '../../../../assets/icons/index_green.svg'
-import indexRedImg from '../../../../assets/icons/index_red.svg'
-import indexYellowImg from '../../../../assets/icons/index_yellow.svg'
-import refrigeImg from '../../../../assets/icons/refrige.svg'
+import blueStuffOpenImg from '../../../home/images/blue_stuffopen.png'
 
 type StorageFridgeStatusCardProps = {
   total: number
-  urgentCount: number
-  moderateCount: number
-  plentyCount: number
   menuCount: number
 }
 
-function StorageFridgeStatusCard({
-  total,
-  urgentCount,
-  moderateCount,
-  plentyCount,
-  menuCount,
-}: StorageFridgeStatusCardProps) {
-  const stats = [
-    { label: '임박 재료', count: urgentCount, tape: indexRedImg, tone: 'urgent' },
-    { label: '소진 추천', count: moderateCount, tape: indexYellowImg, tone: 'moderate' },
-    { label: '여유 있음', count: plentyCount, tape: indexGreenImg, tone: 'plenty' },
-  ] as const
-
+function StorageFridgeStatusCard({ total, menuCount }: StorageFridgeStatusCardProps) {
   return (
     <div className="sp-fridge-card">
       <div className="sp-fridge-top">
         <div className="sp-fridge-icon-wrap">
-          <img src={refrigeImg} alt="냉장고" className="sp-fridge-icon" />
+          <img src={blueStuffOpenImg} alt="냉장고" className="sp-fridge-icon" />
         </div>
         <div className="sp-fridge-info">
           <p className="sp-fridge-label">내 냉장고 현황</p>
@@ -41,18 +23,6 @@ function StorageFridgeStatusCard({
         </div>
       </div>
 
-      <div className="sp-fridge-stats">
-        {stats.map((stat, index) => (
-          <div className="sp-fridge-stat-wrap" key={stat.label}>
-            <img src={stat.tape} alt="" className="sp-fridge-index" />
-            <div className="sp-fridge-stat">
-              <span className="sp-stat-label">{stat.label}</span>
-              <span className={`sp-stat-num ${stat.tone}`}><strong>{stat.count}</strong> 개</span>
-            </div>
-            {index < stats.length - 1 && <div className="sp-fridge-divider" />}
-          </div>
-        ))}
-      </div>
     </div>
   )
 }
