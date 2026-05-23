@@ -17,9 +17,9 @@ import foodPanVideo from '../../../assets/food_video/video_pan.MP4'
 import foodSandwichVideo from '../../../assets/food_video/video_sandwich.mp4'
 
 export const hotPosts = [
-  { id: 'free-1', rank: 1, title: '도시락 싸기 전후 식비 비교해봤어요', likes: 100, comments: 88 },
-  { id: 'free-3', rank: 2, title: '오늘의 도시락 대실패 인증합니다', likes: 96, comments: 65 },
-  { id: 'free-4', rank: 3, title: '저는 일요일 밤에 3일치만 준비해요', likes: 65, comments: 52 },
+  { id: 'hot-1', rank: 1, title: '도시락 싸기 전후 식비 비교해봤어요', likes: 100, comments: 88 },
+  { id: 'hot-2', rank: 2, title: '오늘의 도시락 대실패 인증합니다', likes: 96, comments: 65 },
+  { id: 'hot-3', rank: 3, title: '저는 일요일 밤에 3일치만 준비해요', likes: 65, comments: 52 },
 ]
 
 export const popularRecipes: RecipeCard[] = [

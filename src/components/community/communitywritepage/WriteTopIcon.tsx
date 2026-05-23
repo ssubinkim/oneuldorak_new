@@ -17,8 +17,8 @@ type WriteTopIconProps = {
 function WriteTopIcon({ kind }: WriteTopIconProps) {
   if (kind === 'back') {
     return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="m14.7 5.6-6.2 6.2 6.2 6.2" />
+      <svg width="10" height="18" viewBox="0 0 10 18" fill="none" aria-hidden="true">
+        <path d="M9 1L1 9L9 17" stroke="#1a1a1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     )
   }

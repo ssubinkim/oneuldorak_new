@@ -1,7 +1,6 @@
 import type { WriteTab } from './writeTab'
 
 export const writeTabs: { id: WriteTab; label: string }[] = [
-  { id: 'recipe', label: '레시피' },
   { id: 'board', label: '게시판' },
   { id: 'vote', label: '투표' },
 ]

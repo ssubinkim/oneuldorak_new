@@ -10,7 +10,7 @@ import PopularPosts from './PopularPosts'
 import BattleBanner from './BattleBanner'
 import Ranking from './Ranking'
 import { dorakRankings, hotPosts } from './communityData'
-import { mockBoardComments, mockBoardDetailPosts } from '../common/boardMockData'
+import { mockBoardCommentsByPostId } from '../common/boardMockData'
 import { readPersistedBoardComments } from '../common/boardCommentPersistence'
 import './CommunityMainView.css'
 
@@ -22,11 +22,13 @@ type CommunityMainViewProps = {
 
 function CommunityMainView({ activeTab, onSelectTab, onOpenBoardDetail }: CommunityMainViewProps) {
   const persistedComments = readPersistedBoardComments()
-  const mockPostIds = new Set(mockBoardDetailPosts.map((p) => p.id))
+  const mockCommentCountById = new Map(
+    Object.entries(mockBoardCommentsByPostId).map(([id, comments]) => [id, comments.length])
+  )
   const hotPostsWithActualComments = hotPosts.map((post) => ({
     ...post,
     comments: post.id
-      ? (persistedComments[post.id]?.length ?? (mockPostIds.has(post.id) ? mockBoardComments.length : post.comments))
+      ? (persistedComments[post.id]?.length ?? mockCommentCountById.get(post.id) ?? post.comments)
       : post.comments,
   }))
 

@@ -18,53 +18,52 @@
 .community-write-hero-main {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 16px;
   width: 100%;
 }
 
 .community-write-hero-copy {
   display: grid;
   gap: 4px;
-  justify-items: center;
-  text-align: center;
+  justify-items: flex-start;
+  text-align: left;
 }
 
 .community-write-hero-copy h1,
 .community-write-hero-copy p {
   margin: 0;
-  font-family: 'Pretendard Variable', sans-serif;
+  /* font-family: 'Pretendard Variable', sans-serif;
   font-style: normal;
   line-height: 130%;
-  letter-spacing: 0;
+  letter-spacing: 0; */
 }
 
 .community-write-hero-copy h1 {
   color: var(--color-text-main, #1a1a1a);
-  font-size: 20px;
-  font-weight: 700;
+  font-family: 'NanumSquare', 'NanumSquareNeo', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 120%;
+  letter-spacing: -0.08px;
 }
 
 .community-write-hero-copy p {
   color: var(--color-text-body, #3c3c3c);
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 500;
 }
 
 .community-write-top-button,
 .community-write-top-actions button {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  color: #222;
-  background: transparent;
-  border: 0;
-}
-
-.community-write-top-button {
-  position: absolute;
-  left: 16px;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  color: #3c3c3c;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 .community-write-top-actions {
@@ -73,10 +72,7 @@
   gap: 2px;
 }
 
-.community-write-top-button svg,
 .community-write-top-actions svg {
-  width: 24px;
-  height: 24px;
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
@@ -121,7 +117,7 @@
   font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
   font-size: 16px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 130%;
   text-align: center;
 }

@@ -4,6 +4,8 @@ import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import { awardVotePoint } from '../../common/usePoints'
 import { useUserProfile } from '../../common/useUserProfile'
 import VoteCompleteModal from '../common/VoteCompleteModal'
+import VoteConfirmModal from '../common/VoteConfirmModal'
+import VoteToast from '../common/VoteToast'
 import VoteWriteForm from '../communitywritepage/VoteWriteForm'
 import {
   MAX_VOTE_OPTION_COUNT,
@@ -498,12 +500,31 @@ function VoteList({
   const [voteModal, setVoteModal] = useState<{
     question: string
     selectedOption: string
-    reward?: string
-    isPointAwarded: boolean
   } | null>(null)
+  const [pendingVote, setPendingVote] = useState<{ cardId: string; optionLabel: string } | null>(null)
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
   const [editingVoteId, setEditingVoteId] = useState<string | null>(null)
   const [editingVoteValue, setEditingVoteValue] = useState<VoteWriteData | null>(null)
   const activeVoteCards = [...extraVotes, ...voteCards]
+
+  const handleVoteClick = (cardId: string, optionLabel: string) => {
+    if (selectedVotes[cardId]) {
+      setToastMessage('이미 참여한 투표예요!')
+      return
+    }
+    setPendingVote({ cardId, optionLabel })
+  }
+
+  const handleVoteCancel = () => {
+    setPendingVote(null)
+  }
+
+  const handleVoteConfirm = () => {
+    if (pendingVote) {
+      handleVote(pendingVote.cardId, pendingVote.optionLabel)
+    }
+    setPendingVote(null)
+  }
 
   const handleVote = (cardId: string, optionLabel: string) => {
     const selectedCard = activeVoteCards.find((card) => card.id === cardId)
@@ -514,7 +535,7 @@ function VoteList({
     }
 
     if (selectedCard) {
-      const isPointAwarded = awardVotePoint(cardId, getRewardPointAmount(selectedCard.reward))
+      awardVotePoint(cardId, getRewardPointAmount(selectedCard.reward))
 
       if (hasShownVoteModal(cardId)) {
         return
@@ -526,8 +547,6 @@ function VoteList({
         setVoteModal({
           question: selectedCard.question,
           selectedOption: optionLabel,
-          reward: selectedCard.reward,
-          isPointAwarded,
         })
       }, 820)
     }
@@ -640,7 +659,7 @@ function VoteList({
           key={card.id}
           card={card}
           selectedOption={selectedVotes[card.id]}
-          onVote={handleVote}
+          onVote={handleVoteClick}
           isEnded={filter === 'ended'}
           onMoreClick={variant === 'featured' ? onMoreClick : undefined}
           canManage={
@@ -660,12 +679,18 @@ function VoteList({
         />
       ))}
 
+      <VoteToast message={toastMessage} onDismiss={() => setToastMessage(null)} />
+
+      <VoteConfirmModal
+        isOpen={pendingVote !== null}
+        onCancel={handleVoteCancel}
+        onConfirm={handleVoteConfirm}
+      />
+
       <VoteCompleteModal
         isOpen={voteModal !== null}
         question={voteModal?.question ?? ''}
         selectedOption={voteModal?.selectedOption ?? ''}
-        reward={voteModal?.reward}
-        isPointAwarded={voteModal?.isPointAwarded ?? false}
         onClose={() => setVoteModal(null)}
       />
     </section>

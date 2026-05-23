@@ -375,6 +375,7 @@ function Community() {
   )
   const [scrollBtnState, setScrollBtnState] = useState<ScrollButtonState>('full')
   const scrollBtnStateRef = useRef<ScrollButtonState>('full')
+  const savedScrollTopRef = useRef<number>(0)
 
   useEffect(() => {
     const handleScroll = (event: Event) => {
@@ -409,6 +410,7 @@ function Community() {
   const [selectedBoardId, setSelectedBoardId] = useState<string | null>(
     initialTarget?.kind === 'board' ? initialTarget.id : null,
   )
+  const [boardDetailReturnView, setBoardDetailReturnView] = useState<'main' | 'free'>('free')
   const [registeredRecipes, setRegisteredRecipes] = useState<RecipeItem[]>(persistedWriteState.recipes)
   const [registeredBoardPosts, setRegisteredBoardPosts] = useState<BoardPost[]>(persistedWriteState.boardPosts)
   const [registeredBoardDetailPosts, setRegisteredBoardDetailPosts] = useState<BoardDetailPost[]>(
@@ -477,6 +479,11 @@ function Community() {
   }
 
   const handleOpenBoardDetail = (postId: string) => {
+    const returnView = view === 'main' ? 'main' : 'free'
+    setBoardDetailReturnView(returnView)
+    if (returnView === 'main') {
+      savedScrollTopRef.current = document.querySelector('.page-scroll')?.scrollTop ?? 0
+    }
     setSelectedBoardId(postId)
     setView('boardDetail')
   }
@@ -695,7 +702,15 @@ function Community() {
         {view === 'boardDetail' && (
           <BoardDetailPage
             postId={selectedBoardId}
-            onBack={() => setView('free')}
+            onBack={() => {
+              const target = boardDetailReturnView
+              setView(target)
+              if (target === 'main') {
+                window.requestAnimationFrame(() => {
+                  document.querySelector('.page-scroll')?.scrollTo({ top: savedScrollTopRef.current })
+                })
+              }
+            }}
             onOpenPost={handleOpenBoardDetail}
             onUpdatePost={handleUpdateBoardPost}
             onDeletePost={handleDeleteBoardPost}

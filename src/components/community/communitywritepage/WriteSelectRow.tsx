@@ -29,6 +29,23 @@ function WriteSelectRow({ label, value, options, placeholder = '선택해주세�
     }
   }, [])
 
+  useEffect(() => {
+    if (!isOpen || !rowRef.current) return
+
+    const el = rowRef.current
+    window.setTimeout(() => {
+      const scrollable = el.closest('.page-scroll') ?? document.documentElement
+      const elBottom = el.getBoundingClientRect().bottom
+      const containerBottom = scrollable === document.documentElement
+        ? window.innerHeight
+        : scrollable.getBoundingClientRect().bottom
+      const gap = containerBottom - elBottom - 16
+      if (gap < 200) {
+        scrollable.scrollBy({ top: 200 - gap, behavior: 'smooth' })
+      }
+    }, 50)
+  }, [isOpen])
+
   const handleSelect = (option: string) => {
     onChange(option)
     setIsOpen(false)

@@ -1,7 +1,7 @@
 .community-write-tabs {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: flex-end;
   width: min(350px, 100%);
   height: 43px;
@@ -58,7 +58,7 @@
 
 .community-write-tabs button[aria-selected='true'] {
   color: var(--color-text-body, #3c3c3c);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .community-write-tabs button[aria-selected='true']::after {
