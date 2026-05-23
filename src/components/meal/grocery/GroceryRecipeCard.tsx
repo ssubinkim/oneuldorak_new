@@ -10,10 +10,13 @@ function GroceryRecipeCard({ recipe }: GroceryRecipeCardProps) {
     <div className="gp-recipe-card">
       <img src={recipe.image} alt={recipe.name} className="gp-recipe-img" />
       <div className="gp-recipe-overlay">
-        <p className="gp-recipe-channel">🍱 {recipe.channel}</p>
-        <div className="gp-recipe-footer">
-          <p className="gp-recipe-name">{recipe.name}</p>
-          <span className="gp-recipe-likes"><HeartIcon /> {recipe.likes}</span>
+        <span className="gp-recipe-likes">
+          <HeartIcon />
+          {recipe.likes}
+        </span>
+        <div className="gp-recipe-info">
+          <h3 className="gp-recipe-name">{recipe.name}</h3>
+          <p className="gp-recipe-meta">{recipe.price} · {recipe.time} · {recipe.difficulty}</p>
         </div>
       </div>
     </div>

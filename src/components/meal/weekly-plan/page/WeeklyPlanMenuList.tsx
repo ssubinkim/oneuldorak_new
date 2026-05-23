@@ -1,10 +1,11 @@
+import { useEffect, useRef } from 'react'
 import { ChevronRight, ClockIcon } from './WeeklyPlanIcons'
 import { usageBadgeStyle } from './weeklyPlanConstants'
 import blueThink from '../../../../assets/food_mascot/blue_think.png'
 
 type WeeklyPlanMenuListProps = {
   month: number
-  todayDate: number
+  selectedDate: number
   menus: {
     day: string
     date: number
@@ -16,15 +17,22 @@ type WeeklyPlanMenuListProps = {
   }[]
 }
 
-function WeeklyPlanMenuList({ month, todayDate, menus }: WeeklyPlanMenuListProps) {
+function WeeklyPlanMenuList({ month, selectedDate, menus }: WeeklyPlanMenuListProps) {
+  const cardRefs = useRef<Record<number, HTMLDivElement | null>>({})
+
+  useEffect(() => {
+    const el = cardRefs.current[selectedDate]
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  }, [selectedDate])
+
   return (
     <div className="wpp-menu-list">
       {menus.map((menu) => {
-        const isToday = menu.date === todayDate
+        const isToday = menu.date === selectedDate
         const isThinking = menu.status === 'thinking'
 
         return (
-          <div key={menu.day} className="wpp-menu-card">
+          <div key={menu.day} className="wpp-menu-card" ref={(el) => { cardRefs.current[menu.date] = el }}>
             <div className={`wpp-menu-label${isToday ? ' wpp-menu-label--today' : ''}`}>
               <span className="wpp-menu-label-day">{menu.day}</span>
               <span className="wpp-menu-label-date">{month}/{menu.date}</span>

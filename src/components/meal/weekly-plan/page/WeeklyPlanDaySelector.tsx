@@ -1,33 +1,28 @@
-import { CircleCheckIcon } from './WeeklyPlanIcons'
-
 type WeeklyPlanDaySelectorProps = {
   menus: {
     day: string
     date: number
     image: string | null
   }[]
-  todayDate: number
+  selectedDate: number
+  onSelectDate: (date: number) => void
 }
 
-function WeeklyPlanDaySelector({ menus, todayDate }: WeeklyPlanDaySelectorProps) {
+function WeeklyPlanDaySelector({ menus, selectedDate, onSelectDate }: WeeklyPlanDaySelectorProps) {
   return (
     <div className="wpp-day-selector">
-      {menus.map((menu) => {
-        const isToday = menu.date === todayDate
-        const hasMenu = menu.image !== null
-
-        return (
-          <div key={menu.day} className="wpp-day-item">
+      <div className="wpp-days">
+        {menus.map((menu) => (
+          <div
+            key={menu.day}
+            className={`wpp-day-item${menu.date === selectedDate ? ' wpp-day-item--active' : ''}`}
+            onClick={() => onSelectDate(menu.date)}
+          >
             <span className="wpp-day-label">{menu.day}</span>
-            <div className={`wpp-day-card${isToday ? ' wpp-day-card--today' : ''}`}>
-              <span className="wpp-day-num">{menu.date}</span>
-              <div className="wpp-day-status">
-                {hasMenu ? <CircleCheckIcon isToday={isToday} /> : <span className="wpp-day-dots">···</span>}
-              </div>
-            </div>
+            <span className="wpp-day-num">{menu.date}</span>
           </div>
-        )
-      })}
+        ))}
+      </div>
     </div>
   )
 }

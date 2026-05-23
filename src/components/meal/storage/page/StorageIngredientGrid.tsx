@@ -2,6 +2,7 @@ import { useRef, useState, useCallback, type PointerEvent } from 'react'
 import { getIngredientIconClassName } from '../../mealData'
 import { STATUS_INDEX, FRIDGE_ITEMS } from './storageData'
 import type { FridgeItem } from './storageData'
+import twoAddImg from '../../../../assets/food_mascot/two_add.png'
 
 const SECTIONS = [
   { status: 'urgent',   label: '임박 재료 !', bg: '#FFF0EE' },
@@ -127,20 +128,27 @@ function StorageSectionCard({ item }: StorageSectionCardProps) {
 
 function StorageIngredientGrid() {
   return (
-    <div className="sp-sections">
-      {SECTIONS.map((section) => {
-        const items = FRIDGE_ITEMS.filter((item) => item.status === section.status)
-        return (
-          <StorageSectionRow
-            key={section.status}
-            status={section.status}
-            title={section.label}
-            items={items}
-            bg={section.bg}
-          />
-        )
-      })}
-    </div>
+    <>
+      <div className="sp-add-section">
+        <button className="sp-add-btn" aria-label="재료 추가">
+          <img src={twoAddImg} alt="재료 추가" className="sp-add-btn__img" />
+        </button>
+      </div>
+      <div className="sp-sections">
+        {SECTIONS.map((section) => {
+          const items = FRIDGE_ITEMS.filter((item) => item.status === section.status)
+          return (
+            <StorageSectionRow
+              key={section.status}
+              status={section.status}
+              title={section.label}
+              items={items}
+              bg={section.bg}
+            />
+          )
+        })}
+      </div>
+    </>
   )
 }
 

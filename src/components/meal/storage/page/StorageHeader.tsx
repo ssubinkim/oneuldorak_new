@@ -17,7 +17,6 @@ function StorageHeader({ onBack }: StorageHeaderProps) {
         <BackIcon />
       </button>
       <span className="sp-header-title">내 재료 보관함</span>
-      <button className="sp-add-btn">재료 추가 +</button>
     </div>
   )
 }

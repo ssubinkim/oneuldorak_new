@@ -13,6 +13,9 @@ export interface StorageRecipe {
   channel: string
   name: string
   likes: number
+  price: string
+  time: string
+  difficulty: string
 }
 
 export interface RecommendItem {
