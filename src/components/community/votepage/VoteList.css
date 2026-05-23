@@ -27,6 +27,26 @@
   letter-spacing: -0.08px;
 }
 
+.vote-card:not(.vote-card--featured):not(.vote-card--editing) {
+  opacity: 0;
+  transform: translateX(-28px);
+}
+
+.vote-card:not(.vote-card--featured):not(.vote-card--editing).is-visible {
+  animation: vote-card-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes vote-card-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .vote-card.is-newly-created {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 2px var(--color-primary-30);
@@ -38,11 +58,11 @@
   gap: 8px;
 }
 
-.vote-card h2 {
+.vote-card h3 {
   margin: 0;
   color: #3c3c3c;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 500;
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 120%;
   letter-spacing: -0.08px;
@@ -105,6 +125,31 @@
   width: 100%;
 }
 
+.vote-card-reward-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.vote-card-reward-img {
+  height: 24px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.vote-card-reward-text {
+  position: absolute;
+  color: #3c3c3c;
+  font-size: 11px;
+  font-weight:800;
+  font-family: var(--font-nanum-square-neo), sans-serif;
+  line-height: 1; 
+  pointer-events: none;
+}
+
 .vote-card-reward {
   display: inline-flex;
   align-items: center;
@@ -123,26 +168,18 @@
   margin: 0;
   color: #3c3c3c;
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 500;
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 120%;
   letter-spacing: -0.08px;
 }
 
-.vote-card-subtitle {
-  margin: 6px 0 0;
-  color: #5f5f5f;
-  font-size: 18px;
-  font-family: 'Pretendard Variable', sans-serif;
-  line-height: 120%;
-  letter-spacing: -0.08px;
-}
 
 .vote-choice-list,
 .vote-result-list {
   display: grid;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 20px;
 }
 
 .vote-card-question + .vote-choice-list,
@@ -389,7 +426,7 @@ article.vote-result-item {
     padding: 16px;
   }
 
-  .vote-card h2 {
+  .vote-card h3 {
     font-size: 20px;
   }
 

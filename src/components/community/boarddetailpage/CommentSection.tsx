@@ -10,6 +10,8 @@ type CommentSectionProps = {
   onDeleteComment: (commentId: string) => void
 }
 
+const INITIAL_VISIBLE_COUNT = 5
+
 function CommentSection({
   comments,
   currentUserId,
@@ -19,6 +21,10 @@ function CommentSection({
   onDeleteComment,
 }: CommentSectionProps) {
   const [commentText, setCommentText] = useState('')
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  const visibleComments = isExpanded ? comments : comments.slice(0, INITIAL_VISIBLE_COUNT)
+  const hiddenCount = comments.length - INITIAL_VISIBLE_COUNT
 
   const handleSubmit = () => {
     const trimmedText = commentText.trim()
@@ -63,7 +69,7 @@ function CommentSection({
       </div>
 
       <div className="board-detail-comments__list">
-        {comments.map((comment) => (
+        {visibleComments.map((comment) => (
           <CommentItem
             key={comment.id}
             comment={comment}
@@ -76,6 +82,17 @@ function CommentSection({
             onDelete={onDeleteComment}
           />
         ))}
+        {!isExpanded && hiddenCount > 0 && (
+          <div className="board-detail-comments__more">
+            <button
+              type="button"
+              className="board-detail-comments__more-btn"
+              onClick={() => setIsExpanded(true)}
+            >
+              더 보기 ({hiddenCount}개)
+            </button>
+          </div>
+        )}
       </div>
     </section>
   )

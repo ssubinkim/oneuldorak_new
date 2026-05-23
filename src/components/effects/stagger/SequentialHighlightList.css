@@ -32,7 +32,7 @@
 .sequential-highlight-list__item.is-active {
   background: #fff;
   border-color: var(--color-green02_-30);
-  box-shadow: 0 8px 18px rgba(0, 166, 82, 0.16);
+  box-shadow: 0 10px 14px -14px rgba(0, 166, 82, 0.55);
   opacity: 1;
   transform: translateY(-1px);
   animation: sequential-highlight-pop 360ms ease-out;
@@ -94,6 +94,10 @@
   width: 11px;
   height: 11px;
   margin-top: 1px;
+}
+
+.sequential-highlight-list__item--clickable {
+  cursor: pointer;
 }
 
 @keyframes sequential-highlight-pop {

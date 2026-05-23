@@ -7,6 +7,7 @@ import talkGroup from '../common/images/talk.png'
 import './PopularPosts.css'
 
 type HotPost = {
+  id?: string
   rank: number
   title: string
   likes: number
@@ -17,12 +18,13 @@ type PopularPostsProps = {
   posts: HotPost[]
   onMoreClick?: () => void
   showHeaderImage?: boolean
+  onPostClick?: (postId: string) => void
 }
 
-function PopularPosts({ posts, onMoreClick, showHeaderImage = true }: PopularPostsProps) {
+function PopularPosts({ posts, onMoreClick, showHeaderImage = true, onPostClick }: PopularPostsProps) {
   const thumbnails = [talk1, talk2, talk3]
   const storyItems: SequentialHighlightItem[] = posts.map((post, index) => ({
-    id: `${post.rank}-${post.title}`,
+    id: post.id ?? `${post.rank}-${post.title}`,
     title: post.title,
     likes: post.likes,
     comments: post.comments,
@@ -50,6 +52,7 @@ function PopularPosts({ posts, onMoreClick, showHeaderImage = true }: PopularPos
           startIndex={0}
           loop
           autoplay
+          onItemClick={onPostClick ? (id) => onPostClick(String(id)) : undefined}
         />
       </div>
     </section>

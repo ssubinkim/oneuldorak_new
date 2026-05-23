@@ -3,7 +3,8 @@ import type React from 'react'
 import BoardCategoryFilters from '../../components/community/boardpage/BoardCategoryFilters'
 import { boardFilters, type BoardFilter } from '../../components/community/boardpage/boardCategoryFilterData'
 import BoardList, { type BoardPost } from '../../components/community/boardpage/BoardList'
-import { mockBoardPopularPosts } from '../../components/community/common/boardMockData'
+import { mockBoardPopularPosts, mockBoardComments, mockBoardDetailPosts } from '../../components/community/common/boardMockData'
+import { readPersistedBoardComments } from '../../components/community/common/boardCommentPersistence'
 import CommunityStickyHeader from '../../components/community/common/CommunityStickyHeader'
 import BoardPopularPosts from '../../components/community/boardpage/BoardPopularPosts'
 import useCommunityHeaderCollapse from '../../components/community/common/useCommunityHeaderCollapse'
@@ -27,6 +28,12 @@ function BoardPage({
   onFocusHandled,
 }: BoardPageProps) {
   const [activeFilter, setActiveFilter] = useState<BoardFilter>(boardFilters[0])
+  const persistedComments = readPersistedBoardComments()
+  const mockPostIds = new Set(mockBoardDetailPosts.map((p) => p.id))
+  const popularPostsWithActualComments = mockBoardPopularPosts.map((post) => ({
+    ...post,
+    comments: persistedComments[post.id]?.length ?? (mockPostIds.has(post.id) ? mockBoardComments.length : post.comments),
+  }))
   const {
     isHeaderCompact,
     pageRef,
@@ -58,7 +65,7 @@ function BoardPage({
           onSelectTab={onSelectTab}
         />
         <div className="free-detail-body">
-          <BoardPopularPosts posts={mockBoardPopularPosts} onOpenDetail={onOpenDetail} />
+          <BoardPopularPosts posts={popularPostsWithActualComments} onOpenDetail={onOpenDetail} />
           <BoardCategoryFilters activeFilter={activeFilter} onChange={setActiveFilter} />
           <BoardList
             activeFilter={activeFilter}

@@ -1,7 +1,9 @@
 import './BoardList.css'
 import React, { useEffect, useRef, useState } from 'react'
 import { boardFilters, type BoardFilter } from './boardCategoryFilterData'
-import { mockBoardPosts } from '../common/boardMockData'
+import { mockBoardPosts, mockBoardComments, mockBoardDetailPosts } from '../common/boardMockData'
+import { readPersistedBoardComments } from '../common/boardCommentPersistence'
+import bannerBg from './images/banner_bg.png'
 
 export type BoardPost = {
   id: string
@@ -46,6 +48,17 @@ function BoardActionIcon({ kind }: { kind: 'comment' | 'bookmark' }) {
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M7.1 4.8h9.8a1.4 1.4 0 0 1 1.4 1.4v13.9l-6.3-3.4-6.3 3.4V6.2a1.4 1.4 0 0 1 1.4-1.4Z" />
     </svg>
+  )
+}
+
+function BoardBanner() {
+  return (
+    <div className="board-banner" style={{ backgroundImage: `url(${bannerBg})` }}>
+      <div className="board-banner__text">
+        <p className="board-banner__title">오늘의 냉장고 활용 TIP</p>
+        <p className="board-banner__body">줄기채소는 세워서 보관하면<br />신선도가 2배 오래가요!</p>
+      </div>
+    </div>
   )
 }
 
@@ -169,9 +182,14 @@ function BoardList({
   onFocusHandled,
 }: BoardListProps) {
   const listRef = useRef<HTMLElement | null>(null)
+  const persistedComments = readPersistedBoardComments()
+  const mockPostIds = new Set(mockBoardDetailPosts.map((p) => p.id))
   const sourcePosts = [...extraPosts, ...mockBoardPosts]
   const filteredPosts = sourcePosts.filter((post) => shouldShowPost(post, activeFilter))
-  const visiblePosts = sortPosts(filteredPosts, activeFilter)
+  const visiblePosts = sortPosts(filteredPosts, activeFilter).map((post) => ({
+    ...post,
+    comments: persistedComments[post.id]?.length ?? (mockPostIds.has(post.id) ? mockBoardComments.length : post.comments),
+  }))
   const hasFocusTarget = focusPostId ? visiblePosts.some((post) => post.id === focusPostId) : false
 
   useEffect(() => {
@@ -199,14 +217,18 @@ function BoardList({
     return () => window.clearTimeout(highlightTimer)
   }, [focusPostId, hasFocusTarget, onFocusHandled])
 
+  const BANNER_INSERT_INDEX = 2
+
   return (
     <section ref={listRef} key={activeFilter} className="free-detail-list" aria-label="자유게시판 글 목록">
-      {visiblePosts.map((post) => (
-        <BoardCard
-          key={post.id}
-          post={post}
-          onOpenDetail={onOpenDetail}
-        />
+      {visiblePosts.map((post, index) => (
+        <React.Fragment key={post.id}>
+          {index === BANNER_INSERT_INDEX && <BoardBanner />}
+          <BoardCard
+            post={post}
+            onOpenDetail={onOpenDetail}
+          />
+        </React.Fragment>
       ))}
     </section>
   )

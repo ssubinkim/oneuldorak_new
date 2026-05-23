@@ -18,6 +18,7 @@ type SequentialHighlightListProps = {
   loop?: boolean
   autoplay?: boolean
   onActiveIndexChange?: (index: number) => void
+  onItemClick?: (id: string | number) => void
 }
 
 function CommentIcon() {
@@ -50,6 +51,7 @@ function SequentialHighlightList({
   loop = true,
   autoplay = true,
   onActiveIndexChange,
+  onItemClick,
 }: SequentialHighlightListProps) {
   const safeItems = useMemo(() => items ?? [], [items])
   const [activeIndex, setActiveIndex] = useState(() =>
@@ -95,7 +97,11 @@ function SequentialHighlightList({
           return (
             <li
               key={item.id}
-              className={`sequential-highlight-list__item${isActive ? ' is-active' : ''}`}
+              className={`sequential-highlight-list__item${isActive ? ' is-active' : ''}${onItemClick ? ' sequential-highlight-list__item--clickable' : ''}`}
+              role={onItemClick ? 'button' : undefined}
+              tabIndex={onItemClick ? 0 : undefined}
+              onClick={onItemClick ? () => onItemClick(item.id) : undefined}
+              onKeyDown={onItemClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onItemClick(item.id) } } : undefined}
             >
               <span className="sequential-highlight-list__rank">{index + 1}</span>
               <span
