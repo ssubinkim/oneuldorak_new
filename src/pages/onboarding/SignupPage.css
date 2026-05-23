@@ -93,9 +93,9 @@
 }
 
 .signup-page__avatar-placeholder img {
-  width: 28px;
-  height: 28px;
-  opacity: 0.52;
+  width: 32px;
+  height: 32px;
+  opacity: 1;
 }
 
 .signup-page__avatar-preview {
@@ -356,8 +356,8 @@
   }
 
   .signup-page__avatar-button {
-    width: 84px;
-    height: 84px;
+    width: 96px;
+    height: 96px;
   }
 
   .signup-page__profile-title {
