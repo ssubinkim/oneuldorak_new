@@ -18,7 +18,7 @@ function KitchenSection({ products, onSelect, onCartClick }: Props) {
         </p>
         <div className="kitchen-section__subrow">
           <p className="kitchen-section__desc">한 끼 준비가 쉬워지는 아이템</p>
-          <button className="kitchen-section__more" type="button">더보기 &gt;</button>
+          <button className="kitchen-section__more" type="button" disabled>더보기 &gt;</button>
         </div>
       </div>
       <div className="kitchen-section__track">

@@ -272,7 +272,7 @@
   font-size: 14px;
   color: #aaa;
   text-decoration: underline;
-  cursor: pointer;
+  cursor: default;
   text-align: left;
 }
 

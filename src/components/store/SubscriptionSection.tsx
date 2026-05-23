@@ -46,7 +46,7 @@ function SubscriptionSection({ products, onSelect, onCartClick }: Props) {
         </p>
         <div className="subscription__subrow">
           <p className="subscription__desc">매주 도착하는 건강한 한 끼</p>
-          <button className="subscription__more" type="button">더보기 &gt;</button>
+          <button className="subscription__more" type="button" disabled>더보기 &gt;</button>
         </div>
       </div>
 
@@ -77,16 +77,20 @@ function SubscriptionSection({ products, onSelect, onCartClick }: Props) {
       </div>
 
       <div className="subscription__tabs">
-        {SUB_TABS.map(tab => (
-          <button
-            key={tab}
-            type="button"
-            className={`subscription__tab${activeTab === tab ? ' subscription__tab--active' : ''}`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </button>
-        ))}
+        {SUB_TABS.map(tab => {
+          const isDisabled = tab === '도시락' || tab === '밀키트'
+          return (
+            <button
+              key={tab}
+              type="button"
+              className={`subscription__tab${activeTab === tab ? ' subscription__tab--active' : ''}`}
+              onClick={isDisabled ? undefined : () => setActiveTab(tab)}
+              disabled={isDisabled}
+            >
+              {tab}
+            </button>
+          )
+        })}
       </div>
 
       <div className="subscription__slider" ref={trackRef} onScroll={handleScroll}>

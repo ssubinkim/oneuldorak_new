@@ -45,6 +45,11 @@
   color: #a3a3a3;
 }
 
+.mypage-menu-row:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
 .mypage-menu-icon-slot {
   display: block;
   width: 18px;
@@ -100,7 +105,7 @@
 }
 
 .mypage-logout-overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
   display: flex;
