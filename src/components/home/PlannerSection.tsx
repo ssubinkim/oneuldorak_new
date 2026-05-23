@@ -26,12 +26,35 @@ type Props = {
 
 
 
+type FlyDot = { startX: number; startY: number; endX: number; endY: number }
+
 function PlannerSection({ onDirectSelect }: Props) {
   const [selectedDate, setSelectedDate] = useState(TODAY_DATE)
   const [slideSteps, setSlideSteps] = useState(0)
   const [toast, setToast] = useState(false)
+  const [flyDot, setFlyDot] = useState<FlyDot | null>(null)
+  const [calPulse, setCalPulse] = useState(false)
+  const saveBtnRef = useRef<HTMLButtonElement>(null)
+  const calBtnRef = useRef<HTMLButtonElement>(null)
 
   const handleSave = () => {
+    const saveRect = saveBtnRef.current?.getBoundingClientRect()
+    const calRect = calBtnRef.current?.getBoundingClientRect()
+
+    if (saveRect && calRect) {
+      setFlyDot({
+        startX: saveRect.left + saveRect.width / 2,
+        startY: saveRect.top + saveRect.height / 2,
+        endX: calRect.left + calRect.width / 2,
+        endY: calRect.top + calRect.height / 2,
+      })
+      setTimeout(() => {
+        setFlyDot(null)
+        setCalPulse(true)
+        setTimeout(() => setCalPulse(false), 400)
+      }, 620)
+    }
+
     setToast(true)
     setTimeout(() => setToast(false), 2000)
   }
@@ -84,7 +107,8 @@ function PlannerSection({ onDirectSelect }: Props) {
           <h2 className="planner__title">이번 주 도시락 플래너</h2>
         </div>
         <button
-          className="planner__cal-btn"
+          ref={calBtnRef}
+          className={`planner__cal-btn${calPulse ? ' planner__cal-btn--pulse' : ''}`}
           aria-label="플래너 달력 열기"
           onClick={() => { window.location.hash = '#/meal-weekly-plan' }}
         >
@@ -128,7 +152,7 @@ function PlannerSection({ onDirectSelect }: Props) {
             className="planner__edit-btn"
             onClick={() => { window.location.hash = '#/meal-weekly-plan' }}
           >
-            수정하기
+            수정
           </button>
         </div>
 
@@ -166,19 +190,32 @@ function PlannerSection({ onDirectSelect }: Props) {
             className="planner__btn planner__btn--outline"
             onClick={onDirectSelect}
           >
-            직접 선택하기
+            다른 메뉴 보기
           </button>
           <button
+            ref={saveBtnRef}
             className="planner__btn planner__btn--primary"
             onClick={handleSave}
           >
-            저장하기
+            확인
           </button>
         </div>
       </div>
 
       {toast && (
         <div className="planner__toast">저장되었습니다 ✓</div>
+      )}
+
+      {flyDot && (
+        <div
+          className="planner__fly-dot"
+          style={{
+            '--start-x': `${flyDot.startX}px`,
+            '--start-y': `${flyDot.startY}px`,
+            '--end-x': `${flyDot.endX}px`,
+            '--end-y': `${flyDot.endY}px`,
+          } as React.CSSProperties}
+        />
       )}
     </section>
   )

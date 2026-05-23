@@ -12,14 +12,27 @@ import '../../styles/Tailwind.css'
 import './Recipe.css'
 
 function Recipe() {
-  const [selectedRecipeId, setSelectedRecipeId] = useState<string | null>(null)
+  const [selectedRecipeId, setSelectedRecipeId] = useState<string | null>(() => {
+    const query = window.location.hash.split('?')[1] ?? ''
+    return new URLSearchParams(query).get('id')
+  })
+
+  const fromHome = (() => {
+    const query = window.location.hash.split('?')[1] ?? ''
+    return new URLSearchParams(query).get('from') === 'home'
+  })()
 
   const handleOpenDetail = (recipeId: string) => {
     setSelectedRecipeId(recipeId)
   }
 
   const handleBack = () => {
-    setSelectedRecipeId(null)
+    if (fromHome) {
+      window.location.hash = '#/home'
+    } else {
+      setSelectedRecipeId(null)
+      window.location.hash = '#/recipe'
+    }
   }
 
   if (selectedRecipeId) {
