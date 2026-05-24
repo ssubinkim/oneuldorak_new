@@ -19,18 +19,16 @@ function WeeklyPlanScreen({ onBack }: WeeklyPlanScreenProps) {
   return (
     <div className="app-shell">
       <div className="app-screen wpp-screen">
-        <div className="wpp-scroll">
-          <WeeklyPlanHeader onBack={onBack} />
+        <WeeklyPlanHeader onBack={onBack} />
 
-          <div className="wpp-content">
-            <WeeklyPlanMonthRow
-              year={YEAR}
-              month={MONTH}
-              onOpenCalendar={() => setShowCalendar(true)}
-            />
-            <WeeklyPlanDaySelector menus={weeklyMenuData} selectedDate={selectedDate} onSelectDate={setSelectedDate} />
-            <WeeklyPlanMenuList month={MONTH} selectedDate={selectedDate} menus={weeklyMenuData} />
-          </div>
+        <div className="wpp-content">
+          <WeeklyPlanMonthRow
+            year={YEAR}
+            month={MONTH}
+            onOpenCalendar={() => setShowCalendar(true)}
+          />
+          <WeeklyPlanDaySelector menus={weeklyMenuData} selectedDate={selectedDate} onSelectDate={setSelectedDate} />
+          <WeeklyPlanMenuList month={MONTH} selectedDate={selectedDate} menus={weeklyMenuData} />
         </div>
 
         {showCalendar && (

@@ -1,21 +1,8 @@
 .wpp-screen {
   background: linear-gradient(180deg, #FFDB78 0px, var(--color-bg-base) 360px);
   font-family: 'Pretendard Variable', sans-serif;
-}
-
-.wpp-scroll {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow-y: auto;
-  scrollbar-width: none;
-  padding-bottom: var(--bottom-nav-height);
-}
-
-.wpp-scroll::-webkit-scrollbar {
-  display: none;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ── 헤더 ─────────────────────────────────────── */
@@ -24,6 +11,7 @@
   align-items: center;
   padding: 20px 20px;
   gap: 10px;
+  background: #FFDB78;
 }
 
 .wpp-back-btn {
@@ -40,7 +28,7 @@
   flex: 1;
   font-size: 20px;
   font-weight: 500;
-  color: var(--color-text-main);
+  color: #FFDB78;
 }
 
 .wpp-header-crew {
@@ -57,10 +45,13 @@
 .wpp-content {
   background: #fff;
   border-radius: 20px 20px 0 0;
-  padding: 24px 20px 32px;
-  min-height: 100vh;
+  padding: 24px 20px 0;
   position: relative;
   z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* ── 월 표시 ─────────────────────────────────── */
@@ -70,13 +61,14 @@
   justify-content: space-between;
   margin-bottom: 18px;
   border-bottom: 1px solid #D1D1D1;
-  padding-bottom: 12px;
+  padding-bottom: 8px;
 }
 
 .wpp-month-text {
   font-size: 20px;
   font-weight: 500;
   color: var(--color-text-main);
+  padding-left: 4px;
 }
 
 /* ── 날짜 선택 ───────────────────────────────── */
@@ -120,7 +112,7 @@
 
 .wpp-day-num {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   color: #5f5f5f;
   line-height: 24px;
   height: 24px;
@@ -135,6 +127,7 @@
 .wpp-day-item--active .wpp-day-label,
 .wpp-day-item--active .wpp-day-num {
   color: #1a1a1a;
+  font-weight: 500;
 }
 
 /* ── 메뉴 카드 리스트 ────────────────────────── */
@@ -142,17 +135,20 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding-top: 16px;
+  padding: 16px 0 var(--bottom-nav-height);
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.wpp-menu-list::-webkit-scrollbar {
+  display: none;
 }
 
 .wpp-menu-card {
   display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid #f0f0f0;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
+  align-items: stretch;
+  gap: 8px;
   min-height: 116px;
 }
 
@@ -162,11 +158,25 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  min-width: 60px;
-  align-self: stretch;
-  background: #f8f8f8;
+  width: 56px;
+  min-width: 56px;
+  background: #fffffd;
   gap: 2px;
+  border-radius: 10px 0 0 10px;
+  flex-shrink: 0;
+  border: 1px solid #d8d8d8;
+}
+
+.wpp-menu-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #fffffd;
+  border-radius: 0 14px 14px 0;
+  border: 1px solid #d8d8d8;
+  /* box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06); */
+  overflow: hidden;
+  min-width: 0;
 }
 
 .wpp-menu-label--today {
@@ -190,7 +200,7 @@
   width: 100px;
   height: 100px;
   flex-shrink: 0;
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   margin: 0 12px;
 }
@@ -220,11 +230,11 @@
 .wpp-menu-name {
   font-size: 18px;
   font-weight: 500;
-  color: var(--color-text-main);
-  margin: 0;
+  color: #3c3c3c;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0;
 }
 
 .wpp-menu-time {
@@ -232,16 +242,16 @@
   align-items: center;
   gap: 4px;
   font-size: 14px;
-  color: #aaa;
+  color: #5f5f5f;
   margin: 0;
 }
 
 .wpp-menu-badge {
   display: inline-block;
   font-size: 10px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 20px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
   width: fit-content;
   margin-top: 6px;
 }
@@ -258,8 +268,11 @@
   text-align: left;
 }
 
-/* 카드 오른쪽 화살표 여백 */
-.wpp-menu-card > svg {
+/* 카드 오른쪽 화살표 */
+.wpp-menu-body > svg {
+  width: clamp(20px, 5.5vw, 24px);
+  height: clamp(20px, 5.5vw, 24px);
+  flex-shrink: 0;
   margin-right: 14px;
 }
 
