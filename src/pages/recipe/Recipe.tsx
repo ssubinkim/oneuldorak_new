@@ -8,6 +8,7 @@ import RecipePopularList from '../../components/recipe/RecipePopularList'
 import RecipeTipBanner from '../../components/recipe/RecipeTipBanner'
 import FreshRecipeVideoSection from '../../components/recipe/FreshRecipeVideoSection'
 import RecipeDetailPage from '../recipedetail/RecipeDetailPage'
+import ArrowLeftIcon from '../../assets/icons/arrow_left.svg?react'
 import '../../styles/Tailwind.css'
 import './Recipe.css'
 
@@ -17,9 +18,9 @@ function Recipe() {
     return new URLSearchParams(query).get('id')
   })
 
-  const fromHome = (() => {
+  const from = (() => {
     const query = window.location.hash.split('?')[1] ?? ''
-    return new URLSearchParams(query).get('from') === 'home'
+    return new URLSearchParams(query).get('from')
   })()
 
   const handleOpenDetail = (recipeId: string) => {
@@ -27,8 +28,10 @@ function Recipe() {
   }
 
   const handleBack = () => {
-    if (fromHome) {
+    if (from === 'home') {
       window.location.hash = '#/home'
+    } else if (from === 'weekly') {
+      window.location.hash = '#/meal-weekly-plan'
     } else {
       setSelectedRecipeId(null)
       window.location.hash = '#/recipe'
@@ -54,10 +57,8 @@ function Recipe() {
 
         <div className="recipe-banner-header">
           <div className="recipe-banner-header__left">
-            <button type="button" aria-label="뒤로가기" className="recipe-banner-header__back" onClick={() => { window.history.back() }}>
-              <svg width="10" height="18" viewBox="0 0 10 18" fill="none" aria-hidden="true">
-                <path d="M9 1L1 9L9 17" stroke="#1a1a1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+            <button type="button" aria-label="뒤로가기" className="recipe-banner-header__back" onClick={() => { window.location.hash = '#/home' }}>
+              <ArrowLeftIcon aria-hidden="true" />
             </button>
             <h1>레시피</h1>
           </div>

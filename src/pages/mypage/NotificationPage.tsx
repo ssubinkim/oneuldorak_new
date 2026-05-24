@@ -19,7 +19,8 @@ const iconMap: Record<NotificationType, string> = {
 }
 
 export default function NotificationPage() {
-  const handleBack = () => { window.location.hash = '#/mypage' }
+  const from = new URLSearchParams(window.location.hash.split('?')[1] ?? '').get('from')
+  const handleBack = () => { window.location.hash = from === 'home' ? '#/home' : from === 'meal' ? '#/meal' : '#/mypage' }
   const { isNew } = useUserProfile()
   const notifications = isNew ? [] : NOTIFICATIONS
 

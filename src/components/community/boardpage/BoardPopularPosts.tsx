@@ -1,4 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
+import carrotPro from '../../../assets/food_mascot/carrot_pro.png'
+import broPro from '../../../assets/food_mascot/bro_pro.png'
+import strawPro from '../../../assets/food_mascot/straw_pro.png'
+import eggPro from '../../../assets/food_mascot/egg_pro.png'
+import bluePro from '../../../assets/food_mascot/blue_pro.png'
+
+const proMascots = [carrotPro, broPro, strawPro, eggPro, bluePro]
 import trophyIcon from '../../../assets/icons/trophy.svg'
 import messageIcon from '../../../assets/icons/message-square.svg'
 import './BoardPopularPosts.css'
@@ -22,6 +29,7 @@ type BoardPopularPostsProps = {
 function PopularPostItem({ post, onOpenDetail }: { post: BoardPopularPost; onOpenDetail: (postId: string) => void }) {
   const [liked, setLiked] = useState(false)
   const [likeCount, setLikeCount] = useState(post.likes)
+  const randomMascot = useMemo(() => proMascots[Math.floor(Math.random() * proMascots.length)], [])
 
   const handleLike = (event: React.MouseEvent) => {
     event.stopPropagation()
@@ -44,7 +52,7 @@ function PopularPostItem({ post, onOpenDetail }: { post: BoardPopularPost; onOpe
         <p className="board-popular-posts__body">{post.body}</p>
         <div className="board-popular-posts__footer">
           <span className="free-post-card__meta">
-            {post.mascot && <img src={post.mascot} alt="" aria-hidden="true" />}
+            <img src={randomMascot} alt="" aria-hidden="true" />
             {post.author}
           </span>
           <div className="board-popular-posts__stats">

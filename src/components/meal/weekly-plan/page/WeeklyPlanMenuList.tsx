@@ -45,7 +45,7 @@ function WeeklyPlanMenuList({ month, selectedDate, menus }: WeeklyPlanMenuListPr
               <span className="wpp-menu-label-date">{getCalMonth(menu.date)}/{getCalDate(menu.date)}</span>
             </div>
 
-            <div className="wpp-menu-body">
+            <div className="wpp-menu-body" onClick={() => { if (menu.day === '월' && menu.recipeId) window.location.hash = `#/recipe?id=${menu.recipeId}&from=weekly` }} style={{ cursor: menu.day === '월' ? 'pointer' : 'default' }}>
             <div className="wpp-menu-img-wrap">
               {menu.image ? <img src={menu.image} alt={menu.name} className="wpp-menu-img" /> : <div className="wpp-menu-img-empty"><img src={blueThink} alt="메뉴 없음" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>}
             </div>
@@ -66,7 +66,7 @@ function WeeklyPlanMenuList({ month, selectedDate, menus }: WeeklyPlanMenuListPr
               )}
             </div>
 
-            {!isThinking && <ChevronRight />}
+            {!isThinking && <ChevronRight style={{ opacity: menu.day === '월' ? 1 : 0.25 }} />}
             </div>
           </div>
         )

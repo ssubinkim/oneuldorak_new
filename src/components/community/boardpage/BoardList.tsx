@@ -1,5 +1,12 @@
 import './BoardList.css'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
+import carrotPro from '../../../assets/food_mascot/carrot_pro.png'
+import broPro from '../../../assets/food_mascot/bro_pro.png'
+import strawPro from '../../../assets/food_mascot/straw_pro.png'
+import eggPro from '../../../assets/food_mascot/egg_pro.png'
+import bluePro from '../../../assets/food_mascot/blue_pro.png'
+
+const proMascots = [carrotPro, broPro, strawPro, eggPro, bluePro]
 import { boardFilters, type BoardFilter } from './boardCategoryFilterData'
 import { mockBoardPosts, mockBoardComments, mockBoardDetailPosts } from '../common/boardMockData'
 import { readPersistedBoardComments } from '../common/boardCommentPersistence'
@@ -72,6 +79,7 @@ function BoardCard({
   const cardRef = useRef<HTMLElement>(null)
   const [liked, setLiked] = useState(false)
   const [likeCount, setLikeCount] = useState(post.likes)
+  const randomMascot = useMemo(() => proMascots[Math.floor(Math.random() * proMascots.length)], [])
 
   useEffect(() => {
     const card = cardRef.current
@@ -127,7 +135,7 @@ function BoardCard({
 
       <div className="free-post-card__bottom">
         <span className="free-post-card__meta">
-          {post.mascot && <span aria-hidden="true"><img src={post.mascot} alt="User" /></span>}
+          <span aria-hidden="true"><img src={randomMascot} alt="" /></span>
           {post.user}
         </span>
         <div className="free-post-card__stats">

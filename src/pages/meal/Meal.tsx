@@ -6,8 +6,8 @@ import PlannerSection from '../../components/home/PlannerSection'
 import TodayRecipeSection from '../../components/home/TodayRecipeSection'
 import FridgeSection from '../../components/home/FridgeSection'
 import type { DayMenu } from '../../components/meal/mealData'
-import logoImg from '../../assets/logos/logo.svg'
 import bellIcon from '../../assets/icons/bell_icon.svg'
+import logoImg from '../../assets/logos/logo.svg'
 import mascotGroupImg from '../../assets/food_mascot_all/dorak19.png'
 import '../../styles/Tailwind.css'
 import './Meal.css'
@@ -35,7 +35,7 @@ function Meal() {
           <div className="meal-hero">
             <div className="meal-hero__top">
               <img src={logoImg} alt="오늘도락" className="meal-hero__logo" />
-              <button className="meal-hero__bell" aria-label="알림" disabled>
+              <button className="meal-hero__bell" aria-label="알림" onClick={() => { window.location.hash = '#/mypage-notification?from=meal' }}>
                 <img src={bellIcon} alt="" width="22" height="22" />
               </button>
             </div>

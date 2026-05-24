@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import eggMascot from '../../../assets/food_mascot/egg_mascot.png'
-import strawMascot from '../../../assets/food_mascot/straw_mascot.png'
-import blueMascot from '../../../assets/food_mascot/blue_mascot.png'
-import carrotMascot from '../../../assets/food_mascot/carrot_mascot.png'
-import broMascot from '../../../assets/food_mascot/bro_mascot.png'
+import carrotPro from '../../../assets/food_mascot/carrot_pro.png'
+import broPro from '../../../assets/food_mascot/bro_pro.png'
+import strawPro from '../../../assets/food_mascot/straw_pro.png'
+import eggPro from '../../../assets/food_mascot/egg_pro.png'
+import bluePro from '../../../assets/food_mascot/blue_pro.png'
 
-const mascots = [eggMascot, strawMascot, blueMascot, carrotMascot, broMascot]
+const proMascots = [carrotPro, broPro, strawPro, eggPro, bluePro]
 
 function getMascot(username: string): string {
   const hash = username.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0)
-  return mascots[hash % mascots.length]
+  return proMascots[hash % proMascots.length]
 }
 
 export type BoardComment = {

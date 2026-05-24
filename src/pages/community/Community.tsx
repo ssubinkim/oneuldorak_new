@@ -612,12 +612,12 @@ function Community() {
         {registrationModal && (
           <div
             key={registrationModal.id}
-            className="community-registration-modal"
+            className="vote-confirm-modal"
             role="presentation"
             onClick={handleRegistrationModalClose}
           >
             <section
-              className="community-registration-modal__panel"
+              className="vote-confirm-modal__panel"
               role="dialog"
               aria-modal="true"
               aria-labelledby="community-registration-modal-title"
@@ -626,7 +626,9 @@ function Community() {
             >
               <h2 id="community-registration-modal-title">등록 완료</h2>
               <p id="community-registration-modal-description">{registrationModal.message}</p>
-              <button type="button" onClick={handleRegistrationModalClose}>작성한 글 보기</button>
+              <div className="vote-confirm-modal__actions">
+                <button type="button" className="vote-confirm-modal__confirm" onClick={handleRegistrationModalClose}>작성한 글 보기</button>
+              </div>
             </section>
           </div>
         )}

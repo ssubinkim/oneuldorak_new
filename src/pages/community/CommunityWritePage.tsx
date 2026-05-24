@@ -16,6 +16,7 @@ import {
 } from '../../components/community/communitywritepage/writeTypes'
 import type { WriteTab } from '../../components/community/communitywritepage/writeTab'
 import './CommunityWritePage.css'
+import '../../components/community/common/VoteConfirmModal.css'
 
 type CommunityWritePageProps = {
   initialTab?: WriteTab
@@ -37,6 +38,7 @@ function CommunityWritePage({ initialTab = 'board', initialValues, hideTabSwitch
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showVoteConfirm, setShowVoteConfirm] = useState(false)
   const [pendingVotePayload, setPendingVotePayload] = useState<CommunityWritePayload | null>(null)
+  const [alertMessage, setAlertMessage] = useState<string | null>(null)
 
   const updateBoardData = (board: BoardWriteData) => {
     setFormValues((prevValues) => ({ ...prevValues, board }))
@@ -61,19 +63,19 @@ function CommunityWritePage({ initialTab = 'board', initialValues, hideTabSwitch
 
     if (payload.tab === 'vote') {
       if (hasDuplicateVoteOptions(payload.data.options)) {
-        window.alert('같은 보기는 추가할 수 없어요.')
+        setAlertMessage('같은 보기는 추가할 수 없어요.')
         return
       }
 
       if (hasTooManyVoteOptions(payload.data.options)) {
-        window.alert('투표 보기는 최대 5개까지 추가할 수 있어요.')
+        setAlertMessage('투표 보기는 최대 5개까지 추가할 수 있어요.')
         return
       }
 
       const uniqueOptions = getUniqueVoteOptions(payload.data.options)
 
       if (uniqueOptions.length < 2) {
-        window.alert('투표 보기는 2개 이상 필요해요.')
+        setAlertMessage('투표 보기는 2개 이상 필요해요.')
         return
       }
 
@@ -127,33 +129,51 @@ function CommunityWritePage({ initialTab = 'board', initialValues, hideTabSwitch
         </button>
       </section>
 
+      {alertMessage && (
+        <div
+          className="vote-confirm-modal"
+          role="presentation"
+          onClick={() => setAlertMessage(null)}
+        >
+          <section
+            className="vote-confirm-modal__panel"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p>{alertMessage}</p>
+            <div className="vote-confirm-modal__actions">
+              <button type="button" className="vote-confirm-modal__confirm" onClick={() => setAlertMessage(null)}>확인</button>
+            </div>
+          </section>
+        </div>
+      )}
+
       {showVoteConfirm && (
         <div
-          className="community-registration-modal"
+          className="vote-confirm-modal"
           role="dialog"
           aria-modal="true"
           aria-labelledby="vote-confirm-title"
           onClick={handleVoteConfirmCancel}
         >
-          <div
-            className="community-registration-modal__panel"
+          <section
+            className="vote-confirm-modal__panel"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 id="vote-confirm-title">투표 등록 전 확인해주세요</h2>
-            <p>한번 게시한 투표는 수정과 삭제가 어렵습니다.<br />그래도 등록하시겠어요?</p>
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <p>등록된 투표는 수정과 삭제가 어렵습니다.<br />그래도 등록하시겠어요?</p>
+            <div className="vote-confirm-modal__actions">
               <button
                 type="button"
-                style={{ background: '#f0f0f0', color: '#3c3c3c' }}
+                className="vote-confirm-modal__cancel"
                 onClick={handleVoteConfirmCancel}
               >
                 취소
               </button>
-              <button type="button" onClick={handleVoteConfirm}>
+              <button type="button" className="vote-confirm-modal__confirm" onClick={handleVoteConfirm}>
                 등록하기
               </button>
             </div>
-          </div>
+          </section>
         </div>
       )}
     </main>
