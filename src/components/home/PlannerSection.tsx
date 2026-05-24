@@ -7,16 +7,26 @@ import ChefHatIcon from '../../assets/icons/chef_hat.svg?react'
 import AlarmIcon from '../../assets/icons/alarm.svg?react'
 import './PlannerSection.css'
 
-const jsDay = new Date().getDay()
+const _today = new Date()
+const jsDay = _today.getDay()
 const TODAY_DATE = jsDay === 0 ? 7 : jsDay
 const WEEK_LEN = weeklyMenuData.length
+
+const _monday = new Date(_today)
+_monday.setDate(_today.getDate() - (TODAY_DATE - 1))
+
+function getCalDate(dayNum: number): number {
+  const d = new Date(_monday)
+  d.setDate(_monday.getDate() + (dayNum - 1))
+  return d.getDate()
+}
 
 function getVisibleDays(selectedDate: number) {
   const centerIdx = weeklyMenuData.findIndex(m => m.date === selectedDate)
   return Array.from({ length: 7 }, (_, i) => {
-    const posOffset = i - 3 // -3 ~ +3
+    const posOffset = i - 3
     const idx = ((centerIdx + posOffset) % WEEK_LEN + WEEK_LEN) % WEEK_LEN
-    return { ...weeklyMenuData[idx], posOffset }
+    return { ...weeklyMenuData[idx], posOffset, calDate: getCalDate(weeklyMenuData[idx].date) }
   })
 }
 
@@ -136,7 +146,7 @@ function PlannerSection({ onDirectSelect }: Props) {
               onClick={() => handleDayClick(menu.posOffset)}
             >
               <span className="planner__day-name">{menu.day}</span>
-              <span className="planner__day-num">{menu.date}</span>
+              <span className="planner__day-num">{menu.calDate}</span>
             </button>
           ))}
         </div>

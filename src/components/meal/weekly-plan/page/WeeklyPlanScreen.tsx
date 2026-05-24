@@ -6,7 +6,7 @@ import WeeklyPlanDaySelector from './WeeklyPlanDaySelector'
 import WeeklyPlanHeader from './WeeklyPlanHeader'
 import WeeklyPlanMenuList from './WeeklyPlanMenuList'
 import WeeklyPlanMonthRow from './WeeklyPlanMonthRow'
-import { MONTH, TODAY_DATE, YEAR } from './weeklyPlanConstants'
+import { MONTH, TODAY_DATE, YEAR, getCalDate } from './weeklyPlanConstants'
 
 type WeeklyPlanScreenProps = {
   onBack: () => void
@@ -35,7 +35,9 @@ function WeeklyPlanScreen({ onBack }: WeeklyPlanScreenProps) {
           <WeeklyPlanCalendarModal
             year={YEAR}
             month={MONTH}
-            todayDate={TODAY_DATE}
+            todayDate={getCalDate(TODAY_DATE)}
+            selectedDate={selectedDate}
+            onSelectDate={(dayNum) => { setSelectedDate(dayNum); setShowCalendar(false) }}
             onClose={() => setShowCalendar(false)}
           />
         )}

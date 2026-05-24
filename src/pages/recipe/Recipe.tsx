@@ -53,7 +53,14 @@ function Recipe() {
         <Header />
 
         <div className="recipe-banner-header">
-          <h1>레시피</h1>
+          <div className="recipe-banner-header__left">
+            <button type="button" aria-label="뒤로가기" className="recipe-banner-header__back" onClick={() => { window.history.back() }}>
+              <svg width="10" height="18" viewBox="0 0 10 18" fill="none" aria-hidden="true">
+                <path d="M9 1L1 9L9 17" stroke="#1a1a1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            <h1>레시피</h1>
+          </div>
           <div className="recipe-banner-header__actions">
             <button type="button" aria-label="저장한 레시피" onClick={() => { window.location.hash = '#/meal-grocery?tab=storage&from=recipe' }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

@@ -1,16 +1,24 @@
 import { useState } from 'react'
-import { DAY_LABELS } from './weeklyPlanConstants'
+import { DAY_LABELS, getCalDate, getCalMonth, YEAR as CUR_YEAR, MONTH as CUR_MONTH } from './weeklyPlanConstants'
+
+const WEEK_DATES = Array.from({ length: 7 }, (_, i) => ({
+  dayNum: i + 1,
+  date: getCalDate(i + 1),
+  month: getCalMonth(i + 1),
+}))
 
 type WeeklyPlanCalendarModalProps = {
   year: number
   month: number
   todayDate: number
+  selectedDate: number
+  onSelectDate: (dayNum: number) => void
   onClose: () => void
 }
 
 const MONTHS = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
 
-function WeeklyPlanCalendarModal({ year, month, todayDate, onClose }: WeeklyPlanCalendarModalProps) {
+function WeeklyPlanCalendarModal({ year, month, todayDate, selectedDate, onSelectDate, onClose }: WeeklyPlanCalendarModalProps) {
   const [viewYear, setViewYear] = useState(year)
   const [viewMonth, setViewMonth] = useState(month)
   const [showPicker, setShowPicker] = useState(false)
@@ -40,6 +48,17 @@ function WeeklyPlanCalendarModal({ year, month, todayDate, onClose }: WeeklyPlan
     setViewMonth(m)
     setShowPicker(false)
   }
+
+  const handleDayClick = (day: number) => {
+    const clicked = new Date(viewYear, viewMonth - 1, day)
+    const jsDay = clicked.getDay()
+    const dayNum = jsDay === 0 ? 7 : jsDay
+    onSelectDate(dayNum)
+    onClose()
+  }
+
+  const selectedCalDate = getCalDate(selectedDate)
+  const selectedCalMonth = getCalMonth(selectedDate)
 
   return (
     <div className="cal-overlay" onClick={onClose}>
@@ -96,14 +115,20 @@ function WeeklyPlanCalendarModal({ year, month, todayDate, onClose }: WeeklyPlan
             {DAY_LABELS.map((label) => (
               <div key={label} className="cal-label">{label}</div>
             ))}
-            {cells.map((day, i) => (
-              <div
-                key={i}
-                className={`cal-day${day === todayDate && viewMonth === month && viewYear === year ? ' cal-day--today' : ''}${day === null ? ' cal-day--empty' : ''}`}
-              >
-                {day ?? ''}
-              </div>
-            ))}
+            {cells.map((day, i) => {
+              const isToday = day === todayDate && viewMonth === month && viewYear === year
+              const isSelected = day === selectedCalDate && viewMonth === selectedCalMonth && viewYear === CUR_YEAR
+              const isThisWeek = day !== null && WEEK_DATES.some(w => w.date === day && w.month === viewMonth && viewYear === CUR_YEAR)
+              const className = `cal-day${isToday ? ' cal-day--today' : ''}${isSelected ? ' cal-day--selected' : ''}${isThisWeek ? ' cal-day--this-week' : ''}${day === null ? ' cal-day--empty' : ''}`
+              if (day !== null) {
+                return (
+                  <button key={i} type="button" className={className} onClick={() => handleDayClick(day)}>
+                    {day}
+                  </button>
+                )
+              }
+              return <div key={i} className={className} />
+            })}
           </div>
         )}
       </div>

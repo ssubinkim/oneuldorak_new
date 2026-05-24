@@ -7,9 +7,13 @@ type Props = { onBack?: () => void }
 
 function GroceryPage({ onBack }: Props) {
   const params = new URLSearchParams(window.location.hash.split('?')[1] ?? '')
-  const fromHome = params.get('from') === 'home'
+  const from = params.get('from')
   const initialTab = (params.get('tab') as GroceryTab) || 'recommend'
-  const handleBack = onBack ?? (() => { window.location.hash = fromHome ? '#/home' : '#/meal' })
+  const handleBack = onBack ?? (() => {
+    if (from === 'home') window.location.hash = '#/home'
+    else if (from === 'recipe') window.location.hash = '#/recipe'
+    else window.location.hash = '#/meal'
+  })
 
   return <GroceryScreen onBack={handleBack} initialTab={initialTab} />
 }
