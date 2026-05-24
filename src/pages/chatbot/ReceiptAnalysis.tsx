@@ -182,7 +182,7 @@ function ReceiptAnalysis() {
             </button>
             <div>
               <p className="receipt-analysis-header__eyebrow">AI 영수증 분석</p>
-              <h1 className="receipt-analysis-header__title">오늘 산 재료로 도시락 만들기</h1>
+              <h1 className="receipt-analysis-header__title">영수증 분석</h1>
             </div>
           </header>
 

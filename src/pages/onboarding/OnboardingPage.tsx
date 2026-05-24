@@ -172,6 +172,7 @@ function OnboardingPage() {
                 />
               ) : (
                 <OnboardingOptionList
+                  customOptionLabel={activeQuestion.id === 'budget' ? '직접 입력' : '기타'}
                   optionLayout={optionLayout}
                   options={activeQuestion.options ?? []}
                   onSelect={handleSelectOption}

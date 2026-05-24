@@ -5,6 +5,8 @@ import {
   type ReceiptAnalysisApiRequestBody,
   type ReceiptAnalysisApiSuccess,
 } from './aiApiContracts'
+import { createReceiptAnalyzeMockResult } from '../mocks/receiptAnalyze.mock'
+import { shouldUseMockAi } from './aiMockResponse'
 
 export const RECEIPT_IMAGE_MAX_DATA_URL_LENGTH = 3_600_000
 
@@ -99,6 +101,22 @@ function createReceiptHttpError(status: number, data: ApiErrorBody) {
   return new Error(data.error || '영수증 분석에 실패했어요. 영수증을 더 밝게 찍어 다시 시도해주세요.')
 }
 
+function shouldUseReceiptMockFallbackInDev(status: number | null) {
+  if (!import.meta.env.DEV) return false
+  if (status === null) return true
+  return status === 404 || status === 502 || status === 503 || status >= 500
+}
+
+function logReceiptDevFallback(status: number | null, error: unknown) {
+  if (!import.meta.env.DEV) return
+  const reason = error instanceof Error ? error.message : String(error)
+  console.warn('[receiptApi] fallback to mock (DEV)', {
+    endpoint: AI_API_ENDPOINTS.receiptAnalyze,
+    status,
+    reason,
+  })
+}
+
 export async function analyzeReceiptImage(imageDataUrl: string): Promise<ReceiptAnalysisResult> {
   const trimmedImageDataUrl = imageDataUrl.trim()
 
@@ -114,22 +132,38 @@ export async function analyzeReceiptImage(imageDataUrl: string): Promise<Receipt
     imageDataUrl: trimmedImageDataUrl,
   }
 
-  const response = await fetch(AI_API_ENDPOINTS.receiptAnalyze, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  })
-
-  const contentType = response.headers.get('content-type') || ''
-  const data = (contentType.includes('application/json')
-    ? await response.json()
-    : { error: await response.text() }) as ReceiptAnalysisApiSuccess & ApiErrorBody
-
-  if (!response.ok) {
-    throw createReceiptHttpError(response.status, data)
+  if (shouldUseMockAi()) {
+    return createReceiptAnalyzeMockResult(trimmedImageDataUrl)
   }
 
-  return normalizeReceiptResult(data.result)
+  let responseStatus: number | null = null
+
+  try {
+    const response = await fetch(AI_API_ENDPOINTS.receiptAnalyze, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+
+    responseStatus = response.status
+    const contentType = response.headers.get('content-type') || ''
+    const data = (contentType.includes('application/json')
+      ? await response.json()
+      : { error: await response.text() }) as ReceiptAnalysisApiSuccess & ApiErrorBody
+
+    if (!response.ok) {
+      throw createReceiptHttpError(response.status, data)
+    }
+
+    return normalizeReceiptResult(data.result)
+  } catch (error) {
+    if (shouldUseReceiptMockFallbackInDev(responseStatus)) {
+      logReceiptDevFallback(responseStatus, error)
+      return createReceiptAnalyzeMockResult(trimmedImageDataUrl)
+    }
+
+    throw error
+  }
 }

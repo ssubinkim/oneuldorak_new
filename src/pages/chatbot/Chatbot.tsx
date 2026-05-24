@@ -73,6 +73,7 @@ function Chatbot() {
   const [showCoachMark, setShowCoachMark] = useState(() => !shouldSkipCoachMark())
   const [showJudgeModeSheet, setShowJudgeModeSheet] = useState(false)
   const [showCameraSheet, setShowCameraSheet] = useState(false)
+  const [showPhotoPurposeSheet, setShowPhotoPurposeSheet] = useState(false)
   const [selectedPhotoPurpose, setSelectedPhotoPurpose] = useState<PhotoPurposeFeature | null>(null)
   const { nickname } = useUserProfile()
   const displayName = nickname?.trim() || '도시락러버'
@@ -140,6 +141,20 @@ function Chatbot() {
       analysisType: selectedPurpose?.analysisType,
       feature: selectedPurpose?.feature,
     })
+  }
+
+  const handlePhotoPurposeSelect = (purposeFeature: PhotoPurposeFeature) => {
+    if (purposeFeature === 'receipt-analysis') {
+      setSelectedPhotoPurpose(purposeFeature)
+      setShowPhotoPurposeSheet(false)
+      setShowCameraSheet(false)
+      navigateToHash('#/receipt-analysis')
+      return
+    }
+
+    setSelectedPhotoPurpose(purposeFeature)
+    setShowPhotoPurposeSheet(false)
+    setShowCameraSheet(true)
   }
 
   const handleJudgeByText = () => {
@@ -217,7 +232,7 @@ function Chatbot() {
             </div>
           </section>
 
-          {showCoachMark && !showJudgeModeSheet && !showCameraSheet && (
+          {showCoachMark && !showJudgeModeSheet && !showCameraSheet && !showPhotoPurposeSheet && (
             <ChatbotCoachMark onDismiss={() => setShowCoachMark(false)} />
           )}
 
@@ -240,33 +255,25 @@ function Chatbot() {
             />
           )}
 
-          {!showCameraSheet && !showJudgeModeSheet ? (
+          {showPhotoPurposeSheet && (
+            <ChatbotCameraSheet
+              title="이 사진으로 무엇을 할까요?"
+              actions={[
+                { label: '영수증 분석', onClick: () => handlePhotoPurposeSelect('receipt-analysis') },
+                { label: '냉장고 재료 추가', onClick: () => handlePhotoPurposeSelect('fridge-photo-analysis') },
+                { label: '살까말까', onClick: () => handlePhotoPurposeSelect('buy-or-not') },
+              ]}
+              onClose={() => setShowPhotoPurposeSheet(false)}
+            />
+          )}
+
+          {!showCameraSheet && !showJudgeModeSheet && !showPhotoPurposeSheet ? (
             <section className="chatbot-bottom">
-              <div className="chatbot-photo-purpose" role="radiogroup" aria-label="사진 분석 목적 선택">
-                {PHOTO_PURPOSE_OPTIONS.map((option) => {
-                  const selected = selectedPhotoPurpose === option.feature
-                  return (
-                    <button
-                      key={option.feature}
-                      className={`chatbot-photo-purpose__chip${selected ? ' is-active' : ''}`}
-                      type="button"
-                      role="radio"
-                      aria-checked={selected}
-                      onClick={() => {
-                        setShowCoachMark(false)
-                        setSelectedPhotoPurpose((current) => (current === option.feature ? null : option.feature))
-                      }}
-                    >
-                      {option.label}
-                    </button>
-                  )
-                })}
-              </div>
               <ChatbotInputBar
                 onSubmit={handleSubmit}
                 onCameraClick={() => {
                   setShowCoachMark(false)
-                  setShowCameraSheet(true)
+                  setShowPhotoPurposeSheet(true)
                 }}
               />
             </section>
