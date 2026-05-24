@@ -28,7 +28,7 @@ function WeeklyPlanScreen({ onBack }: WeeklyPlanScreenProps) {
             onOpenCalendar={() => setShowCalendar(true)}
           />
           <WeeklyPlanDaySelector menus={weeklyMenuData} selectedDate={selectedDate} onSelectDate={setSelectedDate} />
-          <WeeklyPlanMenuList month={MONTH} selectedDate={selectedDate} menus={weeklyMenuData} />
+          <WeeklyPlanMenuList selectedDate={selectedDate} menus={weeklyMenuData} />
         </div>
 
         {showCalendar && (
