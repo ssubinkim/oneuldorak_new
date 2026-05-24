@@ -123,14 +123,14 @@ function TopicCard({ topic, isActive, onOpenDetail }: { topic: Topic; isActive: 
           <p className="topic-card__theme">{topic.theme}</p>
           <div className="topic-card__stats">
             <span>
-              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
               </svg>
               {topic.views}
             </span>
             <span>
-              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                <path d="M2.5 3a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .854.354L5 10.707V12.5a.5.5 0 0 0 .854.354L8.207 10.5H11a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.5-.5H2.5ZM1 3.5A1.5 1.5 0 0 1 2.5 2h8.5A1.5 1.5 0 0 1 12.5 3.5v7A1.5 1.5 0 0 1 11 12H8.5l-2.5 2.5V12H2.5A1.5 1.5 0 0 1 1 10.5v-7Z" />
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ width: '10px', height: '10px' }}>
+                <path d="M4.5 12.5L0.5 13.5L1.5 10.5V1.5C1.5 1.23478 1.60536 0.98043 1.79289 0.792893C1.98043 0.605357 2.23478 0.5 2.5 0.5H12.5C12.7652 0.5 13.0196 0.605357 13.2071 0.792893C13.3946 0.98043 13.5 1.23478 13.5 1.5V11.5C13.5 11.7652 13.3946 12.0196 13.2071 12.2071C13.0196 12.3946 12.7652 12.5 12.5 12.5H4.5Z" />
               </svg>
               {topic.comments}
             </span>

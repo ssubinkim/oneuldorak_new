@@ -6,7 +6,7 @@ import chamchiMayoImage from '../../assets/images/food_imges/chamchimayo.png'
 import omuriceImage from '../../assets/images/food_imges/omurice.png'
 import ssoyaImage from '../../assets/images/food_imges/ssoya.png'
 import noodlesImage from '../../assets/images/food_imges/noodles.jpg'
-import dorak22Img from '../../assets/food_mascot_all/dorak22.png'
+import threeNextImg from '../../assets/food_mascot/three_next.png'
 import MealBookOpenIcon from '../../assets/icons/meal_book_open.svg?react'
 import GroupIcon from '../../assets/icons/Group.svg?react'
 import './TodayRecipeSection.css'
@@ -158,7 +158,7 @@ function TodayRecipeSection() {
           <p className="recipe-sec__sub">도락이들의 레시피 이야기</p>
         </div>
         <button className="recipe-page-card" onClick={goRecipePage} aria-label="레시피 페이지로 이동">
-          <img src={dorak22Img} alt="레시피 페이지로 이동" className="recipe-page-card__mascot" />
+          <img src={threeNextImg} alt="레시피 페이지로 이동" className="recipe-page-card__mascot" />
         </button>
       </div>
 

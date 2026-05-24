@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import communityOffIcon from '../../assets/icons/Community_off.svg'
 import kimchiRiceImage from '../../assets/images/food_imges/kimbok.png'
 import spamMayoImage from '../../assets/images/food_imges/chamchimayo.png'
 import bibimbapImage from '../../assets/images/food_imges/bibimbap.png'
@@ -141,11 +140,15 @@ function PopularRecipeItem({ recipe, onOpenDetail }: { recipe: PopularRecipe; on
           </div>
           <div className="recipe-popular-item__stats">
             <span>
-              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314Z" /></svg>
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+                <path d="M5.28498 9.03804C5.12915 9.09304 4.87248 9.09304 4.71665 9.03804C3.38748 8.58429 0.41748 6.69138 0.41748 3.48304C0.41748 2.06679 1.55873 0.920959 2.96581 0.920959C3.79998 0.920959 4.5379 1.32429 5.00081 1.94763C5.46373 1.32429 6.20623 0.920959 7.03581 0.920959C8.4429 0.920959 9.58415 2.06679 9.58415 3.48304C9.58415 6.69138 6.61415 8.58429 5.28498 9.03804Z" stroke="#E70012" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
               {recipe.likes}
             </span>
             <span>
-              <img src={communityOffIcon} width={11} height={11} aria-hidden="true" />
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ width: '10px', height: '10px' }}>
+                <path d="M4.5 12.5L0.5 13.5L1.5 10.5V1.5C1.5 1.23478 1.60536 0.98043 1.79289 0.792893C1.98043 0.605357 2.23478 0.5 2.5 0.5H12.5C12.7652 0.5 13.0196 0.605357 13.2071 0.792893C13.3946 0.98043 13.5 1.23478 13.5 1.5V11.5C13.5 11.7652 13.3946 12.0196 13.2071 12.2071C13.0196 12.3946 12.7652 12.5 12.5 12.5H4.5Z" />
+              </svg>
               {recipe.comments}
             </span>
             <span>

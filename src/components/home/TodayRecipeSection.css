@@ -54,9 +54,10 @@
 }
 
 .recipe-page-card__mascot {
-  width: 90px;
+  width: 100px;
   height: 96px;
   object-fit: contain;
+  margin-top: 8px;
 }
 
 /* 전체 너비 캐러셀 */
