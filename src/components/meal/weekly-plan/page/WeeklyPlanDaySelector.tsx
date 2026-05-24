@@ -1,3 +1,5 @@
+import { getCalDate } from './weeklyPlanConstants'
+
 type WeeklyPlanDaySelectorProps = {
   menus: {
     day: string
@@ -19,7 +21,7 @@ function WeeklyPlanDaySelector({ menus, selectedDate, onSelectDate }: WeeklyPlan
             onClick={() => onSelectDate(menu.date)}
           >
             <span className="wpp-day-label">{menu.day}</span>
-            <span className="wpp-day-num">{menu.date}</span>
+            <span className="wpp-day-num">{getCalDate(menu.date)}</span>
           </div>
         ))}
       </div>

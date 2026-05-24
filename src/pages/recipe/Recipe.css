@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: space-between;
   background: #FFDB78;
-  padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 14px;
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 14px 18px;
   box-sizing: border-box;
 }
 
@@ -22,6 +22,23 @@
   font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
   line-height: 120%;
   letter-spacing: -0.08px;
+  padding-left: 6px;
+}
+
+.recipe-banner-header__left {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.recipe-banner-header__back {
+  padding: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .recipe-banner-header__actions {

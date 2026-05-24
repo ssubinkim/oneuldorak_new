@@ -7,6 +7,7 @@ import tomatoImg from '../../assets/images/food_icon/tomato.png'
 import dorak21 from '../../assets/food_mascot_all/dorak21.png'
 import blueStuffImg from './images/blue_stuff.png'
 import lightImg from './images/light.png'
+import AddCircleIcon from '../../assets/icons/add_circle.svg?react'
 import './FridgeSection.css'
 
 interface FridgeIngredient {
@@ -45,7 +46,7 @@ function FridgeSection() {
               onClick={() => { window.location.hash = '#/meal-grocery' }}
             >
               <img src={blueStuffImg} alt="" className="fridge-add-btn__img" />
-              <span className="fridge-add-btn__plus" aria-hidden="true">+</span>
+              <AddCircleIcon className="fridge-add-btn__plus" aria-hidden="true" />
             </button>
             <span className="fridge-item__name">재료추가</span>
           </div>

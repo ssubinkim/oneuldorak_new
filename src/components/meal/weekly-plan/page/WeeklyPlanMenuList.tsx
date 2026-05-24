@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { ChevronRight } from './WeeklyPlanIcons'
 import AlarmIcon from '../../../../assets/icons/alarm.svg?react'
-import { usageBadgeStyle } from './weeklyPlanConstants'
+import { usageBadgeStyle, getCalDate, getCalMonth } from './weeklyPlanConstants'
 import blueThink from '../../../../assets/food_mascot/blue_think.png'
 
 type WeeklyPlanMenuListProps = {
@@ -42,7 +42,7 @@ function WeeklyPlanMenuList({ month, selectedDate, menus }: WeeklyPlanMenuListPr
           <div key={menu.day} className="wpp-menu-card" ref={(el) => { cardRefs.current[menu.date] = el }}>
             <div className={`wpp-menu-label${isToday ? ' wpp-menu-label--today' : ''}`}>
               <span className="wpp-menu-label-day">{menu.day}</span>
-              <span className="wpp-menu-label-date">{month}/{menu.date}</span>
+              <span className="wpp-menu-label-date">{getCalMonth(menu.date)}/{getCalDate(menu.date)}</span>
             </div>
 
             <div className="wpp-menu-body">
