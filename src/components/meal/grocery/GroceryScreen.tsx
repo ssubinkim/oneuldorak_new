@@ -6,15 +6,16 @@ import GroceryRecommendTab from './GroceryRecommendTab'
 import GroceryShoppingTab from './GroceryShoppingTab'
 import GroceryStorageTab from './GroceryStorageTab'
 import GroceryTabs from './GroceryTabs'
-import { INITIAL_ITEMS, TAB_TITLES } from './groceryData'
+import { INITIAL_ITEMS } from './groceryData'
 import type { GroceryTab, ShoppingItem } from './groceryTypes'
 
 type GroceryScreenProps = {
   onBack: () => void
+  initialTab?: GroceryTab
 }
 
-function GroceryScreen({ onBack }: GroceryScreenProps) {
-  const [activeTab, setActiveTab] = useState<GroceryTab>('recommend')
+function GroceryScreen({ onBack, initialTab = 'recommend' }: GroceryScreenProps) {
+  const [activeTab, setActiveTab] = useState<GroceryTab>(initialTab)
   const [shoppingItems, setShoppingItems] = useState<ShoppingItem[]>(() => readGroceryShoppingItems(INITIAL_ITEMS))
   const checkedShoppingCount = shoppingItems.length
 
@@ -26,7 +27,7 @@ function GroceryScreen({ onBack }: GroceryScreenProps) {
     <div className="app-shell">
       <div className="app-screen gp-screen">
         <div className="gp-scroll">
-          <GroceryHeader title={TAB_TITLES[activeTab]} onBack={onBack} />
+          <GroceryHeader onBack={onBack} activeTab={activeTab} />
 
           <div className="gp-content">
             <GroceryTabs

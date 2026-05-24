@@ -18,7 +18,7 @@ export function CartIcon() {
 
 export function SearchIcon() {
   return (
-    <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+    <svg width="14" height="14" viewBox="0 0 13 13" fill="none">
       <circle cx="5.5" cy="5.5" r="4.5" stroke="currentColor" strokeWidth="1.4" />
       <path d="M9 9l2.5 2.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
     </svg>

@@ -1,6 +1,6 @@
 .planner {
   font-family: 'Pretendard Variable', sans-serif;
-  padding: 24px 20px 28px;
+  padding: 24px 20px 38px;
   background: #fffffd;
   z-index: 999;
   border-radius: 20px;
@@ -57,6 +57,7 @@
   align-items: center;
   flex-shrink: 0;
   margin-top: 26px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ── 날짜 선택기 ─────────────────────── */

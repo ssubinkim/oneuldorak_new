@@ -76,7 +76,7 @@ function FridgeSection() {
             aria-label="소비기한 임박 재료 확인하기"
           >
             <img src={lightImg} alt="" className="fridge-warning__icon" aria-hidden="true" />
-            <span className="fridge-warning__text">소비기한이 임박한 재료가 있어요 !</span>
+            <span className="fridge-warning__text">D-1 재료가 있어요, 오늘 먼저 써볼까요 ?</span>
             <svg className="fridge-warning__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M9 18L15 12L9 6" stroke="#92BA6B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -93,9 +93,9 @@ function FridgeSection() {
         aria-label="도락마켓으로 이동"
       >
         <div className="market-banner__text">
-          <p className="market-banner__desc">지금 필요한 신선한 재료,</p>
-          <strong className="market-banner__name">도락마켓에서 만나기</strong>
-          <span className="market-banner__link">바로가기 &gt;</span>
+          <p className="market-banner__desc">부족한 재료는</p>
+          <strong className="market-banner__name">도락마켓<span className="market-banner__desc">에서 채워요</span></strong>
+<span className="market-banner__link">재료 보러가기 &gt;</span>
         </div>
         <div className="market-banner__mascots" aria-hidden="true">
           <img src={dorak21} alt="" className="market-banner__mascot" />

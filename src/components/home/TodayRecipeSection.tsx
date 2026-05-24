@@ -44,7 +44,7 @@ function TodayRecipeSection() {
 
   const goRecipePage = () => { window.location.hash = '#/recipe' }
   const goRecipeDetail = () => { window.location.hash = `#/recipe?id=${activeRecipe.recipeId}&from=home` }
-  const goSaved = () => { window.location.hash = '#/mypage-saved-recipes?from=home' }
+  const goSaved = () => { window.location.hash = '#/meal-grocery?tab=storage&from=home' }
 
   const disableTransition = () => {
     if (trackRef.current) trackRef.current.style.transition = 'none'

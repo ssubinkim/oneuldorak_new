@@ -129,8 +129,8 @@ export default function MenuAddSheet({ open, onClose, onMenuAdd }: Props) {
           <button className="menu-add-sheet__close" onClick={onClose} aria-label="닫기">✕</button>
         </div>
 
-        <section className="menu-add-section">
-          <h3 className="menu-add-label">메뉴선택</h3>
+        <section className="menu-add-section menu-add-section--menu">
+          <h3 className="menu-add-label">메뉴</h3>
           <div className="menu-add-scroll">
             {menuItems.map((menu, i) => (
               <button
@@ -149,7 +149,21 @@ export default function MenuAddSheet({ open, onClose, onMenuAdd }: Props) {
 
         {selectedMenuIndex !== null && menuItems[selectedMenuIndex].ingredients.length > 0 && (
           <section className="menu-add-section">
-            <h3 className="menu-add-label">필요한 재료</h3>
+            <div className="menu-add-label-row">
+              <h3 className="menu-add-label">필요한 재료</h3>
+              <button
+                ref={groceryLinkRef}
+                className="menu-add-grocery-link"
+                onClick={() => { window.location.hash = '#/meal-grocery' }}
+              >
+                <svg viewBox="0 0 24 24" width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                </svg>
+                장보기 리스트
+              </button>
+            </div>
             <div className="menu-add-ingredients">
               {menuItems[selectedMenuIndex].ingredients.map((ingredient, i) => {
                 const added = isInShoppingList(ingredient.name)
@@ -172,13 +186,6 @@ export default function MenuAddSheet({ open, onClose, onMenuAdd }: Props) {
                 )
               })}
             </div>
-            <button
-              ref={groceryLinkRef}
-              className="menu-add-grocery-link"
-              onClick={() => { window.location.hash = '#/meal-grocery' }}
-            >
-              🛒 장보기 리스트 보기
-            </button>
           </section>
         )}
 
@@ -200,10 +207,6 @@ export default function MenuAddSheet({ open, onClose, onMenuAdd }: Props) {
                 >
                   <span className={`menu-add-day__circle${isSelected ? ' selected' : isRegistered ? ' registered' : ''}`}>
                     {d.day}
-                    {(isSelected || isRegistered) && <span className="menu-add-day__check">✓</span>}
-                  </span>
-                  <span className="menu-add-day__label">
-                    {isRegistered ? '등록됨' : '비어있음'}
                   </span>
                 </button>
               )

@@ -11,7 +11,7 @@ function WeeklyPlanHeader({ onBack }: WeeklyPlanHeaderProps) {
       <button className="wpp-back-btn" onClick={onBack} aria-label="뒤로가기">
         <BackIcon />
       </button>
-      <span className="wpp-header-title">이번주 도시락 계획</span>
+      <span className="wpp-header-title">이번주 계획</span>
       <img src={dorakcrewImg} alt="" className="wpp-header-crew" />
     </div>
   )

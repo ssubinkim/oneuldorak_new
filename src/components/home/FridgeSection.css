@@ -79,7 +79,7 @@
 
 .fridge-item__name {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   color: #3c3c3c;
   white-space: nowrap;
 }
@@ -104,18 +104,18 @@
 .fridge-add-btn__plus {
   position: absolute;
   right: -4px;
-  bottom: 10px;
+  bottom: 8px;
   display: flex;
   width: 20px;
   height: 20px;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 1;
   color: #fff;
   background: #246bff;
-  border: 2px solid #f5faef;
+  border: 1px solid #f5faef;
   border-radius: 50%;
 }
 
@@ -144,7 +144,7 @@
 .fridge-badge {
   padding: 2px 8px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 400;
   color: #92BA6B;
   white-space: nowrap;
   background: #F4F8F0;
@@ -161,7 +161,7 @@
 .fridge-warning {
   display: flex;
   width: 100%;
-  padding: 10px 16px;
+  padding: 8px 12px;
   align-items: center;
   gap: 2px;
   text-align: left;
@@ -176,13 +176,13 @@
   width: 22px;
   height: 22px;
   object-fit: contain;
-  transform: translateY(-5px);
+  transform: translateY(-4px);
 }
 
 .fridge-warning__text {
   flex: 1;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   color: #92BA6B;
 }
 
@@ -192,13 +192,13 @@
 
 .market-banner {
   display: flex;
-  min-height: 112px;
-  padding: 18px 16px;
-  margin-top: 18px;
+  height: 112px;
+  padding: 14px 0 14px 16px;
+  margin-top: 14px;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  overflow: hidden;
+  overflow: visible;
   cursor: pointer;
   background: #f5faef;
   border-radius: 10px;
@@ -220,39 +220,43 @@
 
 .market-banner__desc {
   margin: 0;
-  font-size: 13px;
+  font-size: 18px;
+  font-weight: 500;
   color: #3c3c3c;
 }
 
 .market-banner__name {
-  font-size: 19px;
-  font-weight: 800;
+  font-size: 22px;
+  font-weight: 700;
   line-height: 1.2;
-  color: #5fb848;
+  color: #92BA6B;
+  letter-spacing: -0.08px;
 }
 
 .market-banner__link {
+  flex: 1;
   display: inline-block;
-  padding: 5px 16px;
-  margin-top: 8px;
+  padding: 8px 10px;
+  margin-top: 12px;
   align-self: flex-start;
-  font-size: 13px;
-  font-weight: 700;
-  color: #333;
-  background: #ffdb78;
-  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fffffd;
+  background: #92BA6B;
+  border-radius: 10px;
+  font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
 }
 
 .market-banner__mascots {
   display: flex;
   flex-shrink: 0;
+  align-self: flex-end;
   align-items: flex-end;
 }
 
 .market-banner__mascot {
-  width: 132px;
-  height: 96px;
-  object-fit: contain;
+  width: 160px;
+  height: 140px;
 }
 
 @media (max-width: 360px) {

@@ -14,6 +14,7 @@ type WeeklyPlanScreenProps = {
 
 function WeeklyPlanScreen({ onBack }: WeeklyPlanScreenProps) {
   const [showCalendar, setShowCalendar] = useState(false)
+  const [selectedDate, setSelectedDate] = useState(TODAY_DATE)
 
   return (
     <div className="app-shell">
@@ -27,8 +28,8 @@ function WeeklyPlanScreen({ onBack }: WeeklyPlanScreenProps) {
               month={MONTH}
               onOpenCalendar={() => setShowCalendar(true)}
             />
-            <WeeklyPlanDaySelector menus={weeklyMenuData} todayDate={TODAY_DATE} />
-            <WeeklyPlanMenuList month={MONTH} todayDate={TODAY_DATE} menus={weeklyMenuData} />
+            <WeeklyPlanDaySelector menus={weeklyMenuData} selectedDate={selectedDate} onSelectDate={setSelectedDate} />
+            <WeeklyPlanMenuList month={MONTH} selectedDate={selectedDate} menus={weeklyMenuData} />
           </div>
         </div>
 

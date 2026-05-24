@@ -60,10 +60,10 @@ function GroceryRecommendTab({ onAddItem }: Props) {
   return (
     <div className="gp-tab-content">
       <div className="gp-rec-banner">
-        <p className="gp-rec-banner-text">
-          저장한 레시피 기반으로<br />필요한 재료를 추천해요 !
-        </p>
         <img src={dorakcrewBannerImg} alt="" className="gp-rec-banner-img" />
+        <p className="gp-rec-banner-text">
+          저장한 레시피에 필요한 재료예요
+        </p>
       </div>
 
       <div className="gp-rec-list">
@@ -74,7 +74,13 @@ function GroceryRecommendTab({ onAddItem }: Props) {
               <span className="gp-rec-name">{item.name}</span>
               <span className="gp-rec-recipes">{item.recipes}</span>
             </div>
-            <button className="gp-rec-add-btn" onClick={(e) => handleAdd(e, item)}>+</button>
+            <button className="gp-rec-add-btn" onClick={(e) => handleAdd(e, item)}>
+              <svg width="30" height="30" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 13.5C10.5899 13.5 13.5 10.5899 13.5 7C13.5 3.41015 10.5899 0.5 7 0.5C3.41015 0.5 0.5 3.41015 0.5 7C0.5 10.5899 3.41015 13.5 7 13.5Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M7 4V10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M4 7H10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
           </div>
         ))}
       </div>
