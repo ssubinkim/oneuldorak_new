@@ -1,10 +1,11 @@
 .recipe-quick-section {
-  padding: 30px 20px 20px;
+  padding: 26px 20px 0;
   background: #fff;
-  border-radius: 16px 16px 0 0;
+  border-radius: 22px 22px 0 0;
   margin-top: -12px;
   position: relative;
   z-index: 1;
+  margin:-39px 0 0 ;
 }
 
 .recipe-quick-grid {
@@ -18,7 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 10px 12px 14px;
+  padding: 10px 10px 12px 12px;
   background: #fffbe8;
   border: 0.5px solid #ffd515;
   border-radius: 10px;
@@ -38,14 +39,14 @@
   color: #3c3c3c;
   font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.2;
 }
 
 .recipe-quick-card__main {
   color: var(--color-text-main);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.2;
 }
 
@@ -58,8 +59,8 @@
 }
 
 .recipe-quick-card__icon img {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
 }
 

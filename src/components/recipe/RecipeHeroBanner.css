@@ -5,69 +5,67 @@
 
 .recipe-hero__header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  padding: 16px 0 0;
+  margin-bottom: 4px;
+  padding-top: 16px;
+  position: relative;
+  z-index: 1001;
 }
 
-.recipe-hero__title {
-  margin: 0 0 6px;
-  color: var(--color-text-main);
-  font-size: 24px;
-  font-weight: 800;
+.recipe-hero__header h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1a;
+  font-family: 'NanumSquareNeo', sans-serif;
   line-height: 120%;
+  letter-spacing: -0.08px;
 }
 
 .recipe-hero__subtitle {
-  margin: 0;
+  margin: 0 0 0px;
+  font-size: 16px;
   color: #3c3c3c;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.55;
+  line-height: 120%;
+  letter-spacing: -0.08px;
+  font-weight: 400;
+  font-family: 'Pretendard Variable', sans-serif;
 }
 
 .recipe-hero__actions {
   display: flex;
-  gap: 10px;
-  flex-shrink: 0;
-  padding-top: 4px;
+  align-items: center;
+  gap: 4px;
 }
 
-.recipe-hero__icon-btn {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  padding: 0;
-  color: var(--color-text-main);
+.recipe-hero__actions button {
+  padding: 4px;
+  color: #1a1a1a;
   background: transparent;
-  border: none;
+  border: 0;
+  display: flex;
+  align-items: center;
   cursor: pointer;
 }
 
-.recipe-hero__icon-btn svg {
-  width: 22px;
-  height: 22px;
-}
-
 .recipe-hero__mascots {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 2px;
-  height: 132px;
-  overflow: visible;
-  position: relative;
-  top: 10px;
-  z-index: 2;
-  padding-bottom: 12px;
-}
-
-.recipe-hero__mascots img {
-  height: 120px;
+  --banner-image-transform: translateY(-26px) scale(1);
+  transform-origin: center bottom;
+  display: block;
   width: auto;
+  height: min(36vw, 220px);
+  max-width: min(75%, 580px);
+  margin: 0 auto -10px;
+  position: relative;
+  z-index: 15;
   object-fit: contain;
-  flex-shrink: 0;
+  object-position: center bottom;
+  transform: var(--banner-image-transform);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 200ms ease, transform 260ms ease, visibility 0ms linear;
+  pointer-events: none;
 }
 
 @media (min-width: 768px) {
