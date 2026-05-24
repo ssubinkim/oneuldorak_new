@@ -29,6 +29,7 @@ import './ChatbotChat.css'
 type LocalMessage = ChatMessage
 type JudgeMode = 'text' | 'photo'
 type PickerMode = 'camera' | 'album'
+type PhotoPurposeFeature = 'receipt-analysis' | 'fridge-photo-analysis' | 'buy-or-not'
 
 type ChatRouteContext = {
   query: string
@@ -90,6 +91,12 @@ function shouldUseDesktopWebcam() {
 
 const JUDGE_PHOTO_PROMPT = '사진 속 도시락 관련 용품이나 식재료를 오늘 도시락 기준으로 살까말까 판단해줘. 사야 하는지/보류인지와 이유, 대체 선택지를 간단히 알려줘.'
 const FRIDGE_PHOTO_PROMPT = '냉장고 사진 속 식재료를 분석해서 확인된 재료, 먼저 써야 할 재료, 오늘 만들기 좋은 도시락 메뉴를 간단히 추천해줘.'
+const RECEIPT_PHOTO_PROMPT = '영수증 사진을 분석해서 구매 항목, 합계 금액, 도시락에 활용할 수 있는 재료, 절약 팁을 간단히 정리해줘.'
+const PHOTO_PURPOSE_OPTIONS: Array<{ label: string; feature: PhotoPurposeFeature }> = [
+  { label: '영수증', feature: 'receipt-analysis' },
+  { label: '냉장고', feature: 'fridge-photo-analysis' },
+  { label: '살까말까', feature: 'buy-or-not' },
+]
 
 const MAX_INPUT_IMAGE_FILE_SIZE = 20_000_000
 const MAX_IMAGE_DATA_URL_LENGTH = 3_600_000
@@ -295,10 +302,44 @@ function getExplicitFeatureFromText(text: string): AiFeature | null {
 }
 
 function getAnalysisTypeForFeature(feature: AiFeature): AnalysisType {
-  return feature === 'buy-or-not' ? 'judge' : 'menu'
+  if (feature === 'buy-or-not') return 'judge'
+  if (feature === 'receipt-analysis') return 'receipt'
+  return 'menu'
 }
 
-function getPhotoAnalysisConfig(feature: AiFeature | null | undefined) {
+function isPhotoPurposeFeature(feature: AiFeature | null | undefined): feature is PhotoPurposeFeature {
+  return feature === 'receipt-analysis' || feature === 'fridge-photo-analysis' || feature === 'buy-or-not'
+}
+
+function getPhotoPurposeFromContext(
+  feature: AiFeature | null | undefined,
+  analysisType: AnalysisType | null | undefined,
+): PhotoPurposeFeature | null {
+  if (isPhotoPurposeFeature(feature)) {
+    return feature
+  }
+
+  if (analysisType === 'judge') {
+    return 'buy-or-not'
+  }
+
+  if (analysisType === 'receipt') {
+    return 'receipt-analysis'
+  }
+
+  return null
+}
+
+function getPhotoAnalysisConfig(feature: PhotoPurposeFeature) {
+  if (feature === 'receipt-analysis') {
+    return {
+      analysisType: 'receipt' as AnalysisType,
+      feature: 'receipt-analysis' as AiFeature,
+      judgeFlow: false,
+      promptText: RECEIPT_PHOTO_PROMPT,
+    }
+  }
+
   if (feature === 'fridge-photo-analysis') {
     return {
       analysisType: 'menu' as AnalysisType,
@@ -937,6 +978,10 @@ function ChatbotChat() {
   const displayName = nickname?.trim() || '도시락러버'
   const [messages, setMessages] = useState<LocalMessage[]>([])
   const [showCameraSheet, setShowCameraSheet] = useState(false)
+  const [showPhotoPurposeSheet, setShowPhotoPurposeSheet] = useState(false)
+  const [selectedPhotoPurpose, setSelectedPhotoPurpose] = useState<PhotoPurposeFeature | null>(() =>
+    getPhotoPurposeFromContext(initialContext.feature, initialContext.analysisType),
+  )
   const [cameraSheetFeature, setCameraSheetFeature] = useState<AiFeature | null>(initialContext.feature)
   const [showDesktopCamera, setShowDesktopCamera] = useState(false)
   const [desktopCameraError, setDesktopCameraError] = useState('')
@@ -957,6 +1002,7 @@ function ChatbotChat() {
   const messagesRef = useRef<HTMLDivElement>(null)
   const lastJudgeSubjectRef = useRef('')
   const lastJudgeImageDataUrlRef = useRef<string | null>(null)
+  const pendingPhotoSelectionRef = useRef<{ imageDataUrl: string; displayText: string } | null>(null)
   const activeFeatureRef = useRef<AiFeature | null>(initialContext.feature)
   const activeAnalysisTypeRef = useRef<AnalysisType>(initialAnalysisType)
   const hasInitializedRef = useRef(false)
@@ -985,8 +1031,8 @@ function ChatbotChat() {
     return `${savedFridgeIngredientLabels.join(',')} ${savedFridgeIngredientLabels.length}개가 추가됐어요`
   }, [savedFridgeIngredientLabels])
 
-  const openCameraSheet = useCallback((feature: AiFeature) => {
-    setCameraSheetFeature(feature)
+  const openCameraSheet = useCallback((feature?: AiFeature | null) => {
+    setCameraSheetFeature(feature ?? null)
     setShowCameraSheet(true)
   }, [])
 
@@ -1150,6 +1196,65 @@ function ChatbotChat() {
     void requestAiResponse(options.requestText ?? displayText, pendingId, options)
   }, [requestAiResponse])
 
+  const submitPhotoForAnalysis = useCallback((
+    imageDataUrl: string,
+    displayText: string,
+    purposeFeature: PhotoPurposeFeature,
+  ) => {
+    const { analysisType, feature, judgeFlow, promptText } = getPhotoAnalysisConfig(purposeFeature)
+    setSelectedPhotoPurpose(purposeFeature)
+    lastJudgeImageDataUrlRef.current = imageDataUrl
+    if (judgeFlow) {
+      lastJudgeSubjectRef.current = displayText
+      setJudgeMode('photo')
+    }
+    setIsJudgeFlow(judgeFlow)
+    activeFeatureRef.current = feature
+    activeAnalysisTypeRef.current = analysisType
+
+    queueUserRequest(displayText, 'input', {
+      useApi: true,
+      requestText: promptText,
+      imageDataUrl,
+      displayImageDataUrl: imageDataUrl,
+      analysisType,
+      feature,
+      judgeFlow,
+    })
+  }, [queueUserRequest])
+
+  const handlePhotoPurposeSheetClose = useCallback(() => {
+    pendingPhotoSelectionRef.current = null
+    setShowPhotoPurposeSheet(false)
+  }, [])
+
+  const handlePhotoPurposeSelect = useCallback((purposeFeature: PhotoPurposeFeature) => {
+    const pendingPhotoSelection = pendingPhotoSelectionRef.current
+    pendingPhotoSelectionRef.current = null
+    setShowPhotoPurposeSheet(false)
+    if (!pendingPhotoSelection) return
+
+    submitPhotoForAnalysis(
+      pendingPhotoSelection.imageDataUrl,
+      pendingPhotoSelection.displayText,
+      purposeFeature,
+    )
+  }, [submitPhotoForAnalysis])
+
+  const handlePhotoPurposeChipClick = useCallback((purposeFeature: PhotoPurposeFeature) => {
+    const nextPurpose = selectedPhotoPurpose === purposeFeature ? null : purposeFeature
+    setSelectedPhotoPurpose(nextPurpose)
+
+    if (!nextPurpose) {
+      activeFeatureRef.current = null
+      activeAnalysisTypeRef.current = 'menu'
+      return
+    }
+
+    activeFeatureRef.current = nextPurpose
+    activeAnalysisTypeRef.current = getAnalysisTypeForFeature(nextPurpose)
+  }, [selectedPhotoPurpose])
+
   useEffect(() => {
     if (hasInitializedRef.current) {
       return
@@ -1173,6 +1278,7 @@ function ChatbotChat() {
     setJudgeMode(context.judgeMode ?? (inferredType === 'judge' ? 'photo' : 'text'))
 
     if (context.openPicker && context.judgeMode === null) {
+      const routePhotoPurpose = getPhotoPurposeFromContext(context.feature, context.analysisType)
       const introMessages: LocalMessage[] = []
 
       if (context.query) {
@@ -1181,27 +1287,63 @@ function ChatbotChat() {
           type: 'user',
           role: 'user',
           status: 'success',
-          feature: context.feature ?? 'fridge-photo-analysis',
+          feature: routePhotoPurpose ?? context.feature ?? undefined,
           createdAt: new Date().toISOString(),
           text: context.query,
         })
         appendChatbotHistoryMessage(context.query, 'quick')
       }
 
+      const introText = routePhotoPurpose === 'buy-or-not'
+        ? '좋아요! 사진을 올려주면 살까말까를 바로 판단해드릴게요.'
+        : routePhotoPurpose === 'fridge-photo-analysis'
+          ? '좋아요! 사진을 올려주시면 냉장고 재료를 분석해드릴게요.'
+          : routePhotoPurpose === 'receipt-analysis'
+            ? '좋아요! 영수증 사진을 올려주시면 바로 분석해드릴게요.'
+            : '좋아요! 먼저 사진을 올려주세요. 사진을 올린 뒤에 목적을 선택할 수 있어요.'
+
       introMessages.push({
         id: 'route-ai-open-picker',
         type: 'ai-text',
         role: 'assistant',
         status: 'success',
-        feature: context.feature ?? 'fridge-photo-analysis',
+        feature: routePhotoPurpose ?? context.feature ?? undefined,
         createdAt: new Date().toISOString(),
-        text: '좋아요! 사진을 올려주시면 바로 분석해서 추천해드릴게요.',
+        text: introText,
       })
 
       setMessages(introMessages)
+      if (routePhotoPurpose) {
+        setSelectedPhotoPurpose(routePhotoPurpose)
+      }
+      if (routePhotoPurpose === 'buy-or-not') {
+        setIsJudgeFlow(true)
+        setJudgeMode('photo')
+      } else {
+        setIsJudgeFlow(false)
+      }
 
       window.setTimeout(() => {
-        openCameraSheet(context.feature ?? 'fridge-photo-analysis')
+        if (context.pick === 'camera') {
+          void (async () => {
+            if (shouldUseDesktopWebcam()) {
+              const opened = await openDesktopCamera()
+              if (!opened) {
+                cameraInputRef.current?.click()
+              }
+              return
+            }
+            cameraInputRef.current?.click()
+          })()
+          return
+        }
+
+        if (context.pick === 'album') {
+          albumInputRef.current?.click()
+          return
+        }
+
+        openCameraSheet(routePhotoPurpose ?? context.feature)
       }, 120)
       return
     }
@@ -1233,6 +1375,9 @@ function ChatbotChat() {
       })
 
       setMessages(introMessages)
+      if (context.feature === 'buy-or-not') {
+        setSelectedPhotoPurpose('buy-or-not')
+      }
 
       if (context.openPicker) {
         window.setTimeout(() => openCameraSheet(context.feature ?? 'buy-or-not'), 120)
@@ -1250,7 +1395,7 @@ function ChatbotChat() {
       judgeFlow: isJudgeRoute,
       suppressRecipeCard: context.feature ? RECOMMENDATION_CARD_FEATURES.has(context.feature) : false,
     })
-  }, [openCameraSheet, queueUserRequest])
+  }, [openCameraSheet, openDesktopCamera, queueUserRequest])
 
   useEffect(() => {
     const len = messages.length
@@ -1408,7 +1553,10 @@ function ChatbotChat() {
               type: 'ai-text',
               role: 'assistant',
               status: 'error',
-              feature: activeFeatureRef.current ?? initialContext.feature ?? 'buy-or-not',
+              feature: selectedPhotoPurpose ?? getPhotoPurposeFromContext(
+                activeFeatureRef.current ?? initialContext.feature,
+                activeAnalysisTypeRef.current,
+              ) ?? undefined,
               source: 'api',
               createdAt: new Date().toISOString(),
               text: '카메라 권한이 막혀 있어 앨범 선택으로 전환했어요. 브라우저에서 카메라 권한을 허용하면 바로 촬영할 수 있어요.',
@@ -1439,26 +1587,18 @@ function ChatbotChat() {
       const displayText = mode === 'camera'
         ? '촬영 사진 첨부했어. 분석해줘.'
         : '앨범 사진 첨부했어. 분석해줘.'
-      const { analysisType, feature, judgeFlow, promptText } = getPhotoAnalysisConfig(
+      const purposeFeature = selectedPhotoPurpose ?? getPhotoPurposeFromContext(
         activeFeatureRef.current ?? initialContext.feature,
+        activeAnalysisTypeRef.current,
       )
-      lastJudgeImageDataUrlRef.current = imageDataUrl
-      if (judgeFlow) {
-        lastJudgeSubjectRef.current = displayText
-      }
-      setIsJudgeFlow(judgeFlow)
-      activeFeatureRef.current = feature
-      activeAnalysisTypeRef.current = analysisType
 
-      queueUserRequest(displayText, 'input', {
-        useApi: true,
-        requestText: promptText,
-        imageDataUrl,
-        displayImageDataUrl: imageDataUrl,
-        analysisType,
-        feature,
-        judgeFlow,
-      })
+      if (purposeFeature) {
+        submitPhotoForAnalysis(imageDataUrl, displayText, purposeFeature)
+        return
+      }
+
+      pendingPhotoSelectionRef.current = { imageDataUrl, displayText }
+      setShowPhotoPurposeSheet(true)
     } catch (error) {
       const message = error instanceof Error ? error.message : '사진 분석 중 오류가 발생했어요.'
       setMessages((prev) => [
@@ -1468,7 +1608,10 @@ function ChatbotChat() {
           type: 'ai-text',
           role: 'assistant',
           status: 'error',
-          feature: activeFeatureRef.current ?? initialContext.feature ?? 'buy-or-not',
+          feature: selectedPhotoPurpose ?? getPhotoPurposeFromContext(
+            activeFeatureRef.current ?? initialContext.feature,
+            activeAnalysisTypeRef.current,
+          ) ?? undefined,
           source: 'api',
           createdAt: new Date().toISOString(),
           text: message,
@@ -1481,6 +1624,7 @@ function ChatbotChat() {
     setJudgeMode(mode)
     setIsJudgeFlow(true)
     if (mode === 'photo') {
+      setSelectedPhotoPurpose('buy-or-not')
       openCameraSheet('buy-or-not')
     }
   }
@@ -1525,26 +1669,21 @@ function ChatbotChat() {
     }
 
     handleDesktopCameraClose()
-    const { analysisType, feature, judgeFlow, promptText } = getPhotoAnalysisConfig(
+    const purposeFeature = selectedPhotoPurpose ?? getPhotoPurposeFromContext(
       activeFeatureRef.current ?? initialContext.feature,
+      activeAnalysisTypeRef.current,
     )
-    lastJudgeImageDataUrlRef.current = imageDataUrl
-    if (judgeFlow) {
-      lastJudgeSubjectRef.current = '촬영 사진 첨부했어. 분석해줘.'
-    }
-    setIsJudgeFlow(judgeFlow)
-    activeFeatureRef.current = feature
-    activeAnalysisTypeRef.current = analysisType
 
-    queueUserRequest('촬영 사진 첨부했어. 분석해줘.', 'input', {
-      useApi: true,
-      requestText: promptText,
+    if (purposeFeature) {
+      submitPhotoForAnalysis(imageDataUrl, '촬영 사진 첨부했어. 분석해줘.', purposeFeature)
+      return
+    }
+
+    pendingPhotoSelectionRef.current = {
       imageDataUrl,
-      displayImageDataUrl: imageDataUrl,
-      analysisType,
-      feature,
-      judgeFlow,
-    })
+      displayText: '촬영 사진 첨부했어. 분석해줘.',
+    }
+    setShowPhotoPurposeSheet(true)
   }
 
   return (
@@ -1714,9 +1853,20 @@ function ChatbotChat() {
                             return
                           }
                           if (item.includes('사진') && item.includes('다시')) {
-                            setJudgeMode('photo')
-                            setIsJudgeFlow(true)
-                            openCameraSheet('buy-or-not')
+                            const purposeFeature = getPhotoPurposeFromContext(
+                              msg.feature ?? activeFeatureRef.current ?? initialContext.feature,
+                              msg.feature ? getAnalysisTypeForFeature(msg.feature) : activeAnalysisTypeRef.current,
+                            )
+                            if (purposeFeature) {
+                              setSelectedPhotoPurpose(purposeFeature)
+                            }
+                            if (purposeFeature === 'buy-or-not') {
+                              setJudgeMode('photo')
+                              setIsJudgeFlow(true)
+                            } else {
+                              setIsJudgeFlow(false)
+                            }
+                            openCameraSheet(purposeFeature ?? msg.feature ?? activeFeatureRef.current ?? initialContext.feature)
                             return
                           }
                           addUserMessage(item, 'suggestion')
@@ -1747,6 +1897,18 @@ function ChatbotChat() {
               onTakePhoto={handleTakePhoto}
               onSelectFromAlbum={handleSelectFromAlbum}
               onClose={() => setShowCameraSheet(false)}
+            />
+          ) : null}
+
+          {showPhotoPurposeSheet ? (
+            <ChatbotCameraSheet
+              title="이 사진으로 무엇을 할까요?"
+              actions={[
+                { label: '영수증 분석', onClick: () => handlePhotoPurposeSelect('receipt-analysis') },
+                { label: '냉장고 재료 추가', onClick: () => handlePhotoPurposeSelect('fridge-photo-analysis') },
+                { label: '살까말까', onClick: () => handlePhotoPurposeSelect('buy-or-not') },
+              ]}
+              onClose={handlePhotoPurposeSheetClose}
             />
           ) : null}
 
@@ -2015,14 +2177,29 @@ function ChatbotChat() {
             }}
           />
 
-          {!showCameraSheet && !showDesktopCamera ? (
+          {!showCameraSheet && !showPhotoPurposeSheet && !showDesktopCamera ? (
             <section className="chatbot-bottom">
+              <div className="chatbot-photo-purpose" role="radiogroup" aria-label="사진 분석 목적 선택">
+                {PHOTO_PURPOSE_OPTIONS.map((option) => {
+                  const selected = selectedPhotoPurpose === option.feature
+                  return (
+                    <button
+                      key={option.feature}
+                      className={`chatbot-photo-purpose__chip${selected ? ' is-active' : ''}`}
+                      type="button"
+                      role="radio"
+                      aria-checked={selected}
+                      onClick={() => handlePhotoPurposeChipClick(option.feature)}
+                    >
+                      {option.label}
+                    </button>
+                  )
+                })}
+              </div>
               <ChatbotInputBar
                 onSubmit={addUserMessage}
                 onCameraClick={() => {
-                  setJudgeMode('photo')
-                  setIsJudgeFlow(true)
-                  openCameraSheet('buy-or-not')
+                  openCameraSheet(selectedPhotoPurpose ?? activeFeatureRef.current ?? initialContext.feature)
                 }}
               />
             </section>
