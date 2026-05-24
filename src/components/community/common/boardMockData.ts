@@ -152,7 +152,7 @@ export const mockBoardDetailPosts: BoardDetailPost[] = [
     mascot: carrotMascot,
     timeAgo: '1일 전',
     likes: 100,
-    comments: 88,
+    comments: 14,
     paragraphs: [
       '한 달 동안 도시락 싸기 전과 후로 식비를 꼼꼼히 기록해봤어요.',
       '결과적으로 한 달에 약 12만원을 아꼈습니다. 생각보다 훨씬 차이가 크더라고요!',
@@ -173,7 +173,7 @@ export const mockBoardDetailPosts: BoardDetailPost[] = [
     mascot: strawMascot,
     timeAgo: '1일 전',
     likes: 96,
-    comments: 65,
+    comments: 12,
     paragraphs: [
       '오늘 도시락 완전히 망했어요. 반찬이 다 짜고 밥은 설익었고…',
       '그래도 직접 만든 거니까 맛있게 먹었습니다 ㅋㅋ 실패 공유해요!',
@@ -190,7 +190,7 @@ export const mockBoardDetailPosts: BoardDetailPost[] = [
     mascot: blueMascot,
     timeAgo: '2일 전',
     likes: 65,
-    comments: 52,
+    comments: 13,
     paragraphs: [
       '매일 아침 도시락 싸는 게 힘들어서 일요일 밤에 3일치를 한꺼번에 준비하는 방식으로 바꿨어요.',
       '3일치만 하는 이유는 그 이상 되면 신선도가 걱정돼서요. 이 방법 추천드려요!',
@@ -312,3 +312,51 @@ export const mockBoardCommentsByPostId: Record<string, BoardComment[]> = {
 }
 
 export const mockBoardComments: BoardComment[] = mockBoardCommentsByPostId['free-1']
+
+Object.assign(mockBoardCommentsByPostId, {
+  'hot-1': [
+    { id: 'h1-c1', user: '절약고수', timeAgo: '10분 전', text: '저도 한 달 기록해봤는데 진짜 차이가 크더라고요!' },
+    { id: 'h1-c2', user: '도시락러버', timeAgo: '25분 전', text: '식비 비교 정말 꼼꼼하게 하셨네요. 저도 해봐야겠어요' },
+    { id: 'h1-c3', user: '요리초보', timeAgo: '40분 전', text: '12만원이나 절약이요? 대박이다 따라해볼게요' },
+    { id: 'h1-c4', user: '알뜰이', timeAgo: '1시간 전', text: '외식비 38만원이면 저랑 비슷한데 저도 시작해봐야겠어요' },
+    { id: 'h1-c5', user: '절약왕', timeAgo: '1시간 전', text: '도시락 싸면서 음식 낭비도 줄고 건강도 챙겨지고 일석이조예요' },
+    { id: 'h1-c6', user: '냉장고지킴이', timeAgo: '2시간 전', text: '꼼꼼하게 기록하신 거 존경해요. 저는 게을러서 못 하겠더라고요' },
+    { id: 'h1-c7', user: '주부9단', timeAgo: '2시간 전', text: '식재료비 26만원이면 알차게 쓰신 거네요' },
+    { id: 'h1-c8', user: '도락이팬', timeAgo: '3시간 전', text: '이거 보고 저도 바로 엑셀 만들어서 기록 시작했어요!' },
+    { id: 'h1-c9', user: '요리왕비룡', timeAgo: '4시간 전', text: '한 달 아낀 돈으로 맛있는 거 사먹을 수 있겠네요 ㅋㅋ' },
+    { id: 'h1-c10', user: '건강한식탁', timeAgo: '5시간 전', text: '도시락 시작한 지 이틀째인데 이 글 보고 더 열심히 해야겠다는 생각이 들어요' },
+    { id: 'h1-c11', user: '미니멀주방', timeAgo: '6시간 전', text: '비교 데이터 더 자세히 공유해주실 수 있나요?' },
+    { id: 'h1-c12', user: '밥블레스유', timeAgo: '7시간 전', text: '저는 3개월째 도시락 싸는데 절약 체감이 확실해요' },
+    { id: 'h1-c13', user: '간단요리왕', timeAgo: '8시간 전', text: '좋은 정보 감사합니다. 공유해드려요!' },
+    { id: 'h1-c14', user: '도시락일상', timeAgo: '1일 전', text: '내일부터 저도 기록 시작해볼게요. 좋은 자극이 됐어요!' },
+  ],
+  'hot-2': [
+    { id: 'h2-c1', user: '도시락초보', timeAgo: '5분 전', text: '실패해도 직접 만든 거니까 맛있게 드셨다니 대단해요 ㅋㅋ' },
+    { id: 'h2-c2', user: '요리연습생', timeAgo: '20분 전', text: '저도 오늘 도시락 짜게 만들었어요ㅜㅜ!!' },
+    { id: 'h2-c3', user: '냉털러버', timeAgo: '35분 전', text: '실패 인증 너무 공감돼요. 처음엔 다 그래요' },
+    { id: 'h2-c4', user: '밥한번만더', timeAgo: '1시간 전', text: '짠 반찬은 물에 씻어서 먹는 방법도 있어요!' },
+    { id: 'h2-c5', user: '도락이친구', timeAgo: '1시간 전', text: '설익은 밥은 전자레인지에 물 조금 넣고 다시 돌리면 돼요' },
+    { id: 'h2-c6', user: '요리고수', timeAgo: '2시간 전', text: '실패도 경험이에요. 다음엔 무조건 성공할 거예요!' },
+    { id: 'h2-c7', user: '웃긴도시락', timeAgo: '3시간 전', text: '이런 실패 모음 콘텐츠 너무 웃기고 재밌어요 ㅋㅋㅋ' },
+    { id: 'h2-c8', user: '공감백배', timeAgo: '4시간 전', text: '저도 비슷한 실패 있었는데 지금은 잘 싸고 있어요. 화이팅!' },
+    { id: 'h2-c9', user: '도시락응원단', timeAgo: '5시간 전', text: '실패를 공유해주셔서 감사해요. 저만 그런 게 아니었군요' },
+    { id: 'h2-c10', user: '요리입문자', timeAgo: '6시간 전', text: '다음 도시락은 꼭 성공하실 거예요! 응원합니다' },
+    { id: 'h2-c11', user: '웃음도락', timeAgo: '7시간 전', text: '사진도 올려주세요! 실패 도시락도 보고 싶어요 ㅋㅋ' },
+    { id: 'h2-c12', user: '도시락동지', timeAgo: '1일 전', text: '이 글 보고 웃다가 힘 얻었어요. 오늘도 도시락 열심히 쌀게요!' },
+  ],
+  'hot-3': [
+    { id: 'h3-c1', user: '밀프렙초보', timeAgo: '8분 전', text: '3일치가 딱 적당한 것 같아요. 저도 따라 해볼게요!' },
+    { id: 'h3-c2', user: '일요일쿡', timeAgo: '22분 전', text: '일요일 밤 1시간 투자라는 게 현실적이어서 더 좋아요' },
+    { id: 'h3-c3', user: '계획형식단', timeAgo: '38분 전', text: '신선도 때문에 3일치만 하는 이유 공감돼요. 저도 4일 이상은 불안하더라고요' },
+    { id: 'h3-c4', user: '도시락루틴', timeAgo: '1시간 전', text: '반찬이랑 밥 분리 보관하는 거 꿀팁이에요! 밥이 안 눅눅해져요' },
+    { id: 'h3-c5', user: '주말요리사', timeAgo: '1시간 전', text: '저는 5일치 하려다가 결국 버리게 됐어요. 3일이 맞는 것 같아요' },
+    { id: 'h3-c6', user: '냉장고정리', timeAgo: '2시간 전', text: '목~금은 수요일 밤에 준비한다는 거 너무 스마트해요' },
+    { id: 'h3-c7', user: '효율주부', timeAgo: '3시간 전', text: '이 방법 2주째 하고 있는데 아침이 완전 편해졌어요!' },
+    { id: 'h3-c8', user: '알뜰식단', timeAgo: '4시간 전', text: '반찬 3가지가 황금 비율인 것 같아요. 저도 딱 이렇게 해요' },
+    { id: 'h3-c9', user: '도시락달인', timeAgo: '5시간 전', text: '주말 한 번 투자로 평일이 편해지는 거 정말 공감해요' },
+    { id: 'h3-c10', user: '스마트쿡', timeAgo: '6시간 전', text: '밀프렙이라는 개념이 이거랑 똑같은 거였군요!' },
+    { id: 'h3-c11', user: '도락이일상', timeAgo: '7시간 전', text: '사진 보니까 더 잘 정리된 느낌이에요. 저도 도전해볼게요' },
+    { id: 'h3-c12', user: '요리왕초보', timeAgo: '8시간 전', text: '처음엔 2일치로 시작하고 익숙해지면 3일치로 늘려볼게요' },
+    { id: 'h3-c13', user: '건강한루틴', timeAgo: '1일 전', text: '이 방법 덕분에 식비도 줄고 아침 시간도 여유로워졌어요. 감사해요!' },
+  ],
+})

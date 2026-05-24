@@ -2,18 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import pointBgImage from './images/pointbg.png'
 import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import { awardVotePoint } from '../../common/usePoints'
-import { useUserProfile } from '../../common/useUserProfile'
 import VoteCompleteModal from '../common/VoteCompleteModal'
 import VoteConfirmModal from '../common/VoteConfirmModal'
 import VoteToast from '../common/VoteToast'
-import VoteWriteForm from '../communitywritepage/VoteWriteForm'
-import {
-  MAX_VOTE_OPTION_COUNT,
-  getUniqueVoteOptions,
-  hasDuplicateVoteOptions,
-  hasTooManyVoteOptions,
-  type VoteWriteData,
-} from '../communitywritepage/writeTypes'
 import { useVoteSelections } from './useVoteSelections'
 import './VoteList.css'
 
@@ -45,8 +36,6 @@ type VoteListProps = {
   variant?: 'featured' | 'list'
   extraVotes?: VoteCardItem[]
   onMoreClick?: () => void
-  onUpdateVote?: (voteId: string, data: VoteWriteData) => void
-  onDeleteVote?: (voteId: string) => void
   focusVoteId?: string | null
   onFocusHandled?: () => void
 }
@@ -194,45 +183,21 @@ const getTotalVotes = (options: VoteOption[]) => (
 )
 
 const getVotePercent = (votes: number, totalVotes: number) => {
-  if (totalVotes === 0) {
-    return 0
-  }
-
+  if (totalVotes === 0) return 0
   return (votes / totalVotes) * 100
 }
 
 const getRewardPointAmount = (reward?: string) => {
   const rewardAmount = Number(reward?.match(/\d+/)?.[0] ?? 1)
-
   return Number.isFinite(rewardAmount) ? rewardAmount : 1
 }
 
 function getVotedOptions(options: VoteOption[], selectedOption?: string) {
-  if (!selectedOption) {
-    return options
-  }
-
+  if (!selectedOption) return options
   return options.map((option) => ({
     ...option,
     votes: option.label === selectedOption ? option.votes + 1 : option.votes,
   }))
-}
-
-function getVoteEditValue(card: VoteCardItem): VoteWriteData {
-  return {
-    title: card.question,
-    content: card.description ?? card.subtitle ?? '',
-    options: card.options.slice(0, MAX_VOTE_OPTION_COUNT).map((option) => option.label),
-    duration: card.duration ?? '3일',
-  }
-}
-
-function isOwnVote(card: VoteCardItem, currentUserId: string, nickname: string) {
-  if (card.authorId) {
-    return card.authorId === currentUserId
-  }
-
-  return card.id.startsWith('user-vote') && (!card.author || card.author === nickname)
 }
 
 function VoteResultItem({
@@ -335,14 +300,6 @@ function VoteCard({
   onVote,
   isEnded,
   onMoreClick,
-  canManage,
-  isEditing,
-  editValue,
-  onStartEdit,
-  onCancelEdit,
-  onChangeEdit,
-  onSaveEdit,
-  onDelete,
   dataVoteId,
   variant,
 }: {
@@ -351,14 +308,6 @@ function VoteCard({
   onVote: (cardId: string, optionLabel: string) => void
   isEnded?: boolean
   onMoreClick?: () => void
-  canManage?: boolean
-  isEditing?: boolean
-  editValue?: VoteWriteData
-  onStartEdit?: () => void
-  onCancelEdit?: () => void
-  onChangeEdit?: (value: VoteWriteData) => void
-  onSaveEdit?: () => void
-  onDelete?: () => void
   dataVoteId?: string
   variant?: 'featured' | 'list'
 }) {
@@ -383,6 +332,7 @@ function VoteCard({
     observer.observe(el)
     return () => observer.disconnect()
   }, [isFeatured])
+
   const votedOptions = getVotedOptions(card.options, selectedOption)
   const deadlineText = typeof card.deadline === 'function' ? card.deadline() : card.deadline
   const participantCount = selectedOption ? card.participants + 1 : card.participants
@@ -448,19 +398,6 @@ function VoteCard({
     )
   }
 
-  if (isEditing && editValue && onChangeEdit && onCancelEdit && onSaveEdit) {
-    return (
-      <article ref={cardRef as React.RefObject<HTMLElement>} className="vote-card vote-card--editing" data-vote-id={dataVoteId} aria-label="투표 수정">
-        <h2>투표 수정</h2>
-        <VoteWriteForm value={editValue} onChange={onChangeEdit} />
-        <div className="vote-card-owner-actions vote-card-owner-actions--editing">
-          <button type="button" onClick={onCancelEdit}>취소</button>
-          <button type="button" onClick={onSaveEdit}>저장</button>
-        </div>
-      </article>
-    )
-  }
-
   return (
     <article ref={cardRef as React.RefObject<HTMLElement>} className="vote-card" data-vote-id={dataVoteId}>
       <div className="vote-card-title-wrap">
@@ -474,12 +411,6 @@ function VoteCard({
       </div>
       {choices}
       {cardFooter}
-      {canManage && (
-        <div className="vote-card-owner-actions">
-          <button type="button" onClick={onStartEdit}>수정</button>
-          <button type="button" onClick={onDelete}>삭제</button>
-        </div>
-      )}
     </article>
   )
 }
@@ -489,12 +420,9 @@ function VoteList({
   variant = 'list',
   extraVotes = [],
   onMoreClick,
-  onUpdateVote,
-  onDeleteVote,
   focusVoteId = null,
   onFocusHandled,
 }: VoteListProps) {
-  const { email, nickname } = useUserProfile()
   const { selectedVotes, selectVoteOption } = useVoteSelections()
   const listRef = useRef<HTMLElement | null>(null)
   const [voteModal, setVoteModal] = useState<{
@@ -503,8 +431,6 @@ function VoteList({
   } | null>(null)
   const [pendingVote, setPendingVote] = useState<{ cardId: string; optionLabel: string } | null>(null)
   const [toastMessage, setToastMessage] = useState<string | null>(null)
-  const [editingVoteId, setEditingVoteId] = useState<string | null>(null)
-  const [editingVoteValue, setEditingVoteValue] = useState<VoteWriteData | null>(null)
   const activeVoteCards = [...extraVotes, ...voteCards]
 
   const handleVoteClick = (cardId: string, optionLabel: string) => {
@@ -530,16 +456,12 @@ function VoteList({
     const selectedCard = activeVoteCards.find((card) => card.id === cardId)
     const hasSelectedOption = selectVoteOption(cardId, optionLabel)
 
-    if (!hasSelectedOption) {
-      return
-    }
+    if (!hasSelectedOption) return
 
     if (selectedCard) {
       awardVotePoint(cardId, getRewardPointAmount(selectedCard.reward))
 
-      if (hasShownVoteModal(cardId)) {
-        return
-      }
+      if (hasShownVoteModal(cardId)) return
 
       markVoteModalShown(cardId)
 
@@ -553,100 +475,32 @@ function VoteList({
   }
 
   const cards = (() => {
-    if (variant === 'featured') {
-      return voteCards.slice(0, 1)
-    }
-
-    if (filter === 'ended') {
-      return endedVoteCards
-    }
-
+    if (variant === 'featured') return voteCards.slice(0, 1)
+    if (filter === 'ended') return endedVoteCards
     return [...extraVotes, ...voteCards.slice(1)]
   })()
+
   const hasFocusTarget =
     variant === 'list' &&
     filter === 'active' &&
     Boolean(focusVoteId && cards.some((card) => card.id === focusVoteId))
 
   useEffect(() => {
-    if (!focusVoteId || !hasFocusTarget) {
-      return
-    }
+    if (!focusVoteId || !hasFocusTarget) return
 
     const targetCard = listRef.current?.querySelector<HTMLElement>(`[data-vote-id="${focusVoteId}"]`)
-
-    if (!targetCard) {
-      return
-    }
+    if (!targetCard) return
 
     targetCard.classList.add('is-newly-created')
-    targetCard.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-    })
+    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' })
     onFocusHandled?.()
 
     const highlightTimer = window.setTimeout(() => {
       targetCard.classList.remove('is-newly-created')
-    }, 1700)
+    }, 2100)
 
     return () => window.clearTimeout(highlightTimer)
   }, [focusVoteId, hasFocusTarget, onFocusHandled])
-
-  const handleStartEdit = (card: VoteCardItem) => {
-    setEditingVoteId(card.id)
-    setEditingVoteValue(getVoteEditValue(card))
-  }
-
-  const handleCancelEdit = () => {
-    setEditingVoteId(null)
-    setEditingVoteValue(null)
-  }
-
-  const handleSaveEdit = (voteId: string) => {
-    if (!editingVoteValue || !onUpdateVote) {
-      return
-    }
-
-    const nextTitle = editingVoteValue.title.trim()
-    const nextContent = editingVoteValue.content.trim()
-    const nextOptions = getUniqueVoteOptions(editingVoteValue.options)
-
-    if (hasDuplicateVoteOptions(editingVoteValue.options)) {
-      window.alert('같은 보기는 추가할 수 없어요.')
-      return
-    }
-
-    if (hasTooManyVoteOptions(editingVoteValue.options)) {
-      window.alert('투표 보기는 최대 5개까지 추가할 수 있어요.')
-      return
-    }
-
-    if (!nextTitle || nextOptions.length < 2) {
-      window.alert('투표 보기는 2개 이상 필요해요.')
-      return
-    }
-
-    onUpdateVote(voteId, {
-      title: nextTitle,
-      content: nextContent,
-      options: nextOptions,
-      duration: editingVoteValue.duration,
-    })
-    handleCancelEdit()
-  }
-
-  const handleDelete = (voteId: string) => {
-    if (!onDeleteVote) {
-      return
-    }
-
-    const shouldDelete = window.confirm('투표를 삭제할까요?')
-
-    if (shouldDelete) {
-      onDeleteVote(voteId)
-    }
-  }
 
   return (
     <section
@@ -662,18 +516,6 @@ function VoteList({
           onVote={handleVoteClick}
           isEnded={filter === 'ended'}
           onMoreClick={variant === 'featured' ? onMoreClick : undefined}
-          canManage={
-            variant === 'list' &&
-            filter === 'active' &&
-            Boolean(onUpdateVote && onDeleteVote && isOwnVote(card, email, nickname))
-          }
-          isEditing={editingVoteId === card.id}
-          editValue={editingVoteId === card.id ? editingVoteValue ?? undefined : undefined}
-          onStartEdit={() => handleStartEdit(card)}
-          onCancelEdit={handleCancelEdit}
-          onChangeEdit={setEditingVoteValue}
-          onSaveEdit={() => handleSaveEdit(card.id)}
-          onDelete={() => handleDelete(card.id)}
           dataVoteId={variant === 'list' ? card.id : undefined}
           variant={variant}
         />

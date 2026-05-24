@@ -47,9 +47,16 @@
   }
 }
 
-.vote-card.is-newly-created {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-primary-30);
+@keyframes vote-card-flash-bg {
+  0%   { background-color: rgba(255, 229, 102, 0.30); }
+  50%  { background-color: rgba(255, 229, 102, 0.30); }
+  100% { background-color: transparent; }
+}
+
+.vote-card:not(.vote-card--featured):not(.vote-card--editing).is-newly-created {
+  animation: vote-card-flash-bg 1.2s ease forwards;
+  opacity: 1;
+  transform: none;
 }
 
 .vote-card-title-wrap {

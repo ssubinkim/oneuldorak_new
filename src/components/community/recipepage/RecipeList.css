@@ -16,9 +16,14 @@
   box-sizing: border-box;
 }
 
+@keyframes recipe-card-flash-bg {
+  0%   { background-color: #fff9db; }
+  60%  { background-color: #fff9db; }
+  100% { background-color: transparent; }
+}
+
 .recipe-share-card.is-newly-created {
-  border-color: #ffd515;
-  box-shadow: 0 0 0 2px rgba(255, 213, 21, 0.34);
+  animation: recipe-card-flash-bg 1.4s ease forwards;
 }
 
 .recipe-share-card__thumb {
