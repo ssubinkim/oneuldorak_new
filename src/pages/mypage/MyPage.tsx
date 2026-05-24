@@ -89,7 +89,7 @@ export default function MyPage() {
             <MyPageStats
               stats={stats}
               onStatClick={(stat) => {
-                if (stat.id === 'likes') window.location.hash = '#/mypage-likes'
+                if (stat.id === 'likes') window.location.hash = '#/mypage-likes?tab=post'
               }}
             />
           </section>

@@ -13,6 +13,7 @@ type AppRoute =
   | 'receipt-analysis'
   | 'mypage-likes'
   | 'mypage-saved-recipes'
+  | 'recipe-write'
   | 'mypage-plus'
   | 'mypage-plus-benefit'
   | 'mypage-profile-edit'
@@ -48,6 +49,7 @@ const importChatbotCameraPage: RouteImporter = () => import('./pages/chatbot/Cha
 const importChatbotChatPage: RouteImporter = () => import('./pages/chatbot/ChatbotChat')
 const importReceiptAnalysisPage: RouteImporter = () => import('./pages/chatbot/ReceiptAnalysis')
 const importRecipePage: RouteImporter = () => import('./pages/recipe/Recipe')
+const importRecipeWritePage: RouteImporter = () => import('./pages/recipe/RecipeWritePage')
 
 const StartPage = lazy(importStartPage)
 const LoginPage = lazy(importLoginPage)
@@ -69,6 +71,7 @@ const ChatbotCamera = lazy(importChatbotCameraPage)
 const ChatbotChat = lazy(importChatbotChatPage)
 const ReceiptAnalysis = lazy(importReceiptAnalysisPage)
 const Recipe = lazy(importRecipePage)
+const RecipeWritePage = lazy(importRecipeWritePage)
 const ProfileEditPage = lazy(importProfileEditPage)
 const NotificationPage = lazy(importNotificationPage)
 
@@ -82,6 +85,7 @@ const pages = {
   community: Community,
   store: Store,
   recipe: Recipe,
+  'recipe-write': RecipeWritePage,
   mypage: MyPage,
   'mypage-likes': LikePage,
   'mypage-saved-recipes': SavedRecipePage,
@@ -122,6 +126,7 @@ const pageImporters = {
   'chatbot-chat': importChatbotChatPage,
   'receipt-analysis': importReceiptAnalysisPage,
   recipe: importRecipePage,
+  'recipe-write': importRecipeWritePage,
 } satisfies Record<AppRoute, RouteImporter>
 
 const prefetchTargets = {
@@ -148,6 +153,7 @@ const prefetchTargets = {
   'chatbot-chat': ['chatbot'],
   'receipt-analysis': ['chatbot'],
   recipe: [],
+  'recipe-write': ['recipe'],
 } satisfies Record<AppRoute, AppRoute[]>
 
 const DEFAULT_THEME_COLOR = '#fffbea'
@@ -162,6 +168,7 @@ const routeThemeColors = {
   community: '#ffffff',
   store: '#ffffff',
   recipe: '#ffffff',
+  'recipe-write': '#fffdf7',
   mypage: '#ffffff',
   'mypage-likes': '#ffffff',
   'mypage-saved-recipes': '#ffffff',

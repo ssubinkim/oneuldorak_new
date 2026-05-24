@@ -14,15 +14,14 @@ function RecipeHeroBanner() {
           </p>
         </div>
         <div className="recipe-hero__actions">
-          <button className="recipe-hero__icon-btn" type="button" aria-label="프로필">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-          </button>
-          <button className="recipe-hero__icon-btn" type="button" aria-label="저장한 레시피">
+          <button className="recipe-hero__icon-btn" type="button" aria-label="저장한 레시피" onClick={() => { window.location.hash = '#/mypage-likes?tab=recipe&from=recipe' }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+            </svg>
+          </button>
+          <button className="recipe-hero__icon-btn" type="button" aria-label="프로필" onClick={() => { window.location.hash = '#/recipe-write' }}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 5v14M5 12h14" />
             </svg>
           </button>
         </div>
