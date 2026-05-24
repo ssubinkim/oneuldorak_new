@@ -19,6 +19,9 @@ import './CommunityWritePage.css'
 
 type CommunityWritePageProps = {
   initialTab?: WriteTab
+  initialValues?: Partial<CommunityWriteFormValues>
+  hideTabSwitch?: boolean
+  submitLabel?: string
   onBack: () => void
   onSubmit: (payload: CommunityWritePayload) => void | Promise<void>
 }
@@ -28,10 +31,12 @@ const writeHeroDescriptions: Record<WriteTab, string> = {
   vote: '고민을 도락이들에게 물어보세요 !',
 }
 
-function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: CommunityWritePageProps) {
+function CommunityWritePage({ initialTab = 'board', initialValues, hideTabSwitch = false, submitLabel = '등록하기', onBack, onSubmit }: CommunityWritePageProps) {
   const [activeTab, setActiveTab] = useState<WriteTab>(initialTab)
-  const [formValues, setFormValues] = useState<CommunityWriteFormValues>(emptyWriteFormValues)
+  const [formValues, setFormValues] = useState<CommunityWriteFormValues>({ ...emptyWriteFormValues, ...initialValues })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showVoteConfirm, setShowVoteConfirm] = useState(false)
+  const [pendingVotePayload, setPendingVotePayload] = useState<CommunityWritePayload | null>(null)
 
   const updateBoardData = (board: BoardWriteData) => {
     setFormValues((prevValues) => ({ ...prevValues, board }))
@@ -42,12 +47,8 @@ function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: Communit
   }
 
   const submitPayload = async (payload: CommunityWritePayload) => {
-    if (isSubmitting) {
-      return
-    }
-
+    if (isSubmitting) return
     setIsSubmitting(true)
-
     try {
       await onSubmit(payload)
     } finally {
@@ -76,17 +77,24 @@ function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: Communit
         return
       }
 
-      void submitPayload({
-        ...payload,
-        data: {
-          ...payload.data,
-          options: uniqueOptions,
-        },
-      })
+      setPendingVotePayload({ ...payload, data: { ...payload.data, options: uniqueOptions } })
+      setShowVoteConfirm(true)
       return
     }
 
     void submitPayload(payload)
+  }
+
+  const handleVoteConfirm = () => {
+    if (!pendingVotePayload) return
+    setShowVoteConfirm(false)
+    void submitPayload(pendingVotePayload)
+    setPendingVotePayload(null)
+  }
+
+  const handleVoteConfirmCancel = () => {
+    setShowVoteConfirm(false)
+    setPendingVotePayload(null)
   }
 
   return (
@@ -103,7 +111,7 @@ function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: Communit
       </div>
 
       <section className="community-write-card">
-        <WriteTabs activeTab={activeTab} onChange={setActiveTab} />
+        {!hideTabSwitch && <WriteTabs activeTab={activeTab} onChange={setActiveTab} />}
 
         <div className="community-write-form">
           {activeTab === 'board' && (
@@ -115,9 +123,39 @@ function CommunityWritePage({ initialTab = 'board', onBack, onSubmit }: Communit
         </div>
 
         <button className="community-write-submit" type="button" disabled={isSubmitting} onClick={handleSubmit}>
-          등록하기
+          {submitLabel}
         </button>
       </section>
+
+      {showVoteConfirm && (
+        <div
+          className="community-registration-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="vote-confirm-title"
+          onClick={handleVoteConfirmCancel}
+        >
+          <div
+            className="community-registration-modal__panel"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 id="vote-confirm-title">투표 등록 전 확인해주세요</h2>
+            <p>한번 게시한 투표는 수정과 삭제가 어렵습니다.<br />그래도 등록하시겠어요?</p>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button
+                type="button"
+                style={{ background: '#f0f0f0', color: '#3c3c3c' }}
+                onClick={handleVoteConfirmCancel}
+              >
+                취소
+              </button>
+              <button type="button" onClick={handleVoteConfirm}>
+                등록하기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   )
 }

@@ -21,7 +21,7 @@
 .community-registration-modal__panel {
   width: min(100%, 320px);
   padding: 22px 18px 18px;
-  border-radius: 16px;
+  border-radius: 10px;
   background: #fffdf8;
   border: 1px solid #efe7d6;
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
@@ -31,17 +31,20 @@
 .community-registration-modal__panel h2 {
   margin: 0;
   color: #1a1a1a;
-  font-size: 21px;
-  font-weight: 800;
-  line-height: 1.25;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.08px;
 }
 
 .community-registration-modal__panel p {
   margin: 8px 0 0;
-  color: #4b4b4b;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.4;
+  color: #3c3c3c;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.08px;
+
 }
 
 .community-registration-modal__panel button {
@@ -50,12 +53,13 @@
   margin-top: 16px;
   border: 0;
   border-radius: 12px;
-  background: #ffd515;
-  color: #1a1a1a;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1;
-  font-family: 'Pretendard Variable', sans-serif;
+  background: #FFDB78;
+  color: #3c3c3c;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.08px;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
 }
 
 @media (max-width: 359px) {

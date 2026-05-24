@@ -538,40 +538,6 @@ function Community() {
     setView('free')
   }
 
-  const handleUpdateVote = (voteId: string, data: Extract<CommunityWritePayload, { tab: 'vote' }>['data']) => {
-    setRegisteredVotes((prevVotes) =>
-      prevVotes.map((vote) => {
-        if (vote.id !== voteId) {
-          return vote
-        }
-
-        const nextOptionLabels = getUniqueVoteOptions(data.options)
-        const previousOptionsByLabel = new Map(vote.options.map((option) => [option.label, option]))
-
-        return {
-          ...vote,
-          question: getFilledText(data.title, '새 투표'),
-          subtitle: getSummaryText(data.content, '방금 등록한 투표입니다.'),
-          description: getFilledText(data.content, '방금 등록한 투표입니다.'),
-          duration: data.duration,
-          deadline: getVoteDeadlineText(data.duration),
-          options: nextOptionLabels.map((label) => {
-            const previousOption = previousOptionsByLabel.get(label)
-
-            return {
-              label,
-              votes: previousOption?.votes ?? 0,
-              highlighted: previousOption?.highlighted,
-            }
-          }),
-        }
-      }),
-    )
-  }
-
-  const handleDeleteVote = (voteId: string) => {
-    setRegisteredVotes((prevVotes) => prevVotes.filter((vote) => vote.id !== voteId))
-  }
 
   const handleOpenWrite = () => {
     setPreviousView(view)
@@ -722,8 +688,6 @@ function Community() {
           <VotePage
             onSelectTab={handleTabClick}
             extraVotes={registeredVotes}
-            onUpdateVote={handleUpdateVote}
-            onDeleteVote={handleDeleteVote}
             focusVoteId={focusTarget?.tab === 'vote' ? focusTarget.targetId : null}
             onFocusHandled={handleVoteFocusConsumed}
           />

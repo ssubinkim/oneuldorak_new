@@ -42,33 +42,9 @@ function BattleBanner() {
             <p className="battle-banner__card-title-main">최고의 도시락</p>
           </div>
           <button ref={btnRef} type="button" className="battle-banner__card-btn">
-            <span className="battle-banner__card-btn-text">바로 가기</span>
-            <svg
-              className="battle-banner__card-btn-icon"
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path d="M3.84961 0.5L9.99961 6.65C10.0474 6.69489 10.0856 6.74911 10.1116 6.80931C10.1377 6.8695 10.1511 6.9344 10.1511 7C10.1511 7.0656 10.1377 7.1305 10.1116 7.19069C10.0856 7.25089 10.0474 7.30511 9.99961 7.35L3.84961 13.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <span className="battle-banner__card-btn-text">Coming soon..</span>
           </button>
-          <div className="battle-banner__card-deadline">
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
-            >
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-            참여 마감 D-7
-          </div>
+          <p className="battle-banner__card-footer">이번 배틀도 기대해주세요!</p>
         </div>
       </div>
 
