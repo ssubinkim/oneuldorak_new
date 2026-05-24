@@ -1,11 +1,11 @@
 .bottom-nav {
-  --bottom-nav-bg-height: clamp(68px, 18.4615vw, 72px);
-  --bottom-nav-home-size: clamp(66px, 19.2308vw, 74px);
+  --bottom-nav-bg-height: clamp(70px, 18.4615vw, 74px);
+  --bottom-nav-home-size: clamp(68px, 19.2308vw, 76px);
   --bottom-nav-home-icon-size: clamp(36px, 10.2564vw, 40px);
   --bottom-nav-icon-size: clamp(24px, 6.6667vw, 26px);
   --bottom-nav-label-height: 14.4px;
   --bottom-nav-link-gap: 4px;
-  --bottom-nav-link-height: clamp(50px, 13.8462vw, 54px);
+  --bottom-nav-link-height: clamp(52px, 13.8462vw, 56px);
   --bottom-nav-font-size: 13px;
   --bottom-nav-home-offset: -28px;
   --bottom-nav-notch-radius: clamp(43px, 11.7949vw, 46px);
