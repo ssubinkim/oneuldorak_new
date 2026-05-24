@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent, type UIEvent } from 'react'
 import type { ChatMessage } from '../../types/chatbot'
-import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
+import { appendChatbotFridgeIngredients, appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import { requestAiChat } from '../../features/ai/services/aiApi'
 import { analyzeReceiptImage } from '../../features/ai/services/receiptApi'
@@ -1002,7 +1002,7 @@ function ChatbotChat() {
   const routeContextRef = useRef<ChatRouteContext>(initialContext)
 
   const { nickname } = useUserProfile()
-  const displayName = nickname?.trim() || '도시락러버'
+  const displayName = nickname?.trim() || '도락프렌즈'
   const [messages, setMessages] = useState<LocalMessage[]>([])
   const [showCameraSheet, setShowCameraSheet] = useState(false)
   const [showPhotoPurposeSheet, setShowPhotoPurposeSheet] = useState(false)
@@ -1525,7 +1525,9 @@ function ChatbotChat() {
     const selectedIngredients = fridgeDetectedIngredients.filter((ingredient) => ingredient.selected)
     if (selectedIngredients.length === 0) return
 
-    setSavedFridgeIngredientLabels(selectedIngredients.map((ingredient) => ingredient.label))
+    const selectedLabels = selectedIngredients.map((ingredient) => ingredient.label)
+    appendChatbotFridgeIngredients(selectedLabels)
+    setSavedFridgeIngredientLabels(selectedLabels)
     setFridgeDetectedIngredients((previousIngredients) => previousIngredients.map((ingredient) => ({
       ...ingredient,
       selected: false,
@@ -2125,6 +2127,10 @@ function ChatbotChat() {
                   <button
                     className="chatbot-fridge-result-modal__action chatbot-fridge-result-modal__action--secondary"
                     type="button"
+                    onClick={() => {
+                      setShowFridgeResultModal(false)
+                      window.location.hash = '#/meal-storage'
+                    }}
                   >
                     직접 추가
                   </button>
@@ -2175,7 +2181,10 @@ function ChatbotChat() {
                   <button
                     className="chatbot-fridge-saved-modal__action chatbot-fridge-saved-modal__action--secondary"
                     type="button"
-                    onClick={() => setShowFridgeSavedModal(false)}
+                    onClick={() => {
+                      setShowFridgeSavedModal(false)
+                      window.location.hash = '#/meal-storage'
+                    }}
                   >
                     재료함 보러가기
                   </button>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { readOnboardingAnswers } from '../../components/common/aiDataHub'
 import { usePointBalance } from '../../components/common/usePoints'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import GoalBottomSheet from '../../components/mypage/my-page/GoalBottomSheet'
@@ -17,9 +18,40 @@ import bellIcon from '../../assets/icons/bell_icon.svg'
 import profileImg from '../../assets/icons/profile 1.svg?url'
 import '../../components/mypage/my-page/MyPage.css'
 
+const DEFAULT_GOAL = { current: 72000, target: 100000 }
+const DEFAULT_GOAL_PROGRESS_RATIO = DEFAULT_GOAL.current / DEFAULT_GOAL.target
+
+function parseBudgetWon(value: unknown) {
+  if (typeof value !== 'string') return null
+
+  const digits = value.replace(/[^0-9]/g, '')
+  if (!digits) return null
+
+  const parsed = parseInt(digits, 10)
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null
+}
+
+function getInitialGoalFromOnboarding() {
+  const onboardingAnswers = readOnboardingAnswers()
+  if (!onboardingAnswers || typeof onboardingAnswers !== 'object') {
+    return DEFAULT_GOAL
+  }
+
+  const budgetAnswer = (onboardingAnswers as Record<string, unknown>).budget
+  const parsedBudget = parseBudgetWon(budgetAnswer)
+  if (!parsedBudget) {
+    return DEFAULT_GOAL
+  }
+
+  return {
+    target: parsedBudget,
+    current: Math.min(parsedBudget, Math.round(parsedBudget * DEFAULT_GOAL_PROGRESS_RATIO)),
+  }
+}
+
 export default function MyPage() {
   const [goalOpen, setGoalOpen] = useState(false)
-  const [goal, setGoal] = useState({ current: 72000, target: 100000 })
+  const [goal, setGoal] = useState(getInitialGoalFromOnboarding)
   const [pointOpen, setPointOpen] = useState(false)
   const [showSavedToast, setShowSavedToast] = useState(false)
 
@@ -44,8 +76,8 @@ export default function MyPage() {
   const activityCounts = getMyPageActivityCounts(email)
   const stats: MyPageStatItem[] = [
     { id: 'likes', value: String(activityCounts.likes), label: '좋아요', highlight: true, clickable: true },
-    { id: 'posts', value: String(activityCounts.posts), label: '게시글' },
-    { id: 'comments', value: String(activityCounts.comments), label: '댓글' },
+    { id: 'posts', value: String(activityCounts.posts), label: '게시글', clickable: true },
+    { id: 'comments', value: String(activityCounts.comments), label: '댓글', clickable: true },
   ]
 
   const pct = Math.round((goal.current / goal.target) * 100)
@@ -86,6 +118,8 @@ export default function MyPage() {
               stats={stats}
               onStatClick={(stat) => {
                 if (stat.id === 'likes') window.location.hash = '#/mypage-likes?tab=post'
+                if (stat.id === 'posts') window.location.hash = '#/mypage-posts'
+                if (stat.id === 'comments') window.location.hash = '#/mypage-comments'
               }}
             />
           </section>

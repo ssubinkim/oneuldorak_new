@@ -1,6 +1,13 @@
-import { useRef, useState, useCallback, type PointerEvent } from 'react'
+import { useRef, useState, useCallback, useMemo, type PointerEvent } from 'react'
+import { readChatbotFridgeIngredients, readOnboardingAnswers } from '../../../common/aiDataHub'
+import { getUserProfile } from '../../../common/useUserProfile'
 import { getIngredientIconClassName } from '../../mealData'
-import { STATUS_INDEX, FRIDGE_ITEMS } from './storageData'
+import {
+  STATUS_INDEX,
+  FRIDGE_ITEMS,
+  createFridgeItemFromLabel,
+  normalizeFridgeItemLabel,
+} from './storageData'
 import type { FridgeItem } from './storageData'
 import twoAddImg from '../../../../assets/food_mascot/two_add.png'
 
@@ -11,6 +18,7 @@ const SECTIONS = [
 ] as const
 
 const ITEMS_PER_PAGE = 4
+const MAX_STORAGE_ITEMS = 40
 
 type SectionStatus = 'urgent' | 'moderate' | 'plenty'
 
@@ -126,7 +134,64 @@ function StorageSectionCard({ item }: StorageSectionCardProps) {
   )
 }
 
+function getStorageBaseItems() {
+  const { isNew } = getUserProfile()
+  if (isNew === false) {
+    return FRIDGE_ITEMS
+  }
+
+  const onboardingAnswers = readOnboardingAnswers()
+  if (!onboardingAnswers || typeof onboardingAnswers !== 'object') {
+    return FRIDGE_ITEMS
+  }
+
+  const ingredientsAnswer = (onboardingAnswers as Record<string, unknown>).ingredients
+  if (!Array.isArray(ingredientsAnswer)) {
+    return FRIDGE_ITEMS
+  }
+
+  const selectedLabels = ingredientsAnswer
+    .filter((value): value is string => typeof value === 'string')
+    .map((value) => value.trim())
+    .filter(Boolean)
+
+  if (selectedLabels.length === 0) {
+    return FRIDGE_ITEMS
+  }
+
+  return Array.from(new Set(selectedLabels))
+    .slice(0, MAX_STORAGE_ITEMS)
+    .map((label, index) => createFridgeItemFromLabel(label, index + 1))
+}
+
 function StorageIngredientGrid() {
+  const fridgeItems = useMemo(() => {
+    const baseItems = getStorageBaseItems()
+    const savedLabels = readChatbotFridgeIngredients()
+    if (savedLabels.length === 0) {
+      return baseItems
+    }
+
+    const uniqueSavedLabels = Array.from(
+      new Map(
+        savedLabels
+          .map((label) => label.trim())
+          .filter(Boolean)
+          .map((label) => [normalizeFridgeItemLabel(label), label]),
+      ).values(),
+    )
+
+    const savedItems = uniqueSavedLabels.map((label, index) => createFridgeItemFromLabel(label, index + 1))
+    const savedNameSet = new Set(savedItems.map((item) => normalizeFridgeItemLabel(item.name)))
+    const remainingItems = baseItems.filter((item) => !savedNameSet.has(normalizeFridgeItemLabel(item.name)))
+    const mergedItems = [...savedItems, ...remainingItems].slice(0, MAX_STORAGE_ITEMS)
+
+    return mergedItems.map((item, index) => ({
+      ...item,
+      id: index + 1,
+    }))
+  }, [])
+
   return (
     <>
       <div className="sp-add-section">
@@ -136,7 +201,7 @@ function StorageIngredientGrid() {
       </div>
       <div className="sp-sections">
         {SECTIONS.map((section) => {
-          const items = FRIDGE_ITEMS.filter((item) => item.status === section.status)
+          const items = fridgeItems.filter((item) => item.status === section.status)
           return (
             <StorageSectionRow
               key={section.status}

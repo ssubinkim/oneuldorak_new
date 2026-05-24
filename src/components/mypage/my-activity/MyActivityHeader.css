@@ -1,0 +1,33 @@
+.my-activity-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height, 52px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  z-index: 10;
+}
+
+.my-activity-header__back {
+  position: absolute;
+  left: 16px;
+  background: none;
+  border: none;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.my-activity-header__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  line-height: 130%;
+}

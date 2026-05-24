@@ -2,6 +2,9 @@ import {
   carrotImg, potatoImg, appleImg, onionImg, brocollyImg,
   getIngredientIconClassName,
 } from '../meal/mealData'
+import { readChatbotFridgeIngredients, readOnboardingAnswers } from '../common/aiDataHub'
+import { getUserProfile } from '../common/useUserProfile'
+import { createFridgeItemFromLabel, normalizeFridgeItemLabel } from '../meal/storage/page/storageData'
 import mushRoomImg from '../../assets/images/food_icon/mushroom.png'
 import tomatoImg from '../../assets/images/food_icon/tomato.png'
 import dorak21 from '../../assets/food_mascot_all/dorak21.png'
@@ -17,7 +20,7 @@ interface FridgeIngredient {
   daysLeft: number | null
 }
 
-const FRIDGE_ITEMS: FridgeIngredient[] = [
+const FALLBACK_FRIDGE_ITEMS: FridgeIngredient[] = [
   { id: 1, name: '당근', image: carrotImg, daysLeft: 1 },
   { id: 2, name: '감자', image: potatoImg, daysLeft: 5 },
   { id: 3, name: '사과', image: appleImg, daysLeft: 3 },
@@ -27,15 +30,91 @@ const FRIDGE_ITEMS: FridgeIngredient[] = [
   { id: 7, name: '방울토마토', image: tomatoImg, daysLeft: 4 },
 ]
 
-const urgentCount = FRIDGE_ITEMS.filter(i => i.daysLeft !== null).length
+const MAX_HOME_FRIDGE_ITEMS = 12
+
+function getFridgeItemsFromOnboarding(): FridgeIngredient[] {
+  const onboardingAnswers = readOnboardingAnswers()
+  if (!onboardingAnswers || typeof onboardingAnswers !== 'object') {
+    return FALLBACK_FRIDGE_ITEMS
+  }
+
+  const ingredientsAnswer = (onboardingAnswers as Record<string, unknown>).ingredients
+  if (!Array.isArray(ingredientsAnswer)) {
+    return FALLBACK_FRIDGE_ITEMS
+  }
+
+  const selectedLabels = ingredientsAnswer
+    .filter((value): value is string => typeof value === 'string')
+    .map((value) => value.trim())
+    .filter(Boolean)
+
+  if (selectedLabels.length === 0) {
+    return FALLBACK_FRIDGE_ITEMS
+  }
+
+  const uniqueLabels = Array.from(new Set(selectedLabels))
+  const mappedItems = uniqueLabels.map((label, index) => {
+    const mappedItem = createFridgeItemFromLabel(label, index + 1)
+    return {
+      id: index + 1,
+      name: mappedItem.name,
+      image: mappedItem.image,
+      daysLeft: mappedItem.days,
+    }
+  }).slice(0, MAX_HOME_FRIDGE_ITEMS)
+
+  return mappedItems.length > 0 ? mappedItems : FALLBACK_FRIDGE_ITEMS
+}
+
+function mergeFridgeItemsWithChatbotSaved(baseItems: FridgeIngredient[]) {
+  const savedLabels = readChatbotFridgeIngredients()
+  if (savedLabels.length === 0) {
+    return baseItems.slice(0, MAX_HOME_FRIDGE_ITEMS).map((item, index) => ({ ...item, id: index + 1 }))
+  }
+
+  const uniqueSavedLabels = Array.from(
+    new Map(
+      savedLabels
+        .map((label) => label.trim())
+        .filter(Boolean)
+        .map((label) => [normalizeFridgeItemLabel(label), label]),
+    ).values(),
+  )
+
+  const savedItems = uniqueSavedLabels.map((label, index) => {
+    const mappedItem = createFridgeItemFromLabel(label, index + 1)
+    return {
+      id: index + 1,
+      name: mappedItem.name,
+      image: mappedItem.image,
+      daysLeft: mappedItem.days,
+    }
+  })
+
+  const savedNameSet = new Set(savedItems.map((item) => normalizeFridgeItemLabel(item.name)))
+  const remainingBaseItems = baseItems.filter((item) => !savedNameSet.has(normalizeFridgeItemLabel(item.name)))
+  const mergedItems = [...savedItems, ...remainingBaseItems].slice(0, MAX_HOME_FRIDGE_ITEMS)
+
+  return mergedItems.map((item, index) => ({
+    ...item,
+    id: index + 1,
+  }))
+}
 
 function FridgeSection() {
+  const { isNew } = getUserProfile()
+  const baseFridgeItems = isNew === false
+    ? FALLBACK_FRIDGE_ITEMS
+    : getFridgeItemsFromOnboarding()
+  const fridgeItems = mergeFridgeItemsWithChatbotSaved(baseFridgeItems)
+  const urgentCount = fridgeItems.filter((item) => item.daysLeft !== null && item.daysLeft <= 2).length
+
   return (
     <section className="fridge-sec">
       <div className="fridge-card">
         <div className="fridge-sec__header">
           <h2 className="fridge-sec__title">오늘의 냉장고</h2>
-          <span className="fridge-sec__count">총 <span className="fridge-sec__count-num">{FRIDGE_ITEMS.length}개</span> 재료</span>
+          <span className="fridge-sec__count">총 <span className="fridge-sec__count-num">{fridgeItems.length}개</span> 재료</span>
         </div>
 
         <div className="fridge-sec__body">
@@ -52,7 +131,7 @@ function FridgeSection() {
           </div>
 
           <div className="fridge-sec__scroll">
-            {FRIDGE_ITEMS.map(item => (
+            {fridgeItems.map(item => (
               <div key={item.id} className="fridge-item">
                 <div className="fridge-circle">
                   <img

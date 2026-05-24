@@ -12,6 +12,8 @@ type AppRoute =
   | 'chatbot-chat'
   | 'receipt-analysis'
   | 'mypage-likes'
+  | 'mypage-posts'
+  | 'mypage-comments'
   | 'mypage-saved-recipes'
   | 'recipe-write'
   | 'mypage-plus'
@@ -36,6 +38,8 @@ const importCommunityPage: RouteImporter = () => import('./pages/community/Commu
 const importStorePage: RouteImporter = () => import('./pages/store/Store')
 const importMyPage: RouteImporter = () => import('./pages/mypage/MyPage')
 const importLikePage: RouteImporter = () => import('./pages/mypage/LikePage')
+const importMyPostsPage: RouteImporter = () => import('./pages/mypage/MyPostsPage')
+const importMyCommentsPage: RouteImporter = () => import('./pages/mypage/MyCommentsPage')
 const importSavedRecipePage: RouteImporter = () => import('./pages/mypage/SavedRecipePage')
 const importPlusPage: RouteImporter = () => import('./pages/mypage/PlusPage')
 const importPlusBenefitPage: RouteImporter = () => import('./pages/mypage/PlusBenefitPage')
@@ -60,6 +64,8 @@ const Community = lazy(importCommunityPage)
 const Store = lazy(importStorePage)
 const MyPage = lazy(importMyPage)
 const LikePage = lazy(importLikePage)
+const MyPostsPage = lazy(importMyPostsPage)
+const MyCommentsPage = lazy(importMyCommentsPage)
 const SavedRecipePage = lazy(importSavedRecipePage)
 const PlusPage = lazy(importPlusPage)
 const PlusBenefitPage = lazy(importPlusBenefitPage)
@@ -88,6 +94,8 @@ const pages = {
   'recipe-write': RecipeWritePage,
   mypage: MyPage,
   'mypage-likes': LikePage,
+  'mypage-posts': MyPostsPage,
+  'mypage-comments': MyCommentsPage,
   'mypage-saved-recipes': SavedRecipePage,
   'mypage-plus': PlusPage,
   'mypage-plus-benefit': PlusBenefitPage,
@@ -113,6 +121,8 @@ const pageImporters = {
   store: importStorePage,
   mypage: importMyPage,
   'mypage-likes': importLikePage,
+  'mypage-posts': importMyPostsPage,
+  'mypage-comments': importMyCommentsPage,
   'mypage-saved-recipes': importSavedRecipePage,
   'mypage-plus': importPlusPage,
   'mypage-plus-benefit': importPlusBenefitPage,
@@ -138,8 +148,10 @@ const prefetchTargets = {
   meal: ['community', 'store'],
   community: ['home', 'store'],
   store: ['home', 'community'],
-  mypage: ['mypage-likes', 'mypage-plus'],
+  mypage: ['mypage-likes', 'mypage-posts'],
   'mypage-likes': ['mypage'],
+  'mypage-posts': ['mypage'],
+  'mypage-comments': ['mypage'],
   'mypage-saved-recipes': ['mypage'],
   'mypage-plus': ['mypage-plus-benefit'],
   'mypage-plus-benefit': ['mypage-plus', 'mypage'],
@@ -171,6 +183,8 @@ const routeThemeColors = {
   'recipe-write': '#fffdf7',
   mypage: '#ffffff',
   'mypage-likes': '#ffffff',
+  'mypage-posts': '#ffffff',
+  'mypage-comments': '#ffffff',
   'mypage-saved-recipes': '#ffffff',
   'mypage-plus': '#ffffff',
   'mypage-plus-benefit': '#ffffff',

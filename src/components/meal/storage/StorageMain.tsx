@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useUserProfile } from '../../common/useUserProfile'
 import {
   carrotImg, potatoImg, appleImg, onionImg, romainImg,
   brocollyImg, beansproutsImg,
@@ -45,6 +46,8 @@ function StorageMain({ onShowAll }: Props) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [currentBottomSlide, setCurrentBottomSlide] = useState(0)
   const [checklistItems, setChecklistItems] = useState(initialChecklistItems)
+  const { nickname } = useUserProfile()
+  const displayNickname = nickname.trim() || '도락프렌즈'
 
   const toggleChecklist = (id: number) => {
     setChecklistItems(prev =>
@@ -129,7 +132,7 @@ function StorageMain({ onShowAll }: Props) {
           {recipeCards.map(card => (
             <div key={card.id} className="storage-carousel-card">
               <p className="storage-recipe-desc">
-                세아님, 냉장고 재료로<br />이런 메뉴를 만들수있어요!
+                {displayNickname}님, 냉장고 재료로<br />이런 메뉴를 만들수있어요!
               </p>
               <p className="storage-recipe-name">{card.title}</p>
             </div>

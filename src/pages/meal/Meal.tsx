@@ -21,7 +21,8 @@ function Meal() {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [isAttendanceStampModalOpen, setIsAttendanceStampModalOpen] = useState(false)
   const [, setPlannedMenus] = useState<Record<number, DayMenu>>({})
-  const { isNew } = useUserProfile()
+  const { isNew, nickname } = useUserProfile()
+  const displayNickname = nickname.trim() || '도락프렌즈'
 
   useEffect(() => {
     const pendingStampType = consumeAttendanceStampPending()
@@ -62,7 +63,7 @@ function Meal() {
 
             <div className="meal-hero__body">
               <div className="meal-hero__greeting">
-                <p className="meal-hero__name"><strong>도시락러버</strong> 님</p>
+                <p className="meal-hero__name"><strong>{displayNickname}</strong> 님</p>
                 <p className="meal-hero__sub">오늘도 맛있는 절약을 시작해보세요</p>
               </div>
               <img
