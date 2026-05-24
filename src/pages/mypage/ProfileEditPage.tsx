@@ -2,12 +2,27 @@ import { useState, useRef } from 'react'
 import { useUserProfile, saveUserProfile, getUserProfile } from '../../components/common/useUserProfile'
 import profileImg from '../../assets/icons/profile 1.svg?url'
 import arrowLeftIcon from '../../assets/icons/arrow_left.svg?url'
+import carrotPro from '../../assets/food_mascot/carrot_pro.png'
+import broPro from '../../assets/food_mascot/bro_pro.png'
+import strawPro from '../../assets/food_mascot/straw_pro.png'
+import eggPro from '../../assets/food_mascot/egg_pro.png'
+import bluePro from '../../assets/food_mascot/blue_pro.png'
+import BottomSheet from '../../components/mypage/common/BottomSheet'
 import './ProfileEditPage.css'
+
+const PRO_MASCOT_OPTIONS = [
+  { id: 'carrot-pro', label: '당근', src: carrotPro },
+  { id: 'blue-pro', label: '블루베리', src: bluePro },
+  { id: 'straw-pro', label: '딸기', src: strawPro },
+  { id: 'egg-pro', label: '달걀', src: eggPro },
+  { id: 'bro-pro', label: '브로콜리', src: broPro },
+]
 
 export default function ProfileEditPage() {
   const { nickname, email, password, avatar } = useUserProfile()
+  const initialAvatar = avatar ?? profileImg
   const [nicknameVal, setNicknameVal] = useState(nickname)
-  const [avatarSrc, setAvatarSrc] = useState<string>(avatar ?? profileImg)
+  const [avatarSrc, setAvatarSrc] = useState<string>(initialAvatar)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,11 +39,12 @@ export default function ProfileEditPage() {
   const [idCheckDone, setIdCheckDone] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showLeaveModal, setShowLeaveModal] = useState(false)
+  const [isAvatarSheetOpen, setIsAvatarSheetOpen] = useState(false)
 
   const initialNickname = nickname
   const initialId = 'dorak_2030'
 
-  const hasChanges = nicknameVal !== initialNickname || idVal !== initialId || avatarSrc !== profileImg
+  const hasChanges = nicknameVal !== initialNickname || idVal !== initialId || avatarSrc !== initialAvatar
 
   const handleBack = () => {
     if (hasChanges) {
@@ -81,6 +97,19 @@ export default function ProfileEditPage() {
     window.location.hash = '#/mypage'
   }
 
+  const handleSelectMascot = (src: string) => {
+    setAvatarSrc(src)
+    setIsAvatarSheetOpen(false)
+  }
+
+  const handleOpenAlbumPicker = () => {
+    setIsAvatarSheetOpen(false)
+    if (!fileInputRef.current) return
+    fileInputRef.current.value = ''
+    fileInputRef.current.click()
+  }
+  const isProMascotSelected = PRO_MASCOT_OPTIONS.some((option) => option.src === avatarSrc)
+
   return (
     <div className="app-shell">
       <div className="app-screen profile-edit-screen">
@@ -102,13 +131,17 @@ export default function ProfileEditPage() {
 
           <div className="profile-edit-avatar-wrap">
             <div className="profile-edit-avatar">
-              <img src={avatarSrc} alt="프로필" />
+              <img
+                src={avatarSrc}
+                alt="프로필"
+                className={`profile-edit-avatar__image${isProMascotSelected ? ' is-mascot' : ''}`}
+              />
             </div>
             <button
               type="button"
               className="profile-edit-camera-btn"
               aria-label="사진 변경"
-              onClick={() => fileInputRef.current?.click()}
+              onClick={() => setIsAvatarSheetOpen(true)}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
@@ -223,6 +256,45 @@ export default function ProfileEditPage() {
           </div>
 
         </div>
+
+        <BottomSheet
+          open={isAvatarSheetOpen}
+          onClose={() => setIsAvatarSheetOpen(false)}
+          className="profile-edit-avatar-sheet"
+        >
+          <div className="profile-edit-avatar-sheet__content">
+            <h2 className="profile-edit-avatar-sheet__title">프로필 이미지 선택</h2>
+
+            <div className="profile-edit-avatar-sheet__mascot-list" role="list" aria-label="프로필 캐릭터 목록">
+              {PRO_MASCOT_OPTIONS.map((option) => {
+                const isSelected = avatarSrc === option.src
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    className={`profile-edit-avatar-sheet__mascot${isSelected ? ' is-selected' : ''}`}
+                    onClick={() => handleSelectMascot(option.src)}
+                    aria-pressed={isSelected}
+                  >
+                    <span className="profile-edit-avatar-sheet__mascot-image-wrap" aria-hidden="true">
+                      <img src={option.src} alt="" className="profile-edit-avatar-sheet__mascot-image" />
+                    </span>
+                    <span className="profile-edit-avatar-sheet__mascot-label">{option.label}</span>
+                  </button>
+                )
+              })}
+            </div>
+
+            <div className="profile-edit-avatar-sheet__actions">
+              <button type="button" className="profile-edit-avatar-sheet__action profile-edit-avatar-sheet__action--primary" onClick={handleOpenAlbumPicker}>
+                앨범에서 사진 선택
+              </button>
+              <button type="button" className="profile-edit-avatar-sheet__action profile-edit-avatar-sheet__action--secondary" onClick={() => setIsAvatarSheetOpen(false)}>
+                취소
+              </button>
+            </div>
+          </div>
+        </BottomSheet>
 
         {/* 나가기 확인 모달 */}
         {showLeaveModal && (

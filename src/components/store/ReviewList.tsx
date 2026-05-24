@@ -7,6 +7,7 @@ import subreview3 from './images/subreview/subreview_3.png'
 import subreview4 from './images/subreview/subreview_4.png'
 import ReviewWriteSheet from './ReviewWriteSheet'
 import VoteCompleteModal from '../community/common/VoteCompleteModal'
+import { awardActivityPoint } from '../common/usePoints'
 
 export type Review = {
   id: string
@@ -58,6 +59,7 @@ function ReviewList({ reviews, totalCount, averageRating }: Props) {
   function handleSubmit() {
     setShowWriteSheet(false)
     setShowModal(true)
+    awardActivityPoint('shopping-review-write', 10)
   }
 
   return (
@@ -67,7 +69,7 @@ function ReviewList({ reviews, totalCount, averageRating }: Props) {
       isOpen={showModal}
       question="리뷰 작성"
       selectedOption="리뷰 완료"
-      reward="+30p"
+      reward="+10P"
       onClose={() => setShowModal(false)}
     />
     <div>

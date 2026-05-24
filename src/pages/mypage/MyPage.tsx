@@ -76,8 +76,8 @@ export default function MyPage() {
   const activityCounts = getMyPageActivityCounts(email)
   const stats: MyPageStatItem[] = [
     { id: 'likes', value: String(activityCounts.likes), label: '좋아요', highlight: true, clickable: true },
-    { id: 'posts', value: String(activityCounts.posts), label: '게시글', clickable: true },
-    { id: 'comments', value: String(activityCounts.comments), label: '댓글', clickable: true },
+    { id: 'posts', value: String(activityCounts.posts), label: '게시글', highlight: true, clickable: true },
+    { id: 'comments', value: String(activityCounts.comments), label: '댓글', highlight: true, clickable: true },
   ]
 
   const pct = Math.round((goal.current / goal.target) * 100)

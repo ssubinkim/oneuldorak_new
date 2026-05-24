@@ -57,10 +57,16 @@
   justify-content: center;
 }
 
-.profile-edit-avatar img {
+.profile-edit-avatar__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.profile-edit-avatar__image.is-mascot {
+  object-fit: contain;
+  padding: 12px;
+  box-sizing: border-box;
 }
 
 .profile-edit-camera-btn {
@@ -77,6 +83,96 @@
   justify-content: center;
   cursor: pointer;
   padding: 0;
+}
+
+.profile-edit-avatar-sheet {
+  background: #fff;
+}
+
+.profile-edit-avatar-sheet__content {
+  padding: 8px 20px 28px;
+}
+
+.profile-edit-avatar-sheet__title {
+  margin: 0 0 18px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #3c3c3c;
+}
+
+.profile-edit-avatar-sheet__mascot-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.profile-edit-avatar-sheet__mascot {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #3c3c3c;
+}
+
+.profile-edit-avatar-sheet__mascot-image-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #f8f8f8;
+  border: 1.5px solid #e4e4e4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+
+.profile-edit-avatar-sheet__mascot-image {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.profile-edit-avatar-sheet__mascot-label {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.profile-edit-avatar-sheet__mascot.is-selected .profile-edit-avatar-sheet__mascot-image-wrap {
+  background: #fff8d8;
+  border-color: #ffd515;
+  transform: translateY(-1px);
+}
+
+.profile-edit-avatar-sheet__actions {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-edit-avatar-sheet__action {
+  width: 100%;
+  height: 50px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.profile-edit-avatar-sheet__action--primary {
+  background: #ffd515;
+  color: #3c3c3c;
+}
+
+.profile-edit-avatar-sheet__action--secondary {
+  background: #f3f3f3;
+  color: #6a6a6a;
 }
 
 /* ── 폼 본문 ── */

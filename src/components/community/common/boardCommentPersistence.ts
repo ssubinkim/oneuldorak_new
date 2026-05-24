@@ -21,6 +21,7 @@ function isBoardComment(value: unknown): value is BoardComment {
     typeof value.id === 'string' &&
     typeof value.user === 'string' &&
     (typeof value.authorId === 'string' || typeof value.authorId === 'undefined') &&
+    (typeof value.avatar === 'string' || typeof value.avatar === 'undefined') &&
     typeof value.timeAgo === 'string' &&
     typeof value.text === 'string'
   )

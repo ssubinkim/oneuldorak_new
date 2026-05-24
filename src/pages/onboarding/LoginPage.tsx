@@ -5,6 +5,7 @@ import LoginSignupModal from '../../components/onboarding/loginpage/LoginSignupM
 import LoginWelcome from '../../components/onboarding/loginpage/LoginWelcome'
 import SocialLoginOptions from '../../components/onboarding/loginpage/SocialLoginOptions'
 import { saveUserProfile } from '../../components/common/useUserProfile'
+import { initializePointsForLogin } from '../../components/common/usePoints'
 import { markAttendanceStampPending } from '../../components/mypage/mypageAttendance'
 import '../../styles/Tailwind.css'
 import './LoginPage.css'
@@ -35,6 +36,7 @@ function LoginPage() {
         password: dummyAccount.password,
         isNew: false,
       })
+      initializePointsForLogin()
       markAttendanceStampPending('login')
       window.location.hash = '#/home'
       return

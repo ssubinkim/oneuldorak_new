@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import { useUserProfile } from '../../components/common/useUserProfile'
+import { awardActivityPoint } from '../../components/common/usePoints'
 import type { BoardDetailPost } from '../../components/community/boarddetailpage/BoardContent'
 import type { BoardPost } from '../../components/community/boardpage/BoardList'
 import {
@@ -279,6 +280,7 @@ function createRegisteredBoardPost(
   payload: Extract<CommunityWritePayload, { tab: 'board' }>,
   user: string,
   authorId: string,
+  avatar?: string,
 ): BoardPost {
   const { data } = payload
 
@@ -289,6 +291,7 @@ function createRegisteredBoardPost(
     body: getSummaryText(data.content, '방금 등록한 게시글입니다.'),
     user,
     authorId,
+    avatar,
     timeAgo: '방금 전',
     likes: 0,
     comments: 0,
@@ -299,6 +302,7 @@ async function createRegisteredBoardDetailPost(
   payload: Extract<CommunityWritePayload, { tab: 'board' }>,
   author: string,
   authorId: string,
+  avatar?: string,
 ): Promise<BoardDetailPost> {
   const { data } = payload
   const trimmedParagraphs = data.content
@@ -313,6 +317,7 @@ async function createRegisteredBoardDetailPost(
     title: getFilledText(data.title, '새 게시글'),
     author,
     authorId,
+    avatar,
     timeAgo: '방금 전',
     likes: 0,
     comments: 0,
@@ -356,7 +361,7 @@ function normalizeRegisteredBoardDetailPosts(posts: BoardDetailPost[]) {
 }
 
 function Community() {
-  const { email, nickname } = useUserProfile()
+  const { email, nickname, avatar } = useUserProfile()
   const [initialTarget] = useState(getCommunityInitialTargetFromHash)
   const [persistedWriteState] = useState(readPersistedCommunityWriteState)
   const [activeTab, setActiveTab] = useState<CommunityTab>(() => {
@@ -584,14 +589,20 @@ function Community() {
       setView('vote')
       nextTarget = { tab: 'vote', targetId: nextVote.id }
     } else {
-      const nextListPost = createRegisteredBoardPost(payload, nickname, email)
-      const nextDetailPost = await createRegisteredBoardDetailPost(payload, nickname, email)
+      const nextListPost = createRegisteredBoardPost(payload, nickname, email, avatar)
+      const nextDetailPost = await createRegisteredBoardDetailPost(payload, nickname, email, avatar)
 
       setRegisteredBoardPosts((prevPosts) => [nextListPost, ...prevPosts])
       setRegisteredBoardDetailPosts((prevPosts) => [{ ...nextDetailPost, id: nextListPost.id }, ...prevPosts])
       setActiveTab('free')
       setView('free')
       nextTarget = { tab: 'free', targetId: nextListPost.id }
+    }
+
+    if (payload.tab === 'vote') {
+      awardActivityPoint('vote-write', 3)
+    } else {
+      awardActivityPoint('post-write', 3)
     }
 
     if (nextTarget) {

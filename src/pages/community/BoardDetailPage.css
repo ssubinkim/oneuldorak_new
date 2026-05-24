@@ -117,6 +117,16 @@
   flex-shrink: 0;
 }
 
+.board-detail-meta__avatar.is-mascot {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  object-position: center;
+  padding: 0;
+  margin: -1px;
+  box-sizing: border-box;
+}
+
 .board-detail-stats {
   display: flex;
   align-items: center;
@@ -357,6 +367,13 @@
   height: 24px;
   object-fit: cover;
   object-position: center center;
+}
+
+.board-detail-comment-avatar img.is-mascot {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  object-position: center;
 }
 
 .board-detail-comment__content {

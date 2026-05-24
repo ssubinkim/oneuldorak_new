@@ -15,6 +15,7 @@ import {
   readPersistedBoardLikeKeys,
   savePersistedBoardLikeKeys,
 } from '../../components/community/common/boardReactionPersistence'
+import { awardActivityPoint } from '../../components/common/usePoints'
 import RelatedBoards from '../../components/community/boarddetailpage/RelatedBoards'
 import './BoardDetailPage.css'
 
@@ -79,7 +80,7 @@ function BoardDetailPage({
   onDeletePost,
   extraPosts = [],
 }: BoardDetailPageProps) {
-  const { email, nickname } = useUserProfile()
+  const { email, nickname, avatar } = useUserProfile()
   const pageRef = useRef<HTMLElement | null>(null)
   const allPosts = [...extraPosts, ...mockBoardDetailPosts]
   const fallbackPost = allPosts[0]
@@ -99,6 +100,7 @@ function BoardDetailPage({
     ? {
         ...post,
         likes: Math.max(0, post.likes + (isBoardPostLiked ? 1 : 0)),
+        comments: commentList.length,
       }
     : post
   const canManagePost = Boolean(
@@ -133,11 +135,17 @@ function BoardDetailPage({
       return
     }
 
+    const willLike = !isBoardPostLiked
+
     setLikedBoardPostKeys((previousKeys) =>
       previousKeys.includes(boardReactionKey)
         ? previousKeys.filter((key) => key !== boardReactionKey)
         : [...previousKeys, boardReactionKey],
     )
+
+    if (willLike && post?.authorId === email) {
+      awardActivityPoint('popular-post-register', 5, post.id)
+    }
   }
 
   const handleSavePostEdit = async () => {
@@ -193,6 +201,7 @@ function BoardDetailPage({
             id: createTemporaryCommentId(),
             user: nickname,
             authorId: email,
+            avatar,
             timeAgo: '방금 전',
             text: trimmedText,
           },
@@ -200,6 +209,8 @@ function BoardDetailPage({
         ],
       }
     })
+
+    awardActivityPoint('comment-write', 1)
   }
 
   const handleUpdateComment = (commentId: string, text: string) => {
