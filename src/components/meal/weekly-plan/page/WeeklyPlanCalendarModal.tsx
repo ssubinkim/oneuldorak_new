@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { DAY_LABELS, getCalDate, getCalMonth, YEAR as CUR_YEAR, MONTH as CUR_MONTH } from './weeklyPlanConstants'
+import { DAY_LABELS, getCalDate, getCalMonth, YEAR as CUR_YEAR } from './weeklyPlanConstants'
 
 const WEEK_DATES = Array.from({ length: 7 }, (_, i) => ({
   dayNum: i + 1,

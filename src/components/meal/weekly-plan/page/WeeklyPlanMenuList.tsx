@@ -18,7 +18,7 @@ type WeeklyPlanMenuListProps = {
   }[]
 }
 
-function WeeklyPlanMenuList({ month, selectedDate, menus }: WeeklyPlanMenuListProps) {
+function WeeklyPlanMenuList({ selectedDate, menus }: WeeklyPlanMenuListProps) {
   const cardRefs = useRef<Record<number, HTMLDivElement | null>>({})
   const listRef = useRef<HTMLDivElement | null>(null)
 
