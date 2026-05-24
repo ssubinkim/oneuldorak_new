@@ -112,7 +112,7 @@ function PlannerSection({ onDirectSelect }: Props) {
           aria-label="플래너 달력 열기"
           onClick={() => { window.location.hash = '#/meal-weekly-plan' }}
         >
-          <CalendarPlusIcon width="22" height="22" stroke="#3C3C3C" aria-hidden="true" />
+          <CalendarPlusIcon width="22" height="22" style={{ color: '#767676' }} aria-hidden="true" />
         </button>
       </div>
 
@@ -146,7 +146,7 @@ function PlannerSection({ onDirectSelect }: Props) {
         <div className="planner__card-header">
           <div className="planner__today-label">
             <ChefHatIcon width="20" height="20" stroke="#3C3C3C" aria-hidden="true" />
-            <span>Today</span>
+            <span style={{ paddingTop: '2px' }}>Today</span>
           </div>
           <button
             className="planner__edit-btn"

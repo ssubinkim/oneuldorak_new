@@ -9,17 +9,19 @@
 /* ── 헤더 ────────────────────────────── */
 .planner__header {
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 18px;
+  /* margin-bottom: 18px; */
   border-bottom: 1px solid #D1D1D1;
-  padding-bottom: 12px; 
+  padding-bottom: 6px;
+
 }
 
 .planner__title-wrap {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  padding-left: 4px;
 }
 
 .planner__ai-badge {
@@ -40,23 +42,23 @@
 .planner__title {
   margin: 0;
   font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #1a1a1a;
   line-height: 1.2;
   letter-spacing: -0.08px;
   padding-top: 4px;
+  padding-left: 4px;
 }
 
 .planner__cal-btn {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  /* padding: 4px; */
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  margin-top: 26px;
   color: inherit;
   -webkit-tap-highlight-color: transparent;
 }
@@ -66,7 +68,7 @@
   position: relative;
   overflow: hidden;
   margin-bottom: 2px;
-  padding: 3px;
+  padding: 8px 0 4px 0;
   margin-left: -3px;
   margin-right: -3px;
 }
@@ -102,7 +104,7 @@
 
 .planner__day-num {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   color: #5f5f5f;
   line-height: 24px;
   height: 24px;
@@ -116,10 +118,12 @@
 
 .planner__day--active .planner__day-name {
   color: #1a1a1a;
+  font-weight: 500;
 }
 
 .planner__day--active .planner__day-num {
   color: #1a1a1a;
+  font-weight: 500;
 }
 
 
@@ -159,12 +163,12 @@
 .planner__today-label {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 20px;
+  gap: 4px;
+  font-size: 18px;
   font-weight: 600;
   color: #3c3c3c;
   line-height: 1.2;
-  padding:0 4px;
+  padding: 2px 4px 0;
   font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
 }
 

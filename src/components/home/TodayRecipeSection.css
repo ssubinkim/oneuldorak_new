@@ -109,7 +109,7 @@
   top: 10px;
   right: 10px;
   padding: 2px 8px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   color: #fffffd;
   background: rgba(0, 0, 0, 0.32);
@@ -154,14 +154,14 @@
 }
 
 .recipe-img-card__name {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 400;
   line-height: 1.2;
   color: #fffffd;
 }
 
 .recipe-img-card__meta {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.85);
 }

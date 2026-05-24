@@ -19,14 +19,20 @@ type WeeklyPlanMenuListProps = {
 
 function WeeklyPlanMenuList({ month, selectedDate, menus }: WeeklyPlanMenuListProps) {
   const cardRefs = useRef<Record<number, HTMLDivElement | null>>({})
+  const listRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    const el = cardRefs.current[selectedDate]
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    const isFirst = selectedDate === menus[0]?.date
+    if (isFirst) {
+      listRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      const el = cardRefs.current[selectedDate]
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
   }, [selectedDate])
 
   return (
-    <div className="wpp-menu-list">
+    <div className="wpp-menu-list" ref={listRef}>
       {menus.map((menu) => {
         const isToday = menu.date === selectedDate
         const isThinking = menu.status === 'thinking'
@@ -38,6 +44,7 @@ function WeeklyPlanMenuList({ month, selectedDate, menus }: WeeklyPlanMenuListPr
               <span className="wpp-menu-label-date">{month}/{menu.date}</span>
             </div>
 
+            <div className="wpp-menu-body">
             <div className="wpp-menu-img-wrap">
               {menu.image ? <img src={menu.image} alt={menu.name} className="wpp-menu-img" /> : <div className="wpp-menu-img-empty"><img src={blueThink} alt="메뉴 없음" style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>}
             </div>
@@ -59,6 +66,7 @@ function WeeklyPlanMenuList({ month, selectedDate, menus }: WeeklyPlanMenuListPr
             </div>
 
             {!isThinking && <ChevronRight />}
+            </div>
           </div>
         )
       })}

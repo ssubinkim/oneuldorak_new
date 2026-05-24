@@ -87,6 +87,7 @@
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 1.2;
   letter-spacing: -0.08px;
+  padding-bottom: 4px;
 }
 
 .meal-hero__mascot {
@@ -95,7 +96,7 @@
   height: 110px;
   object-fit: contain;
   right: 10px;
-  top: -26px;
+  top: -22px;
 }
 
 /* ── 콘텐츠 영역 ─────────────────────── */

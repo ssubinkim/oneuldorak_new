@@ -8,10 +8,10 @@ export function BackIcon() {
 
 export function CalendarIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-      <rect x="2" y="3" width="16" height="15" rx="3" stroke="#aaa" strokeWidth="1.5" />
-      <path d="M2 8h16" stroke="#aaa" strokeWidth="1.5" />
-      <path d="M6 1v4M14 1v4" stroke="#aaa" strokeWidth="1.5" strokeLinecap="round" />
+    <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+      <rect x="2" y="3" width="16" height="15" rx="3" stroke="#767676" strokeWidth="1.5" />
+      <path d="M2 8h16" stroke="#767676" strokeWidth="1.5" />
+      <path d="M6 1v4M14 1v4" stroke="#767676" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   )
 }
