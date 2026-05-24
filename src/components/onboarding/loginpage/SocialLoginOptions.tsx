@@ -9,11 +9,15 @@ const socialOptions = [
   { label: '카카오 로그인', icon: kakaoIcon, className: 'social-login-options__button--kakao' },
 ]
 
-function SocialLoginOptions() {
+type SocialLoginOptionsProps = {
+  dividerText?: string
+}
+
+function SocialLoginOptions({ dividerText = '또는' }: SocialLoginOptionsProps) {
   return (
     <div className="social-login-options" aria-label="소셜 로그인">
       <div className="social-login-options__divider">
-        <span>또는</span>
+        <span>{dividerText}</span>
       </div>
 
       <div className="social-login-options__list">
