@@ -1,3 +1,5 @@
+import type { SVGProps } from 'react'
+
 export function BackIcon() {
   return (
     <svg width="10" height="18" viewBox="0 0 10 18" fill="none">
@@ -36,9 +38,9 @@ export function ClockIcon() {
   )
 }
 
-export function ChevronRight() {
+export function ChevronRight({ style, ...rest }: SVGProps<SVGSVGElement>) {
   return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, ...style }} {...rest}>
       <path d="m5 3 4 4-4 4" stroke="#767676" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
