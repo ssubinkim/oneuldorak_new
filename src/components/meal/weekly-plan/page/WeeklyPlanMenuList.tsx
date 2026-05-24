@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { ChevronRight, ClockIcon } from './WeeklyPlanIcons'
+import { ChevronRight } from './WeeklyPlanIcons'
+import AlarmIcon from '../../../../assets/icons/alarm.svg?react'
 import { usageBadgeStyle } from './weeklyPlanConstants'
 import blueThink from '../../../../assets/food_mascot/blue_think.png'
 
@@ -52,7 +53,7 @@ function WeeklyPlanMenuList({ month, selectedDate, menus }: WeeklyPlanMenuListPr
             <div className="wpp-menu-info">
               <p className="wpp-menu-name">{menu.name}</p>
               {!isThinking && menu.time && (
-                <p className="wpp-menu-time"><ClockIcon /> 약 {menu.time}</p>
+                <p className="wpp-menu-time"><AlarmIcon width="14" height="14" /> {menu.time}</p>
               )}
               {isThinking ? (
                 <button className="wpp-ai-btn">✦ AI 추천받기 &gt;</button>

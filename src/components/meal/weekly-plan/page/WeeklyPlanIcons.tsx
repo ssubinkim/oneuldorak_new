@@ -39,7 +39,7 @@ export function ClockIcon() {
 export function ChevronRight() {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
-      <path d="m5 3 4 4-4 4" stroke="#ccc" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="m5 3 4 4-4 4" stroke="#767676" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }

@@ -9,9 +9,9 @@ export function BackIcon() {
 export function CartIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-      <path d="M1 1h2.5l1.8 9h8.4l1.8-6H4.5" stroke="#333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="7" cy="15.5" r="1.2" fill="#333" />
-      <circle cx="13" cy="15.5" r="1.2" fill="#333" />
+      <path d="M1 1h2.5l1.8 9h8.4l1.8-6H4.5" stroke="#3c3c3c" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="7" cy="15.5" r="1.2" fill="#3c3c3c" />
+      <circle cx="13" cy="15.5" r="1.2" fill="#3c3c3c" />
     </svg>
   )
 }

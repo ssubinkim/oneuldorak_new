@@ -131,8 +131,8 @@
 .gp-tab-badge {
   background: #FFDB78;
   color: #7a5000;
-  font-size: 11px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: 600;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -162,9 +162,9 @@
 .gp-section-title {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 16px;
-  font-weight: 800;
+  gap: 6px;
+  font-size: 20px;
+  font-weight: 600;
   color: var(--color-text-main);
   margin-bottom: 16px;
 }
@@ -175,6 +175,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 12px;
+  padding-top: 10px;
 }
 
 .gp-check-label {
@@ -182,6 +183,7 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  padding-left: 16px;
 }
 
 .gp-checkbox {
@@ -189,10 +191,10 @@
 }
 
 .gp-check-box {
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
-  border: 1.5px solid #ddd;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1.2px solid #d8d8d8;
   background: #fff;
   display: flex;
   align-items: center;
@@ -218,24 +220,24 @@
 }
 
 .gp-check-text {
-  font-size: 14px;
-  color: #666;
+  font-size: 16px;
+  color: #5f5f5f;
 }
 
 .gp-delete-btn {
   background: none;
   border: none;
-  font-size: 13px;
-  color: #aaa;
+  font-size: 14px;
+  color: #767676;
   cursor: pointer;
-  padding: 0;
+  padding-left: 4px;
 }
 
 /* ── 아이템 리스트 ───────────────────────────── */
 .gp-item-list {
   background: #fff;
-  border: 1px solid #f0f0f0;
-  border-radius: 14px;
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
   overflow: hidden;
   margin-bottom: 24px;
 }
@@ -245,7 +247,7 @@
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid #d8d8d8;
   cursor: pointer;
 }
 
@@ -254,8 +256,8 @@
 }
 
 .gp-item-img {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -272,13 +274,22 @@
   width: 100%;
   background: #FFDB78;
   border: none;
-  border-radius: 14px;
-  padding: 17px;
+  border-radius: 10px;
+  padding: 14px;
   font-size: 16px;
-  font-weight: 700;
-  color: var(--color-text-main);
+  font-weight: 500;
+  color: #3c3c3c;
   cursor: pointer;
   transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'NanumSquareNeo', sans-serif;
+}
+
+.gp-cart-btn svg path {
+  stroke-width: 1.4;
 }
 
 .gp-cart-btn:active { opacity: 0.85; }

@@ -52,7 +52,7 @@ function GroceryShoppingTab({ items, setItems }: GroceryShoppingTabProps) {
         ))}
       </div>
 
-      <button className="gp-cart-btn">🛒 장바구니에 담기 ({checkedCount})</button>
+      <button className="gp-cart-btn"><CartIcon /> 장바구니에 담기 ({checkedCount})</button>
     </div>
   )
 }

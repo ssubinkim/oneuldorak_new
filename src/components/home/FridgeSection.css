@@ -58,6 +58,7 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   padding-left: 4px;
+  padding-bottom: 2px;
 }
 
 .fridge-sec__scroll::-webkit-scrollbar {
