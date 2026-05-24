@@ -7,6 +7,7 @@ import {
 import receiptMascotImage from '../../components/chatbot/images/chatbot .png'
 import cameraIcon from '../../components/chatbot/images/chat_camera.png'
 import galleryIcon from '../../components/chatbot/images/gall.png'
+import arrowLeftIcon from '../../assets/icons/arrow_left.svg'
 import './ReceiptAnalysis.css'
 
 type UploadSource = 'camera' | 'album'
@@ -166,6 +167,7 @@ function ReceiptAnalysis() {
   }
 
   const usableItems = result?.items.filter((item) => item.lunchboxUsable) ?? []
+  const isIntroFullscreen = !isAnalyzing && !result && !imageDataUrl && !errorMessage
 
   return (
     <div className="app-shell">
@@ -178,7 +180,7 @@ function ReceiptAnalysis() {
               aria-label="챗봇으로 돌아가기"
               onClick={() => { window.location.hash = '#/chatbot' }}
             >
-              ‹
+              <img className="receipt-analysis-header__back-icon" src={arrowLeftIcon} alt="" aria-hidden="true" />
             </button>
             <div>
               <p className="receipt-analysis-header__eyebrow">AI 영수증 분석</p>
@@ -186,79 +188,81 @@ function ReceiptAnalysis() {
             </div>
           </header>
 
-          <section className="receipt-analysis-hero">
-            <div className="receipt-analysis-hero__copy">
-              <p className="receipt-analysis-hero__label">영수증 한 장이면 충분해요</p>
-              <p className="receipt-analysis-hero__text">
-                구매 품목과 지출을 읽고, 도시락에 바로 쓸 수 있는 재료와 절약 포인트를 정리해드릴게요.
-              </p>
-            </div>
-            <img className="receipt-analysis-hero__mascot" src={receiptMascotImage} alt="" aria-hidden="true" />
-          </section>
-
-          <section className="receipt-upload-card">
-            <div className="receipt-upload-card__header">
-              <h2>영수증 사진 올리기</h2>
-              <p>글자가 잘 보이도록 밝은 곳에서 영수증 전체가 나오게 찍어주세요.</p>
-            </div>
-
-            <div className="receipt-upload-actions" aria-label="영수증 사진 선택 방식">
-              <button
-                className="receipt-upload-actions__button"
-                type="button"
-                onClick={() => cameraInputRef.current?.click()}
-              >
-                <img src={cameraIcon} alt="" aria-hidden="true" />
-                <span>카메라로 촬영</span>
-              </button>
-              <button
-                className="receipt-upload-actions__button"
-                type="button"
-                onClick={() => albumInputRef.current?.click()}
-              >
-                <img src={galleryIcon} alt="" aria-hidden="true" />
-                <span>앨범에서 선택</span>
-              </button>
-            </div>
-
-            {imageDataUrl ? (
-              <div className="receipt-preview">
-                <img src={imageDataUrl} alt="선택한 영수증 미리보기" />
-                <div className="receipt-preview__meta">
-                  <strong>{fileLabel || '선택한 영수증'}</strong>
-                  <span>이미지는 서버로 전송되기 전에 자동으로 압축돼요.</span>
-                </div>
+          <div className={`receipt-analysis-intro-stack${isIntroFullscreen ? ' is-fullscreen' : ''}`}>
+            <section className="receipt-analysis-hero">
+              <div className="receipt-analysis-hero__copy">
+                <p className="receipt-analysis-hero__label">영수증 한 장이면 충분해요</p>
+                <p className="receipt-analysis-hero__text">
+                  구매 품목과 지출을 읽고, 도시락에 바로 쓸 수 있는 재료와 절약 포인트를 정리해드릴게요.
+                </p>
               </div>
-            ) : (
-              <div className="receipt-guide-card">
-                <strong>예시로 이런 내용을 분석해요</strong>
-                <span>마트 영수증, 편의점 구매 내역, 장보기 결제 내역</span>
-                <span>잘 안 보이는 금액과 품목은 추측하지 않고 확인 어려움으로 표시해요.</span>
+              <img className="receipt-analysis-hero__mascot" src={receiptMascotImage} alt="" aria-hidden="true" />
+            </section>
+
+            <section className="receipt-upload-card">
+              <div className="receipt-upload-card__header">
+                <h2>영수증 사진 올리기</h2>
+                <p>글자가 잘 보이도록 밝은 곳에서 영수증 전체가 나오게 찍어주세요.</p>
               </div>
-            )}
 
-            {errorMessage ? (
-              <p className="receipt-analysis-error" role="alert">
-                {errorMessage}
-              </p>
-            ) : null}
-
-            <div className="receipt-upload-card__footer">
-              <button
-                className="receipt-analysis-primary"
-                type="button"
-                disabled={!imageDataUrl || isAnalyzing}
-                onClick={handleAnalyze}
-              >
-                {isAnalyzing ? '분석 중...' : result ? '다시 분석하기' : '분석하기'}
-              </button>
-              {imageDataUrl ? (
-                <button className="receipt-analysis-secondary" type="button" onClick={handleReset}>
-                  새 영수증 선택
+              <div className="receipt-upload-actions" aria-label="영수증 사진 선택 방식">
+                <button
+                  className="receipt-upload-actions__button"
+                  type="button"
+                  onClick={() => cameraInputRef.current?.click()}
+                >
+                  <img src={cameraIcon} alt="" aria-hidden="true" />
+                  <span>카메라로 촬영</span>
                 </button>
+                <button
+                  className="receipt-upload-actions__button"
+                  type="button"
+                  onClick={() => albumInputRef.current?.click()}
+                >
+                  <img src={galleryIcon} alt="" aria-hidden="true" />
+                  <span>앨범에서 선택</span>
+                </button>
+              </div>
+
+              {imageDataUrl ? (
+                <div className="receipt-preview">
+                  <img src={imageDataUrl} alt="선택한 영수증 미리보기" />
+                  <div className="receipt-preview__meta">
+                    <strong>{fileLabel || '선택한 영수증'}</strong>
+                    <span>이미지는 서버로 전송되기 전에 자동으로 압축돼요.</span>
+                  </div>
+                </div>
+              ) : (
+                <div className="receipt-guide-card" aria-label="영수증 분석 예시 안내">
+                  <strong>이런 영수증을 잘 분석해요</strong>
+                  <span>마트 영수증, 편의점 구매 내역, 장보기 결제 내역</span>
+                  <span>글자가 흐리거나 일부가 가려진 항목은 추측하지 않고 ‘확인 어려움’으로 안내해요.</span>
+                </div>
+              )}
+
+              {errorMessage ? (
+                <p className="receipt-analysis-error" role="alert">
+                  {errorMessage}
+                </p>
               ) : null}
-            </div>
-          </section>
+
+              <div className="receipt-upload-card__footer">
+                <button
+                  className="receipt-analysis-primary"
+                  type="button"
+                  disabled={!imageDataUrl || isAnalyzing}
+                  onClick={handleAnalyze}
+                >
+                  {isAnalyzing ? '분석 중...' : result ? '다시 분석하기' : '분석하기'}
+                </button>
+                {imageDataUrl ? (
+                  <button className="receipt-analysis-secondary" type="button" onClick={handleReset}>
+                    새 영수증 선택
+                  </button>
+                ) : null}
+              </div>
+            </section>
+          </div>
 
           {isAnalyzing ? (
             <section className="receipt-loading-card" aria-live="polite">
