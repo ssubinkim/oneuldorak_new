@@ -38,6 +38,7 @@ type VoteCompleteModalProps = {
   isOpen: boolean
   question: string
   selectedOption: string
+  reward?: string
   onClose: () => void
 }
 
@@ -45,6 +46,7 @@ function VoteCompleteModal({
   isOpen,
   question,
   selectedOption,
+  reward,
   onClose,
 }: VoteCompleteModalProps) {
   const [isVisualReady, setIsVisualReady] = useState(false)
@@ -126,6 +128,7 @@ function VoteCompleteModal({
         <p id="vote-complete-modal-description">{descriptionText}</p>
         <p className="vote-complete-modal__sr-only">
           {question} 투표에서 {selectedOption} 항목을 선택했습니다.
+          {reward ? ` ${reward} 보상을 획득했습니다.` : ''}
         </p>
       </section>
     </div>,
