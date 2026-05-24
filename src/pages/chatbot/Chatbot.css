@@ -325,6 +325,44 @@
   z-index: 20;
 }
 
+.chatbot-photo-purpose {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 4px 2px;
+  padding: 0 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chatbot-photo-purpose::-webkit-scrollbar {
+  display: none;
+}
+
+.chatbot-photo-purpose__chip {
+  flex-shrink: 0;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid #d2d9ee;
+  border-radius: 999px;
+  background: #fff;
+  color: #5f6e8d;
+  font-family: "Pretendard Variable";
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 130%;
+}
+
+.chatbot-photo-purpose__chip.is-active {
+  border-color: #4E7FFF;
+  background: #EFF4FF;
+  color: #2449b2;
+}
+
+.chatbot-page--chat .chatbot-photo-purpose {
+  margin: 0 8px 4px;
+}
+
 .chatbot-page--coachmark .chatbot-camera {
   position: relative;
   z-index: 34;
@@ -349,6 +387,17 @@
 @media (max-width: 420px) {
   .chatbot-page {
     --chatbot-page-padding-top: max(24px, calc(16px + env(safe-area-inset-top, 0px)));
+  }
+
+  .chatbot-photo-purpose {
+    margin-right: 2px;
+    margin-left: 2px;
+  }
+
+  .chatbot-photo-purpose__chip {
+    height: 28px;
+    padding: 0 10px;
+    font-size: 12px;
   }
 
   .chatbot-greeting {
@@ -380,6 +429,10 @@
   .chatbot-page {
     padding-right: calc(16px + env(safe-area-inset-right));
     padding-left: calc(16px + env(safe-area-inset-left));
+  }
+
+  .chatbot-photo-purpose {
+    gap: 6px;
   }
 
   .chatbot-greeting {

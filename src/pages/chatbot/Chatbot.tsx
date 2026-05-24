@@ -45,6 +45,7 @@ function shouldSkipCoachMark() {
 
 type CameraPickMode = 'camera' | 'album'
 type JudgeMode = 'text' | 'photo'
+type PhotoPurposeFeature = 'receipt-analysis' | 'fridge-photo-analysis' | 'buy-or-not'
 
 type OpenChatOptions = {
   useApi?: boolean
@@ -57,12 +58,22 @@ type OpenChatOptions = {
 
 const JUDGE_TEXT_QUERY = '살까말까 고민 중이야. 오늘 도시락 기준으로 사도 될지 판단해줘.'
 const JUDGE_PHOTO_QUERY = '사진으로 살까말까 판단받고 싶어.'
-const CAMERA_ANALYZE_QUERY = '사진으로 살까말까 판단받고 싶어.'
+const CAMERA_ANALYZE_QUERY = '사진을 올려서 분석하고 싶어.'
+const PHOTO_PURPOSE_OPTIONS: Array<{
+  label: string
+  feature: PhotoPurposeFeature
+  analysisType: AnalysisType
+}> = [
+  { label: '영수증', feature: 'receipt-analysis', analysisType: 'receipt' },
+  { label: '냉장고', feature: 'fridge-photo-analysis', analysisType: 'menu' },
+  { label: '살까말까', feature: 'buy-or-not', analysisType: 'judge' },
+]
 
 function Chatbot() {
   const [showCoachMark, setShowCoachMark] = useState(() => !shouldSkipCoachMark())
   const [showJudgeModeSheet, setShowJudgeModeSheet] = useState(false)
   const [showCameraSheet, setShowCameraSheet] = useState(false)
+  const [selectedPhotoPurpose, setSelectedPhotoPurpose] = useState<PhotoPurposeFeature | null>(null)
   const { nickname } = useUserProfile()
   const displayName = nickname?.trim() || '도시락러버'
 
@@ -109,25 +120,25 @@ function Chatbot() {
 
   const handleTakePhoto = () => {
     setShowCameraSheet(false)
+    const selectedPurpose = PHOTO_PURPOSE_OPTIONS.find((option) => option.feature === selectedPhotoPurpose)
     openChatPage(CAMERA_ANALYZE_QUERY, 'quick', {
       useApi: true,
       openPicker: true,
       pick: 'camera',
-      analysisType: 'judge',
-      judgeMode: 'photo',
-      feature: 'buy-or-not',
+      analysisType: selectedPurpose?.analysisType,
+      feature: selectedPurpose?.feature,
     })
   }
 
   const handleSelectFromAlbum = () => {
     setShowCameraSheet(false)
+    const selectedPurpose = PHOTO_PURPOSE_OPTIONS.find((option) => option.feature === selectedPhotoPurpose)
     openChatPage(CAMERA_ANALYZE_QUERY, 'quick', {
       useApi: true,
       openPicker: true,
       pick: 'album',
-      analysisType: 'judge',
-      judgeMode: 'photo',
-      feature: 'buy-or-not',
+      analysisType: selectedPurpose?.analysisType,
+      feature: selectedPurpose?.feature,
     })
   }
 
@@ -231,6 +242,26 @@ function Chatbot() {
 
           {!showCameraSheet && !showJudgeModeSheet ? (
             <section className="chatbot-bottom">
+              <div className="chatbot-photo-purpose" role="radiogroup" aria-label="사진 분석 목적 선택">
+                {PHOTO_PURPOSE_OPTIONS.map((option) => {
+                  const selected = selectedPhotoPurpose === option.feature
+                  return (
+                    <button
+                      key={option.feature}
+                      className={`chatbot-photo-purpose__chip${selected ? ' is-active' : ''}`}
+                      type="button"
+                      role="radio"
+                      aria-checked={selected}
+                      onClick={() => {
+                        setShowCoachMark(false)
+                        setSelectedPhotoPurpose((current) => (current === option.feature ? null : option.feature))
+                      }}
+                    >
+                      {option.label}
+                    </button>
+                  )
+                })}
+              </div>
               <ChatbotInputBar
                 onSubmit={handleSubmit}
                 onCameraClick={() => {
