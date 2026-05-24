@@ -146,6 +146,16 @@
   border-radius: 20px;
 }
 
+.free-post-card__meta img.is-mascot {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  object-position: center;
+  padding: 0;
+  margin: -1px;
+  box-sizing: border-box;
+}
+
 .free-post-card__stats {
   display: inline-flex;
   align-items: center;

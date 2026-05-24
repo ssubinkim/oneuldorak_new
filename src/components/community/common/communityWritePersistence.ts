@@ -226,6 +226,7 @@ export function readPersistedCommunityWriteState(): PersistedCommunityWriteState
       title: post.title,
       author: post.user,
       authorId: post.authorId,
+      avatar: post.avatar,
       timeAgo: post.timeAgo,
       likes: post.likes,
       comments: post.comments,

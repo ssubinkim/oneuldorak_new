@@ -6,6 +6,7 @@ type RecipeDetailTopBarProps = {
   isSaved?: boolean
   onLikeClick?: () => void
   onSaveClick?: () => void
+  onShareClick?: () => void
 }
 
 function RecipeDetailTopBar({
@@ -14,6 +15,7 @@ function RecipeDetailTopBar({
   isSaved = false,
   onLikeClick,
   onSaveClick,
+  onShareClick,
 }: RecipeDetailTopBarProps) {
   return (
     <section className="recipe-detail-topbar" aria-label="레시피 상세 메뉴">
@@ -28,7 +30,7 @@ function RecipeDetailTopBar({
         <IconButton label="북마크" pressed={isSaved} onClick={onSaveClick}>
           <StatIcon type="bookmark" />
         </IconButton>
-        <IconButton label="공유하기">
+        <IconButton label="공유하기" onClick={onShareClick}>
           <StatIcon type="share" />
         </IconButton>
       </div>

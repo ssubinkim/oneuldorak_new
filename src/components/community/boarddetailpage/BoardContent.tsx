@@ -1,4 +1,5 @@
 import { type ReactNode, useMemo } from 'react'
+import { useUserProfile } from '../../common/useUserProfile'
 import carrotPro from '../../../assets/food_mascot/carrot_pro.png'
 import broPro from '../../../assets/food_mascot/bro_pro.png'
 import strawPro from '../../../assets/food_mascot/straw_pro.png'
@@ -15,6 +16,7 @@ export type BoardDetailPost = {
   title: string
   author: string
   authorId?: string
+  avatar?: string
   mascot?: string
   timeAgo: string
   likes: number
@@ -47,13 +49,23 @@ type BoardContentProps = {
   ownerActions?: ReactNode
 }
 
+function isMascotAvatarImage(src?: string) {
+  if (!src) return false
+  return src.includes('_pro') || src.includes('_mascot') || src.includes('food_mascot')
+}
+
 function BoardContent({
   post,
   isLiked = false,
   onLikeClick,
   ownerActions,
 }: BoardContentProps) {
+  const { email, nickname, avatar } = useUserProfile()
   const randomMascot = useMemo(() => proMascots[Math.floor(Math.random() * proMascots.length)], [])
+  const isOwnPost = Boolean(post.authorId && post.authorId === email)
+  const displayName = isOwnPost ? nickname : post.author
+  const displayAvatar = isOwnPost ? avatar ?? post.avatar ?? post.mascot ?? randomMascot : post.avatar ?? post.mascot ?? randomMascot
+  const isMascotAvatar = isMascotAvatarImage(displayAvatar)
 
   return (
     <>
@@ -61,8 +73,13 @@ function BoardContent({
 
       <div className="board-detail-meta-row">
         <p className="board-detail-meta">
-          <img src={randomMascot} alt="" aria-hidden="true" className="board-detail-meta__avatar" />
-          {post.author} · {post.timeAgo}
+          <img
+            src={displayAvatar}
+            alt=""
+            aria-hidden="true"
+            className={`board-detail-meta__avatar${isMascotAvatar ? ' is-mascot' : ''}`}
+          />
+          {displayName} · {post.timeAgo}
         </p>
 
         <div className="board-detail-stats">

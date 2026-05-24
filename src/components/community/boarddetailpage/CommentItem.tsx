@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useUserProfile } from '../../common/useUserProfile'
 import carrotPro from '../../../assets/food_mascot/carrot_pro.png'
 import broPro from '../../../assets/food_mascot/bro_pro.png'
 import strawPro from '../../../assets/food_mascot/straw_pro.png'
@@ -12,10 +13,16 @@ function getMascot(username: string): string {
   return proMascots[hash % proMascots.length]
 }
 
+function isMascotAvatarImage(src?: string) {
+  if (!src) return false
+  return src.includes('_pro') || src.includes('_mascot') || src.includes('food_mascot')
+}
+
 export type BoardComment = {
   id: string
   user: string
   authorId?: string
+  avatar?: string
   timeAgo: string
   text: string
 }
@@ -28,8 +35,13 @@ type CommentItemProps = {
 }
 
 function CommentItem({ comment, canManage, onUpdate, onDelete }: CommentItemProps) {
+  const { email, nickname, avatar } = useUserProfile()
   const [isEditing, setIsEditing] = useState(false)
   const [draftText, setDraftText] = useState(comment.text)
+  const isOwnComment = Boolean(comment.authorId && comment.authorId === email)
+  const displayName = isOwnComment ? nickname : comment.user
+  const displayAvatar = isOwnComment ? avatar ?? comment.avatar ?? getMascot(comment.user) : comment.avatar ?? getMascot(comment.user)
+  const isMascotAvatar = isMascotAvatarImage(displayAvatar)
 
   const handleCancelEdit = () => {
     setDraftText(comment.text)
@@ -50,13 +62,13 @@ function CommentItem({ comment, canManage, onUpdate, onDelete }: CommentItemProp
   return (
     <article className="board-detail-comment">
       <span className="board-detail-comment-avatar" aria-hidden="true">
-        <img src={getMascot(comment.user)} alt="" />
+        <img src={displayAvatar} alt="" className={isMascotAvatar ? 'is-mascot' : undefined} />
       </span>
 
       <div className="board-detail-comment__content">
         <div className="board-detail-comment__head">
           <h3>
-            {comment.user}
+            {displayName}
             <span>{comment.timeAgo}</span>
           </h3>
           {canManage && !isEditing && (

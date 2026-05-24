@@ -52,7 +52,7 @@ function PopularPostItem({ post, onOpenDetail }: { post: BoardPopularPost; onOpe
         <p className="board-popular-posts__body">{post.body}</p>
         <div className="board-popular-posts__footer">
           <span className="free-post-card__meta">
-            <img src={randomMascot} alt="" aria-hidden="true" />
+            <img src={randomMascot} alt="" aria-hidden="true" className="is-mascot" />
             {post.author}
           </span>
           <div className="board-popular-posts__stats">

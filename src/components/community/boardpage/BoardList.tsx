@@ -1,5 +1,6 @@
 import './BoardList.css'
 import React, { useEffect, useRef, useState, useMemo } from 'react'
+import { useUserProfile } from '../../common/useUserProfile'
 import carrotPro from '../../../assets/food_mascot/carrot_pro.png'
 import broPro from '../../../assets/food_mascot/bro_pro.png'
 import strawPro from '../../../assets/food_mascot/straw_pro.png'
@@ -19,6 +20,7 @@ export type BoardPost = {
   body: string
   user: string
   authorId?: string
+  avatar?: string
   mascot?: string
   timeAgo: string
   likes: number
@@ -32,6 +34,11 @@ type BoardListProps = {
   extraPosts?: BoardPost[]
   focusPostId?: string | null
   onFocusHandled?: () => void
+}
+
+function isMascotAvatarImage(src?: string) {
+  if (!src) return false
+  return src.includes('_pro') || src.includes('_mascot') || src.includes('food_mascot')
 }
 
 function HeartIcon({ filled }: { filled: boolean }) {
@@ -72,14 +79,24 @@ function BoardBanner() {
 function BoardCard({
   post,
   onOpenDetail,
+  currentUserId,
+  currentNickname,
+  currentAvatar,
 }: {
   post: BoardPost
   onOpenDetail: (postId: string) => void
+  currentUserId: string
+  currentNickname: string
+  currentAvatar?: string
 }) {
   const cardRef = useRef<HTMLElement>(null)
   const [liked, setLiked] = useState(false)
   const [likeCount, setLikeCount] = useState(post.likes)
   const randomMascot = useMemo(() => proMascots[Math.floor(Math.random() * proMascots.length)], [])
+  const isOwnPost = Boolean(post.authorId && post.authorId === currentUserId)
+  const displayName = isOwnPost ? currentNickname : post.user
+  const displayAvatar = isOwnPost ? currentAvatar ?? post.avatar ?? post.mascot ?? randomMascot : post.avatar ?? post.mascot ?? randomMascot
+  const isMascotAvatar = isMascotAvatarImage(displayAvatar)
 
   useEffect(() => {
     const card = cardRef.current
@@ -135,8 +152,8 @@ function BoardCard({
 
       <div className="free-post-card__bottom">
         <span className="free-post-card__meta">
-          <span aria-hidden="true"><img src={randomMascot} alt="" /></span>
-          {post.user}
+          <span aria-hidden="true"><img src={displayAvatar} alt="" className={isMascotAvatar ? 'is-mascot' : undefined} /></span>
+          {displayName}
         </span>
         <div className="free-post-card__stats">
           <button
@@ -189,6 +206,7 @@ function BoardList({
   focusPostId = null,
   onFocusHandled,
 }: BoardListProps) {
+  const { email, nickname, avatar } = useUserProfile()
   const listRef = useRef<HTMLElement | null>(null)
   const persistedComments = readPersistedBoardComments()
   const mockPostIds = new Set(mockBoardDetailPosts.map((p) => p.id))
@@ -235,6 +253,9 @@ function BoardList({
           <BoardCard
             post={post}
             onOpenDetail={onOpenDetail}
+            currentUserId={email}
+            currentNickname={nickname}
+            currentAvatar={avatar}
           />
         </React.Fragment>
       ))}

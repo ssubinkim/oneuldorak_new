@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState, type FormEvent } from 'react'
 import CommentItem, { type BoardComment } from './CommentItem'
 
 type CommentSectionProps = {
@@ -22,18 +22,31 @@ function CommentSection({
 }: CommentSectionProps) {
   const [commentText, setCommentText] = useState('')
   const [isExpanded, setIsExpanded] = useState(false)
+  const lastSubmittedRef = useRef<{ text: string; at: number } | null>(null)
 
   const visibleComments = isExpanded ? comments : comments.slice(0, INITIAL_VISIBLE_COUNT)
   const hiddenCount = comments.length - INITIAL_VISIBLE_COUNT
 
-  const handleSubmit = () => {
+  const handleSubmit = (event?: FormEvent<HTMLFormElement>) => {
+    event?.preventDefault()
+
     const trimmedText = commentText.trim()
 
     if (!trimmedText) {
       return
     }
 
+    const now = Date.now()
+    if (
+      lastSubmittedRef.current &&
+      lastSubmittedRef.current.text === trimmedText &&
+      now - lastSubmittedRef.current.at < 700
+    ) {
+      return
+    }
+
     onAddComment(trimmedText)
+    lastSubmittedRef.current = { text: trimmedText, at: now }
     setCommentText('')
   }
 
@@ -43,7 +56,7 @@ function CommentSection({
         <h2>댓글 ({comments.length})</h2>
       </div>
 
-      <div className="board-detail-comments__input">
+      <form className="board-detail-comments__input" onSubmit={handleSubmit}>
         <span className="board-detail-comment-avatar" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <circle cx="12" cy="8.4" r="3.3" />
@@ -56,17 +69,21 @@ function CommentSection({
           value={commentText}
           onChange={(event) => setCommentText(event.target.value)}
           onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              handleSubmit()
+            if (event.key !== 'Enter') {
+              return
+            }
+
+            if (event.nativeEvent.isComposing || event.repeat) {
+              event.preventDefault()
             }
           }}
         />
-        <button type="button" aria-label="댓글 작성" onClick={handleSubmit}>
+        <button type="submit" aria-label="댓글 작성">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 19V5M6.5 10.5 12 5l5.5 5.5" />
           </svg>
         </button>
-      </div>
+      </form>
 
       <div className="board-detail-comments__list">
         {visibleComments.map((comment) => (

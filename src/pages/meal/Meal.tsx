@@ -7,6 +7,7 @@ import TodayRecipeSection from '../../components/home/TodayRecipeSection'
 import FridgeSection from '../../components/home/FridgeSection'
 import AttendanceStampModal from '../../components/mypage/my-page/AttendanceStampModal'
 import { useUserProfile } from '../../components/common/useUserProfile'
+import { awardActivityPoint } from '../../components/common/usePoints'
 import { consumeAttendanceStampPending, initAttendance } from '../../components/mypage/mypageAttendance'
 import type { DayMenu } from '../../components/meal/mealData'
 import bellIcon from '../../assets/icons/bell_icon.svg'
@@ -16,6 +17,12 @@ import '../../styles/Tailwind.css'
 import './Meal.css'
 
 const BUDGET = { current: 72000, target: 100000, saved: 54400 }
+
+function getSeoulDateKey() {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Seoul',
+  }).format(new Date())
+}
 
 function Meal() {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
@@ -36,6 +43,7 @@ function Meal() {
       initAttendance(isNew)
     }
 
+    awardActivityPoint('attendance-complete', 10, getSeoulDateKey())
     setIsAttendanceStampModalOpen(true)
   }, [isNew])
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import BottomSheet from '../common/BottomSheet'
+import { usePointBalance, usePointHistory, usePointProfile } from '../../common/usePoints'
 import { loadAttendanceDates, calcAttendanceStreak } from '../mypageAttendance'
 import pointIconImg from '../images/point-icon.svg'
 import day1Off from '../images/day1_off.png'
@@ -37,7 +38,7 @@ const ACTIVITY_POINTS = [
   { label: '카카오톡 공유', point: '+10P' },
 ]
 
-const HISTORY = [
+const DEFAULT_HISTORY = [
   { label: '게시글 작성', point: '+3P' },
   { label: '댓글 작성', point: '+1P' },
   { label: '출석 완료 보상', point: '+10P' },
@@ -50,6 +51,13 @@ const HISTORY = [
   { label: '댓글 작성', point: '+1P' },
 ]
 
+function formatPoint(point: number) {
+  return `+${point}P`
+}
+
+function toDisplayNumber(value: number) {
+  return value.toLocaleString()
+}
 
 type Tab = 'history' | 'attendance'
 
@@ -64,7 +72,28 @@ export default function PointBottomSheet({ open, onClose, totalPoints = 245, mon
   const [tab, setTab] = useState<Tab>('history')
   const [attendanceDates, setAttendanceDates] = useState<string[]>([])
   const [showActivityInfo, setShowActivityInfo] = useState(false)
-  const currentMonth = new Date().getMonth() + 1
+  const livePointBalance = usePointBalance()
+  const pointProfile = usePointProfile()
+  const pointHistory = usePointHistory()
+  const now = new Date()
+  const currentMonth = now.getMonth() + 1
+  const mappedPointHistory = pointHistory.map((item) => ({ label: item.label, point: formatPoint(item.point) }))
+  const historyItems = pointProfile === 'signup'
+    ? mappedPointHistory
+    : [...mappedPointHistory, ...DEFAULT_HISTORY]
+  const signupTotalPoints = pointHistory.reduce((sum, item) => sum + item.point, 0)
+  const signupMonthlyPoints = pointHistory.reduce((sum, item) => {
+    const createdAtDate = new Date(item.createdAt)
+    const isSameMonth = createdAtDate.getFullYear() === now.getFullYear() && createdAtDate.getMonth() === now.getMonth()
+
+    return isSameMonth ? sum + item.point : sum
+  }, 0)
+  const displayedTotalPoints = pointProfile === 'signup'
+    ? signupTotalPoints
+    : totalPoints ?? livePointBalance.totalPoints
+  const displayedMonthlyPoints = pointProfile === 'signup'
+    ? signupMonthlyPoints
+    : monthlyPoints ?? livePointBalance.monthlyPoints
 
   useEffect(() => {
     if (!open) {
@@ -125,23 +154,30 @@ export default function PointBottomSheet({ open, onClose, totalPoints = 245, mon
                   <div className="point-history-label-row">
                     <span className="point-history-card-label">나의 포인트</span>
                   </div>
-                  <div className="point-history-total">{totalPoints} <span>p</span></div>
+                  <div className="point-history-total">{toDisplayNumber(displayedTotalPoints)} <span>p</span></div>
                 </div>
               </div>
               <div className="point-history-monthly">
                 <span>{currentMonth}월에 받은 포인트</span>
-                <span className="point-history-monthly-val">{monthlyPoints}P</span>
+                <span className="point-history-monthly-val">{toDisplayNumber(displayedMonthlyPoints)}P</span>
               </div>
             </div>
 
             <div className="point-history-section-title">적립내역</div>
             <div className="point-history-list">
-              {HISTORY.map((item, i) => (
-                <div key={i} className="point-history-row">
-                  <span className="point-history-row-label">{item.label}</span>
-                  <span className="point-history-row-val">{item.point}</span>
+              {historyItems.length > 0 ? (
+                historyItems.map((item, i) => (
+                  <div key={`${item.label}-${i}`} className="point-history-row">
+                    <span className="point-history-row-label">{item.label}</span>
+                    <span className="point-history-row-val">{item.point}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="point-history-row">
+                  <span className="point-history-row-label">아직 적립 내역이 없어요</span>
+                  <span className="point-history-row-val">-</span>
                 </div>
-              ))}
+              )}
             </div>
           </div>
 

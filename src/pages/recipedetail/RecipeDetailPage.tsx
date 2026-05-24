@@ -9,6 +9,7 @@ import RecipeDetailIntro from '../../components/recipedetailpage/RecipeDetailInt
 import RecipeDetailMethod from '../../components/recipedetailpage/RecipeDetailMethod'
 import RecipeDetailSimilar from '../../components/recipedetailpage/RecipeDetailSimilar'
 import RecipeDetailTopBar from '../../components/recipedetailpage/RecipeDetailTopBar'
+import { awardActivityPoint } from '../../components/common/usePoints'
 import {
   cookingSteps,
   getRecipeDetail,
@@ -321,6 +322,36 @@ function RecipeDetailPage({
 
     setComments((previous) => [nextComment, ...previous])
     increaseStat('commentCount')
+    awardActivityPoint('comment-write', 1)
+  }
+
+  const handleShareClick = async () => {
+    const shareText = `${recipe.title} 레시피를 확인해보세요.`
+    const shareUrl = typeof window === 'undefined' ? '' : window.location.href
+
+    try {
+      if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+        await navigator.share({
+          title: recipe.title,
+          text: shareText,
+          url: shareUrl,
+        })
+      } else if (
+        typeof navigator !== 'undefined' &&
+        navigator.clipboard &&
+        typeof navigator.clipboard.writeText === 'function'
+      ) {
+        await navigator.clipboard.writeText(shareUrl)
+        window.alert('링크가 복사되었어요.')
+      } else {
+        window.alert('공유 기능을 사용할 수 없어요.')
+        return
+      }
+
+      awardActivityPoint('kakao-share', 10)
+    } catch {
+      // 공유 시트를 닫은 경우 등은 적립하지 않습니다.
+    }
   }
 
   const handleUpdateComment = (commentId: string, content: string) => {
@@ -362,6 +393,9 @@ function RecipeDetailPage({
         isSaved={recipeReactionState.isSaved}
         onLikeClick={handleToggleLike}
         onSaveClick={handleToggleSave}
+        onShareClick={() => {
+          void handleShareClick()
+        }}
       />
 
       <article className="recipe-detail-card">
