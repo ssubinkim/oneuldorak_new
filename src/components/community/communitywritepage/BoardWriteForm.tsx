@@ -36,7 +36,7 @@ function BoardWriteForm({ value, onChange }: BoardWriteFormProps) {
 
       <WriteTextField
         label="제목"
-        placeholder="예 ) 오플레 유통기한이 내일까지에요."
+        placeholder="예 ) 요플레 유통기한이 내일까지에요."
         maxLength={50}
         value={value.title}
         onChange={(event) => updateValue({ title: event.target.value })}

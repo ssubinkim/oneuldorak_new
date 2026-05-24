@@ -15,26 +15,27 @@
 .community-write-media-title-group {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   min-width: 0;
 }
 
 .community-write-media-label {
-  color: #000;
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 14px;
+  color: #3c3c3c;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
+  font-size: 18px;
   font-style: normal;
-  font-weight: 500;
-  line-height: 130%;
+  font-weight: 600;
+  line-height: 120%;
+  letter-spacing: -0.08px;
 }
 
 .community-write-media-limit,
 .community-write-media-header strong {
   color: #a3a3a3;
   font-family: 'Pretendard Variable', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 130%;
 }
 

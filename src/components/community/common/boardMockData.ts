@@ -7,6 +7,12 @@ import strawMascot from '../../../assets/food_mascot/straw_mascot.png'
 import blueMascot from '../../../assets/food_mascot/blue_mascot.png'
 import carrotMascot from '../../../assets/food_mascot/carrot_mascot.png'
 import broMascot from '../../../assets/food_mascot/bro_mascot.png'
+import lunchboxImage from '../../../assets/images/food_imges/today_menu.png'
+import kimchiImage from '../../../assets/images/food_imges/kimbok.png'
+import bibimbapImage from '../../../assets/images/food_imges/bibimbap.png'
+import talk1Image from '../common/images/talk1.png'
+import talk2Image from '../common/images/talk2.png'
+import talk3Image from '../common/images/talk3.png'
 
 const mascots = [eggMascot, strawMascot, blueMascot, carrotMascot, broMascot]
 
@@ -37,6 +43,10 @@ export const mockBoardDetailPosts: BoardDetailPost[] = [
       '국물 반찬은 작은 밀폐 통에 따로 담기',
       '과일이나 간식은 지퍼백에 미리 소분해두기',
       '주 2회는 냉동 반찬 활용해서 준비 시간 줄이기',
+    ],
+    media: [
+      { id: 'free-1-img-1', kind: 'image', url: lunchboxImage, name: '도시락 사진' },
+      { id: 'free-1-img-2', kind: 'image', url: bibimbapImage, name: '도시락 사진 2' },
     ],
   },
   {
@@ -75,6 +85,9 @@ export const mockBoardDetailPosts: BoardDetailPost[] = [
       '참치캔 있으면 셋 다 합쳐서 참치김치볶음으로 업그레이드',
       '남은 밥 없으면 당면 불려서 잡채식으로 변환',
       '마무리에 참기름 한 방울 넣으면 퀄리티가 달라짐',
+    ],
+    media: [
+      { id: 'free-3-img-1', kind: 'image', url: kimchiImage, name: '김치볶음밥 사진' },
     ],
   },
   {
@@ -129,6 +142,65 @@ export const mockBoardDetailPosts: BoardDetailPost[] = [
       '내일 도시락 싸야 하는데 이 조합으로 가능한 메뉴 아시는 분 있나요?',
     ],
     methods: [],
+  },
+  {
+    id: 'hot-1',
+    category: '꿀팁',
+    reward: '인기글 5P',
+    title: '도시락 싸기 전후 식비 비교해봤어요',
+    author: '절약도락이',
+    mascot: carrotMascot,
+    timeAgo: '1일 전',
+    likes: 100,
+    comments: 88,
+    paragraphs: [
+      '한 달 동안 도시락 싸기 전과 후로 식비를 꼼꼼히 기록해봤어요.',
+      '결과적으로 한 달에 약 12만원을 아꼈습니다. 생각보다 훨씬 차이가 크더라고요!',
+    ],
+    methods: [
+      '도시락 시작 전 한 달 평균 외식비: 약 38만원',
+      '도시락 시작 후 한 달 식재료비: 약 26만원',
+      '한 달 절약액: 약 12만원',
+    ],
+    media: [{ id: 'hot-1-img-1', kind: 'image', url: talk1Image, name: '식비 비교 사진' }],
+  },
+  {
+    id: 'hot-2',
+    category: '일상',
+    reward: '인기글 3P',
+    title: '오늘의 도시락 대실패 인증합니다',
+    author: '요리초보탈출',
+    mascot: strawMascot,
+    timeAgo: '1일 전',
+    likes: 96,
+    comments: 65,
+    paragraphs: [
+      '오늘 도시락 완전히 망했어요. 반찬이 다 짜고 밥은 설익었고…',
+      '그래도 직접 만든 거니까 맛있게 먹었습니다 ㅋㅋ 실패 공유해요!',
+    ],
+    methods: [],
+    media: [{ id: 'hot-2-img-1', kind: 'image', url: talk2Image, name: '도시락 실패 사진' }],
+  },
+  {
+    id: 'hot-3',
+    category: '꿀팁',
+    reward: '인기글 2P',
+    title: '저는 일요일 밤에 3일치만 준비해요',
+    author: '주말밀프렙',
+    mascot: blueMascot,
+    timeAgo: '2일 전',
+    likes: 65,
+    comments: 52,
+    paragraphs: [
+      '매일 아침 도시락 싸는 게 힘들어서 일요일 밤에 3일치를 한꺼번에 준비하는 방식으로 바꿨어요.',
+      '3일치만 하는 이유는 그 이상 되면 신선도가 걱정돼서요. 이 방법 추천드려요!',
+    ],
+    methods: [
+      '일요일 밤 1시간 투자로 월~수 도시락 완성',
+      '반찬 3가지 + 밥 분리 보관',
+      '목~금은 다시 수요일 밤에 준비',
+    ],
+    media: [{ id: 'hot-3-img-1', kind: 'image', url: talk3Image, name: '밀프렙 사진' }],
   },
 ]
 

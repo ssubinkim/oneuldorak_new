@@ -1,0 +1,42 @@
+.vote-toast {
+  position: fixed;
+  bottom: 120px;
+  left: 50%;
+  z-index: 1200;
+  transform: translateX(-50%) translateY(0);
+  padding: 12px 20px;
+  background: rgba(50, 50, 50, 0.92);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 24px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: vote-toast-in 220ms cubic-bezier(0.18, 1.1, 0.36, 1) both;
+}
+
+.vote-toast--hiding {
+  animation: vote-toast-out 200ms ease-in both;
+}
+
+@keyframes vote-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes vote-toast-out {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+  }
+}

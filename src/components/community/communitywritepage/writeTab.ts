@@ -1,1 +1,1 @@
-export type WriteTab = 'recipe' | 'board' | 'vote'
+export type WriteTab = 'board' | 'vote'

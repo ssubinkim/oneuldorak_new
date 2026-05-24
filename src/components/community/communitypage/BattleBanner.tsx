@@ -25,8 +25,8 @@ function BattleBanner() {
   return (
     <section className="battle-banner">
       <div className="battle-banner__header">
-        <h2>이번 주 도락 배틀</h2>
-        <p>주제에 맞는 도시락을 올려 참여해보세요!</p>
+        <h2>다가올 도락 배틀</h2>
+        <p>새로운 배틀이 찾아와요</p>
       </div>
 
       <div className="battle-banner__card">

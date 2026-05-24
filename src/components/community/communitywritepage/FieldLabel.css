@@ -1,9 +1,10 @@
 .community-write-label {
   margin: 0;
-  color: #000;
-  font-family: 'Pretendard Variable', sans-serif;
+  color: #3c3c3c;
+  font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
   font-size: 18px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 130%;
+  letter-spacing: -0.08px;
 }
