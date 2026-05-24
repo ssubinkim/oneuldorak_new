@@ -12,10 +12,24 @@ import '../../components/mypage/like-page/LikePage.css'
 
 type Props = { onBack?: () => void; initialTab?: LikePageTab }
 
+function getUrlParams() {
+  const params = new URLSearchParams(window.location.hash.split('?')[1] ?? '')
+  const tab = params.get('tab')
+  const from = params.get('from')
+  return {
+    tab: tab === 'recipe' || tab === 'post' ? tab as LikePageTab : null,
+    from,
+  }
+}
+
 export default function LikePage({ onBack, initialTab = 'recipe' }: Props) {
-  const handleBack = onBack ?? (() => { window.location.hash = '#/mypage' })
+  const { tab: urlTab, from } = getUrlParams()
+  const handleBack = onBack ?? (() => {
+    window.location.hash = from === 'recipe' ? '#/recipe' : '#/mypage'
+  })
   const userProfile = useUserProfile()
-  const [activeTab, setActiveTab] = useState<LikePageTab>(initialTab)
+  const visibleTabs: LikePageTab[] | undefined = urlTab ? [urlTab] : undefined
+  const [activeTab, setActiveTab] = useState<LikePageTab>(urlTab ?? initialTab)
 
   const dynamicBoardPosts = getLikedBoardPosts(userProfile.email)
   const likedPosts = [...dynamicBoardPosts, ...LIKED_POSTS]
@@ -24,7 +38,7 @@ export default function LikePage({ onBack, initialTab = 'recipe' }: Props) {
     <div className="app-shell">
       <div className="app-screen">
         <LikePageHeader onBack={handleBack} />
-        <LikePageTabs activeTab={activeTab} onTabChange={setActiveTab} />
+        <LikePageTabs activeTab={activeTab} onTabChange={setActiveTab} visibleTabs={visibleTabs} />
         <LikePageContent
           activeTab={activeTab}
           likedPosts={likedPosts}
