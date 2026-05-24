@@ -95,7 +95,12 @@
 }
 
 .chatbot-sheet.is-fridge .chatbot-sheet__title {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
+  padding: 0 20px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 128%;
+  letter-spacing: -0.02em;
 }
 
 .chatbot-sheet__description {
@@ -108,6 +113,13 @@
   font-style: normal;
   font-weight: 500;
   line-height: 130%; /* 18.2px */
+}
+
+.chatbot-sheet.is-fridge .chatbot-sheet__description {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 145%;
+  letter-spacing: -0.01em;
 }
 
 .chatbot-sheet__hero {
@@ -136,10 +148,10 @@
   text-align: center;
   font-feature-settings: 'liga' off, 'clig' off;
   font-family: "Pretendard Variable";
-  font-size: 16px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 600;
-  line-height: 130%; /* 20.8px */
+  line-height: 136%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,6 +179,7 @@
 .chatbot-sheet__tab-label {
   display: block;
   text-align: center;
+  letter-spacing: -0.01em;
 }
 
 .chatbot-sheet__tab.is-fridge:nth-child(2) .chatbot-sheet__tab-icon {
@@ -181,4 +194,3 @@
   background: var(--green-blue-blue08, #B3C8FF);
   color: #2f3749;
 }
-

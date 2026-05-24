@@ -64,6 +64,15 @@ const ONEULDORAK_SYSTEM_PROMPT = `
 
 type JsonRecord = Record<string, unknown>;
 type AnalysisType = "menu" | "receipt" | "judge";
+type AiFeature =
+  | "today-lunchbox-recommendation"
+  | "weekly-lunchbox-plan"
+  | "ingredient-recipes"
+  | "today-recommended-ingredients"
+  | "leftover-ingredients"
+  | "buy-or-not"
+  | "fridge-photo-analysis"
+  | "receipt-analysis";
 
 type OpenAIResponseData = JsonRecord & {
   output_text?: string;
@@ -73,17 +82,28 @@ type OpenAIResponseData = JsonRecord & {
   };
 };
 
+const AI_FEATURES: AiFeature[] = [
+  "today-lunchbox-recommendation",
+  "weekly-lunchbox-plan",
+  "ingredient-recipes",
+  "today-recommended-ingredients",
+  "leftover-ingredients",
+  "buy-or-not",
+  "fridge-photo-analysis",
+  "receipt-analysis",
+];
+
 function looksLikeVisionFailure(text: string) {
   return /사진.*볼 수 없|이미지.*볼 수 없|사진.*보이지 않|이미지.*보이지 않|재료.*알려주면/i.test(
     text
   );
 }
 
-function readMessageFromBody(body: unknown) {
+function readStringFieldFromBody(body: unknown, key: string) {
   if (typeof body === "string") {
     try {
       const parsed = JSON.parse(body) as JsonRecord;
-      return typeof parsed.message === "string" ? parsed.message.trim() : "";
+      return typeof parsed[key] === "string" ? parsed[key].trim() : "";
     } catch {
       return "";
     }
@@ -91,46 +111,26 @@ function readMessageFromBody(body: unknown) {
 
   if (body && typeof body === "object") {
     const candidate = body as JsonRecord;
-    return typeof candidate.message === "string" ? candidate.message.trim() : "";
+    return typeof candidate[key] === "string" ? candidate[key].trim() : "";
   }
 
   return "";
+}
+
+function readMessageFromBody(body: unknown) {
+  return readStringFieldFromBody(body, "message");
 }
 
 function readImageDataUrlFromBody(body: unknown) {
-  if (typeof body === "string") {
-    try {
-      const parsed = JSON.parse(body) as JsonRecord;
-      return typeof parsed.imageDataUrl === "string" ? parsed.imageDataUrl.trim() : "";
-    } catch {
-      return "";
-    }
-  }
-
-  if (body && typeof body === "object") {
-    const candidate = body as JsonRecord;
-    return typeof candidate.imageDataUrl === "string" ? candidate.imageDataUrl.trim() : "";
-  }
-
-  return "";
+  return readStringFieldFromBody(body, "imageDataUrl");
 }
 
 function readAnalysisTypeFromBody(body: unknown) {
-  if (typeof body === "string") {
-    try {
-      const parsed = JSON.parse(body) as JsonRecord;
-      return typeof parsed.analysisType === "string" ? parsed.analysisType.trim() : "";
-    } catch {
-      return "";
-    }
-  }
+  return readStringFieldFromBody(body, "analysisType");
+}
 
-  if (body && typeof body === "object") {
-    const candidate = body as JsonRecord;
-    return typeof candidate.analysisType === "string" ? candidate.analysisType.trim() : "";
-  }
-
-  return "";
+function readFeatureFromBody(body: unknown) {
+  return readStringFieldFromBody(body, "feature");
 }
 
 function normalizeAnalysisType(value: string): AnalysisType | "" {
@@ -138,6 +138,10 @@ function normalizeAnalysisType(value: string): AnalysisType | "" {
     return value;
   }
   return "";
+}
+
+function normalizeFeature(value: string): AiFeature | "" {
+  return AI_FEATURES.includes(value as AiFeature) ? (value as AiFeature) : "";
 }
 
 function inferAnalysisType(message: string, explicitType: AnalysisType | ""): AnalysisType {
@@ -158,7 +162,67 @@ function inferAnalysisType(message: string, explicitType: AnalysisType | ""): An
   return "menu";
 }
 
-function getAnalysisTypeInstruction(analysisType: AnalysisType) {
+function inferFeature(
+  message: string,
+  analysisType: AnalysisType,
+  imageDataUrl: string,
+  explicitFeature: AiFeature | ""
+): AiFeature {
+  if (explicitFeature) return explicitFeature;
+
+  const normalized = message.replace(/\s+/g, "").toLowerCase();
+
+  if (imageDataUrl && analysisType !== "judge") {
+    return analysisType === "receipt" ? "receipt-analysis" : "fridge-photo-analysis";
+  }
+
+  if (analysisType === "receipt") {
+    return "receipt-analysis";
+  }
+
+  if (analysisType === "judge") {
+    return "buy-or-not";
+  }
+
+  if (/weekly|week|주간|일주일|이번주|플랜/.test(normalized)) {
+    return "weekly-lunchbox-plan";
+  }
+
+  if (/추천재료|오늘추천재료|재료추천/.test(normalized)) {
+    return "today-recommended-ingredients";
+  }
+
+  if (/leftover|남은재료|남은|자투리|활용/.test(normalized)) {
+    return "leftover-ingredients";
+  }
+
+  if (/ingredient|recipe|재료별|레시피/.test(normalized)) {
+    return "ingredient-recipes";
+  }
+
+  if (/fridge|냉장고|사진분석/.test(normalized)) {
+    return "fridge-photo-analysis";
+  }
+
+  return "today-lunchbox-recommendation";
+}
+
+function getEffectiveAnalysisType(analysisType: AnalysisType, feature: AiFeature): AnalysisType {
+  if (feature === "buy-or-not") return "judge";
+  if (feature === "receipt-analysis") return "receipt";
+  if (feature === "fridge-photo-analysis") return "menu";
+  return analysisType;
+}
+
+function getMaxOutputTokens(feature: AiFeature) {
+  if (feature === "weekly-lunchbox-plan" || feature === "fridge-photo-analysis") {
+    return 520;
+  }
+
+  return 420;
+}
+
+function getAnalysisTypeInstruction(analysisType: AnalysisType, feature: AiFeature, hasImage: boolean) {
   if (analysisType === "receipt") {
     return `
 [현재 분석 유형: 영수증 분석]
@@ -171,7 +235,7 @@ function getAnalysisTypeInstruction(analysisType: AnalysisType) {
 `;
   }
 
-  if (analysisType === "judge") {
+  if (feature === "buy-or-not" || analysisType === "judge") {
     return `
 [현재 분석 유형: 살까 말까 판단]
 살까 말까 판단 형식으로만 답해.
@@ -180,6 +244,19 @@ function getAnalysisTypeInstruction(analysisType: AnalysisType) {
 - 도시락 활용도:
 - 가격/가성비 체크:
 - 추천 행동:
+`;
+  }
+
+  if (feature === "fridge-photo-analysis") {
+    return `
+[현재 기능: 냉장고 사진 분석]
+${hasImage ? "첨부된 냉장고 사진에서 실제로 보이는 식재료만 분석해." : "사진이 없으면 냉장고 사진을 올려 달라고 짧게 안내해."}
+아래 형식으로만 답해.
+- 확인된 재료:
+- 먼저 쓸 재료:
+- 오늘 추천 메뉴:
+- 간단한 조리법:
+- 보관/주의:
 `;
   }
 
@@ -232,10 +309,11 @@ function extractTextFromOpenAiResponse(data: OpenAIResponseData) {
 function buildUserContent(
   message: string,
   imageDataUrl: string,
-  analysisType: AnalysisType
+  analysisType: AnalysisType,
+  feature: AiFeature
 ) {
   const userContent: Array<Record<string, string>> = [];
-  const modeInstruction = getAnalysisTypeInstruction(analysisType);
+  const modeInstruction = getAnalysisTypeInstruction(analysisType, feature, Boolean(imageDataUrl));
 
   if (imageDataUrl) {
     userContent.push({
@@ -268,7 +346,8 @@ function buildRequestBody(
   model: string,
   message: string,
   imageDataUrl: string,
-  analysisType: AnalysisType
+  analysisType: AnalysisType,
+  feature: AiFeature
 ) {
   return {
     model,
@@ -276,10 +355,10 @@ function buildRequestBody(
     input: [
       {
         role: "user",
-        content: buildUserContent(message, imageDataUrl, analysisType),
+        content: buildUserContent(message, imageDataUrl, analysisType, feature),
       },
     ],
-    max_output_tokens: 360,
+    max_output_tokens: getMaxOutputTokens(feature),
   };
 }
 
@@ -288,7 +367,8 @@ async function requestOpenAiResponse(
   model: string,
   message: string,
   imageDataUrl: string,
-  analysisType: AnalysisType
+  analysisType: AnalysisType,
+  feature: AiFeature
 ) {
   const openaiResponse = await fetch(OPENAI_API_URL, {
     method: "POST",
@@ -296,7 +376,7 @@ async function requestOpenAiResponse(
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
-    body: JSON.stringify(buildRequestBody(model, message, imageDataUrl, analysisType)),
+    body: JSON.stringify(buildRequestBody(model, message, imageDataUrl, analysisType, feature)),
   });
 
   const data = (await openaiResponse.json()) as OpenAIResponseData;
@@ -341,10 +421,19 @@ export default async function handler(
   const message = readMessageFromBody(rawBody);
   const imageDataUrl = readImageDataUrlFromBody(rawBody);
   const analysisTypeRaw = readAnalysisTypeFromBody(rawBody);
-  const analysisType = inferAnalysisType(
+  const featureRaw = readFeatureFromBody(rawBody);
+
+  const requestedAnalysisType = inferAnalysisType(
     message,
     normalizeAnalysisType(analysisTypeRaw)
   );
+  const feature = inferFeature(
+    message,
+    requestedAnalysisType,
+    imageDataUrl,
+    normalizeFeature(featureRaw)
+  );
+  const analysisType = getEffectiveAnalysisType(requestedAnalysisType, feature);
 
   if (!message && !imageDataUrl) {
     return res.status(400).json({ error: "message 또는 imageDataUrl 값을 입력해 주세요." });
@@ -362,7 +451,8 @@ export default async function handler(
       primaryModel,
       message,
       imageDataUrl,
-      analysisType
+      analysisType,
+      feature
     );
 
     if (!openaiResponse.ok) {
@@ -386,7 +476,8 @@ export default async function handler(
         "gpt-4.1-mini",
         message,
         imageDataUrl,
-        analysisType
+        analysisType,
+        feature
       );
       if (secondTry.openaiResponse.ok) {
         const retryText = extractTextFromOpenAiResponse(secondTry.data);
@@ -396,7 +487,7 @@ export default async function handler(
       }
     }
 
-    return res.status(200).json({ text });
+    return res.status(200).json({ text, feature, analysisType });
   } catch (error) {
     const messageText =
       error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다.";

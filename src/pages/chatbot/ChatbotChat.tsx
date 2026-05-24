@@ -3,6 +3,8 @@ import type { ChatMessage } from '../../types/chatbot'
 import { appendChatbotHistoryMessage } from '../../components/common/aiDataHub'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import { requestAiChat } from '../../features/ai/services/aiApi'
+import { analyzeReceiptImage } from '../../features/ai/services/receiptApi'
+import { buildReceiptAnalysisChatText } from '../../features/ai/services/receiptChatFormatter'
 import { AI_FEATURES, type AiFeature, type AnalysisType, type RecipeData } from '../../features/ai/types/ai.types'
 import chatbotMascotIcon from '../../components/chatbot/images/chatbot .png'
 import defaultRecipeImage from '../../components/chatbot/images/tunamayo.png'
@@ -52,6 +54,8 @@ type RequestOptions = {
   suppressRecipeCard?: boolean
 }
 
+type ChatApiResponse = Awaited<ReturnType<typeof requestAiChat>>
+
 type FridgeIngredientCatalogItem = {
   label: string
   aliases: string[]
@@ -92,11 +96,6 @@ function shouldUseDesktopWebcam() {
 const JUDGE_PHOTO_PROMPT = '사진 속 도시락 관련 용품이나 식재료를 오늘 도시락 기준으로 살까말까 판단해줘. 사야 하는지/보류인지와 이유, 대체 선택지를 간단히 알려줘.'
 const FRIDGE_PHOTO_PROMPT = '냉장고 사진 속 식재료를 분석해서 확인된 재료, 먼저 써야 할 재료, 오늘 만들기 좋은 도시락 메뉴를 간단히 추천해줘.'
 const RECEIPT_PHOTO_PROMPT = '영수증 사진을 분석해서 구매 항목, 합계 금액, 도시락에 활용할 수 있는 재료, 절약 팁을 간단히 정리해줘.'
-const PHOTO_PURPOSE_OPTIONS: Array<{ label: string; feature: PhotoPurposeFeature }> = [
-  { label: '영수증', feature: 'receipt-analysis' },
-  { label: '냉장고', feature: 'fridge-photo-analysis' },
-  { label: '살까말까', feature: 'buy-or-not' },
-]
 
 const MAX_INPUT_IMAGE_FILE_SIZE = 20_000_000
 const MAX_IMAGE_DATA_URL_LENGTH = 3_600_000
@@ -707,6 +706,10 @@ function SplitGreeting({ displayName }: { displayName: string }) {
 function summarizeAiText(text: string) {
   const normalized = text.replace(/\s+/g, '')
 
+  if (/(영수증|총평|총지출|지출이큰항목|절약할수있는항목|장보기팁|다음장보기팁)/.test(normalized)) {
+    return '영수증 분석 결과를 정리해봤어요.'
+  }
+
   if (/(사도좋아요|구매추천|구매를추천)/.test(normalized)) {
     return '오늘 기준으로는 구매해도 괜찮아요.'
   }
@@ -721,10 +724,6 @@ function summarizeAiText(text: string) {
 
   if (/(추천메뉴|활용재료|예상조리시간|간단한조리법|절약포인트)/.test(normalized)) {
     return '도시락 추천 결과를 정리해봤어요.'
-  }
-
-  if (/(총평|지출이큰항목|절약할수있는항목|장보기팁)/.test(normalized)) {
-    return '영수증 분석 결과를 정리해봤어요.'
   }
 
   return '요청하신 내용을 보기 쉽게 정리해봤어요.'
@@ -886,6 +885,34 @@ function wait(ms: number) {
       resolve()
     }, ms)
   })
+}
+
+async function requestReceiptPhotoAnalysis(imageDataUrl: string): Promise<ChatApiResponse> {
+  const analysisResult = await analyzeReceiptImage(imageDataUrl)
+  const text = buildReceiptAnalysisChatText(analysisResult)
+  const createdAt = new Date().toISOString()
+
+  return {
+    id: `ai-receipt-${Date.now()}`,
+    feature: 'receipt-analysis',
+    status: 'success',
+    source: 'api',
+    text,
+    messages: [
+      {
+        id: `ai-receipt-text-${Date.now()}`,
+        type: 'ai-text',
+        role: 'assistant',
+        status: 'success',
+        feature: 'receipt-analysis',
+        source: 'api',
+        createdAt,
+        text,
+      },
+    ],
+    suggestions: [],
+    createdAt,
+  }
 }
 
 async function loadImageFromUrl(url: string) {
@@ -1098,13 +1125,19 @@ function ChatbotChat() {
     options: RequestOptions,
   ) => {
     try {
-      const response = await requestAiChat({
-        message: userText,
-        imageDataUrl: options.imageDataUrl,
-        analysisType: options.analysisType,
-        feature: options.feature,
-        forceMock: !options.useApi,
-      })
+      const receiptImageDataUrl = options.imageDataUrl?.trim()
+      const shouldUseReceiptAnalyzer = options.useApi
+        && options.feature === 'receipt-analysis'
+        && Boolean(receiptImageDataUrl)
+      const response = shouldUseReceiptAnalyzer && receiptImageDataUrl
+        ? await requestReceiptPhotoAnalysis(receiptImageDataUrl)
+        : await requestAiChat({
+          message: userText,
+          imageDataUrl: options.imageDataUrl,
+          analysisType: options.analysisType,
+          feature: options.feature,
+          forceMock: !options.useApi,
+        })
       await ensureFridgeLoadingDuration(pendingId)
       activeFeatureRef.current = response.feature
       activeAnalysisTypeRef.current = getAnalysisTypeForFeature(response.feature)
@@ -1231,29 +1264,33 @@ function ChatbotChat() {
   const handlePhotoPurposeSelect = useCallback((purposeFeature: PhotoPurposeFeature) => {
     const pendingPhotoSelection = pendingPhotoSelectionRef.current
     pendingPhotoSelectionRef.current = null
+
+    setSelectedPhotoPurpose(purposeFeature)
+    activeFeatureRef.current = purposeFeature
+    activeAnalysisTypeRef.current = getAnalysisTypeForFeature(purposeFeature)
+    if (purposeFeature === 'buy-or-not') {
+      setIsJudgeFlow(true)
+      setJudgeMode('photo')
+    } else {
+      setIsJudgeFlow(false)
+    }
+
     setShowPhotoPurposeSheet(false)
-    if (!pendingPhotoSelection) return
+    if (!pendingPhotoSelection) {
+      if (purposeFeature === 'receipt-analysis') {
+        window.location.hash = '#/receipt-analysis'
+        return
+      }
+      openCameraSheet(purposeFeature)
+      return
+    }
 
     submitPhotoForAnalysis(
       pendingPhotoSelection.imageDataUrl,
       pendingPhotoSelection.displayText,
       purposeFeature,
     )
-  }, [submitPhotoForAnalysis])
-
-  const handlePhotoPurposeChipClick = useCallback((purposeFeature: PhotoPurposeFeature) => {
-    const nextPurpose = selectedPhotoPurpose === purposeFeature ? null : purposeFeature
-    setSelectedPhotoPurpose(nextPurpose)
-
-    if (!nextPurpose) {
-      activeFeatureRef.current = null
-      activeAnalysisTypeRef.current = 'menu'
-      return
-    }
-
-    activeFeatureRef.current = nextPurpose
-    activeAnalysisTypeRef.current = getAnalysisTypeForFeature(nextPurpose)
-  }, [selectedPhotoPurpose])
+  }, [openCameraSheet, submitPhotoForAnalysis])
 
   useEffect(() => {
     if (hasInitializedRef.current) {
@@ -1393,7 +1430,7 @@ function ChatbotChat() {
       analysisType: isJudgeRoute ? 'judge' : (context.analysisType ?? inferAnalysisTypeFromText(context.query, 'menu')),
       feature: context.feature ?? undefined,
       judgeFlow: isJudgeRoute,
-      suppressRecipeCard: context.feature ? RECOMMENDATION_CARD_FEATURES.has(context.feature) : false,
+      suppressRecipeCard: false,
     })
   }, [openCameraSheet, openDesktopCamera, queueUserRequest])
 
@@ -1769,6 +1806,8 @@ function ChatbotChat() {
                   : null
                 const bubbleText = judgeResultDisplay
                   ? 'AI가 판단한 결과에요.'
+                  : msg.feature === 'receipt-analysis'
+                    ? '영수증 분석 결과를 정리해봤어요.'
                   : recommendationRecipe
                     ? '도시락 추천 결과를 정리해봤어요.'
                     : showFullTextInBubble
@@ -2179,27 +2218,10 @@ function ChatbotChat() {
 
           {!showCameraSheet && !showPhotoPurposeSheet && !showDesktopCamera ? (
             <section className="chatbot-bottom">
-              <div className="chatbot-photo-purpose" role="radiogroup" aria-label="사진 분석 목적 선택">
-                {PHOTO_PURPOSE_OPTIONS.map((option) => {
-                  const selected = selectedPhotoPurpose === option.feature
-                  return (
-                    <button
-                      key={option.feature}
-                      className={`chatbot-photo-purpose__chip${selected ? ' is-active' : ''}`}
-                      type="button"
-                      role="radio"
-                      aria-checked={selected}
-                      onClick={() => handlePhotoPurposeChipClick(option.feature)}
-                    >
-                      {option.label}
-                    </button>
-                  )
-                })}
-              </div>
               <ChatbotInputBar
                 onSubmit={addUserMessage}
                 onCameraClick={() => {
-                  openCameraSheet(selectedPhotoPurpose ?? activeFeatureRef.current ?? initialContext.feature)
+                  setShowPhotoPurposeSheet(true)
                 }}
               />
             </section>
