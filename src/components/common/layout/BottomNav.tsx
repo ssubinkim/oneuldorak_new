@@ -67,10 +67,22 @@ function buildBottomNavShapePath(width: number): string {
 }
 
 function getCurrentRoute(): BottomNavRoute {
-  const route = window.location.hash.replace('#/', '') as BottomNavRoute
+  const route = window.location.hash.replace('#/', '').split('?')[0]
+
+  if (route.startsWith('mypage')) {
+    return 'mypage'
+  }
+
+  if (route === 'home' || route.startsWith('meal')) {
+    return 'meal'
+  }
+
+  if (route.startsWith('chatbot') || route === 'receipt-analysis') {
+    return 'chatbot'
+  }
 
   if (navItems.some((item) => item.route === route)) {
-    return route
+    return route as BottomNavRoute
   }
 
   return 'meal'

@@ -13,6 +13,7 @@ import { getUserProfile } from './useUserProfile'
 const ONBOARDING_ANSWERS_STORAGE_KEY = 'oneuldorak:onboarding-answers'
 const GROCERY_SHOPPING_STORAGE_KEY = 'oneuldorak:grocery-shopping-items:v1'
 const CHATBOT_HISTORY_STORAGE_KEY = 'oneuldorak:chatbot-history:v1'
+const CHATBOT_FRIDGE_INGREDIENTS_STORAGE_KEY = 'oneuldorak:chatbot-fridge-ingredients:v1'
 
 type ChatbotHistorySource = 'input' | 'quick'
 
@@ -30,6 +31,7 @@ export type AiUserDataSnapshot = {
   onboardingAnswers: unknown
   recipeDetail: ReturnType<typeof getAllPersistedRecipeDetailState>
   groceryShoppingItems: ShoppingItem[]
+  chatbotFridgeIngredients: string[]
   chatbotHistory: ChatbotHistoryMessage[]
   communityWrite: ReturnType<typeof readPersistedCommunityWriteState>
   communityBoardMock: {
@@ -156,6 +158,54 @@ export function readChatbotHistory() {
   })
 }
 
+function normalizeIngredientLabel(value: unknown) {
+  return typeof value === 'string' ? value.trim() : ''
+}
+
+export function readChatbotFridgeIngredients() {
+  if (!isBrowser()) {
+    return [] as string[]
+  }
+
+  const storedIngredients = readJsonStorage<unknown>(window.localStorage, CHATBOT_FRIDGE_INGREDIENTS_STORAGE_KEY, [])
+
+  if (!Array.isArray(storedIngredients)) {
+    return [] as string[]
+  }
+
+  const uniqueLabels = new Set<string>()
+  const nextIngredients: string[] = []
+
+  storedIngredients.forEach((value) => {
+    const normalizedLabel = normalizeIngredientLabel(value)
+    if (!normalizedLabel || uniqueLabels.has(normalizedLabel)) {
+      return
+    }
+
+    uniqueLabels.add(normalizedLabel)
+    nextIngredients.push(normalizedLabel)
+  })
+
+  return nextIngredients
+}
+
+export function appendChatbotFridgeIngredients(labels: string[]) {
+  if (!isBrowser()) {
+    return [] as string[]
+  }
+
+  const nextSet = new Set(readChatbotFridgeIngredients())
+  labels.forEach((label) => {
+    const normalizedLabel = normalizeIngredientLabel(label)
+    if (!normalizedLabel) return
+    nextSet.add(normalizedLabel)
+  })
+
+  const nextIngredients = Array.from(nextSet)
+  writeJsonStorage(window.localStorage, CHATBOT_FRIDGE_INGREDIENTS_STORAGE_KEY, nextIngredients)
+  return nextIngredients
+}
+
 export function appendChatbotHistoryMessage(text: string, source: ChatbotHistorySource) {
   if (!isBrowser()) {
     return
@@ -189,6 +239,7 @@ export function getAiUserDataSnapshot(): AiUserDataSnapshot {
     groceryShoppingItems: isBrowser()
       ? readJsonStorage<ShoppingItem[]>(window.localStorage, GROCERY_SHOPPING_STORAGE_KEY, [])
       : [],
+    chatbotFridgeIngredients: readChatbotFridgeIngredients(),
     chatbotHistory: readChatbotHistory(),
     communityWrite: readPersistedCommunityWriteState(),
     communityBoardMock: {

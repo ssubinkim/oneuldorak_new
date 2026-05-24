@@ -37,6 +37,14 @@ export interface FridgeItem {
   category: Category
 }
 
+export const FRIDGE_LABEL_ALIASES: Record<string, string> = {
+  파: '대파',
+  통조림: '참치캔',
+  소세지: '소시지',
+  애플망고: '망고',
+  양배추: '상추',
+}
+
 export const FRIDGE_ITEMS: FridgeItem[] = [
   { id: 1,  name: '마늘',   image: garlicImg,      isEmoji: false, days: 2,    status: 'urgent',   category: '채소' },
   { id: 2,  name: '감자',   image: potatoImg,      isEmoji: false, days: 2,    status: 'urgent',   category: '채소' },
@@ -59,6 +67,39 @@ export const FRIDGE_ITEMS: FridgeItem[] = [
   { id: 19, name: '참치캔', image: tunaImg,        isEmoji: false, days: null, status: 'moderate', category: '단백질' },
   { id: 20, name: '옥수수', image: cornImg,        isEmoji: false, days: null, status: 'plenty',   category: '채소' },
 ]
+
+const FRIDGE_ITEM_BY_NAME = new Map(
+  FRIDGE_ITEMS.map((item) => [item.name, item]),
+)
+
+export function normalizeFridgeItemLabel(label: string) {
+  const trimmedLabel = label.trim()
+  if (!trimmedLabel) return ''
+  return FRIDGE_LABEL_ALIASES[trimmedLabel] ?? trimmedLabel
+}
+
+export function createFridgeItemFromLabel(label: string, id: number): FridgeItem {
+  const normalizedLabel = normalizeFridgeItemLabel(label)
+  const matchedItem = FRIDGE_ITEM_BY_NAME.get(normalizedLabel)
+
+  if (matchedItem) {
+    return {
+      ...matchedItem,
+      id,
+      name: label.trim() || matchedItem.name,
+    }
+  }
+
+  return {
+    id,
+    name: label.trim(),
+    image: carrotImg,
+    isEmoji: false,
+    days: null,
+    status: 'moderate',
+    category: '채소',
+  }
+}
 
 export const STATUS_INDEX: Record<Status, string> = {
   urgent: indexRedImg,

@@ -46,10 +46,16 @@ export default function LikePageContent({ activeTab, likedPosts, likedRecipes }:
       </div>
 
       <div className="like-list">
-        {isRecipe
-          ? likedRecipes.map((r) => <LikeRecipeCard key={r.id} recipe={r} />)
-          : likedPosts.map((p) => <LikePostCard key={p.id} post={p} />)
-        }
+        {count === 0 ? (
+          <div className="lp-card">
+            <div className="lp-card-title">아직 좋아요한 항목이 없어요</div>
+            <div className="lp-card-date">관심있는 레시피나 게시글에 좋아요를 눌러보세요.</div>
+          </div>
+        ) : (
+          isRecipe
+            ? likedRecipes.map((r) => <LikeRecipeCard key={r.id} recipe={r} />)
+            : likedPosts.map((p) => <LikePostCard key={p.id} post={p} />)
+        )}
       </div>
     </div>
   )

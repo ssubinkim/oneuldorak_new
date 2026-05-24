@@ -4,8 +4,7 @@ import LikePageContent from '../../components/mypage/like-page/LikePageContent'
 import LikePageHeader from '../../components/mypage/like-page/LikePageHeader'
 import LikePageTabs from '../../components/mypage/like-page/LikePageTabs'
 import type { LikePageTab } from '../../components/mypage/like-page/LikePageTabs'
-import { LIKE_RECIPES, LIKED_POSTS } from '../../components/mypage/like-page/likePageData'
-import { getLikedBoardPosts } from '../../components/mypage/mypageReactionData'
+import { getLikedBoardPosts, getLikedRecipes } from '../../components/mypage/mypageReactionData'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import '../../styles/Tailwind.css'
 import '../../components/mypage/like-page/LikePage.css'
@@ -31,8 +30,8 @@ export default function LikePage({ onBack, initialTab = 'recipe' }: Props) {
   const visibleTabs: LikePageTab[] | undefined = urlTab ? [urlTab] : undefined
   const [activeTab, setActiveTab] = useState<LikePageTab>(urlTab ?? initialTab)
 
-  const dynamicBoardPosts = getLikedBoardPosts(userProfile.email)
-  const likedPosts = [...dynamicBoardPosts, ...LIKED_POSTS]
+  const likedPosts = getLikedBoardPosts(userProfile.email)
+  const likedRecipes = getLikedRecipes()
 
   return (
     <div className="app-shell">
@@ -42,7 +41,7 @@ export default function LikePage({ onBack, initialTab = 'recipe' }: Props) {
         <LikePageContent
           activeTab={activeTab}
           likedPosts={likedPosts}
-          likedRecipes={LIKE_RECIPES}
+          likedRecipes={likedRecipes}
         />
         <BottomNav />
       </div>

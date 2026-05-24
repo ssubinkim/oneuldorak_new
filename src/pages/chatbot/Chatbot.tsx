@@ -76,7 +76,7 @@ function Chatbot() {
   const [showPhotoPurposeSheet, setShowPhotoPurposeSheet] = useState(false)
   const [selectedPhotoPurpose, setSelectedPhotoPurpose] = useState<PhotoPurposeFeature | null>(null)
   const { nickname } = useUserProfile()
-  const displayName = nickname?.trim() || '도시락러버'
+  const displayName = nickname?.trim() || '도락프렌즈'
 
   const openChatPage = (text: string, source: 'quick' | 'input', options?: OpenChatOptions) => {
     const params = new URLSearchParams()
