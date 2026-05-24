@@ -1,4 +1,11 @@
-import type { ReactNode } from 'react'
+import { type ReactNode, useMemo } from 'react'
+import carrotPro from '../../../assets/food_mascot/carrot_pro.png'
+import broPro from '../../../assets/food_mascot/bro_pro.png'
+import strawPro from '../../../assets/food_mascot/straw_pro.png'
+import eggPro from '../../../assets/food_mascot/egg_pro.png'
+import bluePro from '../../../assets/food_mascot/blue_pro.png'
+
+const proMascots = [carrotPro, broPro, strawPro, eggPro, bluePro]
 import type { CommunityMediaAttachment } from '../communitywritepage/writeTypes'
 
 export type BoardDetailPost = {
@@ -46,13 +53,15 @@ function BoardContent({
   onLikeClick,
   ownerActions,
 }: BoardContentProps) {
+  const randomMascot = useMemo(() => proMascots[Math.floor(Math.random() * proMascots.length)], [])
+
   return (
     <>
       <h1>{post.title}</h1>
 
       <div className="board-detail-meta-row">
         <p className="board-detail-meta">
-          {post.mascot && <img src={post.mascot} alt="" aria-hidden="true" className="board-detail-meta__avatar" />}
+          <img src={randomMascot} alt="" aria-hidden="true" className="board-detail-meta__avatar" />
           {post.author} · {post.timeAgo}
         </p>
 

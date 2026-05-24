@@ -21,15 +21,16 @@
 }
 
 .recipe-section__more {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   padding: 0;
   color: #767676;
   background: transparent;
   border: 0;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 130%;
   letter-spacing: -0.08px;

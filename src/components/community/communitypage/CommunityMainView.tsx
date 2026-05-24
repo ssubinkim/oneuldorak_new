@@ -107,7 +107,7 @@ function CommunityMainView({ activeTab, onSelectTab, onOpenBoardDetail }: Commun
           <Ranking rankings={dorakRankings} />
           <BattleBanner />
           <VoteList filter="active" variant="featured" onMoreClick={() => onSelectTab('vote')} />
-          <PopularPosts posts={hotPostsWithActualComments} onPostClick={onOpenBoardDetail} />
+          <PopularPosts posts={hotPostsWithActualComments} onPostClick={onOpenBoardDetail} onMoreClick={() => onSelectTab('free')} />
         </div>
       </div>
     </main>

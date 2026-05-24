@@ -36,12 +36,13 @@ function PopularPosts({ posts, onMoreClick, showHeaderImage = true, onPostClick 
       <div className="hot-posts__header">
         <div className="hot-posts__header-left">
           <h2>지금 인기 있는<br />냉털 이야기 👀</h2>
-          <div className="hot-posts__header-sub">
-            <span>이번주 인기글 TOP3</span>
-            <button type="button" onClick={onMoreClick}>보러가기 <ArrowRightIcon /></button>
-          </div>
         </div>
         {showHeaderImage && <img className="hot-posts__header-img" src={talkGroup} alt="" aria-hidden="true" />}
+      </div>
+
+      <div className="hot-posts__header-sub">
+        <span>실시간 인기글 TOP3</span>
+        <button type="button" className="hot-posts__more-btn" onClick={onMoreClick}>더보기 <ArrowRightIcon /></button>
       </div>
 
       <div className="story-list">

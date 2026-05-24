@@ -1,3 +1,5 @@
+import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
+import HeartIcon from '../../../assets/icons/heart.svg?react'
 import './Ranking.css'
 import no1Mascot from '../common/images/no1blue.png'
 import no2Mascot from '../common/images/no2bro.png'
@@ -48,7 +50,7 @@ function Ranking({
       <h2 className="dorak-ranking__header">명예의 전당</h2>
       <div className="dorak-ranking__subtitle-row">
         <p className="dorak-ranking__subtitle">지난 배틀의 주인공들을 소개합니다</p>
-        <button type="button" className="dorak-ranking__more">더보기 ›</button>
+        <button type="button" className="dorak-ranking__more">더보기 <ArrowRightIcon /></button>
       </div>
       <div className="dorak-ranking__podium">
         {podiumItems.map((item) => (
@@ -70,7 +72,7 @@ function Ranking({
             />
             <div className="dorak-ranking__info">
               <span className="dorak-ranking__name">{item.name}</span>
-              <span className="dorak-ranking__likes">♡ {item.likes}</span>
+              <span className="dorak-ranking__likes"><HeartIcon aria-hidden="true" style={{ color: '#EF5246' }} /> {item.likes}</span>
             </div>
           </div>
         ))}

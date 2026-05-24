@@ -9,7 +9,7 @@ type CommunityTabsProps = {
 
 const communityTabItems: { id: CommunityTabRoute; label: string }[] = [
   { id: 'all', label: '전체' },
-  { id: 'recipe', label: '레시피' },
+  { id: 'recipe', label: '도락배틀' },
   { id: 'free', label: '게시판' },
   { id: 'vote', label: '투표' },
 ]

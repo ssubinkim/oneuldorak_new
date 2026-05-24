@@ -46,8 +46,7 @@
   padding: 4px;
   display: flex;
   align-items: center;
-  opacity: 0.35;
-  pointer-events: none;
+  cursor: pointer;
 }
 
 .meal-hero__body {

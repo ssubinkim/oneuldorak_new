@@ -43,7 +43,7 @@
   width: 32px;
   height: 32px;
   padding: 0;
-  color: #26313a;
+  color: #3c3c3c;
   background: transparent;
   border: 0;
 }
@@ -51,7 +51,7 @@
 .board-detail-topbar svg {
   width: 23px;
   height: 23px;
-  stroke-width: 2.15;
+  stroke-width: 2;
 }
 
 .board-detail-topbar button.is-active {
@@ -111,8 +111,8 @@
 .board-detail-meta__avatar {
   width: 24px;
   height: 24px;
-  object-fit: contain;
-  border: 1.5px solid var(--color-border);
+  object-fit: cover;
+  border: 1px solid #d8d8d8;
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -123,7 +123,7 @@
   gap: 10px;
   flex-shrink: 0;
   color: #777;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1;
 }
@@ -341,20 +341,22 @@
 .board-detail-comment-avatar {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   flex: 0 0 30px;
   color: #b1b1b1;
-  background: #fff;
-  border: 1px solid #d7d7d7;
+  background: #fffffd;
+  border: 1px solid #d8d8d8;
   border-radius: 50%;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .board-detail-comment-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  object-position: center center;
 }
 
 .board-detail-comment__content {
