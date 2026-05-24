@@ -1,10 +1,13 @@
-﻿import { useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
 import MenuAddSheet from '../../components/meal/dashboard/MenuAddSheet'
 import BudgetCard from '../../components/home/BudgetCard'
 import PlannerSection from '../../components/home/PlannerSection'
 import TodayRecipeSection from '../../components/home/TodayRecipeSection'
 import FridgeSection from '../../components/home/FridgeSection'
+import AttendanceStampModal from '../../components/mypage/my-page/AttendanceStampModal'
+import { useUserProfile } from '../../components/common/useUserProfile'
+import { consumeAttendanceStampPending, initAttendance } from '../../components/mypage/mypageAttendance'
 import type { DayMenu } from '../../components/meal/mealData'
 import logoImg from '../../assets/logos/logo.svg'
 import bellIcon from '../../assets/icons/bell_icon.svg'
@@ -16,7 +19,24 @@ const BUDGET = { current: 72000, target: 100000, saved: 54400 }
 
 function Meal() {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
+  const [isAttendanceStampModalOpen, setIsAttendanceStampModalOpen] = useState(false)
   const [, setPlannedMenus] = useState<Record<number, DayMenu>>({})
+  const { isNew } = useUserProfile()
+
+  useEffect(() => {
+    const pendingStampType = consumeAttendanceStampPending()
+    if (!pendingStampType) return
+
+    if (pendingStampType === 'login') {
+      initAttendance(false)
+    } else if (pendingStampType === 'signup') {
+      initAttendance(true)
+    } else {
+      initAttendance(isNew)
+    }
+
+    setIsAttendanceStampModalOpen(true)
+  }, [isNew])
 
   const handleMenuAdd = (dayIndices: number[], menu: DayMenu) => {
     setPlannedMenus(prev => {
@@ -74,6 +94,10 @@ function Meal() {
           open={isSheetOpen}
           onClose={() => setIsSheetOpen(false)}
           onMenuAdd={handleMenuAdd}
+        />
+        <AttendanceStampModal
+          open={isAttendanceStampModalOpen}
+          onClose={() => setIsAttendanceStampModalOpen(false)}
         />
       </div>
     </div>

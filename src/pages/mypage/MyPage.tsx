@@ -11,7 +11,6 @@ import MyPageStats from '../../components/mypage/my-page/MyPageStats'
 import type { MyPageStatItem } from '../../components/mypage/my-page/MyPageStats'
 import PointBottomSheet from '../../components/mypage/my-page/PointBottomSheet'
 import { getMyPageActivityCounts } from '../../components/mypage/mypageReactionData'
-import { initAttendance } from '../../components/mypage/mypageAttendance'
 import { NOTIFICATIONS } from '../../components/mypage/notification/notificationData'
 import { hasUnreadNotifications } from '../../components/mypage/notification/notificationState'
 import bellIcon from '../../assets/icons/bell_icon.svg'
@@ -41,9 +40,6 @@ export default function MyPage() {
     return () => window.removeEventListener('hashchange', check)
   }, [isNew])
 
-  useEffect(() => {
-    initAttendance(isNew)
-  }, [isNew])
   const { totalPoints, monthlyPoints } = usePointBalance()
   const activityCounts = getMyPageActivityCounts(email)
   const stats: MyPageStatItem[] = [

@@ -1,9 +1,11 @@
 import { useState, type FormEvent } from 'react'
 import LoginActionButtons from '../../components/onboarding/loginpage/LoginActionButtons'
 import LoginInputField from '../../components/onboarding/loginpage/LoginInputField'
+import LoginSignupModal from '../../components/onboarding/loginpage/LoginSignupModal'
 import LoginWelcome from '../../components/onboarding/loginpage/LoginWelcome'
 import SocialLoginOptions from '../../components/onboarding/loginpage/SocialLoginOptions'
 import { saveUserProfile } from '../../components/common/useUserProfile'
+import { markAttendanceStampPending } from '../../components/mypage/mypageAttendance'
 import '../../styles/Tailwind.css'
 import './LoginPage.css'
 
@@ -33,6 +35,7 @@ function LoginPage() {
         password: dummyAccount.password,
         isNew: false,
       })
+      markAttendanceStampPending('login')
       window.location.hash = '#/home'
       return
     }
@@ -85,45 +88,11 @@ function LoginPage() {
         </section>
       </main>
 
-      {showSignupModal && (
-        <div
-          className="login-signup-modal"
-          role="presentation"
-          onClick={() => setShowSignupModal(false)}
-        >
-          <section
-            className="login-signup-modal__panel"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="signup-modal-title"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <p className="login-signup-modal__emoji" aria-hidden="true">🚀</p>
-            <h2 id="signup-modal-title" className="login-signup-modal__title">
-              아직 도락이가 아니에요!
-            </h2>
-            <p className="login-signup-modal__desc">
-              회원가입하고 나만의 도시락 추천을 받아보세요.
-            </p>
-            <div className="login-signup-modal__actions">
-              <button
-                className="login-signup-modal__button login-signup-modal__button--primary"
-                type="button"
-                onClick={handleGoToOnboarding}
-              >
-                회원가입 하러가기
-              </button>
-              <button
-                className="login-signup-modal__button login-signup-modal__button--secondary"
-                type="button"
-                onClick={() => setShowSignupModal(false)}
-              >
-                닫기
-              </button>
-            </div>
-          </section>
-        </div>
-      )}
+      <LoginSignupModal
+        open={showSignupModal}
+        onClose={() => setShowSignupModal(false)}
+        onGoSignup={handleGoToOnboarding}
+      />
     </div>
   )
 }

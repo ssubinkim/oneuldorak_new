@@ -1,7 +1,33 @@
 export const MYPAGE_ATTENDANCE_KEY = 'mypage_attendance_dates'
+export const ATTENDANCE_STAMP_PENDING_KEY = 'oneuldorak:attendance-stamp-pending'
+export type AttendanceStampPendingType = 'login' | 'signup' | 'unknown'
 
 function getTodayStr() {
   return new Date().toISOString().slice(0, 10)
+}
+
+export function markAttendanceStampPending(type: 'login' | 'signup') {
+  if (typeof window === 'undefined') return
+  window.sessionStorage.setItem(ATTENDANCE_STAMP_PENDING_KEY, type)
+}
+
+export function consumeAttendanceStampPending(): AttendanceStampPendingType | null {
+  if (typeof window === 'undefined') return null
+  const pending = window.sessionStorage.getItem(ATTENDANCE_STAMP_PENDING_KEY)
+  if (!pending) return null
+
+  window.sessionStorage.removeItem(ATTENDANCE_STAMP_PENDING_KEY)
+
+  if (pending === 'login' || pending === 'signup') {
+    return pending
+  }
+
+  // Backward compatibility for existing sessions that stored "true".
+  if (pending === 'true') {
+    return 'unknown'
+  }
+
+  return null
 }
 
 export function loadAttendanceDates(): string[] {

@@ -3,6 +3,7 @@ import SignupCharacterBanner from '../../components/onboarding/signuppage/Signup
 import SignupInputField from '../../components/onboarding/signuppage/SignupInputField'
 import SocialLoginOptions from '../../components/onboarding/loginpage/SocialLoginOptions'
 import { saveUserProfile } from '../../components/common/useUserProfile'
+import { markAttendanceStampPending } from '../../components/mypage/mypageAttendance'
 import '../../styles/Tailwind.css'
 import './SignupPage.css'
 
@@ -36,6 +37,7 @@ function SignupPage() {
       nickname,
       isNew: true,
     })
+    markAttendanceStampPending('signup')
     window.location.hash = '#/onboarding'
   }
 
