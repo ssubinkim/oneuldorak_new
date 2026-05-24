@@ -1,0 +1,184 @@
+.attendance-stamp-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(17, 24, 39, 0.34);
+  animation: attendance-stamp-fade-in 160ms ease-out both;
+}
+
+.attendance-stamp-modal__panel {
+  width: min(100%, 360px);
+  border-radius: 20px;
+  background: #f8f9fd;
+  box-shadow: 0 18px 40px rgba(17, 24, 39, 0.2);
+  padding: 14px 12px 12px;
+  text-align: center;
+  animation: attendance-stamp-rise-in 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.attendance-stamp-modal__title {
+  margin: 0 0 10px;
+  font-family: 'Pretendard Variable', sans-serif;
+  font-size: 18px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: #3c3c3c;
+}
+
+.attendance-stamp-modal__attendance-card {
+  margin: 0;
+  text-align: left;
+}
+
+.attendance-stamp-modal__attendance-card.is-stamping {
+  animation: attendance-card-impact 300ms ease-out 250ms both;
+}
+
+.attendance-stamp-modal .point-attendance-day {
+  position: relative;
+}
+
+.attendance-stamp-modal__day--stamped::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.24);
+  transform: translate(-50%, -50%) scale(0.16);
+  opacity: 0;
+  mix-blend-mode: multiply;
+  animation: attendance-stamp-pulse 560ms ease-out 330ms forwards;
+}
+
+.attendance-stamp-modal__day--stamped::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 9px;
+  width: 66px;
+  height: 15px;
+  border-radius: 50%;
+  background: rgba(28, 28, 28, 0.24);
+  transform: translateX(-50%) scale(0.56);
+  opacity: 0.1;
+  filter: blur(1.5px);
+  animation: attendance-stamp-shadow 680ms ease-out 170ms both;
+}
+
+.attendance-stamp-modal__day--stamped .point-attendance-day-img {
+  transform-origin: 50% 72%;
+  animation: attendance-stamp-press 700ms cubic-bezier(0.18, 0.95, 0.2, 1.15) 170ms both;
+}
+
+.attendance-stamp-modal__day--stamped {
+  animation: attendance-stamp-impact 680ms ease-out 170ms both;
+}
+
+@keyframes attendance-stamp-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes attendance-stamp-press {
+  0% {
+    transform: translateY(-34px) scale(1.12) rotate(-8deg);
+    opacity: 0;
+    filter: saturate(0.35) contrast(0.88) blur(0.9px);
+  }
+  32% {
+    transform: translateY(9px) scaleX(1.26) scaleY(0.74) rotate(1deg);
+    opacity: 1;
+    filter: saturate(1.95) contrast(1.24) blur(0);
+  }
+  46% {
+    transform: translateY(-1px) scaleX(0.88) scaleY(1.18) rotate(-1deg);
+    filter: saturate(1.18) contrast(1.05);
+  }
+  66% {
+    transform: translateY(-5px) scale(1.06) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 1;
+    filter: saturate(1) contrast(1);
+  }
+}
+
+@keyframes attendance-stamp-pulse {
+  0% {
+    opacity: 0.82;
+    transform: translate(-50%, -50%) scale(0.14);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.95);
+  }
+}
+
+@keyframes attendance-stamp-shadow {
+  0% {
+    opacity: 0.06;
+    transform: translateX(-50%) scale(0.5);
+  }
+  34% {
+    opacity: 0.36;
+    transform: translateX(-50%) scale(1.18);
+  }
+  56% {
+    opacity: 0.19;
+    transform: translateX(-50%) scale(0.86);
+  }
+  100% {
+    opacity: 0.17;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+@keyframes attendance-stamp-impact {
+  0% {
+    transform: translateY(-4px);
+  }
+  30% {
+    transform: translateY(3px);
+  }
+  54% {
+    transform: translateY(-2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes attendance-card-impact {
+  0% {
+    transform: translateY(0);
+  }
+  35% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes attendance-stamp-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
