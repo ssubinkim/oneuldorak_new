@@ -93,6 +93,10 @@
 
 .plus-discount-badge {
   display: inline-block;
+  position: relative;
+  z-index: 1;
+  margin-top: 12px;
+  margin-bottom: -40px;
   background: #3a6cff;
   color: #fff;
   font-size: 12px;
