@@ -43,7 +43,6 @@ function shouldSkipCoachMark() {
   return new URLSearchParams(queryString).get('skipCoach') === '1'
 }
 
-type CameraPickMode = 'camera' | 'album'
 type JudgeMode = 'text' | 'photo'
 type PhotoPurposeFeature = 'receipt-analysis' | 'fridge-photo-analysis' | 'buy-or-not'
 
@@ -51,30 +50,17 @@ type OpenChatOptions = {
   useApi?: boolean
   judgeMode?: JudgeMode
   openPicker?: boolean
-  pick?: CameraPickMode
   analysisType?: AnalysisType
   feature?: AiFeature
 }
 
 const JUDGE_TEXT_QUERY = '살까말까 고민 중이야. 오늘 도시락 기준으로 사도 될지 판단해줘.'
 const JUDGE_PHOTO_QUERY = '사진으로 살까말까 판단받고 싶어.'
-const CAMERA_ANALYZE_QUERY = '사진을 올려서 분석하고 싶어.'
-const PHOTO_PURPOSE_OPTIONS: Array<{
-  label: string
-  feature: PhotoPurposeFeature
-  analysisType: AnalysisType
-}> = [
-  { label: '영수증', feature: 'receipt-analysis', analysisType: 'receipt' },
-  { label: '냉장고', feature: 'fridge-photo-analysis', analysisType: 'menu' },
-  { label: '살까말까', feature: 'buy-or-not', analysisType: 'judge' },
-]
 
 function Chatbot() {
   const [showCoachMark, setShowCoachMark] = useState(() => !shouldSkipCoachMark())
   const [showJudgeModeSheet, setShowJudgeModeSheet] = useState(false)
-  const [showCameraSheet, setShowCameraSheet] = useState(false)
   const [showPhotoPurposeSheet, setShowPhotoPurposeSheet] = useState(false)
-  const [selectedPhotoPurpose, setSelectedPhotoPurpose] = useState<PhotoPurposeFeature | null>(null)
   const { nickname } = useUserProfile()
   const displayName = nickname?.trim() || '도락프렌즈'
 
@@ -89,7 +75,6 @@ function Chatbot() {
       params.set('mode', options.judgeMode)
     }
     if (options?.openPicker) params.set('openPicker', '1')
-    if (options?.pick) params.set('pick', options.pick)
 
     appendChatbotHistoryMessage(text, source)
     navigateToHash(`#/chatbot-chat?${params.toString()}`)
@@ -106,6 +91,10 @@ function Chatbot() {
       navigateToHash('#/receipt-analysis')
       return
     }
+    if (suggestionConfig?.feature === 'fridge-photo-analysis') {
+      navigateToHash('#/chatbot-camera?purpose=fridge-photo-analysis')
+      return
+    }
     openChatPage(suggestion, 'quick', {
       useApi: suggestionConfig?.useApi,
       analysisType: suggestionConfig?.analysisType,
@@ -119,42 +108,15 @@ function Chatbot() {
     openChatPage(text, 'input')
   }
 
-  const handleTakePhoto = () => {
-    setShowCameraSheet(false)
-    const selectedPurpose = PHOTO_PURPOSE_OPTIONS.find((option) => option.feature === selectedPhotoPurpose)
-    openChatPage(CAMERA_ANALYZE_QUERY, 'quick', {
-      useApi: true,
-      openPicker: true,
-      pick: 'camera',
-      analysisType: selectedPurpose?.analysisType,
-      feature: selectedPurpose?.feature,
-    })
-  }
-
-  const handleSelectFromAlbum = () => {
-    setShowCameraSheet(false)
-    const selectedPurpose = PHOTO_PURPOSE_OPTIONS.find((option) => option.feature === selectedPhotoPurpose)
-    openChatPage(CAMERA_ANALYZE_QUERY, 'quick', {
-      useApi: true,
-      openPicker: true,
-      pick: 'album',
-      analysisType: selectedPurpose?.analysisType,
-      feature: selectedPurpose?.feature,
-    })
-  }
-
   const handlePhotoPurposeSelect = (purposeFeature: PhotoPurposeFeature) => {
     if (purposeFeature === 'receipt-analysis') {
-      setSelectedPhotoPurpose(purposeFeature)
       setShowPhotoPurposeSheet(false)
-      setShowCameraSheet(false)
       navigateToHash('#/receipt-analysis')
       return
     }
 
-    setSelectedPhotoPurpose(purposeFeature)
     setShowPhotoPurposeSheet(false)
-    setShowCameraSheet(true)
+    navigateToHash(`#/chatbot-camera?purpose=${purposeFeature}`)
   }
 
   const handleJudgeByText = () => {
@@ -232,7 +194,7 @@ function Chatbot() {
             </div>
           </section>
 
-          {showCoachMark && !showJudgeModeSheet && !showCameraSheet && !showPhotoPurposeSheet && (
+          {showCoachMark && !showJudgeModeSheet && !showPhotoPurposeSheet && (
             <ChatbotCoachMark onDismiss={() => setShowCoachMark(false)} />
           )}
 
@@ -247,27 +209,28 @@ function Chatbot() {
             />
           )}
 
-          {showCameraSheet && (
-            <ChatbotCameraSheet
-              onTakePhoto={handleTakePhoto}
-              onSelectFromAlbum={handleSelectFromAlbum}
-              onClose={() => setShowCameraSheet(false)}
-            />
-          )}
-
           {showPhotoPurposeSheet && (
             <ChatbotCameraSheet
               title="이 사진으로 무엇을 할까요?"
               actions={[
-                { label: '영수증 분석', onClick: () => handlePhotoPurposeSelect('receipt-analysis') },
-                { label: '냉장고 재료 추가', onClick: () => handlePhotoPurposeSelect('fridge-photo-analysis') },
-                { label: '살까말까', onClick: () => handlePhotoPurposeSelect('buy-or-not') },
+                {
+                  label: '영수증 분석',
+                  onClick: () => handlePhotoPurposeSelect('receipt-analysis'),
+                },
+                {
+                  label: '냉장고 재료 추가',
+                  onClick: () => handlePhotoPurposeSelect('fridge-photo-analysis'),
+                },
+                {
+                  label: '살까말까',
+                  onClick: () => handlePhotoPurposeSelect('buy-or-not'),
+                },
               ]}
               onClose={() => setShowPhotoPurposeSheet(false)}
             />
           )}
 
-          {!showCameraSheet && !showJudgeModeSheet && !showPhotoPurposeSheet ? (
+          {!showJudgeModeSheet && !showPhotoPurposeSheet ? (
             <section className="chatbot-bottom">
               <ChatbotInputBar
                 onSubmit={handleSubmit}

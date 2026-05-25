@@ -10,6 +10,9 @@ import chatbotMascotIcon from '../../components/chatbot/images/chatbot .png'
 import defaultRecipeImage from '../../components/chatbot/images/tunamayo.png'
 import fridgeLoadingMascotImage from '../../components/chatbot/images/ser.png'
 import fridgeSavedHeroImage from '../../components/chatbot/images/com.png'
+import fridgeDemoImage from '../../components/chatbot/images/food_img.jpg'
+import judgeDemoImage from '../../components/chatbot/images/buy_img.jpeg'
+import receiptDemoImage from '../../components/chatbot/images/re_img.png'
 import checkIcon from '../../components/chatbot/images/check.svg'
 import xIcon from '../../components/chatbot/images/x.svg'
 import eggIngredientIcon from '../../assets/images/food_icon/egg.png'
@@ -39,6 +42,7 @@ type ChatRouteContext = {
   judgeMode: JudgeMode | null
   analysisType: AnalysisType | null
   feature: AiFeature | null
+  demoPurpose: PhotoPurposeFeature | null
   openPicker: boolean
   pick: PickerMode | null
 }
@@ -252,6 +256,13 @@ function readAiFeature(value: string | null): AiFeature | null {
   return null
 }
 
+function readPhotoPurposeFeature(value: string | null): PhotoPurposeFeature | null {
+  if (value === 'receipt-analysis' || value === 'fridge-photo-analysis' || value === 'buy-or-not') {
+    return value
+  }
+  return null
+}
+
 function inferAnalysisTypeFromText(text: string, fallback: AnalysisType = 'menu'): AnalysisType {
   const normalized = text.replace(/\s+/g, '')
 
@@ -356,6 +367,18 @@ function getPhotoAnalysisConfig(feature: PhotoPurposeFeature) {
   }
 }
 
+function getDemoImageSrcForPurpose(feature: PhotoPurposeFeature) {
+  if (feature === 'receipt-analysis') {
+    return receiptDemoImage
+  }
+
+  if (feature === 'fridge-photo-analysis') {
+    return fridgeDemoImage
+  }
+
+  return judgeDemoImage
+}
+
 function getRouteContext(): ChatRouteContext {
   const [, queryString = ''] = window.location.hash.split('?')
   const params = new URLSearchParams(queryString)
@@ -374,6 +397,7 @@ function getRouteContext(): ChatRouteContext {
     judgeMode,
     analysisType: readAnalysisType(params.get('analysis')),
     feature: readAiFeature(params.get('feature')),
+    demoPurpose: readPhotoPurposeFeature(params.get('demo')),
     openPicker: params.get('openPicker') === '1',
     pick: routePick === 'camera' || routePick === 'album' ? routePick : null,
   }
@@ -993,6 +1017,22 @@ async function convertImageToJpegDataUrl(file: File) {
   }
 }
 
+async function convertImageAssetToJpegDataUrl(imageUrl: string) {
+  const image = await loadImageFromUrl(imageUrl)
+  const width = image.naturalWidth || image.width
+  const height = image.naturalHeight || image.height
+
+  for (const edge of IMAGE_EDGE_CANDIDATES) {
+    const canvas = renderSourceToCanvas(image, width, height, edge)
+    const jpegDataUrl = encodeCanvasToJpegWithinLimit(canvas, MAX_IMAGE_DATA_URL_LENGTH)
+    if (jpegDataUrl && jpegDataUrl.length <= MAX_IMAGE_DATA_URL_LENGTH) {
+      return jpegDataUrl
+    }
+  }
+
+  throw new Error('예시 이미지 변환에 실패했어요. 잠시 후 다시 시도해 주세요.')
+}
+
 function ChatbotChat() {
   const [initialContext] = useState<ChatRouteContext>(getRouteContext)
   const [initialAnalysisType] = useState<AnalysisType>(() =>
@@ -1281,7 +1321,7 @@ function ChatbotChat() {
         window.location.hash = '#/receipt-analysis'
         return
       }
-      openCameraSheet(purposeFeature)
+      window.location.hash = `#/chatbot-camera?purpose=${purposeFeature}`
       return
     }
 
@@ -1290,7 +1330,48 @@ function ChatbotChat() {
       pendingPhotoSelection.displayText,
       purposeFeature,
     )
-  }, [openCameraSheet, submitPhotoForAnalysis])
+  }, [submitPhotoForAnalysis])
+
+  const handleDemoPhotoPurposeSelect = useCallback(async (purposeFeature: PhotoPurposeFeature) => {
+    pendingPhotoSelectionRef.current = null
+    setSelectedPhotoPurpose(purposeFeature)
+    activeFeatureRef.current = purposeFeature
+    activeAnalysisTypeRef.current = getAnalysisTypeForFeature(purposeFeature)
+    setShowPhotoPurposeSheet(false)
+
+    if (purposeFeature === 'buy-or-not') {
+      setIsJudgeFlow(true)
+      setJudgeMode('photo')
+    } else {
+      setIsJudgeFlow(false)
+    }
+
+    const displayText = purposeFeature === 'receipt-analysis'
+      ? '예시 영수증 사진 첨부했어. 분석해줘.'
+      : purposeFeature === 'fridge-photo-analysis'
+        ? '예시 냉장고 사진 첨부했어. 분석해줘.'
+        : '예시 사진 첨부했어. 살까말까 판단해줘.'
+
+    try {
+      const imageDataUrl = await convertImageAssetToJpegDataUrl(getDemoImageSrcForPurpose(purposeFeature))
+      submitPhotoForAnalysis(imageDataUrl, displayText, purposeFeature)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : '예시 이미지를 불러오지 못했어요.'
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `ai-error-${Date.now()}`,
+          type: 'ai-text',
+          role: 'assistant',
+          status: 'error',
+          feature: purposeFeature,
+          source: 'api',
+          createdAt: new Date().toISOString(),
+          text: message,
+        },
+      ])
+    }
+  }, [submitPhotoForAnalysis])
 
   useEffect(() => {
     if (hasInitializedRef.current) {
@@ -1299,6 +1380,26 @@ function ChatbotChat() {
     hasInitializedRef.current = true
 
     const context = routeContextRef.current
+    if (context.demoPurpose) {
+      const demoPurpose = context.demoPurpose
+
+      setSelectedPhotoPurpose(demoPurpose)
+      activeFeatureRef.current = demoPurpose
+      activeAnalysisTypeRef.current = getAnalysisTypeForFeature(demoPurpose)
+
+      if (demoPurpose === 'buy-or-not') {
+        setIsJudgeFlow(true)
+        setJudgeMode('photo')
+      } else {
+        setIsJudgeFlow(false)
+      }
+
+      window.setTimeout(() => {
+        void handleDemoPhotoPurposeSelect(demoPurpose)
+      }, 120)
+      return
+    }
+
     const normalizedQuery = context.query.replace(/\s+/g, '')
     const isJudgeRoute =
       context.judgeMode !== null
@@ -1432,7 +1533,7 @@ function ChatbotChat() {
       judgeFlow: isJudgeRoute,
       suppressRecipeCard: false,
     })
-  }, [openCameraSheet, openDesktopCamera, queueUserRequest])
+  }, [handleDemoPhotoPurposeSelect, openCameraSheet, openDesktopCamera, queueUserRequest])
 
   useEffect(() => {
     const len = messages.length
@@ -1907,7 +2008,11 @@ function ChatbotChat() {
                             } else {
                               setIsJudgeFlow(false)
                             }
-                            openCameraSheet(purposeFeature ?? msg.feature ?? activeFeatureRef.current ?? initialContext.feature)
+                            if (purposeFeature === 'receipt-analysis') {
+                              window.location.hash = '#/receipt-analysis'
+                              return
+                            }
+                            window.location.hash = `#/chatbot-camera?purpose=${purposeFeature ?? 'fridge-photo-analysis'}`
                             return
                           }
                           addUserMessage(item, 'suggestion')
@@ -1945,9 +2050,18 @@ function ChatbotChat() {
             <ChatbotCameraSheet
               title="이 사진으로 무엇을 할까요?"
               actions={[
-                { label: '영수증 분석', onClick: () => handlePhotoPurposeSelect('receipt-analysis') },
-                { label: '냉장고 재료 추가', onClick: () => handlePhotoPurposeSelect('fridge-photo-analysis') },
-                { label: '살까말까', onClick: () => handlePhotoPurposeSelect('buy-or-not') },
+                {
+                  label: '영수증 분석',
+                  onClick: () => handlePhotoPurposeSelect('receipt-analysis'),
+                },
+                {
+                  label: '냉장고 재료 추가',
+                  onClick: () => handlePhotoPurposeSelect('fridge-photo-analysis'),
+                },
+                {
+                  label: '살까말까',
+                  onClick: () => handlePhotoPurposeSelect('buy-or-not'),
+                },
               ]}
               onClose={handlePhotoPurposeSheetClose}
             />
