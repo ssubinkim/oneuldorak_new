@@ -8,6 +8,8 @@ import FridgeSection from '../../components/home/FridgeSection'
 import AttendanceStampModal from '../../components/mypage/my-page/AttendanceStampModal'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import { awardActivityPoint } from '../../components/common/usePoints'
+import { NOTIFICATIONS } from '../../components/mypage/notification/notificationData'
+import { hasUnreadNotifications } from '../../components/mypage/notification/notificationState'
 import { consumeAttendanceStampPending, initAttendance } from '../../components/mypage/mypageAttendance'
 import type { DayMenu } from '../../components/meal/mealData'
 import bellIcon from '../../assets/icons/bell_icon.svg'
@@ -30,6 +32,14 @@ function Meal() {
   const [, setPlannedMenus] = useState<Record<number, DayMenu>>({})
   const { isNew, nickname } = useUserProfile()
   const displayNickname = nickname.trim() || '도락프렌즈'
+  const notificationIds = NOTIFICATIONS.map(n => n.id)
+  const [hasUnread, setHasUnread] = useState(() => !isNew && hasUnreadNotifications(notificationIds))
+
+  useEffect(() => {
+    const check = () => setHasUnread(!isNew && hasUnreadNotifications(notificationIds))
+    window.addEventListener('hashchange', check)
+    return () => window.removeEventListener('hashchange', check)
+  }, [isNew])
 
   useEffect(() => {
     const pendingStampType = consumeAttendanceStampPending()
@@ -66,6 +76,7 @@ function Meal() {
               <img src={logoImg} alt="오늘도락" className="meal-hero__logo" />
               <button className="meal-hero__bell" aria-label="알림" onClick={() => { window.location.hash = '#/mypage-notification?from=meal' }}>
                 <img src={bellIcon} alt="" width="22" height="22" />
+                {hasUnread && <span className="meal-hero__bell-badge" />}
               </button>
             </div>
 

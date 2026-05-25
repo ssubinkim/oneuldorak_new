@@ -91,7 +91,16 @@
   padding: 20px 20px 0;
 }
 
+.plus-plan-card-wrapper {
+  position: relative;
+  padding-top: 38px;
+}
+
 .plus-discount-badge {
+  position: absolute;
+  top: 25px;
+  left: 16px;
+  z-index: 1;
   display: inline-block;
   background: #3a6cff;
   color: #fff;

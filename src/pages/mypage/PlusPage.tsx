@@ -58,29 +58,30 @@ export default function PlusPage() {
           {/* 플랜 선택 */}
           <section className="plus-plans">
             <img src={heroMascot} alt="" className="plus-mascot-hero" />
-            <div className="plus-discount-badge">첫 구독 20% 할인</div>
-
-            <button
-              className={`plus-plan-card${plan === 'monthly' ? ' selected' : ''}`}
-              onClick={() => setPlan('monthly')}
-              disabled
-            >
-              <div className={`plus-plan-radio${plan === 'monthly' ? ' selected' : ''}`}>
-                {plan === 'monthly' && (
-                  <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-                    <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
-              </div>
-              <div className="plus-plan-info">
-                <span className="plus-plan-name">월간 구독</span>
-                <div className="plus-plan-price">
-                  <strong>4,900원</strong>
-                  <span className="plus-plan-unit"> / 월</span>
-                  <span className="plus-plan-original">6,000원</span>
+            <div className="plus-plan-card-wrapper">
+              <div className="plus-discount-badge">첫 구독 20% 할인</div>
+              <button
+                className={`plus-plan-card${plan === 'monthly' ? ' selected' : ''}`}
+                onClick={() => setPlan('monthly')}
+                disabled
+              >
+                <div className={`plus-plan-radio${plan === 'monthly' ? ' selected' : ''}`}>
+                  {plan === 'monthly' && (
+                    <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+                      <path d="M1 5L4.5 8.5L11 1.5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  )}
                 </div>
-              </div>
-            </button>
+                <div className="plus-plan-info">
+                  <span className="plus-plan-name">월간 구독</span>
+                  <div className="plus-plan-price">
+                    <strong>4,900원</strong>
+                    <span className="plus-plan-unit"> / 월</span>
+                    <span className="plus-plan-original">6,000원</span>
+                  </div>
+                </div>
+              </button>
+            </div>
 
             <button
               className={`plus-plan-card${plan === 'annual' ? ' selected' : ''}`}

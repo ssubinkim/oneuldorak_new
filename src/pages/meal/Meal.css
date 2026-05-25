@@ -40,13 +40,24 @@
 }
 
 .meal-hero__bell {
+  position: relative;
   background: none;
   border: none;
-  cursor: default;
   padding: 4px;
   display: flex;
   align-items: center;
   cursor: pointer;
+}
+
+.meal-hero__bell-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff3b30;
+  border: 1.5px solid #fff;
 }
 
 .meal-hero__body {
