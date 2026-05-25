@@ -194,7 +194,7 @@ const routeThemeColors = {
   'meal-grocery': '#fffffd',
   'meal-storage': '#f5f3ef',
   chatbot: '#ffffff',
-  'chatbot-camera': '#101722',
+  'chatbot-camera': '#f4f6fb',
   'chatbot-chat': '#ffffff',
   'receipt-analysis': '#fffdf7',
 } satisfies Record<AppRoute, string>

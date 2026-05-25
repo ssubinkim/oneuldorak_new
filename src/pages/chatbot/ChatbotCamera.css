@@ -1,5 +1,118 @@
 .chatbot-camera-screen {
-  background: #101722;
+  background: #f4f6fb;
+}
+
+.chatbot-camera-page.chatbot-camera-page--hub {
+  height: 100%;
+  overflow-y: auto;
+  background: #f4f6fb;
+  color: #3c3c3c;
+}
+
+.chatbot-camera-hub__topbar {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 18px 6px;
+}
+
+.chatbot-camera-hub__topbar h1 {
+  margin: 0;
+  text-align: center;
+  font-family: "Pretendard Variable";
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.02em;
+}
+
+.chatbot-camera-hub__back {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 12px;
+  background: #fff;
+  display: grid;
+  place-items: center;
+}
+
+.chatbot-camera-hub__back img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.chatbot-camera-hub__card {
+  margin: 12px 18px 24px;
+  padding: 18px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid #e5eaf4;
+  box-shadow: 0 8px 24px rgba(20, 38, 74, 0.06);
+}
+
+.chatbot-camera-hub__copy h2 {
+  margin: 0;
+  color: #3c3c3c;
+  font-family: "Pretendard Variable";
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.chatbot-camera-hub__copy p {
+  margin: 8px 0 0;
+  color: #626c82;
+  font-family: "Pretendard Variable";
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  word-break: keep-all;
+}
+
+.chatbot-camera-hub__preview {
+  margin-top: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #d6e0f3;
+  background: #e8eefb;
+}
+
+.chatbot-camera-hub__preview img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.chatbot-camera-hub__actions {
+  margin-top: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.chatbot-camera-hub__action {
+  width: 100%;
+  min-height: 50px;
+  border: 0;
+  border-radius: 10px;
+  font-family: "Pretendard Variable";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.36;
+}
+
+.chatbot-camera-hub__action--camera,
+.chatbot-camera-hub__action--album {
+  background: #e6edff;
+  color: #1b64da;
+  border: 1px solid #c8d8ff;
+}
+
+.chatbot-camera-hub__action--demo {
+  background: #3d7dea;
+  color: #fff;
 }
 
 .chatbot-camera-page {

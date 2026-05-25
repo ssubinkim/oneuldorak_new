@@ -7,6 +7,7 @@ import {
 import receiptMascotImage from '../../components/chatbot/images/chatbot .png'
 import cameraIcon from '../../components/chatbot/images/chat_camera.png'
 import galleryIcon from '../../components/chatbot/images/gall.png'
+import receiptExampleImage from '../../components/chatbot/images/re_img.png'
 import arrowLeftIcon from '../../assets/icons/arrow_left.svg'
 import './ReceiptAnalysis.css'
 
@@ -158,6 +159,32 @@ function ReceiptAnalysis() {
     }
   }
 
+  const handleUseExample = async () => {
+    setErrorMessage('')
+    setResult(null)
+
+    try {
+      const image = await loadImageFromUrl(receiptExampleImage)
+
+      for (const edge of IMAGE_EDGE_CANDIDATES) {
+        const canvas = renderImageToCanvas(image, edge)
+        const dataUrl = encodeCanvasToJpegWithinLimit(canvas)
+        if (dataUrl && dataUrl.length <= RECEIPT_IMAGE_MAX_DATA_URL_LENGTH) {
+          setImageDataUrl(dataUrl)
+          setFileLabel('예시 영수증 이미지')
+          return
+        }
+      }
+
+      throw new Error('예시 이미지를 불러오지 못했어요. 잠시 후 다시 시도해주세요.')
+    } catch (error) {
+      const message = error instanceof Error
+        ? error.message
+        : '예시 이미지를 불러오지 못했어요. 잠시 후 다시 시도해주세요.'
+      setErrorMessage(message)
+    }
+  }
+
   const handleReset = () => {
     setImageDataUrl('')
     setFileLabel('')
@@ -196,7 +223,11 @@ function ReceiptAnalysis() {
                   구매 품목과 지출을 읽고, 도시락에 바로 쓸 수 있는 재료와 절약 포인트를 정리해드릴게요.
                 </p>
               </div>
-              <img className="receipt-analysis-hero__mascot" src={receiptMascotImage} alt="" aria-hidden="true" />
+              <span
+                className="receipt-analysis-hero__mascot"
+                aria-hidden="true"
+                style={{ backgroundImage: `url(${receiptMascotImage})` }}
+              />
             </section>
 
             <section className="receipt-upload-card">
@@ -237,6 +268,16 @@ function ReceiptAnalysis() {
                   <strong>이런 영수증을 잘 분석해요</strong>
                   <span>마트 영수증, 편의점 구매 내역, 장보기 결제 내역</span>
                   <span>글자가 흐리거나 일부가 가려진 항목은 추측하지 않고 ‘확인 어려움’으로 안내해요.</span>
+                  <img className="receipt-guide-card__demo-image" src={receiptExampleImage} alt="영수증 예시 이미지" />
+                  <button
+                    className="receipt-guide-card__demo-button"
+                    type="button"
+                    onClick={() => {
+                      void handleUseExample()
+                    }}
+                  >
+                    예시로 분석하기
+                  </button>
                 </div>
               )}
 
