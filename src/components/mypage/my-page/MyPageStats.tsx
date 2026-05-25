@@ -25,7 +25,7 @@ function MyPageStats({ stats, onStatClick }: MyPageStatsProps) {
           disabled={!stat.clickable}
         >
           <div className="mypage-stat-label">{stat.label}</div>
-          <div className={`mypage-stat-num${stat.highlight ? ' highlight' : ''}`}>
+          <div className={`mypage-stat-num${stat.highlight && stat.value !== '0' ? ' highlight' : ''}`}>
             {stat.value}
           </div>
         </button>
