@@ -109,6 +109,7 @@
 
 .bottom-nav__link[href='#/meal'] {
   grid-column: 1;
+  margin-left: 10px;
 }
 
 .bottom-nav__link[href='#/community'] {
@@ -121,6 +122,7 @@
 
 .bottom-nav__link[href='#/mypage'] {
   grid-column: 5;
+  margin-right: 10px;
 }
 
 .bottom-nav__label {
