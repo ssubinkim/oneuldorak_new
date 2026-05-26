@@ -207,7 +207,7 @@ function PlannerSection({ onDirectSelect }: Props) {
             className="planner__btn planner__btn--primary"
             onClick={handleSave}
           >
-            확인
+            저장
           </button>
         </div>
       </div>
