@@ -8,6 +8,10 @@
   overflow: visible;
 }
 
+.onboarding-page--question:not(.onboarding-page--ingredients) .onboarding-question__content {
+  flex: 1;
+}
+
 .onboarding-question__step {
   margin: 0;
   color: #1a1a1a;
