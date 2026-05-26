@@ -1,11 +1,11 @@
 .onboarding-question__content {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 0 0 auto;
   min-height: 0;
   margin-top: 8px;
   padding-bottom: 8px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .onboarding-question__step {
@@ -30,20 +30,22 @@
 
 .onboarding-question__subtitle {
   margin: 4px 0 0;
-  color: #9a9a9a;
+  color: #5f5f5f;
   font-family: var(--font-pretendard-variable);
   font-size: 16px;
   font-weight: 400;
-  line-height: 130%;
+  line-height: 120%;
   letter-spacing: -0.08px;
 }
 
 .onboarding-question__media {
   display: flex;
-  flex: 1;
-  min-height: 0;
+  flex: 0 0 auto;
+  min-height: clamp(190px, 32dvh, 260px);
   align-items: center;
   justify-content: center;
+  margin: 24px 0 0;
+  padding: 0;
 }
 
 .onboarding-question__media img {
@@ -60,8 +62,8 @@
 }
 
 .onboarding-question__content--grid .onboarding-question__media {
-  min-height: 120px;
-  margin-top: 10px;
+  min-height: 160px;
+  margin: 24px 0 0;
 }
 
 .onboarding-question__content--grid .onboarding-question__media img {
@@ -108,8 +110,8 @@
 
 @media (max-height: 780px) {
   .onboarding-question__media {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    min-height: 170px;
+    margin: 18px 0 0;
   }
 
   .onboarding-question__media img {

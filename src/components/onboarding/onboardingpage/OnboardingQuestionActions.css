@@ -43,21 +43,21 @@
   border-radius: 10px;
   font-family: 'Pretendard Variable', sans-serif;
   font-size: 14px;
-  font-weight: 600;
-  line-height: 130%;
+  font-weight: 500;
+  line-height: 120%;
 }
 
 .onboarding-question__button--secondary {
-  border: 1px solid #dedede;
-  background: #ffffff;
-  color: #111111;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #d8d8d8;
+  background: #fffffd;
+  color: #3c3c3c;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); */
 }
 
 .onboarding-question__button--primary {
-  border: 1px solid var(--color-primary-100);
-  background: var(--color-primary-100);
-  color: #111111;
+  border: 1px solid #FFDB78;
+  background: #FFDB78;
+  color: #3c3c3c;
 }
 
 .onboarding-question__button:disabled {
