@@ -68,3 +68,9 @@
   content: "";
   transform: translate(-50%, -58%) rotate(45deg);
 }
+
+.onboarding-page--question:not(.onboarding-page--ingredients) .onboarding-question__content--budget .onboarding-question__options,
+.onboarding-page--question:not(.onboarding-page--ingredients) .onboarding-question__content--time .onboarding-question__options,
+.onboarding-page--question:not(.onboarding-page--ingredients) .onboarding-question__content--avoidFoods .onboarding-question__options {
+  margin-top: auto;
+}
