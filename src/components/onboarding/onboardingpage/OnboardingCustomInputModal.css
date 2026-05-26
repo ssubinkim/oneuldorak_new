@@ -22,7 +22,7 @@
   width: min(100vw, 390px);
   padding: 28px 23px 40px;
   border-radius: 20px 20px 0 0;
-  background: #ffffff;
+  background: #fffffd;
 }
 
 .onboarding-custom-modal__label {
@@ -30,16 +30,16 @@
   color: #1a1a1a;
   font-family: var(--font-nanum-square-neo);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 130%;
 }
 
 .onboarding-custom-modal__input {
   min-height: 50px;
   padding: 0 16px;
-  border: 1px solid #dedede;
+  border: 1px solid #d8d8d8;
   border-radius: 10px;
-  background: #ffffff;
+  background: #fffffd;
   color: #1a1a1a;
   font-family: 'Pretendard Variable', sans-serif;
   font-size: 16px;
@@ -50,22 +50,22 @@
 }
 
 .onboarding-custom-modal__input:focus {
-  border-color: var(--color-primary-100);
+  border-color: #FFDB78;
 }
 
 .onboarding-custom-modal__input::placeholder {
-  color: #a8a8a8;
+  color: #d8d8d8;
 }
 
 .onboarding-custom-modal__confirm {
   min-height: 50px;
   border: none;
   border-radius: 10px;
-  background: var(--color-primary-100);
-  color: #111111;
+  background: #FFDB78;
+  color: #1a1a1a;
   font-family: 'Pretendard Variable', sans-serif;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 130%;
   cursor: pointer;
 }

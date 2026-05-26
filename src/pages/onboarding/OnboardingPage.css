@@ -53,8 +53,13 @@
 
   position: relative;
   justify-content: flex-start;
-  overflow: hidden;
+  overflow: hidden auto;
+  scrollbar-width: none;
   background: var(--color-tertiary-90);
+}
+
+.onboarding-page--question::-webkit-scrollbar {
+  display: none;
 }
 
 .onboarding-page--ingredients {

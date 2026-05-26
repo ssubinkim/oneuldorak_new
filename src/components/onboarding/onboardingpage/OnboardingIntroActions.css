@@ -14,20 +14,20 @@
   padding: 0 16px;
   border-radius: 10px;
   font-family: 'Pretendard Variable', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 130%;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 120%;
 }
 
 .onboarding-intro-actions__button--secondary {
-  border: 1px solid #dddddd;
-  background: #ffffff;
-  color: #1a1a1a;
+  border: 1px solid #d8d8d8;
+  background: #fffffd;
+  color: #3c3c3c;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.03);
 }
 
 .onboarding-intro-actions__button--primary {
-  border: 1px solid var(--color-primary-100);
-  background: var(--color-primary-100);
-  color: #1a1a1a;
+  border: 1px solid #FFDB78;
+  background: #FFDB78;
+  color: #3c3c3c;
 }

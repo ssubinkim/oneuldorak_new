@@ -1,6 +1,6 @@
 .onboarding-intro-copy {
   margin: clamp(20px, 4svh, 42px) 25px 0;
-  color: #1f1f1f;
+  color: #1a1a1a;
   font-family: 'Pretendard Variable', sans-serif;
   letter-spacing: 0;
 }
@@ -14,7 +14,8 @@
 
 .onboarding-intro-copy p {
   margin: 12px 0 0;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 130%;
+  color: #3c3c3c; 
 }

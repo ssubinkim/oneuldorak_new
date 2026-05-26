@@ -297,12 +297,14 @@
   background: #fff;
   border: 1px solid #d8d8d8;
   color: #3c3c3c;
+  font-size: 14px;
 }
 
 .planner__btn--primary {
   background: #FFDB78;
   border: none;
   color: #3c3c3c;
+  font-size: 14px;
 }
 
 .planner__fly-dot {

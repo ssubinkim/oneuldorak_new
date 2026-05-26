@@ -2,6 +2,7 @@
   background: #fff;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 /* ── 헤더 ── */
@@ -43,8 +44,12 @@
 /* ── 스크롤 영역 ── */
 .plus-scroll {
   flex: 1;
+  min-height: 0;
+  box-sizing: border-box;
   overflow-y: auto;
+  overscroll-behavior: contain;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   padding-bottom: 40px;
 }
 

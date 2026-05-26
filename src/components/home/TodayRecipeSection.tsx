@@ -218,15 +218,15 @@ function TodayRecipeSection() {
         </span>
       </div>
 
-      <button className="saved-recipe" onClick={goSaved} aria-label="레시피 보관함 바로가기">
+      <button className="saved-recipe" onClick={goSaved} aria-label="나의 레시피 보관함 바로가기">
         <div className="saved-recipe__left">
           <MealBookOpenIcon className="saved-recipe__icon" width="18" height="18" aria-hidden="true" />
           <div className="saved-recipe__text">
-            <span className="saved-recipe__title">레시피 보관함 바로가기</span>
+            <span className="saved-recipe__title">나의 레시피 보관함 바로가기</span>
           </div>
         </div>
         <svg className="saved-recipe__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M9 18L15 12L9 6" stroke="#3c3c3c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M9 18L15 12L9 6" stroke="#3c3c3c" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
     </section>

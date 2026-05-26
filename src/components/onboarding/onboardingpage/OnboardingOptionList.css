@@ -51,20 +51,20 @@
 }
 
 .onboarding-question__option--selected .onboarding-question__option-indicator {
-  border-color: var(--color-primary-100);
-  background: var(--color-primary-100);
+  border-color: #FFDB78;
+  background: #FFDB78;
 }
 
 
 .onboarding-question__option--selected
   .onboarding-question__option-indicator::after {
   position: absolute;
-  top: 4px;
-  left: 6px;
+  top: 50%;
+  left: 50%;
   width: 5px;
   height: 9px;
   border-right: 2px solid #ffffff;
   border-bottom: 2px solid #ffffff;
   content: "";
-  transform: rotate(45deg);
+  transform: translate(-50%, -58%) rotate(45deg);
 }
