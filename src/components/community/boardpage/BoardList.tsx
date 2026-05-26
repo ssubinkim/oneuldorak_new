@@ -11,6 +11,11 @@ const proMascots = [carrotPro, broPro, strawPro, eggPro, bluePro]
 import { boardFilters, type BoardFilter } from './boardCategoryFilterData'
 import { mockBoardPosts, mockBoardComments, mockBoardDetailPosts } from '../common/boardMockData'
 import { readPersistedBoardComments } from '../common/boardCommentPersistence'
+import {
+  getBoardReactionKey,
+  readPersistedBoardLikeKeys,
+  savePersistedBoardLikeKeys,
+} from '../common/boardReactionPersistence'
 import bannerBg from './images/banner_bg.png'
 
 export type BoardPost = {
@@ -90,13 +95,20 @@ function BoardCard({
   currentAvatar?: string
 }) {
   const cardRef = useRef<HTMLElement>(null)
-  const [liked, setLiked] = useState(false)
+  const reactionKey = getBoardReactionKey(post.id, currentUserId)
+  const [liked, setLiked] = useState(() => readPersistedBoardLikeKeys().includes(reactionKey))
   const [likeCount, setLikeCount] = useState(post.likes)
   const randomMascot = useMemo(() => proMascots[Math.floor(Math.random() * proMascots.length)], [])
   const isOwnPost = Boolean(post.authorId && post.authorId === currentUserId)
   const displayName = isOwnPost ? currentNickname : post.user
   const displayAvatar = isOwnPost ? currentAvatar ?? post.avatar ?? post.mascot ?? randomMascot : post.avatar ?? post.mascot ?? randomMascot
   const isMascotAvatar = isMascotAvatarImage(displayAvatar)
+
+  useEffect(() => {
+    const isLiked = readPersistedBoardLikeKeys().includes(reactionKey)
+    setLiked(isLiked)
+    setLikeCount(post.likes + (isLiked ? 1 : 0))
+  }, [post.likes, reactionKey])
 
   useEffect(() => {
     const card = cardRef.current
@@ -120,9 +132,16 @@ function BoardCard({
 
   const handleLike = (event: React.MouseEvent) => {
     event.stopPropagation()
-    const newLiked = !liked
-    setLiked(newLiked)
-    setLikeCount(newLiked ? likeCount + 1 : likeCount - 1)
+
+    const persistedLikeKeys = readPersistedBoardLikeKeys()
+    const isAlreadyLiked = persistedLikeKeys.includes(reactionKey)
+    const nextLikeKeys = isAlreadyLiked
+      ? persistedLikeKeys.filter((key) => key !== reactionKey)
+      : [...persistedLikeKeys, reactionKey]
+
+    savePersistedBoardLikeKeys(nextLikeKeys)
+    setLiked(!isAlreadyLiked)
+    setLikeCount(post.likes + (!isAlreadyLiked ? 1 : 0))
   }
 
   return (

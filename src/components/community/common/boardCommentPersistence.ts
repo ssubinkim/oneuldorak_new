@@ -1,4 +1,5 @@
 import type { BoardComment } from '../boarddetailpage/CommentItem'
+import { notifyMyActivityChanged } from '../../common/myActivityEvents'
 
 const BOARD_COMMENT_STORAGE_KEY = 'oneuldorak:board-detail-comments:v1'
 
@@ -64,4 +65,5 @@ export function savePersistedBoardComments(commentsByPostId: PersistedBoardComme
   }
 
   window.localStorage.setItem(BOARD_COMMENT_STORAGE_KEY, JSON.stringify(commentsByPostId))
+  notifyMyActivityChanged()
 }

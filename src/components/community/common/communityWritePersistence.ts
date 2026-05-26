@@ -3,6 +3,7 @@ import type { BoardPost } from '../boardpage/BoardList'
 import type { CommunityMediaAttachment } from '../communitywritepage/writeTypes'
 import type { RecipeItem } from '../recipepage/RecipeList'
 import type { VoteCardItem } from '../votepage/VoteList'
+import { notifyMyActivityChanged } from '../../common/myActivityEvents'
 
 const COMMUNITY_WRITE_STORAGE_KEY = 'oneuldorak:community-write:v1'
 
@@ -250,4 +251,5 @@ export function savePersistedCommunityWriteState(nextState: PersistedCommunityWr
   }
 
   window.localStorage.setItem(COMMUNITY_WRITE_STORAGE_KEY, JSON.stringify(nextState))
+  notifyMyActivityChanged()
 }

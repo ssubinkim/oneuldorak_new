@@ -1,4 +1,10 @@
-import React, { useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
+import { useUserProfile } from '../../common/useUserProfile'
+import {
+  getBoardReactionKey,
+  readPersistedBoardLikeKeys,
+  savePersistedBoardLikeKeys,
+} from '../common/boardReactionPersistence'
 import carrotPro from '../../../assets/food_mascot/carrot_pro.png'
 import broPro from '../../../assets/food_mascot/bro_pro.png'
 import strawPro from '../../../assets/food_mascot/straw_pro.png'
@@ -27,15 +33,30 @@ type BoardPopularPostsProps = {
 }
 
 function PopularPostItem({ post, onOpenDetail }: { post: BoardPopularPost; onOpenDetail: (postId: string) => void }) {
-  const [liked, setLiked] = useState(false)
-  const [likeCount, setLikeCount] = useState(post.likes)
+  const { email } = useUserProfile()
+  const reactionKey = getBoardReactionKey(post.id, email)
+  const [liked, setLiked] = useState(() => readPersistedBoardLikeKeys().includes(reactionKey))
+  const [likeCount, setLikeCount] = useState(() => post.likes + (liked ? 1 : 0))
   const randomMascot = useMemo(() => proMascots[Math.floor(Math.random() * proMascots.length)], [])
+
+  useEffect(() => {
+    const isLiked = readPersistedBoardLikeKeys().includes(reactionKey)
+    setLiked(isLiked)
+    setLikeCount(post.likes + (isLiked ? 1 : 0))
+  }, [post.likes, reactionKey])
 
   const handleLike = (event: React.MouseEvent) => {
     event.stopPropagation()
-    const newLiked = !liked
-    setLiked(newLiked)
-    setLikeCount(newLiked ? likeCount + 1 : likeCount - 1)
+
+    const persistedLikeKeys = readPersistedBoardLikeKeys()
+    const isAlreadyLiked = persistedLikeKeys.includes(reactionKey)
+    const nextLikeKeys = isAlreadyLiked
+      ? persistedLikeKeys.filter((key) => key !== reactionKey)
+      : [...persistedLikeKeys, reactionKey]
+
+    savePersistedBoardLikeKeys(nextLikeKeys)
+    setLiked(!isAlreadyLiked)
+    setLikeCount(post.likes + (!isAlreadyLiked ? 1 : 0))
   }
 
   return (

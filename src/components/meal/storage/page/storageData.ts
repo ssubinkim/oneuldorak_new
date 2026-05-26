@@ -23,6 +23,7 @@ import cornImg from '../../../../assets/images/food_icon/corn.png'
 import indexRedImg from '../../../../assets/icons/index_red.svg'
 import indexYellowImg from '../../../../assets/icons/index_yellow.svg'
 import indexGreenImg from '../../../../assets/icons/index_green.svg'
+import { ingredientOptions } from '../../../onboarding/onboardingpage/onboardingQuestionData'
 
 export type Status = 'urgent' | 'moderate' | 'plenty'
 export type Category = '전체' | '과일' | '단백질' | '냉동' | '소스' | '채소'
@@ -72,6 +73,12 @@ const FRIDGE_ITEM_BY_NAME = new Map(
   FRIDGE_ITEMS.map((item) => [item.name, item]),
 )
 
+const ONBOARDING_INGREDIENT_ICON_BY_LABEL = new Map(
+  ingredientOptions
+    .filter((option): option is { label: string; icon: string } => typeof option.icon === 'string')
+    .map((option) => [option.label, option.icon] as const),
+)
+
 export function normalizeFridgeItemLabel(label: string) {
   const trimmedLabel = label.trim()
   if (!trimmedLabel) return ''
@@ -79,21 +86,26 @@ export function normalizeFridgeItemLabel(label: string) {
 }
 
 export function createFridgeItemFromLabel(label: string, id: number): FridgeItem {
+  const trimmedLabel = label.trim()
   const normalizedLabel = normalizeFridgeItemLabel(label)
   const matchedItem = FRIDGE_ITEM_BY_NAME.get(normalizedLabel)
+  const onboardingIcon =
+    ONBOARDING_INGREDIENT_ICON_BY_LABEL.get(trimmedLabel) ??
+    ONBOARDING_INGREDIENT_ICON_BY_LABEL.get(normalizedLabel)
 
   if (matchedItem) {
     return {
       ...matchedItem,
       id,
-      name: label.trim() || matchedItem.name,
+      name: trimmedLabel || matchedItem.name,
+      image: onboardingIcon ?? matchedItem.image,
     }
   }
 
   return {
     id,
-    name: label.trim(),
-    image: carrotImg,
+    name: trimmedLabel,
+    image: onboardingIcon ?? carrotImg,
     isEmoji: false,
     days: null,
     status: 'moderate',

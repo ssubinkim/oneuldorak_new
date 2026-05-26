@@ -31,6 +31,14 @@ function getRandomFallbackAvatar() {
   return PROFILE_FALLBACK_AVATARS[randomIndex]
 }
 
+function normalizeEmail(value: string | undefined) {
+  return typeof value === 'string' ? value.trim().toLowerCase() : ''
+}
+
+function normalizeName(value: string | undefined) {
+  return typeof value === 'string' ? value.trim() : ''
+}
+
 function readFallbackAvatar() {
   if (typeof window === 'undefined') {
     return PROFILE_FALLBACK_AVATARS[0]
@@ -73,9 +81,9 @@ function readStoredUserProfile(): UserProfile {
     const parsedProfile = JSON.parse(storedProfile) as Partial<UserProfile>
 
     return {
-      email: parsedProfile.email || defaultUserProfile.email,
-      name: parsedProfile.name || defaultUserProfile.name,
-      nickname: parsedProfile.nickname || defaultUserProfile.nickname,
+      email: normalizeEmail(parsedProfile.email) || defaultUserProfile.email,
+      name: normalizeName(parsedProfile.name) || defaultUserProfile.name,
+      nickname: normalizeName(parsedProfile.nickname) || defaultUserProfile.nickname,
       isNew: parsedProfile.isNew,
       password: parsedProfile.password,
       avatar: parsedProfile.avatar || fallbackAvatar,
@@ -89,10 +97,16 @@ function readStoredUserProfile(): UserProfile {
 }
 
 export function saveUserProfile(profile: Partial<UserProfile>) {
+  const normalizedEmail = normalizeEmail(profile.email)
+  const normalizedName = normalizeName(profile.name)
+  const normalizedNickname = normalizeName(profile.nickname)
+
   currentUserProfile = {
     ...currentUserProfile,
     ...profile,
-    nickname: profile.nickname?.trim() || currentUserProfile.nickname,
+    email: normalizedEmail || currentUserProfile.email,
+    name: normalizedName || currentUserProfile.name,
+    nickname: normalizedNickname || currentUserProfile.nickname,
   }
 
   if (typeof window !== 'undefined') {

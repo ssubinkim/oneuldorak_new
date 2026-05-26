@@ -1,6 +1,14 @@
 import type { RecipeComment, RecipeStats } from './recipeDetailData'
+import { notifyMyActivityChanged } from '../common/myActivityEvents'
 
 const RECIPE_DETAIL_STORAGE_KEY = 'oneuldorak:recipe-detail-saved-data:v1'
+const LEGACY_DEFAULT_USER_ID = 'dorak_friends@oneuldorak.com'
+
+type PersistedRecipeUserReactionState = {
+  isLiked: boolean
+  isSaved: boolean
+  updatedAt: string
+}
 
 export type PersistedRecipeDetailState = {
   stats: RecipeStats
@@ -9,6 +17,7 @@ export type PersistedRecipeDetailState = {
   isLiked: boolean
   isSaved: boolean
   updatedAt: string
+  reactionsByUser?: Record<string, PersistedRecipeUserReactionState>
 }
 
 type PersistedRecipeDetailMap = Record<string, PersistedRecipeDetailState>
@@ -17,8 +26,16 @@ function isBrowser() {
   return typeof window !== 'undefined'
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object'
+}
+
+function normalizeUserId(userId?: string) {
+  return typeof userId === 'string' ? userId.trim().toLowerCase() : ''
+}
+
 function isValidStats(value: unknown): value is RecipeStats {
-  if (!value || typeof value !== 'object') {
+  if (!isRecord(value)) {
     return false
   }
 
@@ -31,7 +48,7 @@ function isValidStats(value: unknown): value is RecipeStats {
 }
 
 function isValidComment(value: unknown): value is RecipeComment {
-  if (!value || typeof value !== 'object') {
+  if (!isRecord(value)) {
     return false
   }
 
@@ -43,6 +60,68 @@ function isValidComment(value: unknown): value is RecipeComment {
     typeof candidate.publishedOn === 'string' &&
     typeof candidate.content === 'string'
   )
+}
+
+function isValidReactionByUserMap(value: unknown): value is Record<string, PersistedRecipeUserReactionState> {
+  if (!isRecord(value)) {
+    return false
+  }
+
+  return Object.values(value).every((reaction) => {
+    if (!isRecord(reaction)) {
+      return false
+    }
+
+    return (
+      typeof reaction.isLiked === 'boolean' &&
+      typeof reaction.isSaved === 'boolean' &&
+      typeof reaction.updatedAt === 'string'
+    )
+  })
+}
+
+function resolveRecipeReactionState(
+  state: PersistedRecipeDetailState,
+  currentUserId?: string,
+): PersistedRecipeDetailState {
+  const normalizedCurrentUserId = normalizeUserId(currentUserId)
+
+  if (!normalizedCurrentUserId) {
+    return state
+  }
+
+  const reactionsByUser = state.reactionsByUser
+
+  if (reactionsByUser && Object.keys(reactionsByUser).length > 0) {
+    const currentUserReaction = reactionsByUser[normalizedCurrentUserId]
+
+    if (!currentUserReaction) {
+      return {
+        ...state,
+        isLiked: false,
+        isSaved: false,
+        updatedAt: '',
+      }
+    }
+
+    return {
+      ...state,
+      isLiked: currentUserReaction.isLiked,
+      isSaved: currentUserReaction.isSaved,
+      updatedAt: currentUserReaction.updatedAt,
+    }
+  }
+
+  if (normalizedCurrentUserId && normalizedCurrentUserId !== LEGACY_DEFAULT_USER_ID) {
+    return {
+      ...state,
+      isLiked: false,
+      isSaved: false,
+      updatedAt: '',
+    }
+  }
+
+  return state
 }
 
 function readPersistedRecipeDetailMap(): PersistedRecipeDetailMap {
@@ -71,6 +150,7 @@ function readPersistedRecipeDetailMap(): PersistedRecipeDetailMap {
         isLiked?: unknown
         isSaved?: unknown
         updatedAt?: unknown
+        reactionsByUser?: unknown
       }
 
       if (!isValidStats(state.stats) || !Array.isArray(state.comments) || !Array.isArray(state.checkedIngredientIds)) {
@@ -81,6 +161,9 @@ function readPersistedRecipeDetailMap(): PersistedRecipeDetailMap {
       const checkedIngredientIds = state.checkedIngredientIds.filter(
         (ingredientId): ingredientId is string => typeof ingredientId === 'string',
       )
+      const reactionsByUser = isValidReactionByUserMap(state.reactionsByUser)
+        ? state.reactionsByUser
+        : undefined
 
       if (rawRecipeId) {
         nextMap[rawRecipeId] = {
@@ -90,6 +173,7 @@ function readPersistedRecipeDetailMap(): PersistedRecipeDetailMap {
           isLiked: typeof state.isLiked === 'boolean' ? state.isLiked : false,
           isSaved: typeof state.isSaved === 'boolean' ? state.isSaved : false,
           updatedAt: typeof state.updatedAt === 'string' ? state.updatedAt : '',
+          reactionsByUser,
         }
       }
     }
@@ -112,6 +196,7 @@ export function getPersistedRecipeDetailState(
   recipeId: string,
   fallbackState: Pick<PersistedRecipeDetailState, 'stats' | 'comments' | 'checkedIngredientIds'> &
     Partial<Pick<PersistedRecipeDetailState, 'isLiked' | 'isSaved'>>,
+  currentUserId?: string,
 ) {
   const dataMap = readPersistedRecipeDetailMap()
   const persistedState = dataMap[recipeId]
@@ -125,23 +210,50 @@ export function getPersistedRecipeDetailState(
     }
   }
 
-  return persistedState
+  return resolveRecipeReactionState(persistedState, currentUserId)
 }
 
 export function savePersistedRecipeDetailState(
   recipeId: string,
   state: Pick<PersistedRecipeDetailState, 'stats' | 'comments' | 'checkedIngredientIds' | 'isLiked' | 'isSaved'>,
+  currentUserId?: string,
 ) {
   const dataMap = readPersistedRecipeDetailMap()
+  const previousState = dataMap[recipeId]
+  const updatedAt = new Date().toISOString()
+  const normalizedCurrentUserId = normalizeUserId(currentUserId)
+  const nextReactionsByUser = {
+    ...(previousState?.reactionsByUser ?? {}),
+  }
+
+  if (normalizedCurrentUserId) {
+    nextReactionsByUser[normalizedCurrentUserId] = {
+      isLiked: state.isLiked,
+      isSaved: state.isSaved,
+      updatedAt,
+    }
+  }
 
   dataMap[recipeId] = {
     ...state,
-    updatedAt: new Date().toISOString(),
+    updatedAt,
+    reactionsByUser: Object.keys(nextReactionsByUser).length > 0 ? nextReactionsByUser : undefined,
   }
 
   writePersistedRecipeDetailMap(dataMap)
+  notifyMyActivityChanged()
 }
 
-export function getAllPersistedRecipeDetailState() {
-  return readPersistedRecipeDetailMap()
+export function getAllPersistedRecipeDetailState(currentUserId?: string) {
+  const dataMap = readPersistedRecipeDetailMap()
+  const normalizedCurrentUserId = normalizeUserId(currentUserId)
+
+  if (!normalizedCurrentUserId) {
+    return dataMap
+  }
+
+  return Object.entries(dataMap).reduce<PersistedRecipeDetailMap>((resolvedMap, [recipeId, state]) => {
+    resolvedMap[recipeId] = resolveRecipeReactionState(state, normalizedCurrentUserId)
+    return resolvedMap
+  }, {})
 }

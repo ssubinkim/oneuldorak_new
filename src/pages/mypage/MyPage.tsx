@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { readOnboardingAnswers } from '../../components/common/aiDataHub'
+import { MY_ACTIVITY_CHANGED_EVENT } from '../../components/common/myActivityEvents'
 import { usePointBalance } from '../../components/common/usePoints'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import GoalBottomSheet from '../../components/mypage/my-page/GoalBottomSheet'
@@ -62,7 +63,8 @@ export default function MyPage() {
       setTimeout(() => setShowSavedToast(false), 2000)
     }
   }, [])
-  const { email, isNew, avatar } = useUserProfile()
+  const { email, nickname, isNew, avatar } = useUserProfile()
+  const [activityRefreshTick, setActivityRefreshTick] = useState(0)
   const notificationIds = NOTIFICATIONS.map(n => n.id)
   const [hasUnread, setHasUnread] = useState(() => !isNew && hasUnreadNotifications(notificationIds))
 
@@ -72,8 +74,34 @@ export default function MyPage() {
     return () => window.removeEventListener('hashchange', check)
   }, [isNew])
 
+  useEffect(() => {
+    const refreshActivity = () => {
+      setActivityRefreshTick((prevTick) => prevTick + 1)
+    }
+    const refreshOnVisible = () => {
+      if (document.visibilityState === 'visible') {
+        refreshActivity()
+      }
+    }
+
+    window.addEventListener(MY_ACTIVITY_CHANGED_EVENT, refreshActivity)
+    window.addEventListener('hashchange', refreshActivity)
+    window.addEventListener('focus', refreshActivity)
+    document.addEventListener('visibilitychange', refreshOnVisible)
+
+    return () => {
+      window.removeEventListener(MY_ACTIVITY_CHANGED_EVENT, refreshActivity)
+      window.removeEventListener('hashchange', refreshActivity)
+      window.removeEventListener('focus', refreshActivity)
+      document.removeEventListener('visibilitychange', refreshOnVisible)
+    }
+  }, [])
+
   const { totalPoints, monthlyPoints } = usePointBalance()
-  const activityCounts = getMyPageActivityCounts(email)
+  const activityCounts = useMemo(
+    () => getMyPageActivityCounts(email, nickname),
+    [activityRefreshTick, email, nickname],
+  )
   const stats: MyPageStatItem[] = [
     { id: 'likes', value: String(activityCounts.likes), label: '좋아요', highlight: true, clickable: true },
     { id: 'posts', value: String(activityCounts.posts), label: '게시글', highlight: true, clickable: true },

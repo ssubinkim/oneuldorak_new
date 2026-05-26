@@ -1,9 +1,8 @@
 import {
-  getBoardReactionKey,
   readPersistedBoardLikeKeys,
 } from '../community/common/boardReactionPersistence'
 import { readPersistedBoardComments } from '../community/common/boardCommentPersistence'
-import { mockBoardDetailPosts } from '../community/common/boardMockData'
+import { mockBoardDetailPosts, mockBoardPosts } from '../community/common/boardMockData'
 import { readPersistedCommunityWriteState } from '../community/common/communityWritePersistence'
 import { getRecipeDetail, type RecipeId } from '../recipedetailpage/recipeDetailData'
 import { getAllPersistedRecipeDetailState } from '../recipedetailpage/recipeDetailPersistence'
@@ -89,6 +88,37 @@ function getTimestampFromId(value: string) {
   return Number.isFinite(numericTimestamp) ? numericTimestamp : 0
 }
 
+function normalizeIdentity(value: string | undefined) {
+  return typeof value === 'string' ? value.trim().toLowerCase() : ''
+}
+
+function isOwnedByCurrentUser(
+  authorId: string | undefined,
+  authorName: string | undefined,
+  currentUserId: string,
+  currentUserNickname?: string,
+) {
+  const normalizedCurrentUserId = normalizeIdentity(currentUserId)
+  const normalizedAuthorId = normalizeIdentity(authorId)
+
+  if (normalizedCurrentUserId && normalizedAuthorId) {
+    return normalizedCurrentUserId === normalizedAuthorId
+  }
+
+  if (normalizedAuthorId) {
+    return false
+  }
+
+  const normalizedCurrentUserNickname = normalizeIdentity(currentUserNickname)
+  const normalizedAuthorName = normalizeIdentity(authorName)
+
+  if (!normalizedCurrentUserNickname || !normalizedAuthorName) {
+    return false
+  }
+
+  return normalizedCurrentUserNickname === normalizedAuthorName
+}
+
 type LikeRecipeMeta = {
   image: string
   description: string
@@ -142,39 +172,79 @@ function getBoardTitleById(postId: string) {
   return boardPost?.title ?? '게시글'
 }
 
-export function getMyPageActivityCounts(currentUserId: string) {
+function getLikedBoardPostIds(currentUserId: string) {
+  const likedBoardKeys = readPersistedBoardLikeKeys()
+  const normalizedCurrentUserId = normalizeIdentity(currentUserId)
+  if (!normalizedCurrentUserId) {
+    return []
+  }
+
+  const likedPostIds = likedBoardKeys
+    .map((reactionKey) => {
+      const separatorIndex = reactionKey.indexOf(':')
+      if (separatorIndex <= 0) {
+        return null
+      }
+
+      const ownerUserId = reactionKey.slice(0, separatorIndex)
+      const postId = reactionKey.slice(separatorIndex + 1)
+
+      if (!postId) {
+        return null
+      }
+
+      return normalizeIdentity(ownerUserId) === normalizedCurrentUserId
+        ? postId
+        : null
+    })
+    .filter((postId): postId is string => Boolean(postId))
+
+  return Array.from(new Set(likedPostIds))
+}
+
+export function getMyPageActivityCounts(currentUserId: string, currentUserNickname?: string) {
   const persistedWriteState = readPersistedCommunityWriteState()
-  const persistedRecipeStateMap = getAllPersistedRecipeDetailState()
+  const persistedRecipeStateMap = getAllPersistedRecipeDetailState(currentUserId)
   const persistedBoardComments = readPersistedBoardComments()
 
-  const likeCount =
-    getLikedBoardPosts(currentUserId).length +
-    Object.values(persistedRecipeStateMap).filter((state) => state.isLiked).length
+  const likeCount = getLikedBoardPostIds(currentUserId).length + getLikedRecipes(currentUserId).length
 
-  const postCount = [
-    ...persistedWriteState.recipes,
-    ...persistedWriteState.boardPosts,
-    ...persistedWriteState.votes,
-  ].filter((post) => post.authorId === currentUserId).length
+  const recipePostCount = persistedWriteState.recipes.filter((recipe) =>
+    isOwnedByCurrentUser(recipe.authorId, recipe.author, currentUserId, currentUserNickname),
+  ).length
+  const boardPostCount = persistedWriteState.boardPosts.filter((post) =>
+    isOwnedByCurrentUser(post.authorId, post.user, currentUserId, currentUserNickname),
+  ).length
+  const votePostCount = persistedWriteState.votes.filter((vote) =>
+    isOwnedByCurrentUser(vote.authorId, vote.author, currentUserId, currentUserNickname),
+  ).length
 
   const boardCommentCount = Object.values(persistedBoardComments).reduce(
-    (count, comments) => count + comments.filter((comment) => comment.authorId === currentUserId).length,
+    (count, comments) =>
+      count +
+      comments.filter((comment) =>
+        isOwnedByCurrentUser(comment.authorId, comment.user, currentUserId, currentUserNickname),
+      ).length,
     0,
   )
   const recipeCommentCount = Object.values(persistedRecipeStateMap).reduce(
-    (count, state) => count + state.comments.filter((comment) => comment.authorId === currentUserId).length,
+    (count, state) =>
+      count +
+      state.comments.filter((comment) =>
+        isOwnedByCurrentUser(comment.authorId, comment.authorName, currentUserId, currentUserNickname),
+      ).length,
     0,
   )
 
   return {
     likes: likeCount,
-    posts: postCount,
+    posts: recipePostCount + boardPostCount + votePostCount,
     comments: boardCommentCount + recipeCommentCount,
   }
 }
 
-export function getLikedRecipes(): LikeRecipe[] {
-  const persistedRecipeStateMap = getAllPersistedRecipeDetailState()
+export function getLikedRecipes(currentUserId?: string): LikeRecipe[] {
+  const persistedRecipeStateMap = getAllPersistedRecipeDetailState(currentUserId)
 
   return Object.entries(persistedRecipeStateMap)
     .filter(([, state]) => state.isLiked)
@@ -214,27 +284,36 @@ export function getLikedRecipePosts(): LikePost[] {
 }
 
 export function getLikedBoardPosts(currentUserId: string): LikePost[] {
-  const likedBoardKeys = readPersistedBoardLikeKeys()
-  const persistedBoardDetails = readPersistedCommunityWriteState().boardDetailPosts
-  const boardDetails = [...persistedBoardDetails, ...mockBoardDetailPosts]
+  const persistedWriteState = readPersistedCommunityWriteState()
+  const likedPostIds = getLikedBoardPostIds(currentUserId)
+  const boardDetails = [...persistedWriteState.boardDetailPosts, ...mockBoardDetailPosts]
+  const boardPosts = [...persistedWriteState.boardPosts, ...mockBoardPosts]
+  const boardDetailsById = new Map(
+    boardDetails.map((post) => [post.id, post] as const),
+  )
+  const boardPostsById = new Map(
+    boardPosts.map((post) => [post.id, post] as const),
+  )
 
-  return boardDetails
-    .filter((post, index, posts) => posts.findIndex((candidate) => candidate.id === post.id) === index)
-    .filter((post) => likedBoardKeys.includes(getBoardReactionKey(post.id, currentUserId)))
-    .map((post) => ({
-      id: `liked-board:${post.id}`,
-      category: post.category,
+  return likedPostIds.map((postId) => {
+    const boardDetail = boardDetailsById.get(postId)
+    const boardPost = boardPostsById.get(postId)
+
+    return {
+      id: `liked-board:${postId}`,
+      category: boardDetail?.category ?? boardPost?.category ?? '게시글',
       showIcon: true,
-      title: post.title,
+      title: boardDetail?.title ?? boardPost?.title ?? '게시글',
       savedAt: '방금 전 좋아요',
-      target: { kind: 'board', id: post.id },
-    }))
+      target: { kind: 'board' as const, id: postId },
+    }
+  })
 }
 
-export function getMyWrittenPosts(currentUserId: string): LikePost[] {
+export function getMyWrittenPosts(currentUserId: string, currentUserNickname?: string): LikePost[] {
   const persistedWriteState = readPersistedCommunityWriteState()
   const recipePosts = persistedWriteState.recipes
-    .filter((recipe) => recipe.authorId === currentUserId)
+    .filter((recipe) => isOwnedByCurrentUser(recipe.authorId, recipe.author, currentUserId, currentUserNickname))
     .map((recipe) => ({
       id: `mypage-written-recipe:${recipe.id}`,
       category: '레시피',
@@ -249,7 +328,7 @@ export function getMyWrittenPosts(currentUserId: string): LikePost[] {
     }))
 
   const boardPosts = persistedWriteState.boardPosts
-    .filter((post) => post.authorId === currentUserId)
+    .filter((post) => isOwnedByCurrentUser(post.authorId, post.user, currentUserId, currentUserNickname))
     .map((post) => ({
       id: `mypage-written-board:${post.id}`,
       category: post.category,
@@ -264,7 +343,7 @@ export function getMyWrittenPosts(currentUserId: string): LikePost[] {
     }))
 
   const votePosts = persistedWriteState.votes
-    .filter((vote) => vote.authorId === currentUserId)
+    .filter((vote) => isOwnedByCurrentUser(vote.authorId, vote.author, currentUserId, currentUserNickname))
     .map((vote) => ({
       id: `mypage-written-vote:${vote.id}`,
       category: '투표',
@@ -282,12 +361,14 @@ export function getMyWrittenPosts(currentUserId: string): LikePost[] {
   )
 }
 
-export function getMyCommentPosts(currentUserId: string): LikePost[] {
+export function getMyCommentPosts(currentUserId: string, currentUserNickname?: string): LikePost[] {
   const persistedBoardComments = readPersistedBoardComments()
-  const persistedRecipeStateMap = getAllPersistedRecipeDetailState()
+  const persistedRecipeStateMap = getAllPersistedRecipeDetailState(currentUserId)
   const boardCommentPosts = Object.entries(persistedBoardComments).flatMap(([postId, comments]) =>
     comments
-      .filter((comment) => comment.authorId === currentUserId)
+      .filter((comment) =>
+        isOwnedByCurrentUser(comment.authorId, comment.user, currentUserId, currentUserNickname),
+      )
       .map((comment) => ({
         id: `mypage-comment-board:${postId}:${comment.id}`,
         category: '게시글',
@@ -304,7 +385,9 @@ export function getMyCommentPosts(currentUserId: string): LikePost[] {
 
   const recipeCommentPosts = Object.entries(persistedRecipeStateMap).flatMap(([recipeId, state]) =>
     state.comments
-      .filter((comment) => comment.authorId === currentUserId)
+      .filter((comment) =>
+        isOwnedByCurrentUser(comment.authorId, comment.authorName, currentUserId, currentUserNickname),
+      )
       .map((comment) => ({
         id: `mypage-comment-recipe:${recipeId}:${comment.id}`,
         category: '레시피',
@@ -324,8 +407,8 @@ export function getMyCommentPosts(currentUserId: string): LikePost[] {
   )
 }
 
-export function getSavedRecipeCards(): SavedRecipe[] {
-  const persistedRecipeStateMap = getAllPersistedRecipeDetailState()
+export function getSavedRecipeCards(currentUserId?: string): SavedRecipe[] {
+  const persistedRecipeStateMap = getAllPersistedRecipeDetailState(currentUserId)
 
   return Object.entries(persistedRecipeStateMap)
     .filter(([, state]) => state.isSaved)
