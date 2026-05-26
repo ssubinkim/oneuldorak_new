@@ -1,5 +1,6 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import BottomNav from '../../components/common/layout/BottomNav'
+import { MY_ACTIVITY_CHANGED_EVENT } from '../../components/common/myActivityEvents'
 import { useUserProfile } from '../../components/common/useUserProfile'
 import MyActivityHeader from '../../components/mypage/my-activity/MyActivityHeader'
 import MyActivityList from '../../components/mypage/my-activity/MyActivityList'
@@ -9,9 +10,33 @@ import '../../styles/Tailwind.css'
 type Props = { onBack?: () => void }
 
 export default function MyPostsPage({ onBack }: Props) {
-  const { email } = useUserProfile()
-  const posts = useMemo(() => getMyWrittenPosts(email), [email])
+  const { email, nickname } = useUserProfile()
+  const [refreshTick, setRefreshTick] = useState(0)
+  const posts = useMemo(() => getMyWrittenPosts(email, nickname), [email, nickname, refreshTick])
   const handleBack = onBack ?? (() => { window.location.hash = '#/mypage' })
+
+  useEffect(() => {
+    const refresh = () => {
+      setRefreshTick((prevTick) => prevTick + 1)
+    }
+    const refreshOnVisible = () => {
+      if (document.visibilityState === 'visible') {
+        refresh()
+      }
+    }
+
+    window.addEventListener(MY_ACTIVITY_CHANGED_EVENT, refresh)
+    window.addEventListener('hashchange', refresh)
+    window.addEventListener('focus', refresh)
+    document.addEventListener('visibilitychange', refreshOnVisible)
+
+    return () => {
+      window.removeEventListener(MY_ACTIVITY_CHANGED_EVENT, refresh)
+      window.removeEventListener('hashchange', refresh)
+      window.removeEventListener('focus', refresh)
+      document.removeEventListener('visibilitychange', refreshOnVisible)
+    }
+  }, [])
 
   return (
     <div className="app-shell">

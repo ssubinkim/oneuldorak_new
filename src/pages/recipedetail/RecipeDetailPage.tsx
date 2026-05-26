@@ -141,7 +141,7 @@ function RecipeDetailPage({
           checkedIngredientIds: [],
           isLiked: false,
           isSaved: false,
-        }),
+        }, email),
       )
       const nextRecipe = {
         ...overrideRecipe,
@@ -161,14 +161,14 @@ function RecipeDetailPage({
         checkedIngredientIds: [],
         isLiked: false,
         isSaved: false,
-      }),
+      }, email),
     )
 
     applyHydratedState({
       ...nextRecipe,
       stats: persistedState.stats,
     }, persistedState)
-  }, [overrideRecipe, recipeId])
+  }, [email, overrideRecipe, recipeId])
 
   useEffect(() => {
     if (!hasHydratedFromStorage) {
@@ -181,9 +181,10 @@ function RecipeDetailPage({
       checkedIngredientIds: [],
       isLiked: recipeReactionState.isLiked,
       isSaved: recipeReactionState.isSaved,
-    })
+    }, email)
   }, [
     comments,
+    email,
     hasHydratedFromStorage,
     recipe.id,
     recipe.stats,

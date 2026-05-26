@@ -1,3 +1,5 @@
+import { notifyMyActivityChanged } from '../../common/myActivityEvents'
+
 const BOARD_REACTION_STORAGE_KEY = 'oneuldorak:board-detail-reactions:v1'
 
 function isBrowser() {
@@ -36,4 +38,5 @@ export function savePersistedBoardLikeKeys(reactionKeys: string[]) {
   }
 
   window.localStorage.setItem(BOARD_REACTION_STORAGE_KEY, JSON.stringify(reactionKeys))
+  notifyMyActivityChanged()
 }
