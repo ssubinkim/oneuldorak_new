@@ -45,11 +45,11 @@
 
 .signup-page__header p {
   margin: 3px 0 0;
-  color: #1a1a1a;
+  color: #5f5f5f;
   font-family: 'Pretendard Variable', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 130%;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 120%;
 }
 
 .signup-page__form {
@@ -77,14 +77,14 @@
   width: 100%;
   min-height: 50px;
   padding: 0 16px;
-  border: 1px solid var(--color-primary-100);
+  border: 1px solid #FFDB78;
   border-radius: 10px;
-  background: var(--color-primary-100);
-  color: #1a1a1a;
+  background: #FFDB78;
+  color: #3c3c3c;
   font-family: 'Pretendard Variable', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 130%;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 120%;
 }
 
 .signup-page .social-login-options {

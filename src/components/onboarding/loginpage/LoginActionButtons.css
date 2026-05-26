@@ -12,22 +12,22 @@
   padding: 0 16px;
   border-radius: 10px;
   font-family: 'Pretendard Variable', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
-  line-height: 130%;
+  line-height: 120%;
 }
 
 .login-action-buttons__button--primary {
-  border: 1px solid #dddddd;
-  background: #ffffff;
-  color: #1f1f1f;
+  border: 1px solid #d8d8d8;
+  background: #fffffd;
+  color: #1a1a1a;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.03);
 }
 
 .login-action-buttons__button--secondary {
-  border: 1px solid var(--color-primary-100);
-  background: var(--color-primary-100);
-  color: #111111;
+  border: 1px solid #FFDB78;
+  background:#FFDB78;
+  color: #3c3c3c;
   box-shadow: 0 6px 14px rgba(var(--color-primary-rgb), 0.22);
   transition: transform 100ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 100ms ease,
