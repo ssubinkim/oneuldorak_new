@@ -13,7 +13,8 @@
   --bottom-nav-bg-inset: 0px;
   --bottom-nav-bg-radius: 10px;
   --bottom-nav-safe-bottom: 0px;
-  --bottom-nav-bottom-padding: 8px;
+  --bottom-nav-bottom-padding: 6px;
+  --bottom-nav-extra-height: 2px;
 
   position: absolute;
   right: 0;
@@ -26,7 +27,7 @@
     minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   width: 100%;
-  height: calc(var(--bottom-nav-bg-height) + var(--bottom-nav-bottom-padding));
+  height: calc(var(--bottom-nav-bg-height) + var(--bottom-nav-bottom-padding) + var(--bottom-nav-extra-height));
   padding: 0 0 var(--bottom-nav-bottom-padding);
   margin: 0 auto;
   box-sizing: border-box;
