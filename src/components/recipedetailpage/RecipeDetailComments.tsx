@@ -1,6 +1,5 @@
 import { useState, type FormEvent } from 'react'
 import type { RecipeComment } from './recipeDetailData'
-import { StatIcon } from './RecipeDetailIcons'
 import blueMascotIcon from '../../assets/food_mascot/blue_mascot.png'
 import broMascotIcon from '../../assets/food_mascot/bro_mascot.png'
 import carrotMascotIcon from '../../assets/food_mascot/carrot_mascot.png'
@@ -31,20 +30,21 @@ function RecipeDetailComments({
   onUpdateComment,
   onDeleteComment,
 }: RecipeDetailCommentsProps) {
-  const [commentInput, setCommentInput] = useState('')
+  const [commentText, setCommentText] = useState('')
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null)
   const [editingCommentText, setEditingCommentText] = useState('')
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const nextContent = commentInput.trim()
-    if (!nextContent) {
+    const trimmedText = commentText.trim()
+
+    if (!trimmedText) {
       return
     }
 
-    onAddComment?.(nextContent)
-    setCommentInput('')
+    onAddComment?.(trimmedText)
+    setCommentText('')
   }
 
   const handleStartEdit = (comment: RecipeComment) => {
@@ -58,13 +58,13 @@ function RecipeDetailComments({
   }
 
   const handleSaveEdit = (commentId: string) => {
-    const nextContent = editingCommentText.trim()
+    const trimmedText = editingCommentText.trim()
 
-    if (!nextContent) {
+    if (!trimmedText) {
       return
     }
 
-    onUpdateComment?.(commentId, nextContent)
+    onUpdateComment?.(commentId, trimmedText)
     handleCancelEdit()
   }
 
@@ -77,74 +77,89 @@ function RecipeDetailComments({
   }
 
   return (
-    <section className="recipe-detail-section recipe-detail-comments">
-      <div className="recipe-detail-comments__header">
-        <h2>
-          댓글
-          <span>+1p</span>
-        </h2>
-        <button type="button">더보기</button>
+    <section className="board-detail-comments">
+      <div className="board-detail-comments__header">
+        <h2>댓글 ({comments.length})</h2>
       </div>
 
-      <form className="recipe-detail-comment-form" onSubmit={handleSubmit}>
+      <form className="board-detail-comments__input" onSubmit={handleSubmit}>
+        <span className="board-detail-comment-avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="8.4" r="3.3" />
+            <path d="M5.6 19.2c.8-3.3 3.1-5.2 6.4-5.2s5.6 1.9 6.4 5.2" />
+          </svg>
+        </span>
         <input
           type="text"
           placeholder="댓글을 입력하세요"
           aria-label="댓글 입력"
-          value={commentInput}
-          onChange={(event) => setCommentInput(event.target.value)}
+          value={commentText}
+          onChange={(event) => setCommentText(event.target.value)}
         />
-        <button type="submit" aria-label="댓글 등록">
-          <StatIcon type="send" />
+        <button type="submit" aria-label="댓글 작성">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 19V5M6.5 10.5 12 5l5.5 5.5" />
+          </svg>
         </button>
       </form>
 
-      <div className="recipe-detail-comments__list">
+      <div className="board-detail-comments__list">
         {comments.map((comment) => {
-          const canManageComment = isOwnComment(comment)
+          const canManage = isOwnComment(comment)
           const isEditing = editingCommentId === comment.id
 
           return (
-            <article key={comment.id}>
-              <div className="recipe-detail-comment-head">
-                <span className="recipe-detail-comment-mascot" aria-hidden="true">
-                  <img src={getMascotIcon(comment.authorName)} alt="" />
-                </span>
-                <h3>
-                  {comment.authorName}
-                  <span>{comment.publishedOn}</span>
-                </h3>
+            <article className="board-detail-comment" key={comment.id}>
+              <span className="board-detail-comment-avatar" aria-hidden="true">
+                <img src={getMascotIcon(comment.authorName)} alt="" className="is-mascot" />
+              </span>
 
-                {canManageComment && !isEditing ? (
-                  <div className="recipe-detail-comment-actions">
-                    <button type="button" onClick={() => handleStartEdit(comment)}>수정</button>
-                    <button type="button" onClick={() => onDeleteComment?.(comment.id)}>삭제</button>
-                  </div>
-                ) : null}
-              </div>
-
-              {isEditing ? (
-                <div className="recipe-detail-comment-edit">
-                  <input
-                    type="text"
-                    aria-label="댓글 수정"
-                    value={editingCommentText}
-                    onChange={(event) => setEditingCommentText(event.target.value)}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter') {
-                        event.preventDefault()
-                        handleSaveEdit(comment.id)
-                      }
-                    }}
-                  />
-                  <div className="recipe-detail-comment-edit__actions">
-                    <button type="button" onClick={handleCancelEdit}>취소</button>
-                    <button type="button" onClick={() => handleSaveEdit(comment.id)}>저장</button>
-                  </div>
+              <div className="board-detail-comment__content">
+                <div className="board-detail-comment__head">
+                  <h3>
+                    {comment.authorName}
+                    <span>{comment.publishedOn}</span>
+                  </h3>
+                  {canManage && !isEditing && (
+                    <div className="board-detail-comment__manage">
+                      <button type="button" onClick={() => handleStartEdit(comment)}>수정</button>
+                      <button type="button" onClick={() => onDeleteComment?.(comment.id)}>삭제</button>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <p>{comment.content}</p>
-              )}
+
+                {isEditing ? (
+                  <div className="board-detail-comment__edit">
+                    <input
+                      type="text"
+                      value={editingCommentText}
+                      onChange={(event) => setEditingCommentText(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter') {
+                          handleSaveEdit(comment.id)
+                        }
+
+                        if (event.key === 'Escape') {
+                          handleCancelEdit()
+                        }
+                      }}
+                    />
+                    <div className="board-detail-comment__edit-actions">
+                      <button type="button" onClick={handleCancelEdit}>취소</button>
+                      <button type="button" onClick={() => handleSaveEdit(comment.id)}>저장</button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <p>{comment.content}</p>
+                    <div className="board-detail-comment__actions">
+                      <button type="button">좋아요</button>
+                      <button type="button">댓글</button>
+                      {!canManage && <button type="button">신고</button>}
+                    </div>
+                  </>
+                )}
+              </div>
             </article>
           )
         })}
