@@ -54,9 +54,9 @@
 }
 
 .board-popular-posts__list li.is-top .board-popular-posts__rank {
-  color: var(--color-status-emphasis);
+  color: var(--color-red);
   font-weight: 800;
-  text-shadow: 0 1px 6px var(--color-status-emphasis-20);
+  text-shadow: 0 1px 6px var(--color-red-20);
 }
 
 .board-popular-posts__list strong {

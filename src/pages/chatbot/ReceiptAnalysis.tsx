@@ -4,6 +4,7 @@ import {
   RECEIPT_IMAGE_MAX_DATA_URL_LENGTH,
   analyzeReceiptImage,
 } from '../../features/ai/services/receiptApi'
+import { createReceiptAnalyzeMockResult } from '../../features/ai/mocks/receiptAnalyze.mock'
 import receiptMascotImage from '../../components/chatbot/images/chatbot .png'
 import cameraIcon from '../../components/chatbot/images/chat_camera.png'
 import galleryIcon from '../../components/chatbot/images/gall.png'
@@ -115,6 +116,7 @@ function ReceiptAnalysis() {
   const [result, setResult] = useState<ReceiptAnalysisResult | null>(null)
   const [errorMessage, setErrorMessage] = useState('')
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [isExampleImage, setIsExampleImage] = useState(false)
 
   const handleFileChange = async (
     source: UploadSource,
@@ -126,6 +128,7 @@ function ReceiptAnalysis() {
     event.currentTarget.value = ''
     setErrorMessage('')
     setResult(null)
+    setIsExampleImage(false)
 
     try {
       const convertedImage = await convertReceiptImageToDataUrl(file)
@@ -147,7 +150,9 @@ function ReceiptAnalysis() {
     setResult(null)
 
     try {
-      const nextResult = await analyzeReceiptImage(imageDataUrl)
+      const nextResult = isExampleImage
+        ? createReceiptAnalyzeMockResult(imageDataUrl)
+        : await analyzeReceiptImage(imageDataUrl)
       setResult(nextResult)
     } catch (error) {
       const message = error instanceof Error
@@ -162,6 +167,7 @@ function ReceiptAnalysis() {
   const handleUseExample = async () => {
     setErrorMessage('')
     setResult(null)
+    setIsAnalyzing(true)
 
     try {
       const image = await loadImageFromUrl(receiptExampleImage)
@@ -172,6 +178,8 @@ function ReceiptAnalysis() {
         if (dataUrl && dataUrl.length <= RECEIPT_IMAGE_MAX_DATA_URL_LENGTH) {
           setImageDataUrl(dataUrl)
           setFileLabel('예시 영수증 이미지')
+          setIsExampleImage(true)
+          setResult(createReceiptAnalyzeMockResult(dataUrl))
           return
         }
       }
@@ -182,6 +190,8 @@ function ReceiptAnalysis() {
         ? error.message
         : '예시 이미지를 불러오지 못했어요. 잠시 후 다시 시도해주세요.'
       setErrorMessage(message)
+    } finally {
+      setIsAnalyzing(false)
     }
   }
 
@@ -191,6 +201,7 @@ function ReceiptAnalysis() {
     setResult(null)
     setErrorMessage('')
     setIsAnalyzing(false)
+    setIsExampleImage(false)
   }
 
   const usableItems = result?.items.filter((item) => item.lunchboxUsable) ?? []

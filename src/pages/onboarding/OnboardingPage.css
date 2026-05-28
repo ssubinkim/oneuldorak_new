@@ -1,5 +1,5 @@
 .onboarding-page-screen {
-  background: var(--color-tertiary-90);
+  background: var(--color-primary-10);
   overflow: hidden;
 }
 
@@ -21,7 +21,7 @@
   min-height: 0;
   padding: var(--onboarding-pad-top) var(--onboarding-pad-x) var(--onboarding-pad-bottom);
   overflow: hidden;
-  background: var(--color-tertiary-90);
+  background: var(--color-primary-10);
 }
 
 .onboarding-page > :not(.onboarding-question__actions--fixed) {
@@ -55,7 +55,7 @@
   justify-content: flex-start;
   overflow: hidden auto;
   scrollbar-width: none;
-  background: var(--color-tertiary-90);
+  background: var(--color-primary-10);
 }
 
 .onboarding-page--question:not(.onboarding-page--ingredients) {
