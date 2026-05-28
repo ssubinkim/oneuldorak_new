@@ -55,7 +55,6 @@ type OpenChatOptions = {
 }
 
 const JUDGE_TEXT_QUERY = '살까말까 고민 중이야. 오늘 도시락 기준으로 사도 될지 판단해줘.'
-const JUDGE_PHOTO_QUERY = '사진으로 살까말까 판단받고 싶어.'
 
 function Chatbot() {
   const [showCoachMark, setShowCoachMark] = useState(() => !shouldSkipCoachMark())
@@ -131,13 +130,7 @@ function Chatbot() {
 
   const handleJudgeByPhoto = () => {
     setShowJudgeModeSheet(false)
-    openChatPage(JUDGE_PHOTO_QUERY, 'quick', {
-      useApi: true,
-      judgeMode: 'photo',
-      openPicker: true,
-      analysisType: 'judge',
-      feature: 'buy-or-not',
-    })
+    navigateToHash('#/chatbot-camera?purpose=buy-or-not')
   }
 
   return (

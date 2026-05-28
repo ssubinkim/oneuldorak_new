@@ -230,14 +230,16 @@ function buildFridgeDetectedIngredientsFromText(text: string): FridgeDetectedIng
     }
   })
 
-  FRIDGE_RESULT_FALLBACK_LABELS.forEach((fallbackLabel) => {
-    if (foundItems.length >= FRIDGE_RESULT_MAX_ITEMS) return
-    if (usedLabels.has(fallbackLabel)) return
-    const catalogItem = resolveCatalogItemByToken(fallbackLabel)
-    if (catalogItem) {
-      pushCatalogItem(catalogItem, true)
-    }
-  })
+  if (foundItems.length === 0) {
+    FRIDGE_RESULT_FALLBACK_LABELS.forEach((fallbackLabel) => {
+      if (foundItems.length >= FRIDGE_RESULT_MAX_ITEMS) return
+      if (usedLabels.has(fallbackLabel)) return
+      const catalogItem = resolveCatalogItemByToken(fallbackLabel)
+      if (catalogItem) {
+        pushCatalogItem(catalogItem, true)
+      }
+    })
+  }
 
   return foundItems.slice(0, FRIDGE_RESULT_MAX_ITEMS)
 }
@@ -1518,7 +1520,28 @@ function ChatbotChat() {
       }
 
       if (context.openPicker) {
-        window.setTimeout(() => openCameraSheet(context.feature ?? 'buy-or-not'), 120)
+        window.setTimeout(() => {
+          if (context.pick === 'camera') {
+            void (async () => {
+              if (shouldUseDesktopWebcam()) {
+                const opened = await openDesktopCamera()
+                if (!opened) {
+                  cameraInputRef.current?.click()
+                }
+                return
+              }
+              cameraInputRef.current?.click()
+            })()
+            return
+          }
+
+          if (context.pick === 'album') {
+            albumInputRef.current?.click()
+            return
+          }
+
+          openCameraSheet(context.feature ?? 'buy-or-not')
+        }, 120)
       }
       return
     }
