@@ -1,5 +1,5 @@
 .login-page-screen {
-  background: var(--color-tertiary-90);
+  background: var(--color-primary-10);
 }
 
 .login-page {
@@ -17,7 +17,7 @@
   flex-shrink: 0;
   margin: 0 auto;
   overflow: hidden;
-  background: var(--color-tertiary-90);
+  background: var(--color-primary-10);
 }
 
 .login-page .login-welcome {

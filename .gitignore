@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Local browser profiles
+.chrome-headless/
+.edge-headless/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

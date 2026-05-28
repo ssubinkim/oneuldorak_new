@@ -9,7 +9,7 @@
     max(clamp(20px, 5dvh, 54px), calc(12px + env(safe-area-inset-top, 0px)))
     23px
     max(clamp(20px, 5dvh, 54px), calc(12px + env(safe-area-inset-bottom, 0px)));
-  background: var(--color-tertiary-90);
+  background: var(--color-primary-10);
 }
 
 .onboarding-complete-screen__content {

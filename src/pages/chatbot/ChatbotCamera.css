@@ -86,6 +86,20 @@
   object-fit: cover;
 }
 
+.chatbot-camera-hub__error {
+  width: 100%;
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fff0f0;
+  color: #d33b3b;
+  font-family: "Pretendard Variable";
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  word-break: keep-all;
+}
+
 .chatbot-camera-hub__actions {
   margin-top: 16px;
   display: grid;
@@ -93,14 +107,34 @@
 }
 
 .chatbot-camera-hub__action {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   min-height: 50px;
   border: 0;
   border-radius: 10px;
+  box-sizing: border-box;
   font-family: "Pretendard Variable";
   font-size: 16px;
   font-weight: 600;
   line-height: 1.36;
+  cursor: pointer;
+}
+
+.chatbot-camera-hub__action:disabled,
+.chatbot-camera-hub__action[aria-disabled="true"] {
+  cursor: progress;
+  opacity: 0.64;
+}
+
+.chatbot-camera-hub__file {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .chatbot-camera-hub__action--camera,

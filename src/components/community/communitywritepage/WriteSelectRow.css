@@ -41,7 +41,7 @@
 }
 
 .community-write-select-control:focus-visible {
-  box-shadow: 0 0 0 3px var(--color-green01_-30);
+  box-shadow: 0 0 0 3px var(--color-green01_);
 }
 
 .community-write-select-control svg {

@@ -123,7 +123,7 @@
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: var(--color-tertiary);
+  background: var(--color-primary-10);
   display: flex;
   align-items: center;
   justify-content: center;

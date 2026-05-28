@@ -31,7 +31,7 @@
 
 .sequential-highlight-list__item.is-active {
   background: #fff;
-  border-color: var(--color-green02_-30);
+  border-color: var(--color-green02_);
   box-shadow: 0 10px 14px -14px rgba(0, 166, 82, 0.55);
   opacity: 1;
   transform: translateY(-1px);

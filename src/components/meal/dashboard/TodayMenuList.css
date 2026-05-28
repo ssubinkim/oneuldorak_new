@@ -193,7 +193,7 @@
 }
 
 .stat-blue {
-  color: var(--color-status-success);
+  color: var(--color-blue);
 }
 
 .stat-time {
