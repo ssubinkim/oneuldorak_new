@@ -131,7 +131,7 @@
   }
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .mypage {
     padding: 0 40px 56px;
   }

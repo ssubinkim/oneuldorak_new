@@ -444,7 +444,7 @@ article.vote-result-item {
   }
 }
 
-@media (min-width: 600px) {
+@container app-screen (min-width: 600px) {
   .vote-featured-section {
     padding-top: 0;
   }

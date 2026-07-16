@@ -64,7 +64,7 @@
   white-space: nowrap;
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .mypage-profile {
     gap: 24px;
   }

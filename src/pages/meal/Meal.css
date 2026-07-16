@@ -159,7 +159,7 @@
   }
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .meal-hero {
     padding: 28px 40px 36px;
   }

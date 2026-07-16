@@ -63,7 +63,7 @@
   transform: rotate(45deg);
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .mypage-point-card {
     grid-template-columns: 76px minmax(0, 1fr) 22px;
     min-height: 156px;

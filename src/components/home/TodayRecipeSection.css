@@ -259,7 +259,7 @@
   }
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .recipe-sec {
     padding: 40px 40px 8px;
   }

@@ -158,7 +158,7 @@
   background: var(--color-primary);
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .recipe-gallery-section {
     padding: 36px 0 12px;
   }

@@ -28,7 +28,7 @@
   border-bottom-color: var(--color-primary, #ffd515);
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .like-tab {
     padding: 20px 0;
     font-size: 18px;

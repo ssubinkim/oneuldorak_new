@@ -211,7 +211,7 @@
 }
 
 /* ── Responsive ─────────────────────────────────────────────── */
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .recipe-weekly-section {
     padding: 36px 0 12px;
   }

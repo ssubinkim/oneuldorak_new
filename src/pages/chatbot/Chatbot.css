@@ -384,7 +384,7 @@
   animation-play-state: paused;
 }
 
-@media (max-width: 420px) {
+@container app-screen (max-width: 420px) {
   .chatbot-page {
     --chatbot-page-padding-top: max(24px, calc(16px + env(safe-area-inset-top, 0px)));
   }

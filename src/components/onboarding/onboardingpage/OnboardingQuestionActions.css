@@ -21,7 +21,7 @@
   background: linear-gradient(180deg, rgba(248, 246, 236, 0) 0%, #f8f6ec 26%, #f8f6ec 100%);
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .onboarding-question__actions--fixed {
     right: auto;
     left: 50%;

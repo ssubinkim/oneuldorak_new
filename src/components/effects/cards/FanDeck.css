@@ -79,7 +79,7 @@
   color: #686868;
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .fan-deck {
     width: min(100%, 480px);
     height: 410px;

@@ -1357,7 +1357,7 @@
   stroke-width: 2;
   color: #EF5246;
 }
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .recipe-detail-page {
     background: linear-gradient(180deg, #ffdc78 0 104px, #fffaf0 104px 100%);
   }

@@ -73,7 +73,7 @@
   background: var(--color-bg-base);
 }
 
-@media (min-width: 600px) {
+@container app-screen (min-width: 600px) {
   .community-content {
     padding-right: 24px;
     padding-left: 24px;

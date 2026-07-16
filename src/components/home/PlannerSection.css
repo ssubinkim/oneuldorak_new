@@ -385,7 +385,7 @@
   }
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .planner {
     padding: 32px 40px 8px;
   }

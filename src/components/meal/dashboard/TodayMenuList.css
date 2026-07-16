@@ -377,7 +377,7 @@
   margin: 0;
 }
 
-@media (max-width: 767px) {
+@container app-screen (max-width: 767px) {
   .today-img-wrapper {
     height: 230px;
   }
@@ -387,7 +387,7 @@
   }
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .today-img-wrapper {
     height: 320px;
   }

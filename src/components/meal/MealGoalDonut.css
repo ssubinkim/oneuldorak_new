@@ -54,7 +54,7 @@
   }
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .meal-goal-donut {
     width: 132px;
     height: 132px;

@@ -110,7 +110,7 @@ button {
 
 .app-shell {
   --screen-min-width: 320px;
-  --screen-max-width: 1024px;
+  --screen-max-width: 390px;
   --header-height: 44px;
   --bottom-nav-height: clamp(104px, 28vw, 112px);
 
@@ -125,6 +125,8 @@ button {
 
 .app-screen {
   position: relative;
+  container-name: app-screen;
+  container-type: inline-size;
   width: min(100vw, var(--screen-max-width));
   min-width: var(--screen-min-width);
   height: 100dvh;

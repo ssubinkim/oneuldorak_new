@@ -86,7 +86,7 @@
   }
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .recipe-quick-section {
     padding: 28px 40px;
   }

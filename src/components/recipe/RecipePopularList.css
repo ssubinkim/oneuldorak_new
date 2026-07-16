@@ -184,7 +184,7 @@
   flex-shrink: 0;
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .recipe-popular-section {
     padding: 36px 40px;
   }

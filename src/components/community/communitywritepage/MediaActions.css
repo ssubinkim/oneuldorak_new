@@ -197,7 +197,7 @@
   transform: rotate(90deg) scale(0.92);
 }
 
-@media (max-width: 390px) {
+@container app-screen (max-width: 390px) {
   .community-write-media-strip {
     gap: 10px;
   }

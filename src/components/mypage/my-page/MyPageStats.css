@@ -42,7 +42,7 @@
   color: #ff5959;
 }
 
-@media (min-width: 768px) {
+@container app-screen (min-width: 768px) {
   .mypage-stats {
     margin-top: 20px;
   }

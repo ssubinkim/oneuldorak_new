@@ -327,7 +327,7 @@
   }
 }
 
-@media (min-width: 1024px) {
+@container app-screen (min-width: 1024px) {
   .bottom-nav {
     width: 100%;
     bottom: 0;
