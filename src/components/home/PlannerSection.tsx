@@ -39,6 +39,7 @@ type Props = {
 type FlyDot = { startX: number; startY: number; endX: number; endY: number }
 
 function PlannerSection({ onDirectSelect }: Props) {
+  const [isCardFlipped, setIsCardFlipped] = useState(false)
   const [selectedDate, setSelectedDate] = useState(TODAY_DATE)
   const [slideSteps, setSlideSteps] = useState(0)
   const [toast, setToast] = useState(false)
@@ -85,6 +86,7 @@ function PlannerSection({ onDirectSelect }: Props) {
 
   const handleDayClick = useCallback((posOffset: number) => {
     if (posOffset === 0 || isAnimating.current) return
+    setIsCardFlipped(false)
     isAnimating.current = true
     setSlideSteps(-posOffset)
 
@@ -152,7 +154,25 @@ function PlannerSection({ onDirectSelect }: Props) {
         </div>
       </div>
 
-      <div className="planner__card">
+      <div
+        className={`planner__card${isCardFlipped ? ' planner__card--flipped' : ''}`}
+        role="group"
+        tabIndex={0}
+        aria-label={`${selectedMenu.name} 메뉴 카드, Enter로 뒤집기`}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget) return
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+            setIsCardFlipped((flipped) => !flipped)
+          }
+        }}
+        onClick={(event) => {
+          if ((event.target as HTMLElement).closest('button, a')) return
+          setIsCardFlipped((flipped) => !flipped)
+        }}
+      >
+        <div className="planner__card-inner">
+        <div className="planner__card-face planner__card-front" inert={isCardFlipped} aria-hidden={isCardFlipped}>
         <div className="planner__card-header">
           <div className="planner__today-label">
             <ChefHatIcon width="20" height="20" stroke="#3C3C3C" aria-hidden="true" />
@@ -209,6 +229,21 @@ function PlannerSection({ onDirectSelect }: Props) {
           >
             저장
           </button>
+        </div>
+        <p className="planner__flip-hint" aria-hidden="true">
+          <span className="planner__flip-hint-icon">↻</span>
+          눌러서 레시피 보기
+        </p>
+        </div>
+        <div className="planner__card-face planner__card-back" inert={!isCardFlipped} aria-hidden={!isCardFlipped}>
+          <ChefHatIcon width="32" height="32" aria-hidden="true" />
+          <span className="planner__recipe-label">RECIPE</span>
+          <h3 className="planner__menu-name">{selectedMenu.name}</h3>
+          <p className="planner__recipe-placeholder">레시피를 준비 중이에요.</p>
+          <button type="button" className="planner__flip-btn" onClick={() => setIsCardFlipped(false)}>
+            ↶ 메뉴로 돌아가기
+          </button>
+        </div>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { Suspense, lazy, startTransition, useEffect, useState, type ComponentType } from 'react'
+import { Suspense, lazy, startTransition, useEffect, useLayoutEffect, useState, type ComponentType } from 'react'
 import type { BottomNavRoute } from './components/common/layout/BottomNav'
 
 type AppRoute =
@@ -304,6 +304,25 @@ function setRouteThemeColor(color: string) {
 function App() {
   const [route, setRoute] = useState(getRouteFromHash)
   const Page = pages[route]
+
+  useLayoutEffect(() => {
+    const updatePreviewScale = () => {
+      if (window.innerWidth <= 390) {
+        document.documentElement.style.setProperty('--app-preview-scale', '1')
+        return
+      }
+      // Include the phone frame and outer spacing around the 390 × 844 screen.
+      const scale = Math.max(0.01, Math.min(1, window.innerWidth / 442, window.innerHeight / 916))
+      document.documentElement.style.setProperty('--app-preview-scale', String(scale))
+    }
+
+    updatePreviewScale()
+    window.addEventListener('resize', updatePreviewScale)
+    return () => {
+      window.removeEventListener('resize', updatePreviewScale)
+      document.documentElement.style.removeProperty('--app-preview-scale')
+    }
+  }, [])
 
   useEffect(() => {
     setRouteThemeColor(routeThemeColors[route] ?? DEFAULT_THEME_COLOR)

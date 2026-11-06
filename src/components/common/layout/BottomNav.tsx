@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import communityOffIcon from '../../../assets/icons/Community_off.svg'
 import communityOnIcon from '../../../assets/icons/Community_on.svg'
 import myOffIcon from '../../../assets/icons/my_off.svg'
@@ -30,7 +30,6 @@ const navItems: NavItem[] = [
 
 const NAV_SHAPE_DEFAULT_WIDTH = 390
 const NAV_SHAPE_HEIGHT = 72
-const NAV_SHAPE_HORIZONTAL_INSET = 0
 const NAV_SHAPE_CORNER_RADIUS = 12
 const NAV_SHAPE_NOTCH_RADIUS = 52
 const NAV_SHAPE_NOTCH_CORNER_RADIUS = 12
@@ -100,8 +99,6 @@ function NavIcon({ item, isActive }: { item: NavItem; isActive: boolean }) {
 
 function BottomNav() {
   const [currentRoute, setCurrentRoute] = useState(getCurrentRoute)
-  const [shapeWidth, setShapeWidth] = useState(NAV_SHAPE_DEFAULT_WIDTH)
-  const navRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -112,35 +109,16 @@ function BottomNav() {
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
-  useEffect(() => {
-    const navElement = navRef.current
-
-    if (!navElement) return
-
-    const updateWidth = () => {
-      setShapeWidth(navElement.getBoundingClientRect().width - NAV_SHAPE_HORIZONTAL_INSET)
-    }
-
-    updateWidth()
-
-    const resizeObserver = new ResizeObserver(updateWidth)
-    resizeObserver.observe(navElement)
-
-    return () => {
-      resizeObserver.disconnect()
-    }
-  }, [])
-
   return (
-    <nav ref={navRef} className="bottom-nav" aria-label="하단 메뉴">
+    <nav className="bottom-nav" aria-label="하단 메뉴">
       <svg
         className="bottom-nav__shape"
-        viewBox={`0 0 ${shapeWidth} ${NAV_SHAPE_HEIGHT}`}
+        viewBox={`0 0 ${NAV_SHAPE_DEFAULT_WIDTH} ${NAV_SHAPE_HEIGHT}`}
         preserveAspectRatio="none"
         aria-hidden="true"
         focusable="false"
       >
-        <path className="bottom-nav__shape-path" d={buildBottomNavShapePath(shapeWidth)} />
+        <path className="bottom-nav__shape-path" d={buildBottomNavShapePath(NAV_SHAPE_DEFAULT_WIDTH)} />
       </svg>
       {navItems.map((item) => {
         const isActive = item.route === currentRoute

@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import type { CSSProperties } from 'react'
 import type { AnswerValue, IngredientOption } from './onboardingQuestionTypes'
 import OnboardingCustomInputModal from './OnboardingCustomInputModal'
 import './OnboardingIngredientGrid.css'
+import { useScrollFade } from './useScrollFade'
 
 const CUSTOM_LABEL = '기타'
 
@@ -13,32 +14,10 @@ type OnboardingIngredientGridProps = {
 }
 
 function OnboardingIngredientGrid({ ingredients, onSelect, selectedAnswer }: OnboardingIngredientGridProps) {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [showBlur, setShowBlur] = useState(false)
+  const scrollRef = useScrollFade(ingredients.length)
   const [customText, setCustomText] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [draftText, setDraftText] = useState('')
-
-  useEffect(() => {
-    const scrollElement = scrollRef.current
-
-    if (!scrollElement) return
-
-    const updateBlurVisibility = () => {
-      const remainingScroll = scrollElement.scrollHeight - scrollElement.clientHeight - scrollElement.scrollTop
-      const canScroll = scrollElement.scrollHeight > scrollElement.clientHeight + 1
-      setShowBlur(canScroll && remainingScroll > 1)
-    }
-
-    updateBlurVisibility()
-    scrollElement.addEventListener('scroll', updateBlurVisibility, { passive: true })
-    window.addEventListener('resize', updateBlurVisibility)
-
-    return () => {
-      scrollElement.removeEventListener('scroll', updateBlurVisibility)
-      window.removeEventListener('resize', updateBlurVisibility)
-    }
-  }, [ingredients.length])
 
   const isCustomActive = Array.isArray(selectedAnswer)
     ? selectedAnswer.some((v) => v === CUSTOM_LABEL || (customText !== '' && v === customText))
@@ -80,7 +59,7 @@ function OnboardingIngredientGrid({ ingredients, onSelect, selectedAnswer }: Onb
   return (
     <>
       <div className="onboarding-ingredient-scroll">
-        <div className="onboarding-ingredient-grid" ref={scrollRef}>
+        <div ref={scrollRef} className="onboarding-ingredient-grid onboarding-scroll-fade">
           {ingredients.map((ingredient, index) => {
             const isSelected =
               ingredient.label === CUSTOM_LABEL
@@ -123,10 +102,6 @@ function OnboardingIngredientGrid({ ingredients, onSelect, selectedAnswer }: Onb
             )
           })}
         </div>
-        <div
-          className={`onboarding-ingredient-scroll__blur${showBlur ? ' onboarding-ingredient-scroll__blur--visible' : ''}`}
-          aria-hidden="true"
-        />
       </div>
 
       {isModalOpen && (

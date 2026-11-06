@@ -191,14 +191,15 @@
 }
 
 .market-banner {
+  position: relative;
   display: flex;
   height: 112px;
-  padding: 12px 0 10px clamp(12px, 4.1026vw, 16px);
+  padding: 16px 8px 14px clamp(16px, calc(4.1026vw + 4px), 20px);
   margin-top: 14px;
   align-items: center;
   justify-content: space-between;
   gap: clamp(4px, 2.5641vw, 10px);
-  overflow: visible;
+  overflow: hidden;
   cursor: pointer;
   background: #f5faef;
   border-radius: 10px;
@@ -250,6 +251,9 @@
 }
 
 .market-banner__mascots {
+  position: absolute;
+  right: 8px;
+  bottom: 0;
   display: flex;
   flex-shrink: 0;
   align-self: flex-end;
@@ -259,7 +263,8 @@
 .market-banner__mascot {
   width: clamp(116px, 41.0256vw, 160px);
   height: auto;
-  transform: translateX(clamp(-6px, -1.5385vw, -2px));
+  transform: translateX(clamp(-6px, -1.5385vw, -2px)) scale(1.13);
+  transform-origin: center bottom;
 }
 
 @media (max-width: 360px) {
@@ -312,7 +317,7 @@
 
   .market-banner {
     min-height: 140px;
-    padding: 24px 20px;
+    padding: 28px 24px;
   }
 
   .market-banner__name {

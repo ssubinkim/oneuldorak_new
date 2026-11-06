@@ -20,6 +20,7 @@ function LoginPage() {
   const [loginId, setLoginId] = useState('')
   const [password, setPassword] = useState('')
   const [showSignupModal, setShowSignupModal] = useState(false)
+  const [hasFilledDummyAccount, setHasFilledDummyAccount] = useState(false)
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -72,18 +73,19 @@ function LoginPage() {
             />
 
             <button
-              className="login-page__dummy-fill"
+              className={`login-page__dummy-fill${hasFilledDummyAccount ? ' is-filled' : ''}`}
               type="button"
               onClick={() => {
                 setLoginId(dummyAccount.id)
                 setPassword(dummyAccount.password)
+                setHasFilledDummyAccount(true)
               }}
             >
               더미 계정 넣기
               <span aria-hidden="true">›</span>
             </button>
 
-<LoginActionButtons />
+            <LoginActionButtons pulseSignup={hasFilledDummyAccount} />
           </form>
 
           <SocialLoginOptions />

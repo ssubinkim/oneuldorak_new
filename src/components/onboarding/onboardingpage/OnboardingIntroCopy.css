@@ -1,14 +1,15 @@
 .onboarding-intro-copy {
   margin: clamp(20px, 4svh, 42px) 25px 0;
   color: #1a1a1a;
-  font-family: 'Pretendard Variable', sans-serif;
-  letter-spacing: 0;
+  font-family: var(--font-pretendard-variable);
+  letter-spacing: 0.2px;
 }
 
 .onboarding-intro-copy h1 {
+  font-family: var(--font-nanum-square-neo);
   margin: 0;
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 130%;
 }
 

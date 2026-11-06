@@ -4,6 +4,7 @@
 }
 
 :root {
+  --mockup-bg: #fdf9e6;
   --color-bg: #ffffff;
   --color-bg-base: #fffffd;
   --color-bg-sub: #fffdf7;
@@ -83,15 +84,31 @@
 html,
 body,
 #root {
-  min-width: 320px;
-  min-height: 100%;
-  background: var(--app-status-bg, var(--color-primary-10));
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+html {
+  background: var(--mockup-bg);
 }
 
 body {
   margin: 0;
-  overflow-x: hidden;
-  background: var(--app-status-bg, var(--color-primary-10));
+  height: 100dvh;
+  background-color: var(--mockup-bg);
+  background-image: url('/bg_logo.gif');
+  background-position: left clamp(12px, 2vw, 24px) bottom clamp(12px, 2dvh, 24px);
+  background-size: min(420px, 70vw) auto;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+#root {
+  box-sizing: border-box;
+  height: 100dvh;
 }
 
 button,
@@ -109,28 +126,75 @@ button {
 }
 
 .app-shell {
-  --screen-min-width: 320px;
+  --screen-min-width: 390px;
   --screen-max-width: 390px;
+  --screen-height: 844px;
   --header-height: 44px;
-  --bottom-nav-height: clamp(104px, 28vw, 112px);
+  --bottom-nav-height: 109.2px;
 
+  position: relative;
   display: flex;
+  align-items: center;
   justify-content: center;
-  width: 100%;
-  min-height: 100dvh;
+  box-sizing: border-box;
+  width: calc(100% / var(--app-preview-scale, 1));
+  min-width: 442px;
+  height: calc(100dvh / var(--app-preview-scale, 1));
+  zoom: var(--app-preview-scale, 1);
+  padding: 36px 26px;
   color: var(--color-text-main);
-  background: var(--app-status-bg, var(--color-primary-10));
+  background: transparent;
   font-family: var(--font-pretendard-variable);
 }
 
+.app-shell::before,
+.app-shell::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+.app-shell::before {
+  top: calc(50% - 298px);
+  left: calc(50% - 210px);
+  width: 3px;
+  height: 54px;
+  border-radius: 2px 0 0 2px;
+  background: #414247;
+  box-shadow: 0 68px 0 #414247;
+}
+
+/* Decorative iPhone status bar; kept outside the interactive screen content. */
+.app-shell::after {
+  top: calc(50% - 422px);
+  left: calc(50% - 195px);
+  width: 390px;
+  height: 54px;
+  z-index: 100;
+  border-radius: 44px 44px 0 0;
+  background-color: var(--app-status-bg, var(--color-bg-base));
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22390%22%20height%3D%2254%22%20viewBox%3D%220%200%20390%2054%22%3E%3Crect%20x%3D%22139%22%20y%3D%2211%22%20width%3D%22112%22%20height%3D%2232%22%20rx%3D%2216%22%20fill%3D%22%2308090b%22%2F%3E%3Ccircle%20cx%3D%22235%22%20cy%3D%2227%22%20r%3D%225%22%20fill%3D%22%23151923%22%2F%3E%3Ccircle%20cx%3D%22235%22%20cy%3D%2227%22%20r%3D%222.5%22%20fill%3D%22%23202b40%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .app-screen {
+  box-sizing: border-box;
+  border-top: 54px solid var(--app-status-bg, var(--color-bg-base));
   position: relative;
   container-name: app-screen;
   container-type: inline-size;
-  width: min(100vw, var(--screen-max-width));
+  width: var(--screen-max-width);
+  flex-shrink: 0;
   min-width: var(--screen-min-width);
-  height: 100dvh;
+  height: var(--screen-height);
   overflow: hidden;
+  border-radius: 44px;
+  box-shadow:
+    0 0 0 9px #17181b,
+    0 0 0 11px #55565b,
+    0 0 0 12px #25262a,
+    0 24px 55px 12px rgb(0 0 0 / 20%);
   background: var(--color-bg-base);
 }
 
@@ -153,24 +217,36 @@ button {
 
 @supports not (height: 100dvh) {
   .app-shell {
-    min-height: 100svh;
+    height: calc(100svh / var(--app-preview-scale, 1));
   }
 
-  .app-screen {
-    height: 100svh;
-  }
 }
 
-@media (min-width: 1072px) {
+@media (max-width: 390px) {
+  body {
+    background: var(--app-status-bg, var(--color-bg-base));
+  }
+
   .app-shell {
-    align-items: flex-start;
-    padding: 24px;
-    box-sizing: border-box;
+    --screen-min-width: 0px;
+    --screen-max-width: 100%;
+    --screen-height: 100dvh;
+    width: 100%;
+    min-width: 0;
+    height: 100dvh;
+    padding: 0;
+    zoom: 1;
+  }
+
+  .app-shell::before,
+  .app-shell::after {
+    display: none;
   }
 
   .app-screen {
-    width: min(calc(100vw - 48px), var(--screen-max-width));
-    height: calc(100dvh - 48px);
-    box-shadow: var(--shadow-app-screen);
+    border-top: 0;
+    border-radius: 0;
+    box-shadow: none;
   }
 }
+

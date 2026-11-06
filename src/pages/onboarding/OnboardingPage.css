@@ -1,4 +1,6 @@
 .onboarding-page-screen {
+  font-family: var(--font-pretendard-variable);
+  letter-spacing: 0.2px;
   background: var(--color-primary-10);
   overflow: hidden;
 }
@@ -6,7 +8,7 @@
 .onboarding-page {
   --onboarding-safe-top: env(safe-area-inset-top, 0px);
   --onboarding-safe-bottom: env(safe-area-inset-bottom, 0px);
-  --onboarding-pad-x: 23px;
+  --onboarding-pad-x: 30px;
   --onboarding-pad-top: max(clamp(42px, 8dvh, 96px), calc(18px + var(--onboarding-safe-top)));
   --onboarding-pad-bottom: max(clamp(22px, 4dvh, 34px), calc(12px + var(--onboarding-safe-bottom)));
   --onboarding-content-width: clamp(430px, 70vw, 680px);
@@ -29,7 +31,7 @@
 }
 
 .onboarding-page--intro {
-  --onboarding-pad-x: 24px;
+  --onboarding-pad-x: 30px;
   --onboarding-pad-top: max(clamp(22px, 4.8dvh, 48px), calc(14px + var(--onboarding-safe-top)));
   --onboarding-pad-bottom: max(clamp(20px, 4dvh, 34px), calc(12px + var(--onboarding-safe-bottom)));
   --onboarding-content-width: clamp(430px, 64vw, 620px);
@@ -42,6 +44,24 @@
   margin: 0 25px;
 }
 
+.onboarding-page--intro,
+.onboarding-page--intro .onboarding-intro-copy {
+  font-family: var(--font-pretendard-variable);
+}
+
+.onboarding-page--intro > * {
+  translate: 0 -24px;
+}
+
+.onboarding-page--intro .onboarding-intro-visual {
+  translate: 0 -44px;
+}
+
+.onboarding-page--intro .onboarding-intro-visual img {
+  width: min(65vw, 264px);
+  max-height: min(31dvh, 240px);
+}
+
 .onboarding-page--intro .onboarding-intro-actions {
   margin-top: clamp(16px, 3dvh, 28px);
   padding-top: 0;
@@ -52,6 +72,8 @@
   --onboarding-pad-bottom: max(clamp(108px, 15dvh, 140px), calc(96px + var(--onboarding-safe-bottom)));
 
   position: relative;
+  padding-top: 0;
+  padding-bottom: max(112px, calc(var(--onboarding-pad-bottom) - 15.5px));
   justify-content: flex-start;
   overflow: hidden auto;
   scrollbar-width: none;
@@ -60,6 +82,7 @@
 
 .onboarding-page--question:not(.onboarding-page--ingredients) {
   overflow: hidden;
+  padding-bottom: max(112px, calc(var(--onboarding-pad-bottom) - 15.5px));
 }
 
 .onboarding-page--question::-webkit-scrollbar {
@@ -74,11 +97,11 @@
 
 @container app-screen (min-width: 768px) {
   .onboarding-page {
-    --onboarding-pad-x: clamp(32px, 5vw, 48px);
+    --onboarding-pad-x: 30px;
   }
 
   .onboarding-page--intro {
-    --onboarding-pad-x: clamp(32px, 5vw, 48px);
+    --onboarding-pad-x: 30px;
   }
 
   .onboarding-page--intro .onboarding-intro-copy {

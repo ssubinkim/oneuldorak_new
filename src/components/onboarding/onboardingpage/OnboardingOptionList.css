@@ -5,9 +5,53 @@
 }
 
 .onboarding-question__options--grid {
+  box-sizing: border-box;
+  grid-auto-rows: minmax(51px, auto);
+  align-content: start;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+  padding-bottom: 6px;
+}
+
+.onboarding-question__options--single {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  min-height: 0;
+  grid-auto-rows: 56px;
+  align-content: stretch;
+  padding-bottom: 8px;
+}
+
+.onboarding-question__content--budget .onboarding-question__options {
+  flex: 1 1 0;
+  align-content: start;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+}
+
+.onboarding-question__content--budget .onboarding-question__options::-webkit-scrollbar {
+  display: none;
+}
+
+.onboarding-question__options--single .onboarding-question__option {
+  box-sizing: border-box;
+  min-height: 0;
+}
+
+.onboarding-question__options--grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px 9px;
   margin-top: 10px;
+}
+
+.onboarding-question__options--grid::-webkit-scrollbar {
+  display: none;
 }
 
 .onboarding-question__option {
@@ -20,19 +64,19 @@
   border-radius: 10px;
   background: #ffffff;
   color: #1a1a1a;
-  font-family: "Pretendard Variable", sans-serif;
-  font-size: 14px;
-  font-weight: 500;
+  font-family: var(--font-nanum-square-neo);
+  font-size: 16px;
+  font-weight: 400;
   line-height: 130%;
-  letter-spacing: -0.08px;
+  letter-spacing: 0.2px;
   text-align: left;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
 }
 
 .onboarding-question__options--grid .onboarding-question__option {
   padding: 0 19px 0 20px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .onboarding-question__option--selected {

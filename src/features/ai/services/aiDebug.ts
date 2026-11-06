@@ -4,7 +4,7 @@ import { inferAiFeature } from './aiFeatureRouter'
 const AI_DEBUG_PREFIX = '[oneuldorak-ai]'
 
 function shouldUseMockAi() {
-  return import.meta.env.VITE_USE_MOCK_AI === 'true'
+  return true
 }
 
 function shouldLogAiDebug() {

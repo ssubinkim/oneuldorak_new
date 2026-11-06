@@ -17,7 +17,7 @@ export function readMockStatus() {
 }
 
 export function shouldUseMockAi() {
-  return import.meta.env.VITE_USE_MOCK_AI === 'true'
+  return true
 }
 
 function createReceiptAnalyzeMockResponse(request: AiChatRequest, status: AiChatStatus) {

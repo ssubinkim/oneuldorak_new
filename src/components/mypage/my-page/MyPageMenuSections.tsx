@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import icon1 from '../images/icon-slot-1.svg'
 import icon2 from '../images/icon-slot-2.svg'
 import icon3 from '../images/icon-slot-3.svg'
@@ -54,6 +55,7 @@ type MyPageMenuSectionsProps = {
 }
 
 function MyPageMenuSections({ sections = DEFAULT_MENU_SECTIONS }: MyPageMenuSectionsProps) {
+  const menuRef = useRef<HTMLDivElement>(null)
   const [showLogoutModal, setShowLogoutModal] = useState(false)
 
   const handleLogoutConfirm = () => {
@@ -61,7 +63,7 @@ function MyPageMenuSections({ sections = DEFAULT_MENU_SECTIONS }: MyPageMenuSect
   }
 
   return (
-    <div className="mypage-menus">
+    <div className="mypage-menus" ref={menuRef}>
       {sections.map((section) => (
         <section key={section.title} className="mypage-menu-section">
           <h2 className="mypage-menu-title">{section.title}</h2>
@@ -92,10 +94,10 @@ function MyPageMenuSections({ sections = DEFAULT_MENU_SECTIONS }: MyPageMenuSect
         로그아웃
       </button>
 
-      {showLogoutModal && (
+      {showLogoutModal && createPortal(
         <div className="mypage-logout-overlay">
-          <div className="mypage-logout-modal">
-            <p className="mypage-logout-modal__title">로그아웃 하시겠어요?</p>
+          <div className="mypage-logout-modal" role="dialog" aria-modal="true" aria-labelledby="logout-modal-title">
+            <p id="logout-modal-title" className="mypage-logout-modal__title">로그아웃 하시겠어요?</p>
             <p className="mypage-logout-modal__sub">오늘도락 계정에서 로그아웃돼요.</p>
             <div className="mypage-logout-modal__actions">
               <button type="button" className="mypage-logout-modal__btn mypage-logout-modal__btn--cancel" onClick={() => setShowLogoutModal(false)}>
@@ -106,7 +108,8 @@ function MyPageMenuSections({ sections = DEFAULT_MENU_SECTIONS }: MyPageMenuSect
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        menuRef.current?.closest('.app-screen') ?? document.body,
       )}
     </div>
   )

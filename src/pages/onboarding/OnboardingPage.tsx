@@ -25,14 +25,17 @@ const onboardingPriorityIngredientIcons = (onboardingQuestions.find((question) =
   .flatMap((ingredient) => (ingredient.icon ? [ingredient.icon] : []))
 
 function OnboardingPage() {
+  const [isCompletePreview] = useState(() => (
+    new URLSearchParams(window.location.hash.split('?')[1] ?? '').get('preview') === 'complete'
+  ))
   const [activeQuestionIndex, setActiveQuestionIndex] = useState<number | null>(null)
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>(initialOnboardingAnswers)
-  const [isComplete, setIsComplete] = useState(false)
+  const [isComplete, setIsComplete] = useState(isCompletePreview)
   const activeQuestion = activeQuestionIndex === null ? null : onboardingQuestions[activeQuestionIndex]
   const isLastQuestion = activeQuestionIndex === onboardingQuestions.length - 1
 
   useEffect(() => {
-    if (!isComplete) return
+    if (!isComplete || isCompletePreview) return
 
     const homeTimer = window.setTimeout(() => {
       window.location.hash = '#/home'
@@ -41,7 +44,7 @@ function OnboardingPage() {
     return () => {
       window.clearTimeout(homeTimer)
     }
-  }, [isComplete])
+  }, [isComplete, isCompletePreview])
 
   useEffect(() => {
     if (typeof window === 'undefined') return

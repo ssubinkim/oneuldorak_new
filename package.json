@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently -k -n WEB,API -c cyan,green \"npm run dev:web\" \"npm run dev:api\"",
+    "dev": "vite",
     "dev:web": "vite",
     "predev:api": "npm --prefix server install",
     "dev:api": "npm --prefix server run dev",

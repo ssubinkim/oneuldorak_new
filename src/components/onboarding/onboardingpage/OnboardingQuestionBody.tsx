@@ -16,7 +16,9 @@ function OnboardingQuestionBody({ children, optionLayout, question }: Onboarding
             i < arr.length - 1 ? [line, <br key={i} />] : [line]
           )}
         </h1>
-      <p className="onboarding-question__subtitle">{question.subtitle}</p>
+      {question.id !== 'ingredients' && (
+        <p className="onboarding-question__subtitle">{question.subtitle}</p>
+      )}
 
       {question.image ? (
         <div className="onboarding-question__media">

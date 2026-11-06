@@ -1,16 +1,9 @@
 .chatbot-screen {
-  min-height: 100dvh;
-  height: 100dvh;
+  min-height: var(--screen-height);
+  height: var(--screen-height);
   overflow: hidden;
   overscroll-behavior: none;
   background: linear-gradient(180deg, #FFF 53.91%, #E6EDFF 100%);
-}
-
-@supports not (height: 100dvh) {
-  .chatbot-screen {
-    min-height: 100svh;
-    height: 100svh;
-  }
 }
 
 @keyframes chatbot-chip-in {

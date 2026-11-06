@@ -34,6 +34,26 @@
     filter 100ms ease;
 }
 
+.login-action-buttons__button--primary:disabled {
+  color: #b5b5b5;
+  cursor: default;
+}
+
+.login-action-buttons__button--secondary.is-pulsing {
+  animation: login-signup-pulse 1s ease-in-out infinite;
+}
+
+@keyframes login-signup-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-action-buttons__button--secondary.is-pulsing {
+    animation: none;
+  }
+}
+
 .login-action-buttons__button--secondary:active {
   transform: translateY(1px) scale(0.985);
   box-shadow: 0 2px 6px rgba(var(--color-primary-rgb), 0.18);

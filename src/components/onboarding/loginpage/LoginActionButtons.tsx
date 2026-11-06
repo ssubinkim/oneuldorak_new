@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import './LoginActionButtons.css'
 
-function LoginActionButtons() {
+function LoginActionButtons({ pulseSignup = false }: { pulseSignup?: boolean }) {
   const [isSignupPressed, setIsSignupPressed] = useState(false)
   const navigateTimerRef = useRef<number | null>(null)
 
@@ -27,11 +27,11 @@ function LoginActionButtons() {
 
   return (
     <div className="login-action-buttons">
-      <button className="login-action-buttons__button login-action-buttons__button--primary" type="submit">
+      <button className="login-action-buttons__button login-action-buttons__button--primary" type="submit" disabled>
         로그인
       </button>
       <button
-        className={`login-action-buttons__button login-action-buttons__button--secondary${isSignupPressed ? ' is-pressed' : ''}`}
+        className={`login-action-buttons__button login-action-buttons__button--secondary${isSignupPressed ? ' is-pressed' : ''}${pulseSignup ? ' is-pulsing' : ''}`}
         type="button"
         onPointerDown={() => setIsSignupPressed(true)}
         onPointerUp={() => setIsSignupPressed(false)}

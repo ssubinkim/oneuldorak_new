@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { AnswerValue, OptionLayout } from './onboardingQuestionTypes'
 import OnboardingCustomInputModal from './OnboardingCustomInputModal'
 import './OnboardingOptionList.css'
+import { useScrollFade } from './useScrollFade'
 
 type OnboardingOptionListProps = {
   customOptionLabel?: string
@@ -18,6 +19,7 @@ function OnboardingOptionList({
   options,
   selectedAnswer,
 }: OnboardingOptionListProps) {
+  const scrollRef = useScrollFade(options.length)
   const [customText, setCustomText] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [draftText, setDraftText] = useState('')
@@ -61,7 +63,7 @@ function OnboardingOptionList({
 
   return (
     <>
-      <div className={`onboarding-question__options onboarding-question__options--${optionLayout}`}>
+      <div ref={scrollRef} className={`onboarding-question__options onboarding-question__options--${optionLayout} onboarding-scroll-fade`}>
         {options.map((option) => {
           const isSelected =
             option === customOptionLabel

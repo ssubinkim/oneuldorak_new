@@ -1,5 +1,17 @@
 .meal-screen {
+  --meal-top-inset: 54px;
   background: var(--color-bg-base);
+  border-top: 0;
+}
+
+.app-shell:has(.meal-screen)::after {
+  background-color: transparent;
+}
+
+@media (max-width: 390px) {
+  .meal-screen {
+    --meal-top-inset: 0px;
+  }
 }
 
 /* ── 전체 스크롤 컨테이너 ──────────────── */
@@ -22,7 +34,7 @@
 /* ── 히어로 (노란 배경) ──────────────── */
 .meal-hero {
   background: #FFDB78;
-  padding: 20px 20px 40px;
+  padding: calc(8px + var(--meal-top-inset)) 20px 40px;
   position: relative;
 }
 
@@ -77,7 +89,7 @@
 }
 
 .meal-hero__name {
-  margin: 0;
+  margin: 0 0 6px;
   font-size: 22px;
   font-weight: 500;
   color: #1a1a1a;
@@ -86,13 +98,14 @@
 }
 
 .meal-hero__name strong {
+  font-size: 24px;
   font-weight: 700;
 }
 
 .meal-hero__sub {
   margin: 0;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   color: #3c3c3c;
   font-family: 'Pretendard Variable', sans-serif;
   line-height: 1.2;
@@ -106,7 +119,7 @@
   height: 110px;
   object-fit: contain;
   right: 10px;
-  top: -22px;
+  top: -14px;
 }
 
 /* ── 콘텐츠 영역 ─────────────────────── */
@@ -122,7 +135,7 @@
 /* ── 반응형 ──────────────────────────── */
 @media (max-width: 360px) {
   .meal-hero {
-    padding: 16px 14px 24px;
+    padding: calc(6px + var(--meal-top-inset)) 14px 24px;
   }
 
   .meal-hero__name {
@@ -142,7 +155,7 @@
     width: 88px;
     height: 88px;
     right: 4px;
-    top: -18px;
+    top: -10px;
   }
 }
 
@@ -155,13 +168,13 @@
     width: 76px;
     height: 76px;
     right: 0;
-    top: -12px;
+    top: -4px;
   }
 }
 
 @container app-screen (min-width: 768px) {
   .meal-hero {
-    padding: 28px 40px 36px;
+    padding: calc(12px + var(--meal-top-inset)) 40px 36px;
   }
 
   .meal-hero__name {
@@ -176,6 +189,6 @@
     width: 150px;
     height: 150px;
     right: 20px;
-    top: -32px;
+    top: -24px;
   }
 }

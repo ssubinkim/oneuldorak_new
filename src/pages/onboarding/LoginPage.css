@@ -9,7 +9,7 @@
   min-width: 320px;
   max-width: 100%;
   height: 100%;
-  padding: 115px 24px 0;
+  padding: 91px 30px 0;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
@@ -43,10 +43,26 @@
   background: transparent;
   color: #1a1a1a;
   font-family: 'Pretendard Variable', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 130%;
   cursor: pointer;
+  animation: login-dummy-pulse 0.7s ease-in-out infinite;
+}
+
+.login-page__dummy-fill.is-filled {
+  animation: none;
+}
+
+@keyframes login-dummy-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-page__dummy-fill {
+    animation: none;
+  }
 }
 
 .login-page__dummy-fill span {
@@ -76,7 +92,7 @@
 @media (max-height: 780px) {
   .login-page {
     justify-content: flex-start;
-    padding-top: clamp(40px, 8dvh, 70px);
+    padding-top: clamp(16px, calc(8dvh - 24px), 46px);
     gap: 18px;
   }
 
