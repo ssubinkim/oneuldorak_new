@@ -167,6 +167,8 @@
   justify-content: center;
   gap: 5px;
   margin: 14px 0 0;
+  padding-top: 8px;
+  border-top: 1.6px dashed #FFDB78;
   color: #9b7939;
   font-size: 14px;
   font-weight: 400;
@@ -241,6 +243,11 @@
 
 @keyframes planner-border-orbit {
   to { --planner-border-angle: 360deg; }
+}
+
+.planner__card-front {
+  padding-right: 14px;
+  padding-left: 14px;
 }
 
 .planner__card-back::before {

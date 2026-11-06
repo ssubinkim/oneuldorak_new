@@ -1,62 +1,9 @@
-.brand-pick {
-  padding: 50px 0 0;
-}
-
-.brand-pick__header {
-  padding: 0 20px;
-  margin-bottom: 14px;
-}
-
-.brand-pick__subrow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.brand-pick__title {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0 0 6px;
-}
-
-.brand-pick__title-icon {
-  height: 22px;
-  width: auto;
-  margin-bottom: 5px;
-}
-
-.brand-pick__desc {
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 16px;
-  color: #767676;
-  margin: 0 0 4px;
-}
-
-.brand-pick__more {
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: #a3a3a3;
-  background: none;
-  border: none;
-  cursor: default;
-  padding: 0;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
 .brand-pick__track {
   display: flex;
   gap: 18px;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 0 16px;
 }
 
 .brand-pick__track::-webkit-scrollbar {

@@ -9,11 +9,8 @@
   padding-bottom: 30px;
 }
 
-.vote-page-list--featured {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding: 0;
+.vote-page-list--list > .vote-card:not(:has(~ .vote-card)) {
+  border-bottom: none;
 }
 
 .vote-card {
@@ -84,24 +81,24 @@
   padding-top: 0;
 }
 
-.vote-featured-section__header {
+.commu_all_header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 8px;
 }
 
-.vote-featured-section__title-group {
+.commu_all_titles {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.vote-featured-section__title-group h2 {
+.commu_all_titles h2 {
   margin: 0;
 }
 
-.vote-featured-section__more {
+.commu_all_more {
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -119,7 +116,7 @@
 }
 
 
-.vote-featured-section__subtitle {
+.commu_all_subtitle {
   margin: 0;
   color: #5f5f5f;
   font-size: 16px;
@@ -449,7 +446,7 @@ article.vote-result-item {
     padding-top: 0;
   }
 
-  .vote-featured-section__header,
+  .commu_all_header,
   .vote-card--featured {
     width: 100%;
   }

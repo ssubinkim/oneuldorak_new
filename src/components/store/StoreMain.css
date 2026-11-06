@@ -1,6 +1,14 @@
-.store-main {
+.store-content {
+  padding: 24px 20px;
+  box-sizing: border-box;
   background: #fffffd;
-  min-height: 100%;
+}
+
+.store-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  margin-top: 24px;
 }
 
 .store-fly-dot {
@@ -35,7 +43,6 @@
 
 .store-search {
   position: relative;
-  margin: 16px 16px 0;
 }
 
 .store-search__input {

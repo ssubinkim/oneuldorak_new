@@ -1,3 +1,7 @@
+.app-screen > .vote-complete-modal {
+  position: absolute;
+}
+
 .vote-complete-modal {
   position: fixed;
   inset: 0;

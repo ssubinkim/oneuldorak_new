@@ -9,7 +9,7 @@
   font-family: var(--font-nanum-square-neo);
   margin: 0;
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 130%;
 }
 
@@ -19,4 +19,22 @@
   font-weight: 400;
   line-height: 130%;
   color: #3c3c3c; 
+}
+
+.onboarding-intro-copy__underline {
+  position: relative;
+  isolation: isolate;
+}
+
+.onboarding-intro-copy__underline::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  right: -3px;
+  bottom: 0;
+  left: -3px;
+  height: 8px;
+  background: var(--color-primary);
+  clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
+  pointer-events: none;
 }

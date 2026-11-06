@@ -7,5 +7,9 @@
 }
 
 .store-page__scroll {
-  background: #fff;
+  background: var(--color-bg-base);
+}
+
+.app-screen > .store-page__scroll::before {
+  background: var(--color-secondary);
 }

@@ -1,63 +1,9 @@
-.best-section {
-  padding: 24px 0 0;
-}
-
-.best-section__header {
-  padding: 0 20px;
-  margin-bottom: 14px;
-}
-
-.best-section__subrow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.best-section__title {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0 0 6px;
-}
-
-.best-section__title-icon {
-  height: 22px;
-  width: auto;
-  margin-bottom: 4px;
-}
-
-.best-section__desc {
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 16px;
-  color: #767676;
-  margin: 0 0 4px;
-}
-
-.best-section__more {
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: #a3a3a3;
-  background: none;
-  border: none;
-  cursor: default;
-  padding: 0;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
 .best-section__track {
   display: flex;
   gap: 18px;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 0 18px;
-  padding-right: 0;
 }
 
 .best-section__track::-webkit-scrollbar {
@@ -67,8 +13,4 @@
 .best-section__item {
   flex: 0 0 130px;
   min-width: 0;
-}
-
-.best-section__item:last-child {
-  margin-right: 18px;
 }

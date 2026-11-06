@@ -1,4 +1,6 @@
-import { useState, useRef } from 'react'
+import './StoreSectionHeader.css'
+import { ArrowRightIcon } from '../common/ui/ArrowRightIcon'
+import { useState, useRef, useId } from 'react'
 import './SubscriptionSection.css'
 import { type Product } from './ProductCard'
 import slide1 from './images/slide1.svg'
@@ -14,6 +16,7 @@ type Props = {
 }
 
 function SubscriptionSection({ products, onSelect, onCartClick }: Props) {
+  const titleId = useId()
   const [activeTab, setActiveTab] = useState('전체')
   const [currentPage, setCurrentPage] = useState(0)
   const trackRef = useRef<HTMLDivElement>(null)
@@ -38,16 +41,16 @@ function SubscriptionSection({ products, onSelect, onCartClick }: Props) {
   }
 
   return (
-    <div className="subscription">
-      <div className="subscription__header">
-        <p className="subscription__title">
-          <img src={plantIcon} alt="" className="subscription__title-icon" width={26} height={24} loading="lazy" decoding="async" fetchPriority="low" />
-          오늘도락 정기식단
-        </p>
-        <div className="subscription__subrow">
-          <p className="subscription__desc">매주 도착하는 건강한 한 끼</p>
-          <button className="subscription__more" type="button" disabled>더보기 &gt;</button>
+    <section className="subscription" aria-labelledby={titleId}>
+      <div className="store-section__header">
+        <div className="store-section__title-group">
+          <h2 id={titleId} className="store-section__title">
+            <img src={plantIcon} alt="" className="store-section__icon" width={26} height={24} loading="lazy" decoding="async" fetchPriority="low" />
+            오늘도락 정기식단
+          </h2>
+          <p className="store-section__subtitle">매주 도착하는 건강한 한 끼</p>
         </div>
+        <button className="store-section__more" type="button" disabled>더보기 <ArrowRightIcon /></button>
       </div>
 
       <div className="subscription__banner">
@@ -164,7 +167,7 @@ function SubscriptionSection({ products, onSelect, onCartClick }: Props) {
           />
         ))}
       </div>
-    </div>
+    </section>
   )
 }
 

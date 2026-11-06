@@ -82,6 +82,9 @@ function VoteCompleteModal({
   const titleText = '투표 참여 완료!'
   const descriptionText = '다른 투표에도 참여하고 포인트를 더 모아보세요.'
 
+  const screen = document.querySelector('.app-screen')
+  if (!screen) return null
+
   return createPortal(
     <div
       className={`vote-complete-modal${isVisualReady ? ' vote-complete-modal--visual-ready' : ''}`}
@@ -132,7 +135,7 @@ function VoteCompleteModal({
         </p>
       </section>
     </div>,
-    document.body
+    screen
   )
 }
 

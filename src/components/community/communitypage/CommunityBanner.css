@@ -1,6 +1,6 @@
 .community-banner {
   background: var(--color-secondary);
-  padding: 0px 20px 30px;
+  padding: 0px 20px 10px;
   overflow: visible;
   position: relative;
 }
@@ -32,7 +32,7 @@
 
 .community-banner__actions button {
   padding: 4px;
-  color: #1a1a1a;
+  color: var(--color-border);
   background: transparent;
   border: 0;
   display: flex;
@@ -43,6 +43,7 @@
 .community-banner__subtitle {
   margin: 0 0 0px;
   font-size: 16px;
+  font-family: 'Pretendard Variable', sans-serif;
   color: #3c3c3c;
   line-height: 120%;
   letter-spacing: -0.08px;
@@ -68,11 +69,13 @@
   width: auto;
   height: min(32vw, 200px);
   max-width: min(70%, 560px);
-  margin: 0 auto -10px;
+  /* Pull the following tab sheet up so the artwork overlaps its top edge. */
+  margin: 0 auto -45px;
   position: relative;
   z-index: 15;
   object-fit: contain;
-  object-position: center bottom;
+  /* Split the empty image-box space above and below the artwork. */
+  object-position: center;
   transform: var(--banner-image-transform);
   opacity: 1;
   visibility: visible;
@@ -95,16 +98,20 @@
 }
 
 .community-banner--recipe .community-banner__image {
-  --banner-image-transform: translateY(45px) scale(1.40);
+  --banner-image-transform: translateY(22.5px) scale(1.40);
   transform-origin: center bottom;
 }
 
 .community-banner--default .community-banner__image {
-  --banner-image-transform: translateY(8px);
+  --banner-image-transform: translateY(-10px);
+}
+
+.community-banner--board .community-banner__image {
+  --banner-image-transform: translateY(-10px);
 }
 
 .community-banner--vote .community-banner__image {
-  --banner-image-transform: translateY(5px) scale(1.2);
+  --banner-image-transform: translateY(-9.5px) scale(1.2);
 }
 
 .community-banner-compact-trigger {

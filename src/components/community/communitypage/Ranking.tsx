@@ -47,10 +47,12 @@ function Ranking({
   return (
     <section className="dorak-ranking">
       <span className="dorak-ranking__badge">도락Pick!</span>
-      <h2 className="dorak-ranking__header">명예의 전당</h2>
-      <div className="dorak-ranking__subtitle-row">
-        <p className="dorak-ranking__subtitle">지난 배틀의 주인공들을 소개합니다</p>
-        <button type="button" className="dorak-ranking__more">더보기 <ArrowRightIcon /></button>
+      <div className="commu_rank_header">
+        <div className="commu_all_titles">
+          <h2 className="commu_all_title">명예의 전당</h2>
+          <p className="commu_all_subtitle">지난 배틀의 주인공들을 소개합니다</p>
+        </div>
+        <button type="button" className="commu_all_more">더보기 <ArrowRightIcon /></button>
       </div>
       <div className="dorak-ranking__podium">
         {podiumItems.map((item) => (

@@ -241,7 +241,7 @@ function PlannerSection({ onDirectSelect }: Props) {
           <h3 className="planner__menu-name">{selectedMenu.name}</h3>
           <p className="planner__recipe-placeholder">레시피를 준비 중이에요.</p>
           <button type="button" className="planner__flip-btn" onClick={() => setIsCardFlipped(false)}>
-            ↶ 메뉴로 돌아가기
+            <span className="planner__flip-hint-icon" aria-hidden="true">↻</span> 메뉴로 돌아가기
           </button>
         </div>
         </div>

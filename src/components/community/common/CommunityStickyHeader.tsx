@@ -16,7 +16,7 @@ function CommunityStickyHeader({
   onSelectTab,
 }: CommunityStickyHeaderProps) {
   return (
-    <div className={`community-sticky-header${isCompact ? ' is-compact' : ''}`}>
+    <div className={`commu_tabbar${isCompact ? ' is-compact' : ''}`}>
       <CommunityTabs
         activeTab={activeTab}
         className={tabsClassName}

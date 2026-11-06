@@ -1,63 +1,9 @@
-.kitchen-section {
-  padding: 60px 0 0;
-}
-
-.kitchen-section__header {
-  padding: 0 20px;
-  margin-bottom: 14px;
-}
-
-.kitchen-section__subrow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.kitchen-section__title {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0 0 6px;
-}
-
-.kitchen-section__title-icon {
-  height: 24px;
-  width: auto;
-  margin-bottom: 5px;
-}
-
-.kitchen-section__desc {
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 16px;
-  color: #767676;
-  margin: 0 0 4px;
-}
-
-.kitchen-section__more {
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: #a3a3a3;
-  background: none;
-  border: none;
-  cursor: default;
-  padding: 0;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
 .kitchen-section__track {
   display: flex;
   gap: 16px;
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 0 16px;
-  padding-right: 0;
 }
 
 .kitchen-section__track::-webkit-scrollbar {
@@ -67,8 +13,4 @@
 .kitchen-section__item {
   flex: 0 0 130px;
   min-width: 0;
-}
-
-.kitchen-section__item:last-child {
-  margin-right: 16px;
 }

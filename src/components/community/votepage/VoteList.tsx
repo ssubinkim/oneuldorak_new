@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import pointBgImage from './images/pointbg.png'
 import { ArrowRightIcon } from '../../common/ui/ArrowRightIcon'
 import { awardVotePoint } from '../../common/usePoints'
@@ -367,16 +367,16 @@ function VoteCard({
 
   if (isFeatured) {
     return (
-      <div ref={cardRef as React.RefObject<HTMLDivElement>} className="vote-featured-section">
-        <div className="vote-featured-section__header">
-          <div className="vote-featured-section__title-group">
-            <h2>{card.heading}</h2>
+      <>
+        <div className="commu_all_header">
+          <div className="commu_all_titles">
+            <h2 className="commu_all_title">{card.heading}</h2>
             {card.subtitle && (
-              <p className="vote-featured-section__subtitle">{card.subtitle}</p>
+              <p className="commu_all_subtitle">{card.subtitle}</p>
             )}
           </div>
           {onMoreClick && (
-            <button type="button" className="vote-featured-section__more" onClick={onMoreClick}>
+            <button type="button" className="commu_all_more" onClick={onMoreClick}>
               더보기 <ArrowRightIcon />
             </button>
           )}
@@ -394,7 +394,7 @@ function VoteCard({
           {choices}
           {cardFooter}
         </article>
-      </div>
+      </>
     )
   }
 
@@ -431,6 +431,7 @@ function VoteList({
   } | null>(null)
   const [pendingVote, setPendingVote] = useState<{ cardId: string; optionLabel: string } | null>(null)
   const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const dismissToast = useCallback(() => setToastMessage(null), [])
   const activeVoteCards = [...extraVotes, ...voteCards]
 
   const handleVoteClick = (cardId: string, optionLabel: string) => {
@@ -505,7 +506,7 @@ function VoteList({
   return (
     <section
       ref={listRef}
-      className={`vote-page-list vote-page-list--${variant}`}
+      className={variant === 'featured' ? 'vote-featured-section' : 'vote-page-list vote-page-list--list'}
       aria-label={variant === 'featured' ? '오늘의 투표' : '투표 목록'}
     >
       {cards.map((card) => (
@@ -521,7 +522,7 @@ function VoteList({
         />
       ))}
 
-      <VoteToast message={toastMessage} onDismiss={() => setToastMessage(null)} />
+      <VoteToast message={toastMessage} onDismiss={dismissToast} />
 
       <VoteConfirmModal
         isOpen={pendingVote !== null}

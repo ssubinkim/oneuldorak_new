@@ -164,23 +164,19 @@ function FridgeSection() {
         )}
       </div>
 
-      <div
+      <a
         className="market-banner"
-        role="button"
-        tabIndex={0}
-        onClick={() => { window.location.hash = '#/store' }}
-        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') window.location.hash = '#/store' }}
+        href="#/store"
         aria-label="도락마켓으로 이동"
       >
         <div className="market-banner__text">
+          <span className="market-banner__eyebrow">market</span>
           <p className="market-banner__desc">부족한 재료는</p>
-          <strong className="market-banner__name">도락마켓<span className="market-banner__desc">에서 채워요</span></strong>
-<span className="market-banner__link">재료 보러가기 &gt;</span>
+          <strong className="market-banner__name">도락마켓<span className="market-banner__desc">에서</span></strong>
+          <span className="market-banner__desc">채워볼까요? <span className="market-banner__arrow" aria-hidden="true">→</span></span>
         </div>
-        <div className="market-banner__mascots" aria-hidden="true">
-          <img src={dorak21} alt="" className="market-banner__mascot" />
-        </div>
-      </div>
+        <img src={dorak21} alt="" aria-hidden="true" className="market-banner__mascot" />
+      </a>
     </section>
   )
 }

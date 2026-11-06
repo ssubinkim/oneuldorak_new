@@ -1,3 +1,7 @@
+.app-screen > .vote-confirm-modal {
+  position: absolute;
+}
+
 .vote-confirm-modal {
   position: fixed;
   inset: 0;

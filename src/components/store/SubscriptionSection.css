@@ -1,58 +1,5 @@
-.subscription {
-  padding: 60px 0 0;
-}
-
-.subscription__header {
-  padding: 0 20px;
-  margin-bottom: 14px;
-}
-
-.subscription__subrow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.subscription__title {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0 0 6px;
-}
-
-.subscription__title-icon {
-  height: 24px;
-  width: 26px;
-  margin-bottom: 6px;
-}
-
-.subscription__desc {
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 16px;
-  color: #767676;
-  margin: 0 0 4px;
-}
-
-.subscription__more {
-  font-family: 'Pretendard Variable', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: #a3a3a3;
-  background: none;
-  border: none;
-  cursor: default;
-  padding: 0;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
 .subscription__banner {
   position: relative;
-  margin: 0 16px;
   border-radius: 10px;
   overflow: hidden;
   aspect-ratio: 16 / 9;
@@ -102,7 +49,6 @@
 .subscription__tabs {
   display: flex;
   gap: 6px;
-  padding: 0 16px;
   margin-bottom: 20px;
 }
 
@@ -147,7 +93,6 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 0 16px;
   box-sizing: border-box;
   scroll-snap-align: start;
 }

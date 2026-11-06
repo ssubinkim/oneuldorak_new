@@ -58,9 +58,9 @@ function CommunityMainView({ activeTab, onSelectTab, onOpenBoardDetail }: Commun
       onScroll={handleCommunityScroll}
     >
       {/* 커뮤니티 헤더 row - sticky, 항상 카드 위에 */}
-      <div ref={stickyHeaderRef as React.RefObject<HTMLDivElement>} className="community-banner-header">
+      <div ref={stickyHeaderRef as React.RefObject<HTMLDivElement>} className="commu_header">
         <h1>커뮤니티</h1>
-        <div className="community-banner-header__actions">
+        <div className="commu_header_actions">
           <button
             type="button"
             aria-label="검색"
@@ -74,7 +74,7 @@ function CommunityMainView({ activeTab, onSelectTab, onOpenBoardDetail }: Commun
           </button>
         </div>
         {isSearchOpen && (
-          <div className="community-banner-header__search-overlay">
+          <div className="commu_header_search">
             <CommunitySearchBar
               value={searchValue}
               onChange={setSearchValue}

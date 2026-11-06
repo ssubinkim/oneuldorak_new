@@ -36,7 +36,7 @@ function VotePage({
       className="page-scroll vote-page"
       onScroll={handleCommunityScroll}
     >
-      <div ref={stickyHeaderRef as React.RefObject<HTMLDivElement>} className="community-banner-header">
+      <div ref={stickyHeaderRef as React.RefObject<HTMLDivElement>} className="commu_header">
         <h1>커뮤니티</h1>
       </div>
       <CommunityBanner

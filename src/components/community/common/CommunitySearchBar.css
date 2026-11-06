@@ -74,7 +74,7 @@
 }
 
 .community-banner__search-inline .community-search-bar__field input,
-.community-sticky-header__search-inline .community-search-bar__field input {
+.commu_tabbar_search .community-search-bar__field input {
   height: 31px;
   padding: 0 34px 0 12px;
   border-radius: 11px;
@@ -82,12 +82,12 @@
 }
 
 .community-banner__search-inline .community-search-bar__icon,
-.community-sticky-header__search-inline .community-search-bar__icon {
+.commu_tabbar_search .community-search-bar__icon {
   right: 9px;
 }
 
 .community-banner__search-inline .community-search-bar__icon svg,
-.community-sticky-header__search-inline .community-search-bar__icon svg {
+.commu_tabbar_search .community-search-bar__icon svg {
   width: 18px;
   height: 18px;
 }

@@ -85,22 +85,25 @@ function StoreMain({ onSelect }: Props) {
   }, [])
 
   return (
-    <div className="store-main">
+    <>
       <StoreTopBar cartBtnRef={cartBtnRef} cartBounce={cartBounce} cartCount={cartCount} />
       <StoreBanner />
       <StoreCategoryTabs active={activeTab} onChange={setActiveTab} />
-      <div className="store-search">
-        <input className="store-search__input" type="text" placeholder="검색어를 입력하세요!" />
-        <svg className="store-search__icon" viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="currentColor" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="11" cy="11" r="8" />
-          <path d="M21 21l-4.35-4.35" />
-        </svg>
-      </div>
-      <BestSection products={BEST_PRODUCTS} onSelect={onSelect} onCartClick={handleCartClick} />
-      <BrandPickSection />
-      <SubscriptionSection products={SUBSCRIPTION_PRODUCTS} onSelect={onSelect} onCartClick={handleCartClick} />
-      <KitchenSection products={KITCHEN_PRODUCTS} onSelect={onSelect} onCartClick={handleCartClick} />
-      <div style={{ height: 32 }} />
+      <main className="store-content">
+        <div className="store-search">
+          <input className="store-search__input" type="text" placeholder="검색어를 입력하세요!" />
+          <svg className="store-search__icon" viewBox="0 0 24 24" width={20} height={20} fill="none" stroke="currentColor" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
+        </div>
+        <div className="store-sections">
+          <BestSection products={BEST_PRODUCTS} onSelect={onSelect} onCartClick={handleCartClick} />
+          <BrandPickSection />
+          <SubscriptionSection products={SUBSCRIPTION_PRODUCTS} onSelect={onSelect} onCartClick={handleCartClick} />
+          <KitchenSection products={KITCHEN_PRODUCTS} onSelect={onSelect} onCartClick={handleCartClick} />
+        </div>
+      </main>
 
       {flyDots.map(dot => (
         <div
@@ -114,7 +117,7 @@ function StoreMain({ onSelect }: Props) {
           } as React.CSSProperties}
         />
       ))}
-    </div>
+    </>
   )
 }
 

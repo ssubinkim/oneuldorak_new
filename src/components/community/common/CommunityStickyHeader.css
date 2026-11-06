@@ -1,16 +1,41 @@
-.community-banner-header {
+.commu_header_actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.commu_header_actions button {
+  padding: 4px;
+  color: var(--color-border);
+  background: transparent;
+  border: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Keep scrolling community content hidden behind the phone status area. */
+.app-shell:has(.commu_header)::after {
+  background-color: var(--color-secondary);
+  /* Cover fractional-pixel seams caused by the scaled phone preview. */
+  box-shadow: 0 2px 0 var(--color-secondary);
+}
+
+.commu_header {
   position: sticky;
-  top: 0;
+  top: var(--app-top-inset, 0px);
   z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: var(--color-secondary);
-  padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 14px;
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 8px;
   box-sizing: border-box;
+  /* Match the All tab header even when there is no search button. */
+  min-height: calc(58px + env(safe-area-inset-top, 0px));
 }
 
-.community-banner-header__search-overlay {
+.commu_header_search {
   position: absolute;
   top: 0;
   right: 0;
@@ -23,14 +48,14 @@
   width: 80px;
 }
 
-.community-banner-header h1 {
+.commu_header h1 {
   margin: 0;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
   color: #1a1a1a;
   font-family: 'NanumSquare Neo', 'NanumSquareNeo', sans-serif;
-  line-height: 130%;
-  letter-spacing: 0.08px;
+  line-height: 120%;
+  letter-spacing: -0.08px;
 }
 
 .community-card-sheet {
@@ -39,16 +64,16 @@
   background: var(--color-bg-base);
 }
 
-.community-sticky-header {
+.commu_tabbar {
   position: relative;
   z-index: 30;
   background: var(--color-secondary);
   transition: box-shadow 160ms ease;
 }
 
-.community-sticky-header.is-compact {
+.commu_tabbar.is-compact {
   position: sticky;
-  top: calc(var(--community-banner-header-height, calc(68px + env(safe-area-inset-top, 0px))) - 1px);
+  top: calc(var(--app-top-inset, 0px) + var(--commu-header-height, calc(58px + env(safe-area-inset-top, 0px))) - 1px);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
@@ -59,9 +84,9 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: flex-end;
-  height: 82px;
+  height: 76px;
   margin-top: -38px;
-  padding: 34px 20px 0;
+  padding: 28px 20px 0;
   box-sizing: border-box;
   background: #FFFFFD;
   border-radius: 22px 22px 0 0;
@@ -103,6 +128,11 @@
   color: #5f5f5f;
 }
 
+.community-tabs button.community-tab--recipe:disabled {
+  color: var(--color-border);
+  cursor: default;
+}
+
 .community-tabs button::after {
   content: '';
   position: absolute;
@@ -122,22 +152,22 @@
   background: var(--color-primary);
 }
 
-.community-sticky-header.is-compact .community-tabs {
-  height: 56px;
+.commu_tabbar.is-compact .community-tabs {
+  height: 50px;
   margin-top: 0;
-  padding-top: 8px;
+  padding-top: 2px;
   border-radius: 0;
 }
 
-.community-sticky-header.is-compact .community-tabs button {
+.commu_tabbar.is-compact .community-tabs button {
   height: 44px;
 }
 
 @media (max-width: 360px) {
   .community-tabs {
-    height: 76px;
+    height: 70px;
     margin-top: -34px;
-    padding: 30px 18px 0;
+    padding: 24px 18px 0;
     border-radius: 20px 20px 0 0;
   }
 
@@ -151,15 +181,15 @@
     font-size: 17px;
   }
 
-  .community-sticky-header.is-compact .community-tabs {
-    height: 54px;
+  .commu_tabbar.is-compact .community-tabs {
+    height: 48px;
     margin-top: 0;
-    padding-top: 8px;
+    padding-top: 2px;
     padding-right: 18px;
     padding-left: 18px;
   }
 
-  .community-sticky-header.is-compact .community-tabs button {
+  .commu_tabbar.is-compact .community-tabs button {
     height: 42px;
     font-size: 16px;
   }

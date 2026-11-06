@@ -1,3 +1,6 @@
+import { useId } from 'react'
+import './StoreSectionHeader.css'
+import { ArrowRightIcon } from '../common/ui/ArrowRightIcon'
 import './BrandPickSection.css'
 import starIcon from './images/star.png'
 import logo1 from './images/storelogo_1.png'
@@ -15,17 +18,18 @@ const BRANDS = [
 ]
 
 function BrandPickSection() {
+  const titleId = useId()
   return (
-    <div className="brand-pick">
-      <div className="brand-pick__header">
-        <p className="brand-pick__title">
-          <img src={starIcon} alt="" className="brand-pick__title-icon" width={22} height={22} loading="lazy" decoding="async" fetchPriority="low" />
-          오늘도락 PICK
-        </p>
-        <div className="brand-pick__subrow">
-          <p className="brand-pick__desc">오늘도락이 추천하는 브랜드</p>
-          <button className="brand-pick__more" type="button" disabled>더보기 &gt;</button>
+    <section className="brand-pick" aria-labelledby={titleId}>
+      <div className="store-section__header">
+        <div className="store-section__title-group">
+          <h2 id={titleId} className="store-section__title">
+            <img src={starIcon} alt="" className="store-section__icon" width={22} height={22} loading="lazy" decoding="async" fetchPriority="low" />
+            오늘도락 PICK
+          </h2>
+          <p className="store-section__subtitle">오늘도락이 추천하는 브랜드</p>
         </div>
+        <button className="store-section__more" type="button" disabled>더보기 <ArrowRightIcon /></button>
       </div>
       <div className="brand-pick__track">
         {BRANDS.map(brand => (
@@ -53,7 +57,7 @@ function BrandPickSection() {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   )
 }
 

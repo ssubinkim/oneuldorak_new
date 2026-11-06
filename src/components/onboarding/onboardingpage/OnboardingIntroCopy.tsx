@@ -4,7 +4,7 @@ function OnboardingIntroCopy() {
   return (
     <div className="onboarding-intro-copy">
       <h1>
-        오늘의 도시락,
+        <span className="onboarding-intro-copy__underline">오늘의 도시락</span>,
         <br />
         나만의 기준을 정해볼까요?
       </h1>

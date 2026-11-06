@@ -191,9 +191,11 @@
 }
 
 .market-banner {
+  box-sizing: border-box;
   position: relative;
   display: flex;
-  height: 112px;
+  width: 100%;
+  min-height: 142px;
   padding: 16px 8px 14px clamp(16px, calc(4.1026vw + 4px), 20px);
   margin-top: 14px;
   align-items: center;
@@ -202,7 +204,36 @@
   overflow: hidden;
   cursor: pointer;
   background: #f5faef;
+  border: 1px solid #dce9d1;
   border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 3px 8px rgb(85 118 57 / 8%);
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+@media (hover: hover) {
+  .market-banner:hover {
+    background: #edf6e3;
+    box-shadow: 0 5px 12px rgb(85 118 57 / 14%);
+    transform: translateY(-2px);
+  }
+}
+
+.market-banner:active {
+  transform: scale(0.985);
+  box-shadow: 0 1px 4px rgb(85 118 57 / 10%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .market-banner {
+    transition: none;
+  }
+
+  .market-banner:hover,
+  .market-banner:active {
+    transform: none;
+  }
 }
 
 .market-banner:focus-visible {
@@ -211,60 +242,78 @@
 }
 
 .market-banner__text {
+  --market-line-height: 30px;
   position: relative;
   z-index: 1;
   display: flex;
   min-width: 0;
   flex: 1 1 auto;
   flex-direction: column;
-  gap: 3px;
+  align-items: flex-start;
+  text-align: left;
+  gap: 0;
+}
+
+.market-banner__eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #92ba6b;
 }
 
 .market-banner__desc {
   margin: 0;
-  font-size: clamp(16px, 4.6154vw, 18px);
+  font-size: clamp(18px, calc(4.6154vw + 2px), 20px);
+  line-height: var(--market-line-height);
   font-weight: 500;
   color: #3c3c3c;
 }
 
 .market-banner__name {
-  font-size: clamp(19px, 5.641vw, 22px);
+  font-size: 24px;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: var(--market-line-height);
   color: #92BA6B;
   letter-spacing: 0;
   white-space: nowrap;
 }
 
-.market-banner__link {
-  flex: 1;
-  display: inline-block;
-  padding: 8px clamp(8px, 2.5641vw, 10px);
-  margin-top: 12px;
-  align-self: flex-start;
-  font-size: clamp(13px, 3.5897vw, 14px);
-  font-weight: 500;
-  color: #fffffd;
-  background: #92BA6B;
-  border-radius: 10px;
-  font-family: 'NanumSquareNeo', 'NanumSquare Neo', sans-serif;
+.market-banner__text > .market-banner__desc,
+.market-banner__text > .market-banner__name {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  flex: 0 0 var(--market-line-height);
+  height: var(--market-line-height);
+  margin: 0;
+  line-height: var(--market-line-height);
 }
 
-.market-banner__mascots {
-  position: absolute;
-  right: 8px;
-  bottom: 0;
-  display: flex;
-  flex-shrink: 0;
-  align-self: flex-end;
-  align-items: flex-end;
+.market-banner__text > .market-banner__desc .market-banner__arrow {
+  align-self: center;
+  margin-left: 4px;
+  line-height: 1;
 }
 
 .market-banner__mascot {
-  width: clamp(116px, 41.0256vw, 160px);
+  --mascot-angle: -5deg;
+  position: absolute;
+  right: -12px;
+  bottom: 0;
+  display: block;
+  width: 180px;
+  max-width: none;
   height: auto;
-  transform: translateX(clamp(-6px, -1.5385vw, -2px)) scale(1.13);
+  transform: rotate(var(--mascot-angle));
   transform-origin: center bottom;
+}
+
+.market-banner__arrow {
+  display: inline-block;
+  color: #3c3c3c;
+  font-size: 24px;
+  font-weight: 500;
+  vertical-align: baseline;
 }
 
 @media (max-width: 360px) {
@@ -276,9 +325,6 @@
     gap: 12px;
   }
 
-  .market-banner__link {
-    margin-top: 8px;
-  }
 }
 
 @container app-screen (min-width: 768px) {
@@ -324,8 +370,4 @@
     font-size: 24px;
   }
 
-  .market-banner__mascot {
-    width: 180px;
-    height: 128px;
-  }
 }

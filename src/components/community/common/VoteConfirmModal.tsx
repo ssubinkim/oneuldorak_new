@@ -12,6 +12,9 @@ function VoteConfirmModal({ isOpen, onCancel, onConfirm }: VoteConfirmModalProps
     return null
   }
 
+  const screen = document.querySelector('.app-screen')
+  if (!screen) return null
+
   return createPortal(
     <div className="vote-confirm-modal" role="presentation" onClick={onCancel}>
       <section
@@ -34,7 +37,7 @@ function VoteConfirmModal({ isOpen, onCancel, onConfirm }: VoteConfirmModalProps
         </div>
       </section>
     </div>,
-    document.body
+    screen
   )
 }
 

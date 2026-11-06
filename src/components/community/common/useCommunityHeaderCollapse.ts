@@ -37,38 +37,42 @@ function useCommunityHeaderCollapse() {
       return
     }
 
-    // 커뮤니티 헤더 실제 높이를 측정해서 rootMargin으로 사용
-    // → compact 트리거가 탭이 sticky되는 타이밍과 정확히 맞아떨어짐
-    const headerHeight = stickyHeaderRef.current
-      ? Math.round(stickyHeaderRef.current.getBoundingClientRect().height)
-      : 68
+    let observer: IntersectionObserver | undefined
 
-    // Expose exact measured height as a CSS variable so CommunityStickyHeader
-    // sticks at the same position, eliminating any hardcoded-68px mismatch gap.
-    root.style.setProperty('--community-banner-header-height', `${headerHeight}px`)
+    const updateHeaderMetrics = () => {
+      const header = stickyHeaderRef.current
+      const style = header ? window.getComputedStyle(header) : null
+      // Use layout pixels: getBoundingClientRect includes the phone preview zoom.
+      const headerHeight = style ? Number.parseFloat(style.height) || 58 : 58
+      const headerTopInset = style ? Number.parseFloat(style.top) || 0 : 0
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const shouldCompact = !entry.isIntersecting
+      root.style.setProperty('--commu-header-height', `${headerHeight}px`)
+      observer?.disconnect()
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          const shouldCompact = !entry.isIntersecting
+          if (shouldCompact === isHeaderCompactRef.current) return
+          isHeaderCompactRef.current = shouldCompact
+          setIsHeaderCompact(shouldCompact)
+        },
+        {
+          root,
+          threshold: 0,
+          rootMargin: `-${headerHeight + headerTopInset}px 0px 0px 0px`,
+        },
+      )
+      observer.observe(target)
+    }
 
-        if (shouldCompact === isHeaderCompactRef.current) {
-          return
-        }
-
-        isHeaderCompactRef.current = shouldCompact
-        setIsHeaderCompact(shouldCompact)
-      },
-      {
-        root,
-        threshold: 0,
-        rootMargin: `-${headerHeight}px 0px 0px 0px`,
-      },
-    )
-
-    observer.observe(target)
+    updateHeaderMetrics()
+    const resizeObserver = new ResizeObserver(updateHeaderMetrics)
+    if (stickyHeaderRef.current) resizeObserver.observe(stickyHeaderRef.current)
+    window.addEventListener('resize', updateHeaderMetrics)
 
     return () => {
-      observer.disconnect()
+      observer?.disconnect()
+      resizeObserver.disconnect()
+      window.removeEventListener('resize', updateHeaderMetrics)
     }
   }, [])
 

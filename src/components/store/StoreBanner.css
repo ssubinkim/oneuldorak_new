@@ -31,7 +31,9 @@
 .store-banner__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 55%);
+  background:
+    linear-gradient(to bottom, var(--color-secondary) 0, rgba(var(--color-secondary-rgb), 0.65) 6px, rgba(var(--color-secondary-rgb), 0) 24px),
+    linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 55%);
   pointer-events: none;
 }
 

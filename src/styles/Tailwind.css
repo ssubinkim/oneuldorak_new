@@ -100,8 +100,9 @@ body {
   height: 100dvh;
   background-color: var(--mockup-bg);
   background-image: url('/bg_logo.gif');
-  background-position: left clamp(12px, 2vw, 24px) bottom clamp(12px, 2dvh, 24px);
-  background-size: min(420px, 70vw) auto;
+  background-position: left clamp(12px, 2vw, 24px)
+    bottom calc((100dvh - 868px * var(--app-preview-scale, 1)) / 2);
+  background-size: min(420px, 21.875vw, 38.8889dvh) auto;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
@@ -130,6 +131,7 @@ button {
   --screen-max-width: 390px;
   --screen-height: 844px;
   --header-height: 44px;
+  --app-top-inset: 54px;
   --bottom-nav-height: 109.2px;
 
   position: relative;
@@ -164,7 +166,7 @@ button {
   box-shadow: 0 68px 0 #414247;
 }
 
-/* Decorative iPhone status bar; kept outside the interactive screen content. */
+/* Transparent status bar overlays the content on every screen. */
 .app-shell::after {
   top: calc(50% - 422px);
   left: calc(50% - 195px);
@@ -172,7 +174,7 @@ button {
   height: 54px;
   z-index: 100;
   border-radius: 44px 44px 0 0;
-  background-color: var(--app-status-bg, var(--color-bg-base));
+  background-color: transparent;
   background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22390%22%20height%3D%2254%22%20viewBox%3D%220%200%20390%2054%22%3E%3Crect%20x%3D%22139%22%20y%3D%2211%22%20width%3D%22112%22%20height%3D%2232%22%20rx%3D%2216%22%20fill%3D%22%2308090b%22%2F%3E%3Ccircle%20cx%3D%22235%22%20cy%3D%2227%22%20r%3D%225%22%20fill%3D%22%23151923%22%2F%3E%3Ccircle%20cx%3D%22235%22%20cy%3D%2227%22%20r%3D%222.5%22%20fill%3D%22%23202b40%22%2F%3E%3C%2Fsvg%3E");
   background-repeat: no-repeat;
   background-position: center;
@@ -180,7 +182,7 @@ button {
 
 .app-screen {
   box-sizing: border-box;
-  border-top: 54px solid var(--app-status-bg, var(--color-bg-base));
+  padding-top: var(--app-top-inset);
   position: relative;
   container-name: app-screen;
   container-type: inline-size;
@@ -211,6 +213,36 @@ button {
   -ms-overflow-style: none;
 }
 
+/* Absolute scrollers fill the screen and carry their initial top clearance
+   with the content, allowing it to scroll behind the transparent status bar. */
+.app-screen > :is(.page-scroll, .gp-scroll, .sp-scroll)::before,
+.app-screen.page-scroll::before {
+  content: '';
+  display: block;
+  height: var(--app-top-inset);
+  flex-shrink: 0;
+}
+
+.app-screen.meal-screen {
+  padding-top: 0;
+}
+
+.app-screen > :is(.notification-topbar, .like-header, .my-activity-header, .saved-header) {
+  top: var(--app-top-inset);
+}
+
+.app-screen > .like-tabs {
+  top: calc(var(--header-height, 44px) + var(--app-top-inset));
+}
+
+.app-screen > .notification-page.page-scroll {
+  top: calc(72px + var(--app-top-inset));
+}
+
+.app-screen > .notification-page.page-scroll::before {
+  display: none;
+}
+
 .page-scroll::-webkit-scrollbar {
   display: none;
 }
@@ -228,6 +260,7 @@ button {
   }
 
   .app-shell {
+    --app-top-inset: 0px;
     --screen-min-width: 0px;
     --screen-max-width: 100%;
     --screen-height: 100dvh;

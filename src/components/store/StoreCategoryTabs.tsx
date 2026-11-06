@@ -7,16 +7,17 @@ type Props = {
   onChange?: (tab: string) => void
 }
 
-function StoreCategoryTabs({ active }: Props) {
+function StoreCategoryTabs({ active, onChange }: Props) {
   return (
-    <div className="store-category-tabs">
-      <div className="store-category-tabs__track">
+    <div className="store-tabs">
+      <div className="store-tabs__track">
         {TABS.map(tab => (
           <button
             key={tab}
             type="button"
-            className={`store-category-tabs__tab${active === tab ? ' store-category-tabs__tab--active' : ''}`}
-            disabled
+            className={`store-tab${active === tab ? ' is-active' : ''}`}
+            disabled={tab !== TABS[0]}
+            onClick={() => onChange?.(tab)}
           >
             {tab}
           </button>
